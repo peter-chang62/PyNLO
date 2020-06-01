@@ -1,2 +1,0 @@
-[Fiber DB]
-file: general_fibers

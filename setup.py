@@ -1,49 +1,23 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-#from distutils.core import setup
-# By popular demand...
-from setuptools import setup
-import os
+import setuptools
 
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-if not on_rtd:
-    import numpy as np
-    install_requires=[
-          "jsonpickle>=0.9.2",
-          "jsonschema>=2.5.1",
-          "numpy>=1.9.2",          
-          "scipy>=0.15.1"
-          ]
-else:
-    np = None
-    install_requires=[]
+dependencies = [
+    "jsonpickle >= 0.9.2",
+    "jsonschema >= 2.5.1",
+    "numpy >= 1.9.2",
+    "scipy >= 0.15.1",
+    ]
 
-#          "mock>=1.0.1",
-#          "nose>=1.3.7",
-#          "nose-cov>=1.6",
-#          "nose-fixes>=1.3",
+setuptools.setup(
+    name='pyNLO',
+    version='0.1.2',
+    packages=setuptools.find_packages(exclude=["tests", "tests.*"]),
+    install_requires=dependencies,
 
-setup(name='pyNLO',
-      version='0.1.2',
-      description='Python nonlinear optics',
-      author='Gabe Ycas',
-      author_email='ycasg@colorado.edu',
-      url='https://github.com/pyNLO/PyNLO',
-      install_requires=install_requires,
-      packages=['pynlo',
-                'pynlo.devices',
-                'pynlo.interactions',
-                'pynlo.interactions.ThreeWaveMixing',
-                'pynlo.interactions.FourWaveMixing',
-                'pynlo.light',
-                'pynlo.media',
-                'pynlo.media.crystals',
-                'pynlo.media.fibers',
-                'pynlo.util',
-                'pynlo.util.ode_solve'],
-      package_dir = {'': 'src'},
-      package_data = {'pynlo': ['media/fibers/*.txt']},
-    extras_require = {
-        'DFG':  ["pyfftw"],
-		},	  
-     )
+    # metadata to display on PyPI
+    author='pyNLO authors',
+    description='Python nonlinear optics',
+    url='https://github.com/pyNLO/PyNLO',
+    )
+
