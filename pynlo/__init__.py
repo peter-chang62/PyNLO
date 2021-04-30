@@ -4,7 +4,7 @@ TODO: module docs
 
 Notes
 -----
-**All units are assumed to be base SI**:
+**All quantities are in base SI units**:
     frequency in `Hz`
 
     time in `s`
@@ -13,5 +13,8 @@ Notes
 """
 
 __all__ = ["light", "media", "device", "model", "utility"]
+
+
+# %% Imports
 
 from pynlo import light, media, device, model, utility

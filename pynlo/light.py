@@ -1,31 +1,58 @@
 # -*- coding: utf-8 -*-
 """
-Routines and classes for representing optical pulses in the time and frequency
+Routines and classes for representing optical pulses in both time and frequency
 domains.
 
 Notes
 -----
 The public facing routines and properties of the defined classes have inputs
-and outputs that are aranged such that the coordinate arrays are monotonicallyl
+and outputs that are aranged such that the coordinate arrays are monotonically
 ordered. Many of the associated private methods and properties are arranged in
 the standard fft order.
 """
 
-__all__ = ["resample_v", "resample_t", "TFGrid", "Pulse"]
+__all__ = ["resample_v", "resample_t", "derivative_v", "derivative_t",
+           "TFGrid", "Pulse"]
 
 
 # %% Imports
 
 import collections
-import copy
 
 import numpy as np
-from scipy import constants, fft
+from scipy import constants
+
+from pynlo import fft
 
 
 # %% Constants
 
 pi = constants.pi
+
+
+# %% Containers
+
+ResampledV = collections.namedtuple(
+    "ResampledV", ["v_grid", "f_v", "dv", "dt"])
+
+ResampledT = collections.namedtuple("ResampledT", ["t_grid", "f_t", "dt"])
+
+RTFGrid = collections.namedtuple(
+    "RTFGrid", ["n", "v0",
+                "v_grid", "v_ref", "dv", "v_window",
+                "t_grid", "t_ref", "dt", "t_window"])
+
+PowerSpectralWidths = collections.namedtuple(
+    "PowerSpectralWidths", ["fwhm", "rms"])
+
+PowerEnvelopeWidths = collections.namedtuple(
+    "PowerEnvelopeWidths", ["fwhm", "rms"])
+
+Autocorrelation = collections.namedtuple(
+    "Autocorrelation", ["t_grid", "ac_t", "fwhm", "rms"])
+
+Spectrogram = collections.namedtuple(
+    "Spectrogram", ["v_grid", "t_grid", "spg", "extent"])
 
 
 # %% Routines
@@ -61,21 +88,21 @@ def derivative_v(v_grid, f_v, n, t_ref=0):
     """
     assert (len(v_grid) == len(f_v)), "The frequency grid and frequency domain data must be the same length."
 
-    #--- Inverse Transform
+    #---- Inverse Transform
     dv = np.diff(v_grid).mean()
     n_0 = len(v_grid)
     dt = 1/(n_0*dv)
-    f_t = fft.fftshift(fft.ifft(fft.ifftshift(f_v)*n_0*dv))
+    f_t = fft.fftshift(fft.ifft(fft.ifftshift(f_v), fsc=dt, overwrite_x=True))
 
-    #--- Derivative
+    #---- Derivative
     n_2 = n_0//2
     t_grid = dt*(np.arange(n_0) - n_2) + t_ref
 
     dfdv_t = (-1j*2*pi*t_grid)**n * f_t
     dfdv_t[t_grid == 0] = 0
 
-    #--- Transform
-    dfdv_v = fft.fftshift(fft.fft(fft.ifftshift(dfdv_t)*dt))
+    #---- Transform
+    dfdv_v = fft.fftshift(fft.fft(fft.ifftshift(dfdv_t), fsc=dt, overwrite_x=True))
     return dfdv_v
 
 def derivative_t(t_grid, f_t, n, v_ref=0):
@@ -107,31 +134,31 @@ def derivative_t(t_grid, f_t, n, v_ref=0):
     """
     assert (len(t_grid) == len(f_t)), "The time grid and time domain data must be the same length."
 
-    #--- Transform
+    #---- Transform
     n_0 = len(t_grid)
     dt = np.diff(t_grid).mean()
     dv = 1/(n_0*dt)
     if np.isrealobj(f_t) and v_ref==0:
-        #--- Real-Valued Representation
-        f_v = fft.rfft(fft.ifftshift(f_t)*dt)
+        #---- Real-Valued Representation
+        f_v = fft.rfft(fft.ifftshift(f_t), fsc=dt)
         v_grid = dv*np.arange(len(f_v))
     else:
-        #--- Complex Envelope Representation
-        f_v = fft.fftshift(fft.fft(fft.ifftshift(f_t)*dt))
+        #---- Complex Envelope Representation
+        f_v = fft.fftshift(fft.fft(fft.ifftshift(f_t), fsc=dt, overwrite_x=True))
         n_2 = n_0//2
         v_grid = dv*(np.arange(n_0) - n_2) + v_ref
 
-    #--- Derivative
+    #---- Derivative
     dfdt_v = (+1j*2*pi*v_grid)**n * f_v
     dfdt_v[v_grid == 0] = 0
 
-    #--- Inverse Transform
+    #---- Inverse Transform
     if np.isrealobj(f_t) and v_ref==0:
-        #--- Real-Valued Representation
-        dfdt_t = fft.fftshift(fft.irfft(dfdt_v*n_0*dv, n=n_0))
+        #---- Real-Valued Representation
+        dfdt_t = fft.fftshift(fft.irfft(dfdt_v, fsc=dt, n=n_0))
     else:
-        #--- Complex Envelope Representation
-        dfdt_t = fft.fftshift(fft.ifft(fft.ifftshift(dfdt_v)*n_0*dv))
+        #---- Complex Envelope Representation
+        dfdt_t = fft.fftshift(fft.ifft(fft.ifftshift(dfdt_v), fsc=dt, overwrite_x=True))
     return dfdt_t
 
 def resample_v(v_grid, f_v, n):
@@ -162,9 +189,8 @@ def resample_v(v_grid, f_v, n):
         The resampled frequency domain data.
     dv : float
         The spacing of the resampled frequency grid.
-    ndv : float
-        The spacing of the resampled frequency grid multiplied by the
-        number of points.
+    dt : float
+        The spacing of the resampled time grid.
 
     Notes
     -----
@@ -183,56 +209,50 @@ def resample_v(v_grid, f_v, n):
     assert (len(v_grid) == len(f_v)), "The frequency grid and frequency domain data must be the same length."
     assert isinstance(n, (int, np.integer)), "The requested number of points must be an integer"
     assert (n > 0), "The requested number of points must be greater than 0."
-    results = {}
 
-    #--- Inverse Transform
+    #---- Inverse Transform
     dv_0 = np.diff(v_grid).mean()
     if v_grid[0] == 0:
         assert np.isreal(f_v[0]), "When the input is in the real-valued representation, the amplitude at the origin must be real."
 
-        #--- Real-Valued Representation
+        #---- Real-Valued Representation
         if np.isreal(f_v[-1]):
             n_0 = 2*(len(v_grid)-1)
         else:
             n_0 = 2*(len(v_grid)-1) + 1
-        f_t = fft.fftshift(fft.irfft(f_v*n_0*dv_0, n=n_0))
+        dt_0 = 1/(n_0*dv_0)
+        f_t = fft.fftshift(fft.irfft(f_v, fsc=dt_0, n=n_0))
     else:
-        #--- Complex Envelope Representation
+        #---- Complex Envelope Representation
         n_0 = len(v_grid)
+        dt_0 = 1/(n_0*dv_0)
         v_ref_0 = fft.ifftshift(v_grid)[0]
-        f_t = fft.fftshift(fft.ifft(fft.ifftshift(f_v)*n_0*dv_0))
+        f_t = fft.fftshift(fft.ifft(fft.ifftshift(f_v), fsc=dt_0, overwrite_x=True))
 
-    #--- Resample
+    #---- Resample
     dn_n = n//2 - n_0//2 # leading time bins
     dn_p = (n-1)//2 - (n_0-1)//2 # trailing time bins
     if n > n_0:
         f_t = np.pad(f_t, (dn_n, dn_p), mode="constant", constant_values=0)
     elif n < n_0:
-        start_idx = -dn_n
-        stop_idx = n_0+dn_p
-        f_t = f_t[start_idx:stop_idx]
+        f_t = f_t[-dn_n:n_0+dn_p]
 
-    #--- Transform
+    #---- Transform
     dt = 1/(n_0*dv_0)
     dv = 1/(n*dt)
     if v_grid[0] == 0:
-        #--- Real-Valued Representation
-        f_v = fft.rfft(fft.ifftshift(f_t)*dt)
+        #---- Real-Valued Representation
+        f_v = fft.rfft(fft.ifftshift(f_t), fsc=dt)
         v_grid = dv*np.arange(len(f_v))
     else:
-        #--- Complex Envelope Representation
+        #---- Complex Envelope Representation
         n_2 = n//2
-        f_v = fft.fftshift(fft.fft(fft.ifftshift(f_t)*dt))
+        f_v = fft.fftshift(fft.fft(fft.ifftshift(f_t), fsc=dt, overwrite_x=True))
         v_grid = dv*(np.arange(n) - n_2)
         v_grid += v_ref_0
-    results["v_grid"] = v_grid
-    results["f_v"] = f_v
 
-    #--- Construct ResampledV
-    results["dv"] = dv
-    results["ndv"] = n*dv
-
-    resampled = collections.namedtuple("ResampledV", results.keys())(**results)
+    #---- Construct ResampledV
+    resampled = ResampledV(v_grid=v_grid, f_v=f_v, dv=dv, dt=1/(n*dv))
     return resampled
 
 def resample_t(t_grid, f_t, n):
@@ -277,9 +297,8 @@ def resample_t(t_grid, f_t, n):
     assert (len(t_grid) == len(f_t)), "The time grid and time domain data must be the same length."
     assert isinstance(n, (int, np.integer)), "The requested number of points must be an integer"
     assert (n > 0), "The requested number of points must be greater than 0."
-    results = {}
 
-    #--- Define Time Grid
+    #---- Define Time Grid
     n_0 = len(t_grid)
     dt_0 = np.diff(t_grid).mean()
     t_ref_0 = fft.ifftshift(t_grid)[0]
@@ -288,29 +307,25 @@ def resample_t(t_grid, f_t, n):
     n_2 = n//2
     t_grid = dt*(np.arange(n) - n_2)
     t_grid += t_ref_0
-    results["t_grid"] = t_grid
 
-    #--- Resample
+    #---- Resample
     if np.isrealobj(f_t):
-        #--- Real-Valued Representation
-        f_v = fft.rfft(fft.ifftshift(f_t)*dt_0)
+        #---- Real-Valued Representation
+        f_v = fft.rfft(fft.ifftshift(f_t), fsc=dt_0)
         if (n > n_0) and not (n % 2):
             f_v[-1] /= 2 # renormalize aliased Nyquist component
-        f_t = fft.fftshift(fft.irfft(f_v*n*dv, n=n))
+        f_t = fft.fftshift(fft.irfft(f_v, fsc=dt, n=n))
     else:
-        #--- Complex Envelope Representation
-        f_v = fft.fftshift(fft.fft(fft.ifftshift(f_t)*dt_0))
+        #---- Complex Envelope Representation
+        f_v = fft.fftshift(fft.fft(fft.ifftshift(f_t), fsc=dt_0, overwrite_x=True))
         if n > n_0:
             f_v = np.pad(f_v, (0, n-n_0), mode="constant", constant_values=0)
         elif n < n_0:
             f_v = f_v[:n]
-        f_t = fft.fftshift(fft.ifft(fft.ifftshift(f_v)*n*dv))
-    results["f_t"] = f_t
+        f_t = fft.fftshift(fft.ifft(fft.ifftshift(f_v), fsc=dt, overwrite_x=True))
 
-    #--- Construct ResampledT
-    results["dt"] = dt
-
-    resampled = collections.namedtuple("ResampledT", results.keys())(**results)
+    #---- Construct ResampledT
+    resampled = ResampledT(t_grid=t_grid, f_t=f_t, dt=dt)
     return resampled
 
 
@@ -351,7 +366,6 @@ class TFGrid():
     v_grid
     v_ref
     dv
-    ndv
     v_window
     t_grid
     t_ref
@@ -360,7 +374,6 @@ class TFGrid():
     rv_grid
     rv_ref
     rdv
-    rndv
     rv_window
     rt_grid
     rt_ref
@@ -369,8 +382,8 @@ class TFGrid():
 
     Methods
     -------
-    from_freq_range
-    from_time_and_freq
+    FromFreqRange
+    FromTimeAndFreq
 
     Notes
     -----
@@ -426,7 +439,7 @@ class TFGrid():
         assert (n_points > 1),  "The number of points must be greater than 1."
 
 
-        #--- Align Frequency Grid
+        #---- Align Frequency Grid
         v_max_index = int(round(np.modf(v_max / dv)[1]))
         v_min_index = v_max_index - (n_points-1)
         if (v_min_index < 1):
@@ -437,9 +450,8 @@ class TFGrid():
         self._rn_slice = slice(self.rn_range.min(), self.rn_range.max()+1)
         self._n = n_points
 
-        #--- Define Frequency Grid
+        #---- Define Frequency Grid
         self._dv = dv
-        self._ndv = self.n*self.dv
         self._v_grid = fft.ifftshift(self.dv*(np.arange(self.n) + v_min_index))
         self._v_ref = self._v_grid[0]
         self._v_window = self.n*self.dv
@@ -448,21 +460,20 @@ class TFGrid():
         else:
             self.v0 = v0
 
-        #--- Define Complex Time Grid
+        #---- Define Complex Time Grid
         n_2 = self.n // 2
         self._dt = 1/(self.n*self.dv)
         self._t_grid = fft.ifftshift(self.dt*(np.arange(n_points) - n_2))
         self._t_ref = self._t_grid[0]
         self._t_window = self.n*self.dt
 
-        #--- Define Real Time and Frequency Grids
+        #---- Define Real Time and Frequency Grids
         rtf = self.rtf_grids(n_harmonic=1)
         self._rn = rtf.n
 
         # Frequency Grid
         self._rv_grid = rtf.v_grid
         self._rv_ref = rtf.v_ref
-        self._rndv = rtf.ndv
         self._rv_window = rtf.v_window
 
         # Time Grid
@@ -471,9 +482,9 @@ class TFGrid():
         self._rdt = rtf.dt
         self._rt_window = rtf.t_window
 
-    #--- Class Methods
+    #---- Class Methods
     @classmethod
-    def from_freq_range(cls, v_min, v_max, n_points, v0=None):
+    def FromFreqRange(cls, v_min, v_max, n_points, v0=None):
         """
         Initialize a time and frequency grid given a target minimum and maximum
         frequency and the total number of grid points.
@@ -498,7 +509,7 @@ class TFGrid():
         return cls(v_max, dv, n_points, v0=v0)
 
     @classmethod
-    def from_time_and_freq(cls, t_window, v0, n_points):
+    def FromTimeAndFreq(cls, t_window, v0, n_points):
         """
         Initialize a time and frequency grid given a target time window, a
         target center frequency, and the total number of grid points.
@@ -519,10 +530,10 @@ class TFGrid():
 
         dt = t_window/n_points
         dv = 1/(n_points*dt)
-        v_max = v0 + 0.5(n_points-1)*dv
+        v_max = v0 + 0.5*(n_points-1)*dv
         return cls(v_max, dv, n_points, v0=v0)
 
-    #--- General Properties
+    #---- General Properties
     @property
     def n(self):
         """
@@ -606,7 +617,7 @@ class TFGrid():
         """
         return self._v0_idx
 
-    #--- Frequency Grid Properties
+    #---- Frequency Grid Properties
     @property
     def v_grid(self):
         """
@@ -647,26 +658,6 @@ class TFGrid():
         return self._dv
 
     @property
-    def ndv(self):
-        """
-        The number grid points times the frequency grid step size in the
-        complex envelope representation.
-
-        This is the differential for inverse fourier transforms with
-        normalization factor of 1/`n`. Multiplying the integrand of the inverse
-        transform by this factor will preserve the integrated absolute squared
-        magnitude::
-
-            a_t = fft.ifft(fft.ifftshift(a_v)*ndv)
-            np.sum(np.abs(a_v)**2 * dv) == np.sum(np.abs(a_t)**2 *dt)
-
-        Returns
-        -------
-        float
-        """
-        return self._ndv
-
-    @property
     def v_window(self):
         """
         The span of the frequency grid in the complex envelope representation.
@@ -680,7 +671,7 @@ class TFGrid():
         """
         return self._v_window
 
-    #--- Time Grid Properties
+    #---- Time Grid Properties
     @property
     def t_grid(self):
         """
@@ -717,7 +708,7 @@ class TFGrid():
         factor of 1. Multiplying the integrand of the transform by this factor
         will preserve the integrated absolute squared magnitude::
 
-            a_v = fft.fft(a_t*dt)
+            a_v = fft.fft(a_t, fsc=dt)
             np.sum(np.abs(a_t)**2 * dt) == np.sum(np.abs(a_v)**2 *dv)
 
         Returns
@@ -740,7 +731,7 @@ class TFGrid():
         """
         return self._t_window
 
-    #--- Real Time/Frequency Grid Properties
+    #---- Real Time/Frequency Grid Properties
     @property
     def rv_grid(self):
         """
@@ -779,18 +770,6 @@ class TFGrid():
         float
         """
         return self._dv
-
-    @property
-    def rndv(self):
-        """
-        The number grid points times the frequency grid step size in the
-        real-valued time domain representation.
-
-        Returns
-        -------
-        float
-        """
-        return self._rndv
 
     @property
     def rv_window(self):
@@ -849,7 +828,7 @@ class TFGrid():
         """
         return self._rt_window
 
-    #--- Methods
+    #---- Methods
     def rtf_grids(self, n_harmonic=1, fast_n=True):
         """
         Complementary grids defined over the time and frequency domains for
@@ -884,8 +863,6 @@ class TFGrid():
             The grid reference frequency.
         dv : float
             The frequency grid step size.
-        ndv : float
-            The number grid points times the frequency grid step size.
         v_window : float
             The span of the frequency grid.
         t_grid : array of float
@@ -927,14 +904,14 @@ class TFGrid():
             rtf = tf.rtf_grids()
             ra_v = np.zeros_like(rtf.v_grid, dtype=complex)
             ra_v[tf.rn_slice] = 2**-0.5 * a_v
-            ra_t = fft.irfft(ra_v*rtf.ndv, n=rtf.n)
+            ra_t = fft.irfft(ra_v, fsc=rtf.dt, n=rtf.n)
             np.sum(ra_t**2 * rtf.dt) == np.sum(np.abs(a_v)**2 * tf.dv)
         """
         assert isinstance(n_harmonic, (int, np.integer)), "The harmonic support must be an integer."
         assert (n_harmonic > 0), "The harmonic support must be greater than 0."
         results = {}
 
-        #--- Number of Points
+        #---- Number of Points
         target_n_v = self.rn_range.max()*n_harmonic
         if n_harmonic == 1:
             target_n_t = 2*target_n_v - 1 # odd
@@ -949,17 +926,16 @@ class TFGrid():
         n_v = n//2 + 1
         results["n"] = n
 
-        #--- Define Frequency Grid
+        #---- Define Frequency Grid
         v_grid = self.dv*np.arange(n_v)
         v_ref = v_grid[0]
         results["v0"] = self.v0
         results["v_grid"] = v_grid
         results["v_ref"] = v_ref
         results["dv"] = self.dv
-        results["ndv"] = n*self.dv
         results["v_window"] = n_v*self.dv
 
-        #--- Define Time Grid
+        #---- Define Time Grid
         n_2 = n//2
         dt = 1/(n*self.dv)
         t_grid = dt*(np.arange(n) - n_2)
@@ -969,8 +945,11 @@ class TFGrid():
         results["dt"] = dt
         results["t_window"] = n*dt
 
-        #--- Construct RTFGrid
-        rtf_grids = collections.namedtuple("RTFGrid", results.keys())(**results)
+        #---- Construct RTFGrid
+        rtf_grids = RTFGrid(
+            n=n, v0=self.v0,
+            v_grid=v_grid, v_ref=v_ref, dv=self.dv, v_window=n_v*self.dv,
+            t_grid=t_grid, t_ref=t_ref, dt=dt, t_window=n*dt)
 
         return rtf_grids
 
@@ -1013,13 +992,13 @@ class Pulse(TFGrid):
 
     Methods
     -------
-    from_TFGrid
-    from_spectrum
-    gaussian_pulse
-    sech2_pulse
-    parabolic_pulse
-    lorentzian2_pulse
-    cw_light
+    FromTFGrid
+    FromPowerSpectrum
+    Gaussian
+    Sech2
+    Parabolic
+    Lorentzian2
+    CW
 
     Notes
     -----
@@ -1043,7 +1022,7 @@ class Pulse(TFGrid):
     `a_v` or `a_t` attributes have already been initialized.
     """
 
-    def __init__(self, v_max, dv, n_points, v0=None):
+    def __init__(self, v_max, dv, n_points, v0=None, a_v=None):
         """
         Initialize a time and frequency grid given a target maximum frequency,
         a target frequency step size, and the total number of grid points, and
@@ -1063,21 +1042,28 @@ class Pulse(TFGrid):
         v0 : float, optional
             The retarded frame reference frequency. The default (``None``) is
             the average of the resulting frequency grid.
+        a_v : array of complex, optional
+            The root-power spectrum. The default (``None``) populates an empty
+            spectrum.
         """
-        #--- Construct TF Grids
+        #---- Construct TF Grids
         super().__init__(v_max, dv, n_points, v0=v0)
 
-        #--- Set Envelope
-        self.a_v = np.zeros_like(self.v_grid, dtype=complex)
+        #---- Set Spectrum
+        if a_v is None:
+            self.a_v = np.zeros_like(self.v_grid, dtype=complex)
+        else:
+            assert (len(a_v)==len(self.v_grid)), "The length of a_v must match v_grid."
+            self.a_v = a_v
 
-    #--- Class Methods
+    #---- Class Methods
     @classmethod
-    def from_TFGrid(cls, tfgrid, a_v=None):
+    def FromTFGrid(cls, tfgrid, a_v=None):
         """
         Initialize an optical spectrum given a `TFGrid` instance.
 
-        Use this method to create multiple `Pulse` objects with the same
-        underlying coordinate grids.
+        Use this method to create `Pulse` objects from an existing set of
+        coordinate grids.
 
         Parameters
         ----------
@@ -1089,21 +1075,10 @@ class Pulse(TFGrid):
         """
         assert isinstance(tfgrid, TFGrid), "The input must be an instance of the TFGrid class."
 
-        #--- Copy TF Grids
-        self = super().__new__(cls)
-        self.__dict__.update(copy.deepcopy(tfgrid.__dict__))
-
-        #--- Set Spectrum
-        if a_v is None:
-            self.a_v = np.zeros_like(self.v_grid, dtype=complex)
-        else:
-            assert (len(a_v)==len(self.v_grid)), "The length of a_v must match v_grid."
-            self.a_v = a_v
-
-        return self
+        return cls(tfgrid.v_grid.max(), tfgrid.dv, tfgrid.n, v0=tfgrid.v0, a_v=a_v)
 
     @classmethod
-    def from_spectrum(cls, v_grid, p_v, phi_v=None, k=3, ext="zeros",
+    def FromPowerSpectrum(cls, v_grid, p_v, phi_v=None, k=3, ext="zeros",
                       v_min=None, v_max=None, n_points=None, v0=None, e_p=None):
         """
         Initialize an optical spectrum by interpolating existing spectral data.
@@ -1157,38 +1132,39 @@ class Pulse(TFGrid):
         else:
             phi_v = np.zeros_like(v_grid)
 
-        #--- Construct TF Grids
+        #---- Construct TF Grids
         if v_min is None:
             v_min =v_grid.min()
         if v_max is None:
             v_max = v_grid.max()
         if n_points is None:
             n_points = len(v_grid)
-        self = super().from_freq_range(v_min, v_max, n_points, v0=v0)
+        self = super().FromFreqRange(v_min, v_max, n_points, v0=v0)
 
-        #--- Interpolate Input
-        P_v_spline = interpolate.InterpolatedUnivariateSpline(
+        #---- Interpolate Input
+        p_v_spline = interpolate.InterpolatedUnivariateSpline(
             v_grid, p_v, k=k, ext=ext)
-        p_v = P_v_spline(self.v_grid)
+        p_v = p_v_spline(self.v_grid)
         p_v[p_v < 0] = 0
 
         phi_v_spline = interpolate.InterpolatedUnivariateSpline(
             v_grid, phi_v, k=k, ext=ext)
         phi_v = phi_v_spline(self.v_grid)
 
-        #--- Set spectrum
+        #---- Set spectrum
         self.a_v = p_v**0.5 * np.exp(1j*(phi_v - 2*pi*self.t_ref*self.v_grid))
 
-        #--- Set Pulse Energy
+        #---- Set Pulse Energy
         if e_p is not None:
             self.e_p = e_p
 
         return self
 
     @classmethod
-    def gaussian_pulse(cls, v_min, v_max, n_points, v0, e_p, t_fwhm):
+    def Gaussian(cls, v_min, v_max, n_points, v0, e_p, t_fwhm, m=1):
         """
-        Initialize an optical power envelope with a gaussian pulse shape.
+        Initialize an optical power envelope with a gaussian or super-gaussian
+        pulse shape.
 
         Parameters
         ----------
@@ -1199,30 +1175,32 @@ class Pulse(TFGrid):
         n_points : int
             The number of grid points.
         v0 : float
-            The pulse's center frequency, which is also taken as the retarded
-            frame reference frequency.
+            The pulse's center frequency. Also taken as the retarded frame
+            reference frequency.
         e_p : float
             The pulse energy.
         t_fwhm : float
             The full width at half maximum of the optical power envelope.
+        m : float, optional
+            The supergaussian order. Default is 1.
         """
         assert (t_fwhm > 0), "The pulse width must be greater than 0."
 
-        #--- Construct TF Grids
-        self = super().from_freq_range(v_min, v_max, n_points, v0=v0)
+        #---- Construct TF Grids
+        self = super().FromFreqRange(v_min, v_max, n_points, v0=v0)
 
-        #--- Set Spectrum
-        p_t = np.exp(-np.log(16)*(self.t_grid/t_fwhm)**2)
+        #---- Set Spectrum
+        p_t = 2**(-((2*self.t_grid/t_fwhm)**2)**m)
         phi_t = 2*pi*(v0-self.v_ref)*self.t_grid
         self.a_t = p_t**0.5 * np.exp(1j*phi_t)
 
-        #--- Set Pulse Energy
+        #---- Set Pulse Energy
         self.e_p = e_p
 
         return self
 
     @classmethod
-    def sech2_pulse(cls, v_min, v_max, n_points, v0, e_p, t_fwhm):
+    def Sech2(cls, v_min, v_max, n_points, v0, e_p, t_fwhm):
         """
         Initialize an optical power envelope with a squared hyperbolic secant
         pulse shape.
@@ -1236,8 +1214,8 @@ class Pulse(TFGrid):
         n_points : int
             The number of grid points.
         v0 : float
-            The pulse's center frequency, which is also taken as the retarded
-            frame reference frequency.
+            The pulse's center frequency. Also taken as the retarded frame
+            reference frequency.
         e_p : float
             The pulse energy.
         t_fwhm : float
@@ -1245,21 +1223,21 @@ class Pulse(TFGrid):
         """
         assert (t_fwhm > 0), "The pulse width must be greater than 0."
 
-        #--- Construct TF Grids
-        self = super().from_freq_range(v_min, v_max, n_points, v0=v0)
+        #---- Construct TF Grids
+        self = super().FromFreqRange(v_min, v_max, n_points, v0=v0)
 
-        #--- Set Spectrum
+        #---- Set Spectrum
         p_t = 1/np.cosh(2*np.arccosh(2**0.5) * self.t_grid/t_fwhm)**2
         phi_t = 2*pi*(v0-self.v_ref)*self.t_grid
         self.a_t = p_t**0.5 * np.exp(1j*phi_t)
 
-        #--- Set Pulse Energy
+        #---- Set Pulse Energy
         self.e_p = e_p
 
         return self
 
     @classmethod
-    def parabolic_pulse(cls, v_min, v_max, n_points, v0, e_p, t_fwhm):
+    def Parabolic(cls, v_min, v_max, n_points, v0, e_p, t_fwhm):
         """
         Initialize an optical power envelope with a parabolic pulse shape.
 
@@ -1272,8 +1250,8 @@ class Pulse(TFGrid):
         n_points : int
             The number of grid points.
         v0 : float
-            The pulse's center frequency, which is also taken as the retarded
-            frame reference frequency.
+            The pulse's center frequency. Also taken as the retarded frame
+            reference frequency.
         e_p : float
             The pulse energy.
         t_fwhm : float
@@ -1281,22 +1259,22 @@ class Pulse(TFGrid):
         """
         assert (t_fwhm > 0), "The pulse width must be greater than 0."
 
-        #--- Construct TF Grids
-        self = super().from_freq_range(v_min, v_max, n_points, v0=v0)
+        #---- Construct TF Grids
+        self = super().FromFreqRange(v_min, v_max, n_points, v0=v0)
 
-        #--- Set Spectrum
+        #---- Set Spectrum
         p_t = 1-2*(self.t_grid/t_fwhm)**2
         p_t[p_t < 0] = 0
         phi_t = 2*pi*(v0-self.v_ref)*self.t_grid
         self.a_t = p_t**0.5 * np.exp(1j*phi_t)
 
-        #--- Set Pulse Energy
+        #---- Set Pulse Energy
         self.e_p = e_p
 
         return self
 
     @classmethod
-    def lorentzian2_pulse(cls, v_min, v_max, n_points, v0, e_p, t_fwhm):
+    def Lorentzian2(cls, v_min, v_max, n_points, v0, e_p, t_fwhm):
         """
         Initialize an optical power envelope with a squared lorentzian pulse
         shape.
@@ -1310,8 +1288,8 @@ class Pulse(TFGrid):
         n_points : int
             The number of grid points.
         v0 : float
-            The pulse's center frequency, which is also taken as the retarded
-            frame reference frequency.
+            The pulse's center frequency. Also taken as the retarded frame
+            reference frequency.
         e_p : float
             The pulse energy.
         t_fwhm : float
@@ -1319,25 +1297,23 @@ class Pulse(TFGrid):
         """
         assert (t_fwhm > 0), "The pulse width must be greater than 0."
 
-        #--- Construct TF Grids
-        self = super().from_freq_range(v_min, v_max, n_points, v0=v0)
+        #---- Construct TF Grids
+        self = super().FromFreqRange(v_min, v_max, n_points, v0=v0)
 
-        #--- Set Spectrum
+        #---- Set Spectrum
         p_t = 1/(1+4*(2**0.5-1)*(self.t_grid/t_fwhm)**2)**2
         phi_t = 2*pi*(v0-self.v_ref)*self.t_grid
         self.a_t = p_t**0.5 * np.exp(1j*phi_t)
 
-        #--- Set Pulse Energy
+        #---- Set Pulse Energy
         self.e_p = e_p
 
         return self
 
-    #TODO: super gaussian pulse, np.exp(-np.abs(t/t_fwhm)**n)
-
     @classmethod
-    def cw_light(cls, v_min, v_max, n_points, v0, p_avg):
+    def CW(cls, v_min, v_max, n_points, v0, p_avg):
         """
-        Initialize an optical power spectrum with a target single frequency.
+        Initialize an optical power spectrum with a single target frequency.
 
         The target frequency will be offset so that it directly aligns with one
         of the `v_grid` coordinates. The resulting frequency is taken as the
@@ -1357,24 +1333,24 @@ class Pulse(TFGrid):
             The average power of the CW light.
         """
 
-        #--- Construct TF Grids
-        self = super().from_freq_range(v_min, v_max, n_points)
+        #---- Construct TF Grids
+        self = super().FromFreqRange(v_min, v_max, n_points)
         v0_selector = np.argmin(np.abs(self.v_grid - v0))
         v0 = self.v_grid[v0_selector]
         self.v0 = v0
 
-        #--- Set Spectrum
+        #---- Set Spectrum
         p_t = np.ones_like(self.t_grid)
         phi_t = 2*pi*(v0-self.v_ref)*self.t_grid
         self.a_t = p_t**0.5 * np.exp(1j*phi_t)
 
-        #--- Set Pulse Energy
+        #---- Set Pulse Energy
         e_p = p_avg*self.t_window
         self.e_p = e_p
 
         return self
 
-    #--- Frequency Domain Properties
+    #---- Frequency Domain Properties
     @property
     def _a_v(self):
         """
@@ -1416,8 +1392,7 @@ class Pulse(TFGrid):
         -------
         array of float
         """
-        _a_v = self._a_v
-        return _a_v.real**2 + _a_v.imag**2
+        return self._a_v.real**2 + self._a_v.imag**2
     @_p_v.setter
     def _p_v(self, _p_v):
         self._a_v = _p_v**0.5 * np.exp(1j*self._phi_v)
@@ -1476,7 +1451,7 @@ class Pulse(TFGrid):
         """
         return self.t_ref - np.gradient(np.unwrap(self.phi_v)/(2*pi), self.v_grid)
 
-    #--- Time Domain Properties
+    #---- Time Domain Properties
     @property
     def _a_t(self):
         """
@@ -1490,11 +1465,11 @@ class Pulse(TFGrid):
         -------
         array of complex
         """
-        return fft.ifft(self._a_v*self.ndv)
+        return fft.ifft(self._a_v, fsc=self.dt)
     @_a_t.setter
     def _a_t(self, _a_t):
         assert (len(_a_t) == len(self.t_grid)), "The length of a_t must match t_grid."
-        self._a_v = fft.fft(_a_t*self.dt)
+        self._a_v = fft.fft(_a_t, fsc=self.dt)
 
     @property
     def a_t(self):
@@ -1577,7 +1552,6 @@ class Pulse(TFGrid):
         -------
         array of float
         """
-        #TODO: replace with fft version?
         return self.v_ref + np.gradient(np.unwrap(self.phi_t)/(2*pi), self.t_grid)
 
     @property
@@ -1590,10 +1564,9 @@ class Pulse(TFGrid):
         -------
         array of float
         """
-        #--- Transform Representation
         ra_v = np.zeros_like(self.rv_grid, dtype=complex)
         ra_v[self.rn_slice] = 2**-0.5 * self.a_v
-        ra_t = fft.irfft(ra_v*self.rndv, n=self.rn)
+        ra_t = fft.irfft(ra_v, fsc=self.rdt, n=self.rn)
         return ra_t
 
     @property
@@ -1630,7 +1603,7 @@ class Pulse(TFGrid):
         """
         return fft.fftshift(self._rp_t)
 
-    #--- Energy Properties
+    #---- Energy Properties
     @property
     def e_p(self):
         """
@@ -1646,7 +1619,7 @@ class Pulse(TFGrid):
         assert (e_p > 0), "The pulse energy must be greater than 0."
         self.a_v *= (e_p/self.e_p)**0.5
 
-    #--- Methods
+    #---- Methods
     def v_width(self, n=None):
         """
         Calculate the width of the power spectrum.
@@ -1667,12 +1640,10 @@ class Pulse(TFGrid):
         rms : float
             The root mean square width of the power spectrum.
         """
-        results = {}
-
-        #--- Power
+        #---- Power
         p_v = self.p_v
 
-        #--- Resample
+        #---- Resample
         if n is None:
             n = self.n
             v_grid = self.v_grid
@@ -1685,23 +1656,19 @@ class Pulse(TFGrid):
             v_grid = resampled.v_grid
             dv = resampled.dv
 
-        #--- FWHM
+        #---- FWHM
         p_max = p_v.max()
         v_selector = v_grid[p_v >= 0.5*p_max]
-        v_min = v_selector.min()
-        v_max = v_selector.max()
-        v_fwhm = dv + (v_max - v_min)
-        results["fwhm"] = v_fwhm
+        v_fwhm = dv + (v_selector.max() - v_selector.min())
 
-        #--- RMS
+        #---- RMS
         p_norm = np.sum(p_v*dv)
         v_avg = np.sum(v_grid*p_v*dv)/p_norm
         v_var = np.sum((v_grid - v_avg)**2 * p_v*dv)/p_norm
         v_rms = v_var**0.5
-        results["rms"] = v_rms
 
-        #--- Construct PowerSpectralWidths
-        v_widths = collections.namedtuple("PowerSpectralWidths", results.keys())(**results)
+        #---- Construct PowerSpectralWidths
+        v_widths = PowerSpectralWidths(fwhm=v_fwhm, rms=v_rms)
         return v_widths
 
     def t_width(self, n=None):
@@ -1724,12 +1691,10 @@ class Pulse(TFGrid):
         rms : float
             The root mean square width of the power envelope.
         """
-        results = {}
-
-        #--- Power
+        #---- Power
         p_t = self.p_t
 
-        #--- Resample
+        #---- Resample
         if n is None:
             n = self.n
             t_grid = self.t_grid
@@ -1742,23 +1707,19 @@ class Pulse(TFGrid):
             t_grid = resampled.t_grid
             dt = resampled.dt
 
-        #--- FWHM
+        #---- FWHM
         p_max = p_t.max()
         t_selector = t_grid[p_t >= 0.5*p_max]
-        t_min = t_selector.min()
-        t_max = t_selector.max()
-        t_fwhm = dt + (t_max - t_min)
-        results["fwhm"] = t_fwhm
+        t_fwhm = dt + (t_selector.max() - t_selector.min())
 
-        #--- RMS
+        #---- RMS
         p_norm = np.sum(p_t*dt)
         t_avg = np.sum(t_grid*p_t*dt)/p_norm
         t_var = np.sum((t_grid - t_avg)**2 * p_t*dt)/p_norm
         t_rms = t_var**0.5
-        results["rms"] = t_rms
 
-        #--- Construct PowerEnvelopeWidths
-        t_widths = collections.namedtuple("PowerEnvelopeWidths", results.keys())(**results)
+        #---- Construct PowerEnvelopeWidths
+        t_widths = PowerEnvelopeWidths(fwhm=t_fwhm, rms=t_rms)
         return t_widths
 
     def autocorrelation(self, n=None):
@@ -1788,13 +1749,11 @@ class Pulse(TFGrid):
         rms : float
             The root mean square width of the intensity autocorrelation.
         """
-        results = {}
+        #---- Intensity Autocorrelation
+        ac_v = fft.fftshift(fft.fft(self._p_t, fsc=self.dt))**2
+        ac_t = np.abs(fft.fftshift(fft.ifft(fft.ifftshift(ac_v), fsc=self.dt, overwrite_x=True)))
 
-        #--- Intensity Autocorrelation
-        ac_v = fft.fftshift(fft.fft(self._p_t*self.dt))**2
-        ac_t = np.abs(fft.fftshift(fft.ifft(fft.ifftshift(ac_v)*self.ndv)))
-
-        #--- Resample
+        #---- Resample
         if n is None:
             n = self.n
             t_grid = self.t_grid
@@ -1802,32 +1761,26 @@ class Pulse(TFGrid):
         else:
             assert isinstance(n, (int, np.integer)), "The number of points must be an integer."
 
-            resampled = resample_t(ac_t, n, dt_0=self.dt)
+            resampled = resample_t(self.t_grid, ac_t, n)
             ac_t = resampled.f_t
             t_grid = resampled.t_grid
             dt = resampled.dt
 
         ac_t /= ac_t.max()
-        results["t_grid"] = t_grid
-        results["ac_t"] = ac_t
 
-        #--- FWHM
+        #---- FWHM
         ac_max = ac_t.max()
         t_selector = t_grid[ac_t >= 0.5*ac_max]
-        t_min = t_selector.min()
-        t_max = t_selector.max()
-        t_fwhm = dt + (t_max - t_min)
-        results["fwhm"] = t_fwhm
+        t_fwhm = dt + (t_selector.max() - t_selector.min())
 
-        #--- RMS
+        #---- RMS
         ac_norm = np.sum(ac_t*dt)
         t_avg = np.sum(t_grid*ac_t*dt)/ac_norm
         t_var = np.sum((t_grid - t_avg)**2 * ac_t*dt)/ac_norm
         t_rms = t_var**0.5
-        results["rms"] = t_rms
 
-        #--- Construct Autocorrelation
-        ac = collections.namedtuple("Autocorrelation", results.keys())(**results)
+        #---- Construct Autocorrelation
+        ac = Autocorrelation(t_grid=t_grid, ac_t=ac_t, fwhm=t_fwhm, rms=t_rms)
         return ac
 
     def spectrogram(self, t_fwhm=None, v_range=None, n_t=None, t_range=None):
@@ -1863,13 +1816,13 @@ class Pulse(TFGrid):
             The frequency grid
         t_grid : array of float
             The time grid.
-        spgr : array of float
+        spg : array of float
             The amplitude of the spectrogram. The first axis corresponds to
             frequency and the second axis to time.
         extent : tuple of float
             A bounding box suitable for use with `matplotlib`'s `imshow`
             function with the `origin` keyword set to "lower". This
-            reliably centers the pixels on the `t_grid` and `v_grid` grids.
+            reliably centers the pixels on the `v_grid` and `t_grid` grids.
 
         Notes
         -----
@@ -1877,13 +1830,10 @@ class Pulse(TFGrid):
         to the full width at half maximum of the pulse in order to evenly
         distribute resolution between the time and frequency domains.
         """
-        results = {}
-
-        #--- Resample
+        #---- Resample
         if v_range is None:
             n = self.n
             v_grid = self.v_grid
-            ndv = self.ndv
             a_t = self.a_t
             t_grid = self.t_grid
             dt = self.dt
@@ -1896,27 +1846,24 @@ class Pulse(TFGrid):
             v_max_selector = np.argmin(np.abs(self.v_grid - v_range.max()))
             v_grid = self.v_grid[v_min_selector:v_max_selector+1]
             n = len(v_grid)
-            ndv = n*self.dv
+            dt = 1/(n*self.dv)
 
             a_v = self.a_v[v_min_selector:v_max_selector+1]
-            a_t = fft.ifft(fft.ifftshift(a_v)*ndv)
-            dt = 1/(n*self.dv)
+            a_t = fft.fftshift(fft.ifft(fft.ifftshift(a_v), fsc=dt, overwrite_x=True))
             t_grid = dt*np.arange(n)
             t_grid -= fft.ifftshift(t_grid)[0]
 
-        results["v_grid"] = v_grid
-
-        #--- Set Gate
+        #---- Set Gate
         if t_fwhm is None:
             v_rms = self.v_width().rms
             t_fwhm = np.log(4)**0.5 / (2*pi*v_rms)
 
-        g_t = np.exp(-np.log(16)*(t_grid/t_fwhm)**2)**0.5
+        g_t = (2**(-(2*t_grid/t_fwhm)**2))**0.5
 
         g_t /= np.sum(np.abs(g_t)**2 * dt)**0.5
-        g_v = fft.fftshift(fft.fft(g_t*dt))
+        g_v = fft.fftshift(fft.fft(g_t, fsc=dt))
 
-        #--- Set Delays
+        #---- Set Delays
         if t_range is None:
             t_min, t_max = t_grid.min(), t_grid.max()
         else:
@@ -1938,24 +1885,20 @@ class Pulse(TFGrid):
 
         delay_t_grid = np.linspace(t_min, t_max, n_t)
         delay_dt = (t_max - t_min)/(n_t - 1)
-        results["t_grid"] = delay_t_grid
 
         gate_pulses_v = g_v[:, np.newaxis] * np.exp(1j*2*pi*delay_t_grid[np.newaxis, :]*v_grid[:, np.newaxis])
-        gate_pulses_t = fft.ifft(fft.ifftshift(gate_pulses_v, axes=0)*ndv, axis=0)
+        gate_pulses_t = fft.fftshift(fft.ifft(fft.ifftshift(gate_pulses_v, axes=0), fsc=dt, axis=0, overwrite_x=True), axes=0)
 
-        #--- Spectrogram
+        #---- Spectrogram
         spg_t = a_t[:, np.newaxis] * gate_pulses_t
-        spg_v = fft.fftshift(fft.fft(spg_t*dt, axis=0), axes=0) #!!!
+        spg_v = fft.fftshift(fft.fft(fft.ifftshift(spg_t, axes=0), fsc=dt, axis=0, overwrite_x=True), axes=0)
 
         p_spg = spg_v.real**2 + spg_v.imag**2
-        results["spg"] = p_spg
 
-        #--- Extent
+        #---- Extent
         extent = (delay_t_grid.min()-0.5*delay_dt, delay_t_grid.max()+0.5*delay_dt,
                   v_grid.min()-0.5*self.dv, v_grid.max()+0.5*self.dv)
-        results["extent"] = extent
 
-        #--- Construct Spectrogram
-        spg = collections.namedtuple("Spectrogram", results.keys())(**results)
+        #---- Construct Spectrogram
+        spg = Spectrogram(v_grid=v_grid, t_grid=delay_t_grid, spg=p_spg, extent=extent)
         return spg
-

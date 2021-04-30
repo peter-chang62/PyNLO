@@ -3,11 +3,12 @@
 TODO: module docs
 """
 
-__all__ = ["Medium", "Waveguide"]
+__all__ = ["Medium", "Mode"]
 
 
 # %% Imports
 
+import collections
 import functools
 
 import numpy as np
@@ -22,28 +23,35 @@ e0 = constants.epsilon_0
 
 # %% Base Classes
 class Medium():
+    """
+
+    Parameters
+    ----------
+    v_grid : array of float
+        The frequency grid.
+    n_v : array of float
+        The refractive indicies defined over the frequency grid.
+    alpha_v : float or array of float, optional
+        The gain coefficient. The default is None.
+
+    Returns
+    -------
+    None.
+
+    """
     def __init__(self, v_grid, n_v, alpha_v=None):
+        #--- Frequency Grid
         self._v_grid = np.asarray(v_grid)
 
         #--- Refractive Index
-        if callable(n_v):
-            self._n = n_v
-        else:
-            assert (len(n_v) == len(v_grid)), "The length of n_v must match v_grid."
-            self._n = np.asarray(n_v)
+        assert (len(n_v) == len(v_grid)), "The length of n_v must match v_grid."
+        self._n = np.asarray(n_v)
 
         #--- Loss
-        if callable(alpha_v):
-            self._alpha = alpha_v
-        elif alpha_v is not None:
-            assert (len(alpha_v) == len(v_grid)), "The length of alpha_v must match v_grid."
+        if alpha_v is not None:
             self._alpha = np.asarray(alpha_v)
         else:
-            self._alpha = np.zeros_like(self.v_grid)
-
-        #--- Cached Functions
-        self.dndv = functools.lru_cache()(self.dndv)
-        self.beta = functools.lru_cache()(self.beta)
+            self._alpha = np.asarray(0.0)
 
     @property
     def v_grid(self):
@@ -65,8 +73,6 @@ class Medium():
         -------
         array of float
         """
-        if callable(self._n):
-            self._n = self._n(self.v_grid)
         return self._n
 
     @property
@@ -81,8 +87,6 @@ class Medium():
         -------
         array of float
         """
-        if callable(self._alpha):
-            self._alpha = self._alpha(self.v_grid)
         return self._alpha
 
     @property
@@ -96,36 +100,57 @@ class Medium():
         """
         return (self.n + (0.5j*c/(2*pi))*self.alpha/self.v_grid)**2 - 1
 
-    def chi_2(self, *args, **kwargs):
+    @property
+    def n_g(self):
         """
-        The second order nonlinear optical susceptibility.
-
-        Derived classes should override this method with useful data.
+        Group Index
 
         Returns
         -------
-        NotImplementedError
+        array of float
         """
-        return NotImplementedError
+        return c*self.beta(1)
 
-    def chi_3(self, *args, **kwargs):
+    @property
+    def v_g(self):
         """
-        The third order nonlinear optical susceptibility.
-
-        Derived classes should override this method with useful data.
+        Group velocity
 
         Returns
         -------
-        NotImplementedError
+        array of float
         """
-        return NotImplementedError
+        return 1/self.beta(1)
+
+    @property
+    def GVD(self):
+        """
+        Group velocity dispersion
+
+        Returns
+        -------
+        array of float
+        """
+        return self.beta(2)
+
+    @property
+    def D(self):
+        """
+        Dispersion parameter
+
+        Returns
+        -------
+        array of float
+        """
+        return -2*pi/c * self.v_grid**2 * self.beta(2)
 
     def dndv(self, m=1):
         """
         The derivative of the refractive index with repsect to frequency.
 
-        This method only returns the refractive index unchanged when `m` is
-        less than or equal to 0.
+        This method is recursive and succesively calculates higher order
+        derivatives from the lower orders. This method returns the refractive
+        index unchanged when `m` is less than or equal to 0.
 
         Parameters
         ----------
@@ -162,61 +187,53 @@ class Medium():
         """
         return 1/c * (2*pi)**(1-m) * (m*self.dndv(m=m-1) + self.v_grid*self.dndv(m=m))
 
-    def n_g(self):
-        """
-        Group Index
-
-        Returns
-        -------
-        array of float
-        """
-        return c*self.beta(n=1)
-
-    def v_g(self):
-        """
-        Group velocity
-
-        Returns
-        -------
-        array of float
-        """
-        return 1/self.beta(n=1)
-
-    def GVD(self):
-        """
-        Group velocity dispersion
-
-        Returns
-        -------
-        array of float
-        """
-        return self.beta(n=2)
-
-    def D(self):
-        """
-        Dispersion parameter
-
-        Returns
-        -------
-        array of float
-        """
-        return -2*pi/c * self.v_grid**2 * self.beta(n=2)
-
     def linear_operator(self, dz, v_0=None):
+        """
+        The linear operator which advances the spectrum over a distance `dz`.
+        The linear operator acts on the spectrum through multiplication.
+
+        Parameters
+        ----------
+        dz : float
+            The step size.
+        v_0 : float, optional
+            The target reference frequency that sets the position of the
+            comoving frame. The default is None, which chooses the central
+            frequency.
+
+        Returns
+        -------
+        operator : TYPE
+            DESCRIPTION.
+        phase : TYPE
+            DESCRIPTION.
+        phase_ret : TYPE
+            DESCRIPTION.
+        TYPE
+            DESCRIPTION.
+
+        """
+        results = {}
+
         #--- Phase and Loss
         phase = dz*self.beta()
-        loss = 0.5j*dz*self.alpha
+        gain = 0.5j*dz*self.alpha
 
         #--- Comoving Reference Frame
         if v_0 is None:
-            v_0_idx = len(self.v_grid)//2
-        else:
-            v_0_idx = np.armin(np.abs(v_0 - self.v_grid))
-        phase_ret = 2*pi*dz*self.beta(n=1)[v_0_idx]*self.v_grid
+            v_0 = np.fft.ifftshift(self.v_grid)
+        v_0_idx = np.argmin(np.abs(v_0 - self.v_grid))
+        phase_ret = 2*pi*dz*self.beta(1)[v_0_idx]*self.v_grid
 
         #--- Linear Operator
-        operator = np.exp(1j*((phase - phase_ret) + loss))
-        return operator, phase, phase_ret, loss #TODO: namedcollection?
+        operator = np.exp(1j*((phase - phase_ret) + gain))
+
+        results["lin_op"] = operator
+        results["phase"] = phase
+        results["gain"] = gain
+        results["phase_ret"] = phase_ret
+        lin_operator = collections.namedtuple("LinearOperator", results.keys())(**results)
+        return lin_operator
 
 # def try_z(func):
 #     try:
@@ -224,15 +241,28 @@ class Medium():
 #     except TypeError:
 #         return func(self.v_grid)
 
-class Waveguide(Medium):
+class Mode(Medium):
     """
     effective values, integrated over the waveguide mode.
     """
-    def __init__(self, v_grid, n_v, alpha_v=None, a_eff=None, g2_v=None, g3_v=None, z=None):
-        #--- Refractive Index and Loss
-        super().__init__(v_grid, n_v, alpha_v=alpha_v)
+    def __init__(self, v_grid, n_v, alpha_v=None, g2_v=None, g3_v=None, r3_v=None, z=None):
+        #--- Frequency Grid
+        self._v_grid = np.asarray(v_grid)
 
-        #--- Effective Area
+        #--- Refractive Index
+        if callable(n_v):
+            self._n = n_v
+        else:
+            assert (len(n_v) == len(v_grid)), "The length of n_v must match v_grid."
+            self._n = np.asarray(n_v)
+
+        #--- Loss
+        if callable(alpha_v):
+            self._alpha = alpha_v
+        elif alpha_v is not None:
+            self._alpha = np.asarray(alpha_v)
+        else:
+            self._alpha = np.zeros_like(self.v_grid)
 
         #--- Second Order Nonlinearity
         if isinstance(g2_v, dict):
@@ -263,19 +293,19 @@ class Waveguide(Medium):
         """
         if callable(self._n):
             if self.z is None:
-                return self._n(self.v_grid)
+                return self._n()
             else:
-                return self._n(self.v_grid, self.z)
+                return self._n(z=self.z)
         else:
             return self._n
 
     @property
     def alpha(self):
         """
-        The attenuation constant.
+        The gain constant.
 
-        Positive values correspond to loss and negative values corespond to
-        gain.
+        Positive values correspond to gain and negative values corespond to
+        loss.
 
         Returns
         -------
@@ -283,36 +313,40 @@ class Waveguide(Medium):
         """
         if callable(self._alpha):
             if self.z is None:
-                return self._alpha(self.v_grid)
+                return self._alpha()
             else:
-                return self._alpha(self.v_grid, self.z)
+                return self._alpha(z=self.z)
         else:
             return self._alpha
+
+    @property
+    def g2(self):
+        pass
+
+    @property
+    def g3(self):
+        pass
+
+    @property
+    def r3(self):
+        pass
 
     @property
     def z(self):
         return self._z
     @z.setter
     def z(self, z):
-        self.dndv.cache_clear()
-        self.beta.cache_clear()
         self._z = z
 
-
-
-# %% Bulk Materials
-
-class SiO2(Medium):
-    def __init__(self, v_grid):
-        self._generating_function = None
-
-    @classmethod
-    def alternate_source(self, v_grid):
+class Waveguide():
+    """
+    Collection of modes and the nonlinear interactions between them
+    """
+    def __init__(self, modes, coupling):
         pass
 
-class MgLN(Medium):
-    def __init__(self, v_grid, axis="e", T=25):
-        pass
+
+# %% OLD
 
 
 
