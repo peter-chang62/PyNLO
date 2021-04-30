@@ -36,15 +36,15 @@ Methods
 .. autosummary::
    :toctree:
 
+   ~Pulse.CW
+   ~Pulse.FromPowerSpectrum
+   ~Pulse.FromTFGrid
+   ~Pulse.Gaussian
+   ~Pulse.Lorentzian2
+   ~Pulse.Parabolic
+   ~Pulse.Sech2
    ~Pulse.__init__
    ~Pulse.autocorrelation
-   ~Pulse.cw_light
-   ~Pulse.from_TFGrid
-   ~Pulse.from_spectrum
-   ~Pulse.gaussian_pulse
-   ~Pulse.lorentzian2_pulse
-   ~Pulse.parabolic_pulse
-   ~Pulse.sech2_pulse
    ~Pulse.spectrogram
    ~Pulse.t_width
    ~Pulse.v_width

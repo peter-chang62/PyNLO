@@ -1,4 +1,4 @@
-pynlo.model
+﻿pynlo.model
 ===========
 
 .. automodule:: pynlo.model
@@ -10,7 +10,14 @@ pynlo.model
 .. autosummary::
    :toctree:
 
+   add
+   analytic_to_rfft
+   exp
    gaussian_window
+   mult
+   prw
+   resample_spectrum
+   rfft_to_analytic
 
 
 
@@ -20,6 +27,6 @@ pynlo.model
    :toctree:
    :template: class.rst
 
-   nlee
+   SM_UPE
 
 

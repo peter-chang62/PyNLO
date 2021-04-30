@@ -16,7 +16,14 @@ Attributes
 .. autosummary::
    :toctree:
 
-   ~Medium.v_range
+   ~Medium.D
+   ~Medium.GVD
+   ~Medium.alpha
+   ~Medium.chi_1
+   ~Medium.n
+   ~Medium.n_g
+   ~Medium.v_g
+   ~Medium.v_grid
 
 
 
@@ -26,14 +33,7 @@ Methods
 .. autosummary::
    :toctree:
 
-   ~Medium.D
-   ~Medium.GVD
-   ~Medium.TOD
    ~Medium.__init__
    ~Medium.beta
-   ~Medium.beta_1
-   ~Medium.beta_2
-   ~Medium.beta_3
-   ~Medium.d_12
-   ~Medium.n_g
-   ~Medium.v_g
+   ~Medium.dndv
+   ~Medium.linear_operator

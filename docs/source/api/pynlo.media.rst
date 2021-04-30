@@ -1,4 +1,4 @@
-pynlo.media
+﻿pynlo.media
 ===========
 
 .. automodule:: pynlo.media
@@ -14,6 +14,7 @@ pynlo.media
    :template: class.rst
 
    Medium
+   Mode
    Waveguide
 
 

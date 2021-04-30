@@ -1,4 +1,4 @@
-pynlo.light
+﻿pynlo.light
 ===========
 
 .. automodule:: pynlo.light
@@ -10,6 +10,8 @@ pynlo.light
 .. autosummary::
    :toctree:
 
+   derivative_t
+   derivative_v
    resample_t
    resample_v
 
@@ -21,7 +23,14 @@ pynlo.light
    :toctree:
    :template: class.rst
 
+   Autocorrelation
+   PowerEnvelopeWidths
+   PowerSpectralWidths
    Pulse
+   RTFGrid
+   ResampledT
+   ResampledV
+   Spectrogram
    TFGrid
 
 

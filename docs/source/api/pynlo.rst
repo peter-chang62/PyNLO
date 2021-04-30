@@ -13,6 +13,7 @@ pynlo package
    :template: module.rst
 
    pynlo.device
+   pynlo.fft
    pynlo.light
    pynlo.media
    pynlo.model
