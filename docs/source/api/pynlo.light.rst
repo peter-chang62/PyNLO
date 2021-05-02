@@ -5,16 +5,6 @@
 
 
 
-.. rubric:: Functions
-
-.. autosummary::
-   :toctree:
-
-   derivative_t
-   derivative_v
-   resample_t
-   resample_v
-
 
 
 .. rubric:: Classes
@@ -27,10 +17,6 @@
    PowerEnvelopeWidths
    PowerSpectralWidths
    Pulse
-   RTFGrid
-   ResampledT
-   ResampledV
    Spectrogram
-   TFGrid
 
 

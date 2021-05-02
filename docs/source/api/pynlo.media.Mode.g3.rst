@@ -3,4 +3,4 @@ pynlo.media.Mode.g3
 
 .. currentmodule:: pynlo.media
 
-.. autoproperty:: Mode.g3
+.. automethod:: Mode.g3

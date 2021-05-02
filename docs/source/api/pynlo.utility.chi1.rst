@@ -10,6 +10,7 @@
 .. autosummary::
    :toctree:
 
+   chi_1
    d_12
 
 

@@ -11,13 +11,9 @@
    :toctree:
 
    add
-   analytic_to_rfft
    exp
-   gaussian_window
    mult
    prw
-   resample_spectrum
-   rfft_to_analytic
 
 
 
@@ -27,6 +23,6 @@
    :toctree:
    :template: class.rst
 
-   SM_UPE
+   UPE
 
 

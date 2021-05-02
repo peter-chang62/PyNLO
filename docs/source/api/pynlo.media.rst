@@ -13,8 +13,7 @@
    :toctree:
    :template: class.rst
 
-   Medium
+   LinearOperator
    Mode
-   Waveguide
 
 
