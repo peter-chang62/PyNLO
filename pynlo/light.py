@@ -156,7 +156,18 @@ class Pulse(TFGrid):
         """
         assert isinstance(tfgrid, TFGrid), "The input must be an instance of the TFGrid class."
 
-        return cls(tfgrid.v_grid.max(), tfgrid.dv, tfgrid.n, v0=tfgrid.v0, a_v=a_v)
+        #---- Copy TFGrid
+        self = super().__new__(cls)
+        self.__dict__.update(tfgrid.__dict__.copy())
+
+        #---- Set Spectrum
+        if a_v is None:
+            self.a_v = np.zeros_like(self.v_grid, dtype=complex)
+        else:
+            assert (len(a_v)==len(self.v_grid)), "The length of a_v must match v_grid."
+            self.a_v = a_v
+
+        return self
 
     @classmethod
     def FromPowerSpectrum(cls, v_min, v_max, n_points, p_v, phi_v=None, v0=None, e_p=None):
@@ -203,7 +214,7 @@ class Pulse(TFGrid):
             phi_v = np.zeros_like(self.v_grid)
 
         #---- Set spectrum
-        self.a_v = p_v**0.5 * np.exp(1j*(phi_v - 2*pi*self.t_ref*self.v_grid)) #!!! is extra phase necessary?
+        self.a_v = p_v**0.5 * np.exp(1j*(phi_v - 2*pi*self.t_ref*self.v_grid)) #!!! extra phase necessary?
 
         #---- Set Pulse Energy
         if e_p is not None:
@@ -408,11 +419,10 @@ class Pulse(TFGrid):
         -------
         ndarray of complex
         """
-        return self.__a_v
+        return fft.ifftshift(self.a_v)
     @_a_v.setter
     def _a_v(self, _a_v):
-        assert (len(_a_v) == len(self.v_grid)), "The length of a_v must match v_grid."
-        self.__a_v = np.asarray(_a_v, dtype=complex)
+        self.a_v = fft.fftshift(_a_v)
 
     @property
     def a_v(self):
@@ -423,10 +433,11 @@ class Pulse(TFGrid):
         -------
         ndarray of complex
         """
-        return fft.fftshift(self._a_v)
+        return self.__a_v
     @a_v.setter
     def a_v(self, a_v):
-        self._a_v = fft.ifftshift(a_v)
+        assert (len(a_v) == len(self.v_grid)), "The length of a_v must match v_grid."
+        self.__a_v = np.asarray(a_v, dtype=complex)
 
     @property
     def _p_v(self):
@@ -437,10 +448,10 @@ class Pulse(TFGrid):
         -------
         ndarray of float
         """
-        return self._a_v.real**2 + self._a_v.imag**2
+        return fft.ifftshift(self.p_v)
     @_p_v.setter
     def _p_v(self, _p_v):
-        self._a_v = _p_v**0.5 * np.exp(1j*self._phi_v)
+        self.p_v = fft.fftshift(_p_v)
 
     @property
     def p_v(self):
@@ -451,10 +462,10 @@ class Pulse(TFGrid):
         -------
         ndarray of float
         """
-        return fft.fftshift(self._p_v)
+        return self.a_v.real**2 + self.a_v.imag**2
     @p_v.setter
     def p_v(self, p_v):
-        self._p_v = fft.ifftshift(p_v)
+        self.a_v = p_v**0.5 * np.exp(1j*self.phi_v)
 
 
     @property
@@ -466,10 +477,10 @@ class Pulse(TFGrid):
         -------
         ndarray of float
         """
-        return np.angle(self._a_v)
+        return fft.ifftshift(self.phi_v)
     @_phi_v.setter
     def _phi_v(self, _phi_v):
-        self._a_v = self._p_v**0.5 * np.exp(1j*_phi_v)
+        self.phi_v = fft.fftshift(_phi_v)
 
     @property
     def phi_v(self):
@@ -480,10 +491,10 @@ class Pulse(TFGrid):
         -------
         ndarray of float
         """
-        return fft.fftshift(self._phi_v)
+        return np.angle(self.a_v)
     @phi_v.setter
     def phi_v(self, phi_v):
-        self._phi_v = fft.ifftshift(phi_v)
+        self.a_v = self.p_v**0.5 * np.exp(1j*phi_v)
 
     @property
     def tg_v(self):

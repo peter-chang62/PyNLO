@@ -30,7 +30,7 @@ LinearOperator = collections.namedtuple("LinearOperator", ["u", "phase", "gain",
 
 # %% Base Classes
 class Mode():
-    """
+    r"""
     An optical mode, defined over a frequency grid.
 
     A given input parameter is interpreted as being z-dependent if it is
@@ -41,10 +41,12 @@ class Mode():
     ----------
     v_grid : array_like of float
         The frequency grid.
-    n_v : array_like of float or callable
-        The refractive indicies defined over the frequency grid.
+    beta_v : array_like of float or callable
+        The angular wavenumber, or the real part of the propagation constant,
+        defined over the frequency grid.
     alpha_v : array_like of float or callable, optional
-        The gain coefficient. The default is None.
+        The gain coefficient, or twice the imaginary part of the propagation
+        constant. The default is None.
     g2_v : array_like of complex or callable, optional
         The effective 2nd order nonlinearity. The default is None.
     g3_v : array_like of complex or callable, optional
@@ -59,9 +61,14 @@ class Mode():
 
     Notes
     -----
-    TODO: add notes
+    Modes are defined for traveling waves of the form assumed below:
+
+    .. math::
+        E, H \sim a \, e^{i(\omega t - \kappa z)} + \text{c.c} \\
+        \kappa = \beta + i \frac{\alpha}{2}, \quad \beta = n \frac{\omega}{c}
+
     """
-    def __init__(self, v_grid, n_v, alpha_v=None,
+    def __init__(self, v_grid, beta_v, alpha_v=None,
                  g2_v=None, g3_v=None, rv_grid=None, r3_v=None, z=0.0):
         """
         Initialize a mode given a set of frequencies, refractive indices, and
@@ -72,10 +79,12 @@ class Mode():
         ----------
         v_grid : array_like of float
             The frequency grid.
-        n_v : array_like of float or callable
-            The refractive indicies defined over the frequency grid.
+        beta_v : array_like of float or callable
+            The angular wavenumber, or the real part of the propagation
+            constant, defined over the frequency grid.
         alpha_v : array_like of float or callable, optional
-            The gain coefficient. The default is None.
+            The gain coefficient, or twice the imaginary part of the
+            propagation constant. The default is None.
         g2_v : array_like of complex or callable, optional
             The effective 2nd order nonlinearity. The default is None.
         g3_v : array_like of complex or callable, optional
@@ -93,14 +102,15 @@ class Mode():
 
         #---- Frequency Grid
         self._v_grid = np.asarray(v_grid, dtype=float)
+        self._w_grid = 2*pi*self._v_grid
 
         #---- Refractive Index
-        if callable(n_v):
-            assert (len(n_v(z)) == len(v_grid)), "The length of n_v must match v_grid."
-            self._n = n_v
+        if callable(beta_v):
+            assert (len(beta_v(z)) == len(v_grid)), "The length of beta_v must match v_grid."
+            self._beta = beta_v
         else:
-            assert (len(n_v) == len(v_grid)), "The length of n_v must match v_grid."
-            self._n = np.asarray(n_v, dtype=float)
+            assert (len(beta_v) == len(v_grid)), "The length of beta_v must match v_grid."
+            self._beta = np.asarray(beta_v, dtype=float)
 
         #---- Loss
         if (alpha_v is None) or callable(alpha_v):
@@ -125,8 +135,10 @@ class Mode():
 
             #---- Raman Nonlinearity
             if callable(r3_v):
+                assert (len(r3_v(z)) == len(rv_grid)), "The length of r3_v must match rv_grid."
                 self._r3 = r3_v
             else:
+                assert (len(r3_v) == len(rv_grid)), "The length of r3_v must match rv_grid."
                 self._r3 = np.asarray(r3_v, dtype=complex)
         else:
             assert (rv_grid is not None)==(r3_v is not None), (
@@ -161,6 +173,17 @@ class Mode():
         return self._v_grid
 
     @property
+    def w_grid(self):
+        """
+        The angular frequency grid, with units of ``Hz``.
+
+        Returns
+        -------
+        ndarray of float
+        """
+        return self._w_grid
+
+    @property
     def rv_grid(self):
         """
         The origin contiguous frequency grid associated with the Raman
@@ -173,6 +196,37 @@ class Mode():
         return self._rv_grid
 
     #---- 1st Order Properties
+    def beta(self, m=0, z=None):
+        """
+        The angular wavenumber, with units of ``1/m``, or its derivatives with
+        respect to angular frequency.
+
+        This method is recursive and succesively calculates higher order
+        derivatives from the lower orders. This method returns the refractive
+        index unchanged when `m` is less than or equal to 0.
+
+        Parameters
+        ----------
+        m : int, optional
+            The order of the returned derivative of the propagation constant
+            with respect to angular frequency. The default is 0, which returns
+            the propagation constant without taking the derivative.
+        z : float, optional
+            The position along the waveguide. The default is to use the last
+            known value.
+
+        Returns
+        -------
+        ndarray of float
+        """
+        if z is not None:
+            self.z = z
+
+        if m<=0:
+            return self._beta(self.z) if callable(self._beta) else self._beta
+        else:
+            return np.gradient(self.beta(m=m-1), self.w_grid)
+
     def n(self, z=None):
         """
         The refractive index.
@@ -190,42 +244,7 @@ class Mode():
         if z is not None:
             self.z = z
 
-        if callable(self._n):
-            return self._n(self.z)
-        else:
-            return self._n
-
-    def dndv(self, m=1, z=None):
-        """
-        The derivative of the refractive index with repsect to frequency.
-
-        This method is recursive and succesively calculates higher order
-        derivatives from the lower orders. This method returns the refractive
-        index unchanged when `m` is less than or equal to 0.
-
-        Parameters
-        ----------
-        m : int, optional
-            The order of the returned derivative. The default is 1.
-        z : float, optional
-            The position along the waveguide. The default is to use the last
-            known value.
-
-        Returns
-        -------
-        ndarray of float
-        """
-        assert isinstance(m, (int, np.integer)), "The derivative order must be an integer."
-
-        if z is not None:
-            self.z = z
-
-        #--- Calculate Derivatives
-        if m <= 0:
-            dndv = self.n()
-        else:
-            dndv = np.gradient(self.dndv(m=m-1), self.v_grid)
-        return dndv
+        return self.beta()*c/self.w_grid
 
     def alpha(self, z=None):
         """
@@ -246,33 +265,7 @@ class Mode():
         if z is not None:
             self.z = z
 
-        if callable(self._alpha):
-            return self._alpha(self.z)
-        else:
-            return self._alpha
-
-    def beta(self, m=0, z=None):
-        """
-        The propagation constant or angular wavenumber, with units of ``1/m``.
-
-        Parameters
-        ----------
-        m : int, optional
-            The order of the returned derivative of the propagation constant.
-            The default is 0, which returns the propagation constant without
-            taking the derivative.
-        z : float, optional
-            The position along the waveguide. The default is to use the last
-            known value.
-
-        Returns
-        -------
-        ndarray of float
-        """
-        if z is not None:
-            self.z = z
-
-        return 1/c * (2*pi)**(1-m) * (m*self.dndv(m=m-1) + self.v_grid*self.dndv(m=m))
+        return self._alpha(self.z) if callable(self._alpha) else self._alpha
 
     def n_g(self, z=None):
         """
@@ -382,22 +375,28 @@ class Mode():
         if z is not None:
             self.z = z
 
-        #--- Phase and Loss
-        phase_raw = dz*self.beta()
-        gain = 0.5j*dz*self.alpha() if self.alpha() is not None else 0.0
+        #---- Gain
+        alpha = self.alpha()
+        if alpha is None:
+            alpha = 0.0
+        gain = np.exp(alpha*dz)
 
-        #--- Comoving Reference Frame
-        if v_0 is None:
+        #---- Phase
+        beta_raw = self.beta()
+
+        if v_0 is None: # comoving frame
             v_0 = fft.ifftshift(self.v_grid)[0]
         v_0_idx = np.argmin(np.abs(v_0 - self.v_grid))
-        phase_cm = 2*pi*dz*self.beta(m=1)[v_0_idx]*self.v_grid
-        phase = phase_raw - phase_cm
+        beta_cm = beta_raw - self.beta(m=1)[v_0_idx]*self.w_grid
 
-        #--- Linear Operator
-        operator = np.exp(1j*(phase + gain))
+        #---- Propagation Constant
+        kappa = beta_cm + 0.5j*alpha
+
+        #---- Linear Operator
+        operator = np.exp(-1j*kappa*dz)
 
         lin_operator = LinearOperator(
-            u=operator, phase=phase, gain=np.exp(gain), phase_raw=phase_raw)
+            u=operator, phase=dz*beta_cm, gain=gain, phase_raw=dz*beta_raw)
         return lin_operator
 
     #---- 2nd Order Properties
@@ -419,10 +418,7 @@ class Mode():
         if z is not None:
             self.z = z
 
-        if callable(self._g2):
-            return self._g2(self.z)
-        else:
-            return self._g2
+        return self._g2(self.z) if callable(self._g2) else self._g2
 
     #---- 3rd Order Properties
     def g3(self, z=None):
@@ -443,10 +439,7 @@ class Mode():
         if z is not None:
             self.z = z
 
-        if callable(self._g3):
-            return self._g3(self.z)
-        else:
-            return self._g3
+        return self._g3(self.z) if callable(self._g3) else self._g3
 
     def gamma(self, z=None):
         r"""
@@ -465,14 +458,13 @@ class Mode():
         if z is not None:
             self.z = z
 
-        if self.g3() is not None:
-            return (3/2 * 2*pi*self.v_grid * self.g3()).real
-        else:
-            return None
+        g3 = self.g3()
+        return (3/2*self.w_grid*g3).real if g3 is not None else None
+
 
     def r3(self, z=None):
         """
-        The effective raman response, with units of ``1/Hz``.
+        The effective raman response.
 
         Parameters
         ----------
@@ -487,10 +479,7 @@ class Mode():
         if z is not None:
             self.z = z
 
-        if callable(self._r3):
-            return self._r3(self.z)
-        else:
-            return self._r3
+        return self._r3(self.z) if callable(self._r3) else self._r3
 
 
 # class Waveguide():

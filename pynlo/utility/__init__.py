@@ -451,19 +451,7 @@ class TFGrid():
         self._t_window = self.n*self.dt
 
         #---- Define Real Time and Frequency Grids
-        rtf = self.rtf_grids(n_harmonic=1)
-        self._rn = rtf.n
-
-        # Frequency Grid
-        self._rv_grid = rtf.v_grid
-        self._rv_ref = rtf.v_ref
-        self._rv_window = rtf.v_window
-
-        # Time Grid
-        self._rt_grid = fft.ifftshift(rtf.t_grid)
-        self._rt_ref = rtf.t_ref
-        self._rdt = rtf.dt
-        self._rt_window = rtf.t_window
+        self.rtf_grids(n_harmonic=1, update=True)
 
     #---- Class Methods
     @classmethod
@@ -816,7 +804,7 @@ class TFGrid():
         return self._rt_window
 
     #---- Methods
-    def rtf_grids(self, n_harmonic=1, fast_n=True):
+    def rtf_grids(self, n_harmonic=1, fast_n=True, update=False):
         """
         Complementary grids defined over the time and frequency domains for
         representing analytic functions with real-valued amplitudes.
@@ -837,6 +825,10 @@ class TFGrid():
             A parameter that determines whether or not to the length of the
             array is extended up to the next fast fft length. The defualt is to
             extend.
+        update : bool, optional
+            A parameter that determines whether or not to update the real time
+            and frequency grids of this class with the results of this method.
+            The default is to not update.
 
         Returns
         -------
@@ -925,5 +917,19 @@ class TFGrid():
             n=n, v0=self.v0,
             v_grid=v_grid, v_ref=v_ref, dv=self.dv, v_window=n_v*self.dv,
             t_grid=t_grid, t_ref=t_ref, dt=dt, t_window=n*dt)
+
+        if update:
+            self._rn = rtf_grids.n
+
+            # Frequency Grid
+            self._rv_grid = rtf_grids.v_grid
+            self._rv_ref = rtf_grids.v_ref
+            self._rv_window = rtf_grids.v_window
+
+            # Time Grid
+            self._rt_grid = fft.ifftshift(rtf_grids.t_grid)
+            self._rt_ref = rtf_grids.t_ref
+            self._rdt = rtf_grids.dt
+            self._rt_window = rtf_grids.t_window
 
         return rtf_grids
