@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-TODO: module docs
+Module for representing optical modes in the frequency domain.
+
 """
 
 __all__ = ["Mode"]
@@ -11,16 +12,9 @@ __all__ = ["Mode"]
 import collections
 
 import numpy as np
-from scipy import constants
+from scipy.constants import c, pi
 
 from pynlo.utility import fft
-
-
-# %% Constants
-
-pi = constants.pi
-c = constants.c
-e0 = constants.epsilon_0
 
 
 # %% Collections
@@ -55,7 +49,7 @@ class Mode():
         An origin contiguous frequency grid associated with the Raman
         response. The default is None.
     r3_v : array_like of complex or callable, optional
-        The efective Raman response. The default is None.
+        The effective Raman response. The default is None.
     z : float, optional
         The position along the waveguide. The default is 0.0.
 
@@ -63,17 +57,18 @@ class Mode():
     -----
     Modes are defined for traveling waves of the form assumed below:
 
-    .. math::
-        E, H \sim a \, e^{i(\omega t - \kappa z)} + \text{c.c} \\
-        \kappa = \beta + i \frac{\alpha}{2}, \quad \beta = n \frac{\omega}{c}
+    ..  math:: E, H \sim a \, e^{i(\omega t - \kappa z)} + \text{c.c} \\
+               \kappa = \beta + i \frac{\alpha}{2}, \quad
+               \beta = n \frac{\omega}{c}
 
     """
+
     def __init__(self, v_grid, beta_v, alpha_v=None,
                  g2_v=None, g3_v=None, rv_grid=None, r3_v=None, z=0.0):
         """
-        Initialize a mode given a set of frequencies, refractive indices, and
-        other parameters. If a given parameters is callable, its first
-        argument must be `z`, the position along the waveguide.
+        Initialize a mode given a set of frequencies, wavenumbers, and other
+        parameters. If a given parameters is callable, its first argument must
+        be `z`, the position along the waveguide.
 
         Parameters
         ----------
@@ -93,9 +88,10 @@ class Mode():
             An origin contiguous frequency grid associated with the Raman
             response. The default is None.
         r3_v : array_like of complex or callable, optional
-            The efective Raman response. The default is None.
+            The effective Raman response. The default is None.
         z : float, optional
-            The position along the waveguide. The default is 0.0.
+            The position along the waveguide. The default is 0.
+
         """
         #---- Position
         self._z = z
@@ -112,7 +108,7 @@ class Mode():
             assert (len(beta_v) == len(v_grid)), "The length of beta_v must match v_grid."
             self._beta = np.asarray(beta_v, dtype=float)
 
-        #---- Loss
+        #---- Gain
         if (alpha_v is None) or callable(alpha_v):
             self._alpha = alpha_v
         else:
@@ -155,6 +151,7 @@ class Mode():
         Returns
         -------
         float
+
         """
         return self._z
     @z.setter
@@ -169,19 +166,9 @@ class Mode():
         Returns
         -------
         ndarray of float
+
         """
         return self._v_grid
-
-    @property
-    def w_grid(self):
-        """
-        The angular frequency grid, with units of ``Hz``.
-
-        Returns
-        -------
-        ndarray of float
-        """
-        return self._w_grid
 
     @property
     def rv_grid(self):
@@ -192,6 +179,7 @@ class Mode():
         Returns
         -------
         None or ndarray of float
+
         """
         return self._rv_grid
 
@@ -208,16 +196,17 @@ class Mode():
         Parameters
         ----------
         m : int, optional
-            The order of the returned derivative of the propagation constant
-            with respect to angular frequency. The default is 0, which returns
-            the propagation constant without taking the derivative.
+            The derivative order of the propagation constant with respect to
+            angular frequency. The default returns the propagation constant
+            without taking a derivative.
         z : float, optional
-            The position along the waveguide. The default is to use the last
-            known value.
+            The position along the waveguide. The default uses the last known
+            value.
 
         Returns
         -------
         ndarray of float
+
         """
         if z is not None:
             self.z = z
@@ -225,7 +214,7 @@ class Mode():
         if m<=0:
             return self._beta(self.z) if callable(self._beta) else self._beta
         else:
-            return np.gradient(self.beta(m=m-1), self.w_grid)
+            return np.gradient(self.beta(m=m-1), self._w_grid)
 
     def n(self, z=None):
         """
@@ -234,17 +223,17 @@ class Mode():
         Parameters
         ----------
         z : float, optional
-            The position along the waveguide. The default is to use the last
-            known value.
+            The position along the waveguide. The default uses the last known
+            value.
 
         Returns
         -------
         ndarray of float
+
         """
         if z is not None:
             self.z = z
-
-        return self.beta()*c/self.w_grid
+        return self.beta()*c/self._w_grid
 
     def alpha(self, z=None):
         """
@@ -255,16 +244,16 @@ class Mode():
         Parameters
         ----------
         z : float, optional
-            The position along the waveguide. The default is to use the last
-            known value.
+            The position along the waveguide. The default uses the last known
+            value.
 
         Returns
         -------
         None or ndarray of float
+
         """
         if z is not None:
             self.z = z
-
         return self._alpha(self.z) if callable(self._alpha) else self._alpha
 
     def n_g(self, z=None):
@@ -274,16 +263,16 @@ class Mode():
         Parameters
         ----------
         z : float, optional
-            The position along the waveguide. The default is to use the last
-            known value.
+            The position along the waveguide. The default uses the last known
+            value.
 
         Returns
         -------
         ndarray of float
+
         """
         if z is not None:
             self.z = z
-
         return c*self.beta(m=1)
 
     def v_g(self, z=None):
@@ -293,16 +282,16 @@ class Mode():
         Parameters
         ----------
         z : float, optional
-            The position along the waveguide. The default is to use the last
-            known value.
+            The position along the waveguide. The default uses the last known
+            value.
 
         Returns
         -------
         ndarray of float
+
         """
         if z is not None:
             self.z = z
-
         return 1/self.beta(m=1)
 
     def GVD(self, z=None):
@@ -312,16 +301,16 @@ class Mode():
         Parameters
         ----------
         z : float, optional
-            The position along the waveguide. The default is to use the last
-            known value.
+            The position along the waveguide. The default uses the last known
+            value.
 
         Returns
         -------
         ndarray of float
+
         """
         if z is not None:
             self.z = z
-
         return self.beta(m=2)
 
     def D(self, z=None):
@@ -331,16 +320,16 @@ class Mode():
         Parameters
         ----------
         z : float, optional
-            The position along the waveguide. The default is to use the last
-            known value.
+            The position along the waveguide. The default uses the last known
+            value.
 
         Returns
         -------
         ndarray of float
+
         """
         if z is not None:
             self.z = z
-
         return -2*pi/c * self.v_grid**2 * self.beta(m=2)
 
     def linear_operator(self, dz, v_0=None, z=None):
@@ -358,8 +347,8 @@ class Mode():
             comoving frame. The default is None, which chooses the central
             frequency.
         z : float, optional
-            The position along the waveguide. The default is to use the last
-            known value.
+            The position along the waveguide. The default uses the last known
+            value.
 
         Returns
         -------
@@ -371,6 +360,7 @@ class Mode():
             The accumulated gain or loss (multiplicative).
         phase_raw : ndarray of float
             The raw accumulated phase.
+
         """
         if z is not None:
             self.z = z
@@ -387,7 +377,7 @@ class Mode():
         if v_0 is None: # comoving frame
             v_0 = fft.ifftshift(self.v_grid)[0]
         v_0_idx = np.argmin(np.abs(v_0 - self.v_grid))
-        beta_cm = beta_raw - self.beta(m=1)[v_0_idx]*self.w_grid
+        beta_cm = beta_raw - self.beta(m=1)[v_0_idx]*self._w_grid
 
         #---- Propagation Constant
         kappa = beta_cm + 0.5j*alpha
@@ -408,16 +398,16 @@ class Mode():
         Parameters
         ----------
         z : float, optional
-            The position along the waveguide. The default is to use the last
-            known value.
+            The position along the waveguide. The default uses the last known
+            value.
 
         Returns
         -------
         None or ndarray of complex
+
         """
         if z is not None:
             self.z = z
-
         return self._g2(self.z) if callable(self._g2) else self._g2
 
     #---- 3rd Order Properties
@@ -429,16 +419,16 @@ class Mode():
         Parameters
         ----------
         z : float, optional
-            The position along the waveguide. The default is to use the last
-            known value.
+            The position along the waveguide. The default uses the last known
+            value.
 
         Returns
         -------
         None or ndarray of complex
+
         """
         if z is not None:
             self.z = z
-
         return self._g3(self.z) if callable(self._g3) else self._g3
 
     def gamma(self, z=None):
@@ -448,8 +438,8 @@ class Mode():
         Parameters
         ----------
         z : float, optional
-            The position along the waveguide. The default is to use the last
-            known value.
+            The position along the waveguide. The default uses the last known
+            value.
 
         Returns
         -------
@@ -459,18 +449,18 @@ class Mode():
             self.z = z
 
         g3 = self.g3()
-        return (3/2*self.w_grid*g3).real if g3 is not None else None
+        return (3/2*self._w_grid*g3).real if g3 is not None else None
 
 
     def r3(self, z=None):
         """
-        The effective raman response.
+        The effective Raman response.
 
         Parameters
         ----------
         z : float, optional
-            The position along the waveguide. The default is to use the last
-            known value.
+            The position along the waveguide. The default uses the last known
+            value.
 
         Returns
         -------
@@ -478,7 +468,6 @@ class Mode():
         """
         if z is not None:
             self.z = z
-
         return self._r3(self.z) if callable(self._r3) else self._r3
 
 

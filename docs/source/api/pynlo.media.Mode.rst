@@ -33,7 +33,6 @@ Methods
    ~Mode.__init__
    ~Mode.alpha
    ~Mode.beta
-   ~Mode.dndv
    ~Mode.g2
    ~Mode.g3
    ~Mode.gamma

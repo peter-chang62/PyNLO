@@ -1,6 +1,6 @@
-pynlo.model.prw
+pynlo.model.fdd
 ===============
 
 .. currentmodule:: pynlo.model
 
-.. autofunction:: prw
+.. autofunction:: fdd

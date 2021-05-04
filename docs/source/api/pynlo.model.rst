@@ -10,10 +10,8 @@
 .. autosummary::
    :toctree:
 
-   add
    exp
-   mult
-   prw
+   fdd
 
 
 

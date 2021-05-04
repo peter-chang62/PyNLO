@@ -40,9 +40,9 @@ Methods
    ~Pulse.FromPowerSpectrum
    ~Pulse.FromTFGrid
    ~Pulse.Gaussian
-   ~Pulse.Lorentzian2
+   ~Pulse.Lorentzian
    ~Pulse.Parabolic
-   ~Pulse.Sech2
+   ~Pulse.Sech
    ~Pulse.__init__
    ~Pulse.autocorrelation
    ~Pulse.spectrogram
