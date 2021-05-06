@@ -10,11 +10,12 @@ __all__ = []
 # %% Imports
 
 # %%
-# gratting compressor
 
-# prism compressor
+#TODO: pulse shaper
 
-# pulse shaper
+#TODO: gratting compressor
+
+#TODO: prism compressor
 
 # %% Old
 # # %% Diffraction Grating Compressor ===========================================

@@ -23,11 +23,11 @@ from pynlo.utility import chi1, chi2, chi3, fft
 
 # %% Collections
 
-ResampledV = collections.namedtuple("ResampledV", ["v_grid", "f_v", "dv", "dt"])
+_ResampledV = collections.namedtuple("ResampledV", ["v_grid", "f_v", "dv", "dt"])
 
-ResampledT = collections.namedtuple("ResampledT", ["t_grid", "f_t", "dt"])
+_ResampledT = collections.namedtuple("ResampledT", ["t_grid", "f_t", "dt"])
 
-RTFGrid = collections.namedtuple("RTFGrid", ["n", "v0",
+_RTFGrid = collections.namedtuple("RTFGrid", ["n", "v0",
                                              "v_grid", "v_ref", "dv", "v_window",
                                              "t_grid", "t_ref", "dt", "t_window"])
 
@@ -102,8 +102,8 @@ def derivative_t(t_grid, f_t, n, v_ref=0):
         The order of the derivative. Positive orders correspond to derivatives
         and negative orders correspond to antiderivatives (integrals).
     v_ref : float, optional
-        The grid reference frequency in the complementary frequency domain. The
-        default is 0.
+        The grid reference frequency in the complementary frequency domain.
+        The default is 0.
 
     Returns
     -------
@@ -205,7 +205,7 @@ def resample_v(v_grid, f_v, n):
         # Complex Envelope Representation
         n_0 = len(v_grid)
         dt_0 = 1/(n_0*dv_0)
-        v_ref_0 = fft.ifftshift(v_grid)[0]
+        v_ref_0 = v_grid[n_0//2]
         f_t = fft.fftshift(fft.ifft(fft.ifftshift(f_v), fsc=dt_0, overwrite_x=True))
 
     #---- Resample
@@ -230,7 +230,7 @@ def resample_v(v_grid, f_v, n):
         v_grid += v_ref_0
 
     #---- Construct ResampledV
-    resampled = ResampledV(v_grid=v_grid, f_v=f_v, dv=dv, dt=1/(n*dv))
+    resampled = _ResampledV(v_grid=v_grid, f_v=f_v, dv=dv, dt=1/(n*dv))
     return resampled
 
 def resample_t(t_grid, f_t, n):
@@ -280,7 +280,7 @@ def resample_t(t_grid, f_t, n):
     #---- Define Time Grid
     n_0 = len(t_grid)
     dt_0 = np.diff(t_grid).mean()
-    t_ref_0 = fft.ifftshift(t_grid)[0]
+    t_ref_0 = t_grid[n_0//2]
     dv = 1/(n_0*dt_0)
     dt = 1/(n*dv)
     t_grid = dt*(np.arange(n) - (n//2))
@@ -303,7 +303,7 @@ def resample_t(t_grid, f_t, n):
         f_t = fft.fftshift(fft.ifft(fft.ifftshift(f_v), fsc=dt, overwrite_x=True))
 
     #---- Construct ResampledT
-    resampled = ResampledT(t_grid=t_grid, f_t=f_t, dt=dt)
+    resampled = _ResampledT(t_grid=t_grid, f_t=f_t, dt=dt)
     return resampled
 
 
@@ -311,8 +311,8 @@ def resample_t(t_grid, f_t, n):
 
 class TFGrid():
     """
-    Complementary grids, defined over time and frequency domains, for
-    representing analytic functions with complex-valued envelopes.
+    Complementary grids defined over both time and frequency domains for the
+    representation of analytic functions with complex-valued envelopes.
 
     The frequency grid is shifted and scaled such that the grid is aligned with
     the origin and contains only positive frequencies. The values given to the
@@ -330,38 +330,8 @@ class TFGrid():
     n_points : int
         The number of grid points.
     v0 : float, optional
-        The comoving frame reference frequency. The default (``None``) is the
-        average of the frequency grid.
-
-    Attributes
-    ----------
-    n
-    rn
-    rn_range
-    rn_slice
-    v0
-    v0_idx
-    v_grid
-    v_ref
-    dv
-    v_window
-    t_grid
-    t_ref
-    dt
-    t_window
-    rv_grid
-    rv_ref
-    rdv
-    rv_window
-    rt_grid
-    rt_ref
-    rdt
-    rt_window
-
-    Methods
-    -------
-    FromFreqRange
-    FromTimeWindowAndFreq
+        The comoving frame reference frequency. The default selects the
+        central frequency of the resulting grid.
 
     Notes
     -----
@@ -410,8 +380,8 @@ class TFGrid():
         n_points : int
             The number of grid points.
         v0 : float, optional
-            The comoving frame reference frequency. The default (``None``) is
-            the average of the resulting frequency grid.
+            The comoving frame reference frequency. The default selects the
+            central frequency of the resulting grid.
 
         """
         assert (dv > 0), "The frequency grid step size must be greater than 0."
@@ -436,7 +406,7 @@ class TFGrid():
         self._v_ref = self._v_grid[0]
         self._v_window = self.n*self.dv
         if v0 is None:
-            self.v0 = self.v_grid.mean()
+            self.v0 = self.v_grid[self.n//2] # same as v_ref
         else:
             self.v0 = v0
 
@@ -465,8 +435,8 @@ class TFGrid():
         n_points : int
             The number of grid points.
         v0 : float, optional
-            The comoving frame reference frequency. The default (``None``) is
-            the average of the resulting frequency grid.
+            The comoving frame reference frequency. The default selects the
+            central frequency of the resulting grid.
 
         """
         assert (n_points > 1), "The number of points must be greater than 1."
@@ -835,11 +805,10 @@ class TFGrid():
         """
         return self._rt_window
 
-    #---- Methods
     def rtf_grids(self, n_harmonic=1, fast_n=True, update=True):
         """
-        Complementary grids defined over the time and frequency domains for
-        representing analytic functions with real-valued amplitudes.
+        Complementary grids defined over both time and frequency domains for
+        the representation of analytic functions with real-valued amplitudes.
 
         The frequency grid contains the origin and positive frequencies. The
         `n_harmonic` parameter determines the number of harmonics the
@@ -942,10 +911,10 @@ class TFGrid():
         #---- Define Time Grid
         dt = 1/(n*self.dv)
         t_grid = dt*(np.arange(n) - (n//2))
-        t_ref = fft.ifftshift(t_grid)[0]
+        t_ref = t_grid[n//2]
 
         #---- Construct RTFGrid
-        rtf_grids = RTFGrid(
+        rtf_grids = _RTFGrid(
             n=n, v0=self.v0,
             v_grid=v_grid, v_ref=v_ref, dv=self.dv, v_window=n_v*self.dv,
             t_grid=t_grid, t_ref=t_ref, dt=dt, t_window=n*dt)
@@ -963,5 +932,4 @@ class TFGrid():
             self._rt_ref = rtf_grids.t_ref
             self._rdt = rtf_grids.dt
             self._rt_window = rtf_grids.t_window
-
         return rtf_grids

@@ -14,12 +14,10 @@ import collections
 import numpy as np
 from scipy.constants import c, pi
 
-from pynlo.utility import fft
-
 
 # %% Collections
 
-LinearOperator = collections.namedtuple("LinearOperator", ["u", "phase", "gain", "phase_raw"])
+_LinearOperator = collections.namedtuple("LinearOperator", ["u", "phase", "gain", "phase_raw"])
 
 
 # %% Base Classes
@@ -214,7 +212,7 @@ class Mode():
         if m<=0:
             return self._beta(self.z) if callable(self._beta) else self._beta
         else:
-            return np.gradient(self.beta(m=m-1), self._w_grid)
+            return np.gradient(self.beta(m=m-1), self._w_grid, edge_order=2)
 
     def n(self, z=None):
         """
@@ -294,6 +292,33 @@ class Mode():
             self.z = z
         return 1/self.beta(m=1)
 
+    def d_12(self, v0=None, z=0):
+        """
+        The walk-off parameter, with units of ``s/m``.
+
+        Parameters
+        ----------
+        v0 : float, optional
+            The target reference frequency. The default selects the central
+            frequency.
+        z : float, optional
+            The position along the waveguide. The default uses the last known
+            value.
+
+        Returns
+        -------
+        ndarray of float
+
+        """
+        if z is not None:
+            self.z = z
+
+        if v0 is None: # comoving frame
+            v0 = self.v_grid[self.v_grid.size//2]
+        v0_idx = np.argmin(np.abs(v0 - self.v_grid))
+        beta1 = self.beta(m=1)
+        return beta1[v0_idx] - beta1
+
     def GVD(self, z=None):
         """
         The group velocity dispersion, with units of ``s**2/m``.
@@ -332,7 +357,7 @@ class Mode():
             self.z = z
         return -2*pi/c * self.v_grid**2 * self.beta(m=2)
 
-    def linear_operator(self, dz, v_0=None, z=None):
+    def linear_operator(self, dz, v0=None, z=None):
         """
         The linear operator which advances the spectrum over a distance `dz`.
 
@@ -342,10 +367,9 @@ class Mode():
         ----------
         dz : float
             The step size.
-        v_0 : float, optional
-            The target reference frequency that sets the position of the
-            comoving frame. The default is None, which chooses the central
-            frequency.
+        v0 : float, optional
+            The target reference frequency of the comoving frame. The default
+            selects the central frequency.
         z : float, optional
             The position along the waveguide. The default uses the last known
             value.
@@ -374,10 +398,10 @@ class Mode():
         #---- Phase
         beta_raw = self.beta()
 
-        if v_0 is None: # comoving frame
-            v_0 = fft.ifftshift(self.v_grid)[0]
-        v_0_idx = np.argmin(np.abs(v_0 - self.v_grid))
-        beta_cm = beta_raw - self.beta(m=1)[v_0_idx]*self._w_grid
+        if v0 is None: # comoving frame
+            v0 = self.v_grid[self.v_grid.size//2]
+        v0_idx = np.argmin(np.abs(v0 - self.v_grid))
+        beta_cm = beta_raw - self.beta(m=1)[v0_idx]*self._w_grid
 
         #---- Propagation Constant
         kappa = beta_cm + 0.5j*alpha
@@ -385,7 +409,7 @@ class Mode():
         #---- Linear Operator
         operator = np.exp(-1j*kappa*dz)
 
-        lin_operator = LinearOperator(
+        lin_operator = _LinearOperator(
             u=operator, phase=dz*beta_cm, gain=gain, phase_raw=dz*beta_raw)
         return lin_operator
 
@@ -414,7 +438,7 @@ class Mode():
     def g3(self, z=None):
         """
         The effective 3rd order nonlinear parameter, with units of
-        ``1/(W*m*Hz).
+        ``1/(W*m*Hz)``.
 
         Parameters
         ----------
@@ -449,6 +473,8 @@ class Mode():
             self.z = z
 
         g3 = self.g3()
+        if g3 is not None and len(g3.shape)==2:
+            g3 = g3[0] * g3[1]**3
         return (3/2*self._w_grid*g3).real if g3 is not None else None
 
 
@@ -474,6 +500,14 @@ class Mode():
 # class Waveguide():
 #     """
 #     Collection of modes and the nonlinear interactions between them
+#     """
+#     def __init__(self, modes, coupling):
+#         pass
+
+# class GaussianMode(Mode):
+#     """
+#     Approximation of free space gaussian mode...
+#     just need to keep track of TD radius of curvature and waist size?
 #     """
 #     def __init__(self, modes, coupling):
 #         pass

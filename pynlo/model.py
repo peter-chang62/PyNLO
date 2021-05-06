@@ -22,20 +22,38 @@ from pynlo.utility import fft
 
 @njit(parallel=True)
 def exp(x):
-    """Accelerated exponentiation."""
+    """JIT compiled exponential function."""
     return np.exp(x)
 
 @njit
-def fdd(y, dx, idx):
-    """Finite difference derivative."""
-    return (y[idx+1] - y[idx-1])/(2*dx)
+def fdd(f, dx, idx):
+    """JIT compiled 2nd order finite difference derivative."""
+    #---- Right Bound
+    if idx==f.size-1:
+        # Derivative on the right-most edge
+        return (3*f[idx] - 4*f[idx-1] + f[idx-2])/(2*dx)
+
+    #---- Left Bound
+    if idx==0:
+        # Derivative on the left-most edge
+        return (-3*f[idx] + 4*f[idx+1] - f[idx+2])/(2*dx)
+
+    #---- Central
+    return (f[idx+1] - f[idx-1])/(2*dx)
+
+@njit(parallel=True)
+def l2_error(a_RK4, a_RK3):
+    """JIT compiled l2 error norm."""
+    l2_norm = np.sum(a_RK4.real**2 + a_RK4.imag**2)**0.5
+    rel_error = (a_RK4 - a_RK3)/l2_norm
+    return np.sum(rel_error.real**2 + rel_error.imag**2)**0.5
 
 
 # %% Classes
 
 class UPE():
     """
-    Single-mode unidirectional propagation equation.
+    A model based on the single-mode unidirectional propagation equation.
 
     This model can simulate both 2nd and 3rd order nonlinear effects.
 
@@ -46,7 +64,7 @@ class UPE():
         the underlying time and frequency grids.
     mode : pynlo.media.Mode
         A `Mode` object containing the linear and nonlinear properties of
-        the waveguide.
+        the waveguide mode.
 
     Notes
     -----
@@ -70,7 +88,7 @@ class UPE():
 
     def __init__(self, pulse, mode):
         """
-        Initialize a model for the single-mode unidirectional propagation
+        Initialize a model based on the single-mode unidirectional propagation
         equation.
 
         Parameters
@@ -122,14 +140,14 @@ class UPE():
         self.alpha = self.mode.alpha()
 
         # Wavenumber
-        beta = self.mode.beta()
+        self.beta = self.mode.beta()
         self.v0_idx = self.pulse_in.v0_idx
-        beta1_v0 = fdd(beta, self.dw, self.v0_idx)
-        self.beta_cm = beta - beta1_v0*self.w_grid # comoving frame
+        beta1_v0 = fdd(self.beta, self.dw, self.v0_idx)
+        self.beta_cm = self.beta - beta1_v0*self.w_grid # comoving frame
 
         # Propagation Constant (comoving frame)
         if self.alpha is not None:
-            self.kappa_cm = self.beta_cm + 0.5j*self.alpha
+            self.kappa_cm = (self.beta_cm - self.alpha**2/(8*self.beta)) + 0.5j*self.alpha
         else:
             self.kappa_cm = self.beta_cm
 
@@ -150,7 +168,7 @@ class UPE():
         self._nl_v = np.zeros_like(self.v_grid, dtype=complex)
         self._nl_a_v = np.zeros_like(self.pulse_in.nl_v_grid, dtype=complex)
 
-    def estimate_step_size(self, a_v, z, local_error=1e-6, dz=10e-6, n=1, vb=False):
+    def estimate_step_size(self, a_v, z, local_error=1e-6, dz=10e-6, n=1, db=False):
         """
         Estimate a more optimal step size, relative to the local error, given
         a test step size `dz`.
@@ -170,8 +188,8 @@ class UPE():
             The step size. The default is 10e-6.
         n : int, optional
             The number of times the algorithm is iteratively executed
-        vb : bool, optional
-            Flag which sets printing of intermediate results.
+        db : bool, optional
+            Flag which turns on printing of intermediate results.
 
         Returns
         -------
@@ -184,11 +202,9 @@ class UPE():
             a_RK4_v, a_RK3_v, _ = self.integrate(a_v, z, dz)
 
             #---- Estimate the Relative Local Error
-            L2_norm = np.sum(a_RK4_v.real**2 + a_RK4_v.imag**2)**0.5
-            rel_error = (a_RK4_v - a_RK3_v)/L2_norm
-            L2_error = np.sum(rel_error.real**2 + rel_error.imag**2)**0.5
-            error_ratio = (L2_error/local_error)**0.25
-            if vb: print("dz={:.3g},\t error ratio={:.3g}".format(dz, error_ratio))
+            est_error = l2_error(a_RK4_v, a_RK3_v)
+            error_ratio = (est_error/local_error)**0.25
+            if db: print("dz={:.3g},\t error={:.3g}".format(dz, est_error))
 
             #---- Update Step Size
             dz = dz/min(2, max(error_ratio, 0.5))
@@ -224,8 +240,8 @@ class UPE():
         Returns
         -------
         pulse_out : pynlo.light.Pulse
-            The output pulse. This object is suitable for propagation through
-            an additional waveguide.
+            The output pulse. This object can be used as the input to another
+            waveguide.
         z_record : ndarray of float
             The points along the waveguide at which the pulses are returned.
         a_t_record : ndarray of complex
@@ -248,7 +264,7 @@ class UPE():
             z_record = np.linspace(z_grid.min(), z_grid.max(), n_records)
             z_grid = np.unique([z_grid, z_record])
 
-        #---- Optical Pulse
+        #---- Setup Pulse
         pulse_out = Pulse.FromTFGrid(self.pulse_in, a_v=self.pulse_in.a_v)
         # Frequency Domain
         a_v_record = np.empty((n_records,pulse_out.n), dtype=complex)
@@ -261,14 +277,8 @@ class UPE():
         if plot is not None:
             assert (plot in ["frq", "time", "wvl"]), ("Plot choice '{:}' is"
                                                       " unrecognized").format(plot)
-            # Import if needed
-            try:
-                self._plt
-            except AttributeError:
-                import matplotlib.pyplot as plt
-                self._plt = plt
             # Setup Plots
-            self.setup_plots(plot, pulse_out, z)
+            self._setup_plots(plot, pulse_out, z)
 
         #---- Step Size
         if dz is None:
@@ -281,9 +291,7 @@ class UPE():
             #---- Step
             (pulse_out.a_v, z, dz, k5_v) = self.propagate(
                 pulse_out.a_v,
-                z,
-                z_stop,
-                dz,
+                z, z_stop, dz,
                 local_error,
                 k5_v=k5_v)
 
@@ -296,7 +304,7 @@ class UPE():
                 #---- Plot
                 if plot is not None:
                     # Update Plots
-                    self.update_plots(plot, pulse_out, z)
+                    self._update_plots(plot, pulse_out, z)
 
                     if z==z_grid[-1]:
                         # End animation with the last step
@@ -341,7 +349,7 @@ class UPE():
 
         References
         ----------
-        ..  [1] S. Balac and F. Mahé, "Embedded Runge–Kutta scheme for
+        .. [1] S. Balac and F. Mahé, "Embedded Runge–Kutta scheme for
             step-size control in the interaction picture method," Computer
             Physics Communications, Volume 184, Issue 4, 2013, Pages 1211-1219
 
@@ -359,18 +367,11 @@ class UPE():
                 final_step = False
 
             #---- Integrate by dz
-            a_RK4_v, a_RK3_v, k5_v_next = self.integrate(
-                a_v,
-                z,
-                dz,
-                k5_v=k5_v)
+            a_RK4_v, a_RK3_v, k5_v_next = self.integrate(a_v, z, dz, k5_v=k5_v)
 
             #---- Estimate Relative Local Error
-            L2_norm = np.sum(a_RK4_v.real**2 + a_RK4_v.imag**2)**0.5
-            rel_error = (a_RK4_v - a_RK3_v)/L2_norm
-            L2_error = np.sum(rel_error.real**2 + rel_error.imag**2)**0.5
-            error_ratio = (L2_error/local_error)**0.25
-            #print('{:.6g},\t{:.2g},\t{:.2g}'.format(z, dz, error_ratio))
+            est_error = l2_error(a_RK4_v, a_RK3_v)
+            error_ratio = (est_error/local_error)**0.25
 
             #---- Propagate Solution
             if error_ratio > 2:
@@ -381,7 +382,6 @@ class UPE():
                 a_v = a_RK4_v
                 z = z_next
                 if (not final_step) or (error_ratio > 1):
-                    # Update the step size
                     dz_next = dz / max(error_ratio, 0.5)
                 dz = dz_next
                 k5_v = k5_v_next
@@ -417,7 +417,7 @@ class UPE():
 
         References
         ----------
-        ..  [1] S. Balac and F. Mahé, "Embedded Runge–Kutta scheme for
+        .. [1] S. Balac and F. Mahé, "Embedded Runge–Kutta scheme for
             step-size control in the interaction picture method," Computer
             Physics Communications, Volume 184, Issue 4, 2013, Pages 1211-1219
 
@@ -544,15 +544,15 @@ class UPE():
 
         #---- Phase
         if self._update_beta:
-            beta = self.mode._beta(z)
-            beta1_v0 = fdd(beta, self.dw, self.v0_idx)
+            self.beta = self.mode._beta(z)
+            beta1_v0 = fdd(self.beta, self.dw, self.v0_idx)
             # Beta in comoving frame
-            self.beta_cm = beta - beta1_v0*self.w_grid
+            self.beta_cm = self.beta - beta1_v0*self.w_grid
 
         #---- Propagation Constant
         if self._update_kappa:
             if self.alpha is not None:
-                self.kappa_cm = self.beta_cm + 0.5j*self.alpha
+                self.kappa_cm = (self.beta_cm - self.alpha**2/(8*self.beta)) + 0.5j*self.alpha
             else:
                 self.kappa_cm = self.beta_cm
 
@@ -577,7 +577,7 @@ class UPE():
             self.r3 = self.mode._r3(z)
 
     #---- Plotting
-    def setup_plots(self, plot, pulse_out, z):
+    def _setup_plots(self, plot, pulse_out, z):
         """
         Initialize a figure for real-time visualization of a simulation.
 
@@ -592,6 +592,13 @@ class UPE():
             The position along the waveguide.
 
         """
+        # Import if needed
+        try:
+            self._plt
+        except AttributeError:
+            import matplotlib.pyplot as plt
+            self._plt = plt
+
         #---- Figure and Axes
         self._rt_fig = self._plt.figure("Real-Time Simulation", clear=True)
         self._ax_0 = self._plt.subplot2grid((2,1), (0,0), fig=self._rt_fig)
@@ -694,6 +701,7 @@ class UPE():
                 bottom=1e12*(self.t_grid.min() - excess))
 
         #---- Z Label
+        #TODO: change to plt.barh, progress bar
         self._z_label = self._ax_1.legend(
             [],[],
             title='z = {:.6g} m'.format(z),
@@ -713,7 +721,7 @@ class UPE():
         self._rt_fig_bkg_0 = self._rt_fig.canvas.copy_from_bbox(self._ax_0.bbox)
         self._rt_fig_bkg_1 = self._rt_fig.canvas.copy_from_bbox(self._ax_1.bbox)
 
-    def update_plots(self, plot, pulse_out, z):
+    def _update_plots(self, plot, pulse_out, z):
         """
         Update the figure used for real-time visualization of a simulation.
 

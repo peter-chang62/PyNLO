@@ -26,13 +26,13 @@ from pynlo.utility import TFGrid, fft, resample_v, resample_t
 
 # %% Collections
 
-PowerSpectralWidths = collections.namedtuple("PowerSpectralWidths", ["fwhm", "rms"])
+_PowerSpectralWidths = collections.namedtuple("PowerSpectralWidths", ["fwhm", "rms"])
 
-PowerEnvelopeWidths = collections.namedtuple("PowerEnvelopeWidths", ["fwhm", "rms"])
+_PowerEnvelopeWidths = collections.namedtuple("PowerEnvelopeWidths", ["fwhm", "rms"])
 
-Autocorrelation = collections.namedtuple("Autocorrelation", ["t_grid", "ac_t", "fwhm", "rms"])
+_Autocorrelation = collections.namedtuple("Autocorrelation", ["t_grid", "ac_t", "fwhm", "rms"])
 
-Spectrogram = collections.namedtuple("Spectrogram", ["v_grid", "t_grid", "spg", "extent"])
+_Spectrogram = collections.namedtuple("Spectrogram", ["v_grid", "t_grid", "spg", "extent"])
 
 
 # %% Classes
@@ -43,7 +43,7 @@ class Pulse(TFGrid):
 
     The default initializer creates an empty `Pulse` object. Set one of four
     attributes (`a_v`, `p_v`, `a_t`, or `p_t`) to populate the optical
-    spectrum or complex envelope.
+    spectrum or envelope.
 
     Parameters
     ----------
@@ -56,30 +56,6 @@ class Pulse(TFGrid):
     v0 : float, optional
         The comoving frame reference frequency. The default is the center of
         the resulting frequency grid.
-
-    Attributes
-    ----------
-    a_v
-    p_v
-    phi_v
-    tg_v
-    a_t
-    p_t
-    phi_t
-    vg_t
-    ra_t
-    rp_t
-    e_p
-
-    Methods
-    -------
-    FromTFGrid
-    FromPowerSpectrum
-    Gaussian
-    Sech
-    Parabolic
-    Lorentzian
-    CW
 
     Notes
     -----
@@ -108,7 +84,7 @@ class Pulse(TFGrid):
         populate with a zero-amplitude power spectrum.
 
         Set one of six attributes `a_v`, `p_v`, `phi_v`, `a_t`, `p_t`, or
-        `phi_t` to populate the optical spectrum and envelope.
+        `phi_t` to populate the optical spectrum or envelope.
 
         Parameters
         ----------
@@ -156,7 +132,7 @@ class Pulse(TFGrid):
 
         #---- Copy TFGrid
         self = super().__new__(cls)
-        self.__dict__.update(tfgrid.__dict__.copy())
+        self.__dict__.update(tfgrid.__dict__)
 
         #---- Set Spectrum
         if a_v is None:
@@ -508,7 +484,7 @@ class Pulse(TFGrid):
 
     def v_width(self, n=None):
         """
-        Calculates the width of the power spectrum.
+        Calculate the spectral width of the power spectrum.
 
         Set `n` to optionally resample the number of points and change the
         frequency resolution.
@@ -554,7 +530,7 @@ class Pulse(TFGrid):
         v_rms = v_var**0.5
 
         #---- Construct PowerSpectralWidths
-        v_widths = PowerSpectralWidths(fwhm=v_fwhm, rms=v_rms)
+        v_widths = _PowerSpectralWidths(fwhm=v_fwhm, rms=v_rms)
         return v_widths
 
     #---- Time Domain Properties
@@ -718,7 +694,7 @@ class Pulse(TFGrid):
 
     def t_width(self, n=None):
         """
-        Calculates the width of the power envelope.
+        Calculate the temporal width of the power envelope.
 
         Set `n` to optionally resample the number of points and change the
         time resolution.
@@ -764,7 +740,7 @@ class Pulse(TFGrid):
         t_rms = t_var**0.5
 
         #---- Construct PowerEnvelopeWidths
-        t_widths = PowerEnvelopeWidths(fwhm=t_fwhm, rms=t_rms)
+        t_widths = _PowerEnvelopeWidths(fwhm=t_fwhm, rms=t_rms)
         return t_widths
 
     #---- Energy Properties
@@ -787,7 +763,7 @@ class Pulse(TFGrid):
     #---- Indirect Measures
     def autocorrelation(self, n=None):
         """
-        Calculates the intensity autocorrelation and related diagnostic
+        Calculate the intensity autocorrelation and related diagnostic
         information.
 
         Set `n` to optionally resample the number of points and change the
@@ -841,13 +817,13 @@ class Pulse(TFGrid):
         t_rms = t_var**0.5
 
         #---- Construct Autocorrelation
-        ac = Autocorrelation(t_grid=t_grid, ac_t=ac_t, fwhm=t_fwhm, rms=t_rms)
+        ac = _Autocorrelation(t_grid=t_grid, ac_t=ac_t, fwhm=t_fwhm, rms=t_rms)
         return ac
 
     def spectrogram(self, t_fwhm=None, v_range=None, n_t=None, t_range=None):
         """
-        Calculates the power spectrogram through convolution with a gaussian
-        window.
+        Calculate the power spectrogram of the pulse convoluted with a
+        gaussian window.
 
         Changing the number of points and range changes the resolution in the
         time domain, but the resolution in both domains is ultimately limited
@@ -916,8 +892,7 @@ class Pulse(TFGrid):
 
             a_v = self.a_v[v_min_selector:v_max_selector+1]
             a_t = fft.fftshift(fft.ifft(fft.ifftshift(a_v), fsc=dt, overwrite_x=True))
-            t_grid = dt*np.arange(n)
-            t_grid -= fft.ifftshift(t_grid)[0]
+            t_grid = dt*(np.arange(n) - (n//2))
 
         #---- Set Gate
         if t_fwhm is None:
@@ -970,5 +945,5 @@ class Pulse(TFGrid):
                   v_grid.min()-0.5*self.dv, v_grid.max()+0.5*self.dv)
 
         #---- Construct Spectrogram
-        spg = Spectrogram(v_grid=v_grid, t_grid=delay_t_grid, spg=p_spg, extent=extent)
+        spg = _Spectrogram(v_grid=v_grid, t_grid=delay_t_grid, spg=p_spg, extent=extent)
         return spg
