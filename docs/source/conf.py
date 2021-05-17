@@ -12,16 +12,22 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import datetime
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../..'))
+sys.path.insert(1, os.path.abspath('..'))
 
+#!!!: modify to sort in bysource ordering, and use __all__
+import autosummary as new_autosummary
+from sphinx.ext import autosummary
+autosummary.__dict__.update(new_autosummary.__dict__)
 
 #--- Project information -----------------------------------------------------
 
-project = 'pyNLO'
-copyright = '2020, pyNLO authors'
-author = 'pyNLO authors'
+project = 'PyNLO'
+copyright = '{:}, PyNLO authors'.format(datetime.date.today().year)
+author = 'PyNLO authors'
 
 # The full version, including alpha/beta/rc tags
 release = 'dev'
@@ -34,26 +40,32 @@ release = 'dev'
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx.ext.autosummary",
+    # "sphinx.ext.autosummary",
     "numpydoc",
     "sphinx.ext.viewcode",
     "nbsphinx",
-    'sphinx.ext.mathjax',
-    "sphinx_rtd_theme"
+    # 'sphinx.ext.mathjax',
 ]
-
 
 autodoc_default_options = {
     'show-inheritance':True,
     "member-order": "bysource",
     }
-autosummary_generate = True
+
+autosummary_generate = True # Turn on sphinx.ext.autosummary
+
+numpydoc_show_class_members = False
+numpydoc_show_inherited_class_members = False
+# Report warnings for all validation checks
+# numpydoc_validation_checks = {"all"}
+
+
 nbsphinx_execute_arguments = [
     "--InlineBackend.figure_formats={'svg', 'pdf'}",
     "--InlineBackend.rc={'figure.dpi': 96}",
     ]
 
-master_doc = "contents"
+master_doc = "index"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -69,7 +81,12 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'pydata_sphinx_theme'
+
+html_logo = "_static/pynlo.svg"
+html_theme_options = {
+    "show_toc_level": 2,
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

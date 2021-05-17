@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notes &#8212; PyNLO dev documentation</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Fourier Transforms" href="notes/fourier_transforms.html" />
+    <link rel="prev" title="User Guide" href="about.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="index.html">
+  <img src="_static/pynlo.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="about.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="current reference internal nav-link" href="#">
+  Notes
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="api.html">
+  API Reference
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <p class="caption">
+ <span class="caption-text">
+  Subjects
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="notes/fourier_transforms.html">
+   Fourier Transforms
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="notes/linear_optics.html">
+   Linear Optics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="notes/nonlinear_optics.html">
+   Nonlinear Optics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="notes/supplemental.html">
+   Supplementary Material
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="notes">
+<h1>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h1>
+<p>Introductions to many of the ideas relevant to the optical physics, and its numerical implementation, in PyNLO.</p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Subjects</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notes/fourier_transforms.html">Fourier Transforms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes/fourier_transforms.html#The-Fourier-Family">The Fourier Family</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/fourier_transforms.html#Useful-Relationships">Useful Relationships</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/fourier_transforms.html#Numeric-Implementation-of-DFTs">Numeric Implementation of DFTs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes/linear_optics.html">Linear Optics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes/linear_optics.html#Maxwell’s-Equations">Maxwell’s Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/linear_optics.html#Traveling-Waves">Traveling Waves</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/linear_optics.html#Waveguides">Waveguides</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes/nonlinear_optics.html">Nonlinear Optics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes/nonlinear_optics.html#Local-Modes">Local Modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/nonlinear_optics.html#Unidirectional-Propagation-Equations">Unidirectional Propagation Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/nonlinear_optics.html#Single-Mode-UPE">Single Mode UPE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/nonlinear_optics.html#Numerical-Implementation">Numerical Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notes/supplemental.html">Supplementary Material</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notes/supplemental.html#Transverse-and-Longitudinal-Vector-Components">Transverse and Longitudinal Vector Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/supplemental.html#Transverse-and-Longitudinal-Maxwell’s-Equations">Transverse and Longitudinal Maxwell’s Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/supplemental.html#Derivation-of-the-Forward-and-Backward-Propagation-Equations">Derivation of the Forward and Backward Propagation Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/supplemental.html#Unit-Analysis-of-the-Effective-Nonlinear-Parameters">Unit Analysis of the Effective Nonlinear Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/supplemental.html#Relationship-Between-Kerr-Parameter-and-Nonlinear-Susceptibility">Relationship Between Kerr Parameter and Nonlinear Susceptibility</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="about.html" title="previous page">User Guide</a>
+    <a class='right-next' id="next-link" href="notes/fourier_transforms.html" title="next page">Fourier Transforms</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, PyNLO authors.<br/>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.<br/>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

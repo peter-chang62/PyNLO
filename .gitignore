@@ -1,5 +1,4 @@
 .spyproject/
 *.pyc
 docs/build/doctrees/
-docs/build/html/
 .pylint.d/

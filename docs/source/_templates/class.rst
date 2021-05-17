@@ -1,37 +1,31 @@
 {{ fullname | escape | underline}}
-
-.. contents::
-   :local:
-
 .. currentmodule:: {{ module }}
-
 .. autoclass:: {{ objname }}
 
 
-{% block attributes -%}
-{% if attributes %}
-{{ "Attributes" | underline(line="-") }}
+{%- block methods %}
+{%- if methods %}
 
+{{ _('Methods') | underline(line='-') }}
 .. autosummary::
    :toctree:
-{% for item in attributes %}
-{%- if item not in inherited_members %}
+   :caption: Methods
+{% for item in methods %}
    ~{{ name }}.{{ item }}
-{%- endif -%}
 {%- endfor %}
-{% endif %}
+{%- endif %}
 {%- endblock %}
 
-{% block methods -%}
-{% if methods %}
-{{ "Methods" | underline(line="-") }}
 
+{%- block attributes %}
+{%- if attributes %}
+
+{{ _('Attributes') | underline(line='-') }}
 .. autosummary::
    :toctree:
-{% for item in methods %}
-{%- if item not in inherited_members %}
+   :caption: Attributes
+{% for item in attributes %}
    ~{{ name }}.{{ item }}
-{%- endif -%}
 {%- endfor %}
-{% endif %}
+{%- endif %}
 {%- endblock %}

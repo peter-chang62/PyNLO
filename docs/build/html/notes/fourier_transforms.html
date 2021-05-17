@@ -1,0 +1,780 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fourier Transforms &#8212; PyNLO dev documentation</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Linear Optics" href="linear_optics.html" />
+    <link rel="prev" title="Notes" href="../notes.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../index.html">
+  <img src="../_static/pynlo.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../about.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../notes.html">
+  Notes
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../api.html">
+  API Reference
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <p class="caption">
+ <span class="caption-text">
+  Subjects
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Fourier Transforms
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_optics.html">
+   Linear Optics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="nonlinear_optics.html">
+   Nonlinear Optics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="supplemental.html">
+   Supplementary Material
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#The-Fourier-Family">
+   The Fourier Family
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Fourier-Series">
+     Fourier Series
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Discrete-Fourier-Transforms">
+     Discrete Fourier Transforms
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Continuous-Fourier-Transforms">
+     Continuous Fourier Transforms
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Useful-Relationships">
+   Useful Relationships
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Linearity">
+     Linearity
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Shifting-and-Scaling">
+     Shifting and Scaling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Derivatives-and-Integrals">
+     Derivatives and Integrals
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Convolutions">
+     Convolutions
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Cross-Correlation">
+     Cross-Correlation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Normalization">
+     Normalization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Real-Functions-and-the-Analytic-Representation">
+     Real Functions and the Analytic Representation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Numeric-Implementation-of-DFTs">
+   Numeric Implementation of DFTs
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fftshift-and-ifftshift">
+     fftshift and ifftshift
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Real-DFTs">
+     Real DFTs
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#FFT-Cookbook">
+     FFT Cookbook
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Analytic-Representation">
+       Analytic Representation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Real-Valued-Representation">
+       Real-Valued Representation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#Array-Ordering">
+       Array Ordering
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#Monotonic-Order:">
+         Monotonic Order:
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#Standard-FFT-Order:">
+         Standard FFT Order:
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="Fourier-Transforms">
+<h1>Fourier Transforms<a class="headerlink" href="#Fourier-Transforms" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="The-Fourier-Family">
+<h2>The Fourier Family<a class="headerlink" href="#The-Fourier-Family" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Fourier-Series">
+<h3>Fourier Series<a class="headerlink" href="#Fourier-Series" title="Permalink to this headline">¶</a></h3>
+<p>Due to the orthogonality of sine and cosine functions, arbitrary periodic functions can be represented by their spectral components through <a class="reference external" href="https://mathworld.wolfram.com/FourierSeries.html">Fourier series</a>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+f\!\left[t\right] &amp;= \sum_{n=-\infty}^{\infty} a_n e^{i \left(2 \pi \, t \, n/\Delta t\right)},
+&amp;
+a_n &amp;= \frac{1}{\Delta t} \int_{-\Delta t/2}^{\Delta t/2} f\!\left[t\right] e^{-i \left(2 \pi \, t \, n/\Delta t\right)} dt
+\end{align}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{gather}
+\Delta t = \text{the period of } f\!\left[t\right]
+\end{gather}\]</div>
+<p>This relationship can alternatively be expressed as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+f\!\left[t\right] &amp;= \sum_{n=-\infty}^{\infty} F\!\left[\nu_n\right] e^{i \left(2 \pi \, t \, \nu_n \right)} d\nu,
+&amp;
+F\!\left[\nu_n\right] &amp;= \int_{-\Delta t/2}^{\Delta t/2} f\!\left[t\right] e^{-i \left(2 \pi \, t \, \nu_n\right)} dt
+\end{align}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{gather}
+d\nu = 1/\Delta t,
+\qquad
+\nu_n = n \, d\nu
+\end{gather}\]</div>
+<p>where we have replaced <span class="math notranslate nohighlight">\(a_n\)</span> with <span class="math notranslate nohighlight">\(F\!\left[\nu_n\right]\)</span> and pulled out the normalization constant (<span class="math notranslate nohighlight">\(1/\Delta t\)</span>) from the right equation to the left. This form emphasizes that the Fourier series is actually an integral transform between between two continuous functions (<span class="math notranslate nohighlight">\(f\!\left[t\right]\)</span> and <span class="math notranslate nohighlight">\(F\!\left[\nu\right]\)</span>) with forward and inverse kernels of <span class="math notranslate nohighlight">\(\exp\left[- i \left(2 \pi \, t \, \nu \right) \right]\)</span> and
+<span class="math notranslate nohighlight">\(\exp\left[+ i \left(2 \pi \, t \, \nu \right) \right]\)</span>.</p>
+</div>
+<div class="section" id="Discrete-Fourier-Transforms">
+<h3>Discrete Fourier Transforms<a class="headerlink" href="#Discrete-Fourier-Transforms" title="Permalink to this headline">¶</a></h3>
+<p>An important numeric simplification arises due to the <a class="reference external" href="https://mathworld.wolfram.com/SamplingTheorem.html">sampling theorem</a>. A <strong>continuous, periodic</strong> signal can be discretely sampled <em>without any loss of information</em> if the sample rate is greater than twice the largest frequency component of the signal. When this condition holds, the above relationships can be cast as a <a class="reference external" href="https://mathworld.wolfram.com/DiscreteFourierTransform.html">discrete Fourier transform</a> (DFT):</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+f\!\left[t_m\right] &amp;= \sum_{n=-\lfloor N/2 \rfloor}^{\lfloor (N-1)/2 \rfloor} F\!\left[\nu_n\right] e^{i \left(2 \pi \ t_m \ \nu_n \right)} d\nu
+&amp;
+F\!\left[\nu_n\right] &amp;= \sum_{m=-\lfloor N/2 \rfloor}^{\lfloor (N-1)/2 \rfloor} f\!\left[t_m\right] e^{-i \left(2 \pi \ t_m \ \nu_n\right)} dt
+\end{align}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather}
+t_m = m \ dt,
+\qquad
+\nu_n = n \ d\nu \\
+N = \text{the number of sampled points} \\
+N d\nu = 1 /dt = \text{the sample rate}
+\end{gather}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\lfloor ... \rfloor\)</span> represents the floor function, and the range of the summation indices <span class="math notranslate nohighlight">\(m\)</span> and <span class="math notranslate nohighlight">\(n\)</span> are chosen so that the summation indices are the same as the coordinate indices. The transform given by the first equation is called the inverse Fourier transform (<span class="math notranslate nohighlight">\(\nu \to t\)</span>) and that given by the second is called the Fourier transform (<span class="math notranslate nohighlight">\(t \to \nu\)</span>). The definitions require only a discrete set of points, but because no information is lost if sampling at
+more than twice the largest frequency component <em>these relationships carry no approximations</em> with respect to the periodic functions <span class="math notranslate nohighlight">\(f\!\left[t\right]\)</span> or <span class="math notranslate nohighlight">\(F\!\left[\nu\right]\)</span>. Due to the efficient <a class="reference external" href="https://mathworld.wolfram.com/FastFourierTransform.html">fast Fourier transform</a> (FFT) algorithms, DFTs are preferred when performing Fourier transforms numerically.</p>
+<p>An interesting side effect of the discrete Fourier transform is that, along with the periodicity of the time domain, the representation in the frequency domain becomes periodic as well. The time range <span class="math notranslate nohighlight">\(\pm 1/(2 \, d\nu)\)</span> is the periodic time window that corresponds to sampling the frequency domain in steps of <span class="math notranslate nohighlight">\(d\nu\)</span>. Similarly, the frequency range <span class="math notranslate nohighlight">\(\pm 1/ (2 \, dt)\)</span> is the periodic frequency window due to sampling the time domain in steps of <span class="math notranslate nohighlight">\(dt\)</span>. The frequency
+<span class="math notranslate nohighlight">\(\nu = 1/ (2 \, dt)\)</span> is called the <a class="reference external" href="https://mathworld.wolfram.com/NyquistFrequency.html">Nyquist frequency</a>, and is the maximum allowed frequency for a given time domain step size. Any components that are at frequencies greater than the Nyquist frequency will <a class="reference external" href="https://mathworld.wolfram.com/Aliasing.html">alias</a>, or wrap, back onto the primary grid.</p>
+<p>The above equations represent discrete integrals over <strong>points that are centered on</strong> <span class="math notranslate nohighlight">\(t_m\)</span> (<span class="math notranslate nohighlight">\(\nu_n\)</span>) <strong>and extend in bins of</strong> <span class="math notranslate nohighlight">\(\pm 0.5 \, dt\)</span> (<span class="math notranslate nohighlight">\(\pm 0.5 \, d\nu\)</span>). Thus, the transforms span the entire periodic windows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+\Delta t &amp;= N \, dt = 1 / d\nu,
+&amp;
+\Delta \nu &amp;= N \, d\nu = 1/dt
+\end{align}\]</div>
+<p>This is readily seen for grids that contain an odd number of points but requires some more careful consideration when the number of points is even. The minimum coordinate index in that case is <span class="math notranslate nohighlight">\(-N/2\)</span>, which is exactly at the Nyquist frequency, and the maximum index is at <span class="math notranslate nohighlight">\(N/2 - 1\)</span>, which is one step size below Nyquist. To complete the window, one must only realize that the half step down from <span class="math notranslate nohighlight">\(-N/2\)</span> aliases up to meet the half step up from <span class="math notranslate nohighlight">\(N/2 -1\)</span>. This means that for an
+even number of points the information at the positive Nyquist frequency is aliased down to the negative. While there is enough information to fully represent the sampled points, as predicted by the sampling theorem there is in general not enough to reconstruct the sampled function in its entirety. Thus, a discrete Fourier transform <em>sampled with an even number of points</em> is only generally valid <em>if there is no amplitude at the Nyquist component</em>. One special exception is the discrete Fourier
+transform of a purely real function. For this case, due to the complex conjugate symmetry inherent to the Fourier transform of a real function the positive and negative Nyquist terms are real and equal, so a DFT sampled at the Nyquist frequency will return two times the amplitude of the actual Nyquist components. The full real-valued function can then be reconstructed by taking half of the amplitude of the negative Nyquist component and placing it in a frequency bin at the positive Nyquist
+component.</p>
+</div>
+<div class="section" id="Continuous-Fourier-Transforms">
+<h3>Continuous Fourier Transforms<a class="headerlink" href="#Continuous-Fourier-Transforms" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="https://mathworld.wolfram.com/FourierTransform.html">continuous Fourier transform</a> (FT) is derived by extending the Fourier series’ time window to infinity:</p>
+<div class="math notranslate nohighlight">
+\[\begin{gather}
+d\nu \to 0 \quad \text{and} \quad T \to \infty
+\end{gather}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+f\!\left[t\right] &amp;= \int_{-\infty}^{\infty} F\!\left[\nu\right] e^{+i \left(2 \pi \ t \ \nu\right)} d\nu
+&amp;
+F\!\left[\nu\right] &amp;= \int_{-\infty}^{\infty} f\!\left[t\right] e^{-i \left(2 \pi \ t \ \nu\right)} dt
+\end{align}\]</div>
+<p>These elegant relationships are useful for representing the frequency content of arbitrary continuous functions, but yield more complicated representations than Fourier series or DFTs when the function of interest is itself periodic.</p>
+</div>
+</div>
+<div class="section" id="Useful-Relationships">
+<h2>Useful Relationships<a class="headerlink" href="#Useful-Relationships" title="Permalink to this headline">¶</a></h2>
+<p>The relationships of this section are true for both discrete and continuous Fourier transforms. The following generalized notation will be used going forward:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\text{Fourier Transform:} \quad &amp; F\!\left[\nu\right] = \mathscr{F}\!\Bigl[f\!\left[t\right]\Bigr]
+\\
+\text{Inverse Fourier Transform:} \quad &amp; f\!\left[t\right] = \mathscr{F}^{-1}\!\Bigl[F\!\left[\nu\right]\Bigr]
+\\
+\text{Summation or Integration:} \quad &amp; \int_{-\infty}^{\infty} ...
+\end{align}\end{split}\]</div>
+<p>For the discrete case, the summation is assumed to be across all points up to the Nyquist time or frequency.</p>
+<div class="section" id="Linearity">
+<h3>Linearity<a class="headerlink" href="#Linearity" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+a \ f\!\left[t\right] + b \ g\!\left[t\right] &amp;= \mathscr{F}^{-1}\!\Bigl[ a \ F\!\left[\nu\right] + b \ G\!\left[\nu\right] \Bigr]
+&amp;
+a \ F\!\left[\nu\right] + b \ G\!\left[\nu\right] &amp;= \mathscr{F}\!\Bigl[ a \ f\!\left[t\right] + b \ g\!\left[t\right] \Bigr]
+\end{align}\]</div>
+</div>
+<div class="section" id="Shifting-and-Scaling">
+<h3>Shifting and Scaling<a class="headerlink" href="#Shifting-and-Scaling" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+f\!\left[t-t_0\right] &amp;= \mathscr{F}^{-1}\!\left[F\!\left[\nu\right] e^{-i \left(2 \pi \ t_0 \ \nu\right)}\right]
+&amp;
+F\!\left[\nu - \nu_0\right] &amp;= \mathscr{F}\!\left[f\!\left[t\right] e^{+i \left(2 \pi \ t \ \nu_0 \right)} \right]
+\\
+f\!\left[a \ t\right] &amp;= \mathscr{F}^{-1}\!\left[\frac{1}{\left\vert a \right\vert} F\!\left[\nu / a\right] \right]
+&amp;
+F\!\left[a \ \nu \right] &amp;= \mathscr{F}\!\left[\frac{1}{\left\vert a \right\vert} f\!\left[t / a\right] \right]
+\end{align}\end{split}\]</div>
+</div>
+<div class="section" id="Derivatives-and-Integrals">
+<h3>Derivatives and Integrals<a class="headerlink" href="#Derivatives-and-Integrals" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+\frac{d^{n}}{dt^{n}} f\!\left[t\right] &amp;= \mathscr{F}^{-1}\!\Bigl[ \left(+i \ 2 \pi \ \nu\right)^{n} F\!\left[\nu\right] \Bigr]
+&amp;
+\frac{d^{n}}{d\nu^{n}} F\!\left[\nu\right] &amp;= \mathscr{F}\!\Bigl[ \left(-i \ 2 \pi \ t\right)^{n} f\!\left[t\right] \Bigr]
+\end{align}\]</div>
+<p>Positive integer values of <span class="math notranslate nohighlight">\(n\)</span> represent derivatives and negative integers represent integrals (antiderivatives). All other values of <span class="math notranslate nohighlight">\(n\)</span> represent derivatives and integrals in the realm of fractional calculus.</p>
+<p>Negative values of <span class="math notranslate nohighlight">\(n\)</span> require special care as the integrand diverges at the origin. For continuous transforms the integral is performed using the <a class="reference external" href="https://mathworld.wolfram.com/CauchyPrincipalValue.html">Cauchy principal value</a> method. Without it, the derivatives and integrals are only strictly valid for the class of functions that have <span class="math notranslate nohighlight">\(0\)</span> mean. Leaving out the Cauchy principal value is accomplished by setting the amplitude of the integrand to <span class="math notranslate nohighlight">\(0\)</span> at the origin. When
+performed numerically, such an approximation is usually the only choice.</p>
+</div>
+<div class="section" id="Convolutions">
+<h3>Convolutions<a class="headerlink" href="#Convolutions" title="Permalink to this headline">¶</a></h3>
+<p>With convolution defined as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\left(f * g\right)\!\left[t\right] &amp;= \iint_{-\infty}^{\infty} f\!\left[t_1\right] g\!\left[t_2\right] \delta\!\left[t - \left(t_1 + t_2\right)\right] dt_1 \ dt_2
+\\
+\left(F * G\right)\!\left[\nu\right] &amp;= \int_{-\infty}^{\infty} F\!\left[\nu_1\right] G\!\left[\nu_2\right] \delta\!\left[\nu - \left(\nu_1 + \nu_2\right)\right] d\nu_1 \ d\nu_2
+\end{align}\end{split}\]</div>
+<p>The convolution of two functions in one domain is the product of the Fourier transforms in the other:</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+\left(f * g\right)\!\left[t\right] &amp;= \mathscr{F}^{-1}\!\Bigl[ F\!\left[\nu\right] G\!\left[\nu\right] \Bigr]
+&amp;
+\left(F * G\right)\!\left[\nu\right] &amp;= \mathscr{F}\!\Bigl[ f\!\left[t\right] g\!\left[t\right] \Bigr]
+\end{align}\]</div>
+<p>The support of a convolution is the sum of the support of its parts. In order to avoid aliasing, when on a discrete grid the sum of the supports of the functions to be convolved should be less than the range of the gridded time or frequency domains.</p>
+</div>
+<div class="section" id="Cross-Correlation">
+<h3>Cross-Correlation<a class="headerlink" href="#Cross-Correlation" title="Permalink to this headline">¶</a></h3>
+<p>With cross-correlation defined as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\left(f \star g\right)\!\left[t\right] &amp;= \iint_{-\infty}^{\infty} \overline{f}\!\left[t_1\right] g\!\left[t_2\right] \delta\!\left[t + \left(t_1 - t_2\right)\right] dt_1 \ dt_2
+\\
+\left(F \star G\right)\!\left[\nu\right] &amp;= \int_{-\infty}^{\infty} \overline{F}\!\left[\nu_1\right] G\!\left[\nu_2\right] \delta\!\left[\nu + \left(\nu_1 - \nu_2\right)\right] d\nu_1 \ d\nu_2
+\end{align}\end{split}\]</div>
+<p>where the barred symbols <span class="math notranslate nohighlight">\((\overline{f}, \overline{F})\)</span> indicate complex conjugates.</p>
+<p>The cross-correlation of two functions in one domain is the product of the Fourier transforms in the other domain, with the first function conjugated:</p>
+<div class="math notranslate nohighlight">
+\[\begin{align}
+\left(f \star g\right)\!\left[t\right] &amp;= \mathscr{F}^{-1}\!\Bigl[ \overline{F}\!\left[\nu\right] G\!\left[\nu\right] \Bigr]
+&amp;
+\left(F \star G\right)\!\left[\nu\right] &amp;= \mathscr{F}\!\Bigl[ \overline{f}\!\left[t\right] g\!\left[t\right] \Bigr]
+\end{align}\]</div>
+</div>
+<div class="section" id="Normalization">
+<h3>Normalization<a class="headerlink" href="#Normalization" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{gather}
+E = \int_{-\infty}^{\infty} \Bigl\vert f\!\left[t\right] \Bigr\vert^{2} dt = \int_{-\infty}^{\infty} \Bigl\vert F\!\left[\nu\right] \Bigr\vert^{2} d\nu
+\end{gather}\]</div>
+<p>This follows from <a class="reference external" href="https://mathworld.wolfram.com/ParsevalsTheorem.html">Parseval’s Theorem</a> for Fourier series, or equivalently, from <a class="reference external" href="https://mathworld.wolfram.com/PlancherelsTheorem.html">Plancherel’s Theorem</a> for continuous Fourier transforms. In optics, these expressions yield the total energy of a pulse or spectrum.</p>
+</div>
+<div class="section" id="Real-Functions-and-the-Analytic-Representation">
+<h3>Real Functions and the Analytic Representation<a class="headerlink" href="#Real-Functions-and-the-Analytic-Representation" title="Permalink to this headline">¶</a></h3>
+<p>If <span class="math notranslate nohighlight">\(f\!\left[t\right]\)</span> is real, the real and imaginary components of <span class="math notranslate nohighlight">\(F\!\left[\nu\right]\)</span> have even and odd symmetry about the origin (<span class="math notranslate nohighlight">\(f\!\left[t\right] e^{i \, x} = f\!\left[t\right] \left(\cos\left[x\right] + i \sin\left[x\right]\right)\)</span>). This can be used to simplify the representation of real functions as all information is contained in just half of their spectrum. One possible transformation is motivated through the normalization relationship:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+E &amp;= \int_{-\infty}^{\infty} \Bigl\vert f\!\left[t\right] \Bigr\vert^{2} dt = \int_{-\infty}^{\infty} \Bigl\vert F\!\left[\nu\right] \Bigr\vert^{2} d\nu
+\\
+&amp;= 2 \int_{0}^{\infty} \Bigl\vert F\!\left[\nu\right] \Bigr\vert^{2} d\nu = \int_{0}^{\infty} \Bigl\vert \sqrt{2} \ F\!\left[\nu\right] \Bigr\vert^{2} d\nu
+\end{align}\end{split}\]</div>
+<p>If we replace the quantity in the last absolute value with a single expression, we arrive at an analytic, or complex envelope, representation:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather}
+E = \int_{-\infty}^{\infty} \Bigl\vert A\!\left[\nu\right] \Bigr\vert^{2} d\nu = \int_{-\infty}^{\infty} \Bigl\vert a\!\left[t\right] \Bigr\vert^{2} dt
+\\
+A\!\left[\nu\right] = \begin{cases}
+    \sqrt{2} \ F\!\left[\nu\right] &amp; \text{if $\nu \geq 0$} \\
+    0 &amp; \text{if $\nu \lt 0$}
+\end{cases}
+\\
+a\!\left[t\right] = \mathscr{F}^{-1}\!\Bigl[ A\!\left[\nu\right] \Bigr]
+\qquad
+A\!\left[\nu\right] = \mathscr{F}\!\Bigl[ a\!\left[t\right] \Bigr]
+\end{gather}\end{split}\]</div>
+<p>There are alternative ways of relating an analytic spectrum to the full Fourier transform of the real function, but this particular method does not require modifications to the normalization relationship.</p>
+<p>Further simplifications can be made by shifting the analytic spectrum to the origin and discarding points that contain zero amplitude. That allows the efficient use of Fourier transforms over just a subset of the real function’s total frequency range, i.e. calculations need only be performed over the support of the analytic spectrum:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather}
+\nu^{\prime} = \nu - \nu_0
+\\
+A\!\left[\nu^{\prime}\right] = \begin{cases}
+    \sqrt{2} \ F\!\left[\nu^{\prime} + \nu_0\right] &amp; \text{if $\nu^{\prime} + \nu_0 \geq 0$} \\
+    0 &amp; \text{if $\nu^{\prime} + \nu_0 \lt 0$}
+\end{cases}
+\\
+a\!\left[t^{\prime}\right] = \mathscr{F}^{-1}\!\Bigl[ A\!\left[\nu^{\prime}\right] \Bigr]
+\qquad
+A\!\left[\nu^{\prime}\right] = \mathscr{F}\!\Bigl[ a\!\left[t^{\prime}\right] \Bigr]
+\end{gather}\end{split}\]</div>
+</div>
+</div>
+<div class="section" id="Numeric-Implementation-of-DFTs">
+<h2>Numeric Implementation of DFTs<a class="headerlink" href="#Numeric-Implementation-of-DFTs" title="Permalink to this headline">¶</a></h2>
+<p>Unfortunately, most numeric implementations of discrete Fourier transforms do not utilize the intuitive aspects of the transforms as defined above and so require careful handling. Below are the standard definitions of the discrete Fourier transform and its inverse (see <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/routines.fft.html">numpy.fft</a> or <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/tutorial/fft.html">scipy.fft</a>):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\text{ifft:} \quad &amp; a\!\left[t_m\right] = \frac{1}{N} \sum_{n=0}^{N-1} A\!\left[\nu_n\right] e^{i \left(2\pi \frac{m \ n}{N}\right)}
+\\
+\text{fft:} \quad &amp; A\!\left[\nu_n\right] = \sum_{m=0}^{N-1} a\!\left[t_m\right] e^{-i \left(2\pi \frac{m \ n}{N}\right)}
+\end{align}\end{split}\]</div>
+<ul class="simple">
+<li><p>The expression in the exponential is easily derived from the definitions given at the start of this document by replacing <span class="math notranslate nohighlight">\(t_m\)</span> and <span class="math notranslate nohighlight">\(\nu_n\)</span> with their corresponding indexed values and using the relationship <span class="math notranslate nohighlight">\(dt \ d\nu = 1/N\)</span>. This is a direct result of gridding the time and frequency domains and represents only a refactoring of the previous notation.</p></li>
+<li><p>The leading <span class="math notranslate nohighlight">\(1/N\)</span> in the definition for the ifft is due to the implementation implicitly defining a unit integer time step. With <span class="math notranslate nohighlight">\(dt = 1\)</span>, the frequency step must be <span class="math notranslate nohighlight">\(d\nu = 1/N\)</span>. This breaks the energy normalization of Fourier transforms with arbitrary <span class="math notranslate nohighlight">\(dt/d\nu\)</span> ratios <em>and requires explicit removal from all ifft operations</em>.</p></li>
+<li><p>The shifting of the summation indices’ range to strictly positive integers disrupts the monotonic order of the coordinate indices <em>and has implications whenever using fft or ifft operations</em>.</p></li>
+</ul>
+<div class="section" id="fftshift-and-ifftshift">
+<h3>fftshift and ifftshift<a class="headerlink" href="#fftshift-and-ifftshift" title="Permalink to this headline">¶</a></h3>
+<p>The summation, or array indices range from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(N-1\)</span>, but due to aliasing the effective coordinate indices still range from <span class="math notranslate nohighlight">\(-\lfloor N/2 \rfloor\)</span> to <span class="math notranslate nohighlight">\(\lfloor(N-1)/2\rfloor\)</span>. The coordinate indices follow the array indices up through the midway point, but at array index <span class="math notranslate nohighlight">\(\lfloor (N-1)/2 \rfloor +1\)</span> the coordinate grid aliases to <span class="math notranslate nohighlight">\(-\lfloor N/2 \rfloor\)</span>. Array indices from <span class="math notranslate nohighlight">\(\lfloor (N-1)/2 \rfloor +1\)</span> to <span class="math notranslate nohighlight">\(N-1\)</span> represent negative time or frequency
+coordinates.</p>
+<p>This “standard” fft ordering is unintuitive and may not be immediately obvious from cursory inspection, but it must be followed when using fft and ifft functions to avoid numeric artifacts or other erroneous results. To aid in that endeavor, numeric packages contain <strong>fftshift</strong> and <strong>ifftshift</strong> functions which rearrange arrays such that they go from standard fft ordering to arrays with monotonically ordered coordinates and vice versa. In this regard, fftshift is used to translate fft ordering
+to monotonic ordering, and ifftshift is used to translate monotonic ordering to fft ordering.</p>
+<p>The operation of fftshift and ifftshift functions are shown in the table below, where indices at the beginning, middle, and end of an array are shown. The first column is the array index, the second is the aliased coordinate index expected by fft/ifft operations, and the last column is the coordinate index after an fftshift operation. Standard fft ordering is restored by following an fftshift operation with an ifftshift operation.</p>
+<table class="table">
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 32%" />
+<col style="width: 34%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>array index</p></th>
+<th class="head"><p>coordinate index</p></th>
+<th class="head"><p>coord. after fftshift(…)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-\lfloor N/2\rfloor\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(1\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(1\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-\lfloor N/2\rfloor+1\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(2\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(2\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-\lfloor N/2\rfloor+2\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\lfloor(N-1)/2\rfloor\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\lfloor(N-1)/2\rfloor\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-1\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\lfloor(N-1)/2\rfloor+1\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-\lfloor N/2\rfloor\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\lfloor(N-1)/2\rfloor+2\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-\lfloor N/2\rfloor+1\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(1\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(N-3\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-3\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\lfloor(N-1)/2\rfloor-2\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(N-2\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-2\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\lfloor(N-1)/2\rfloor-1\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(N-1\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(-1\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\lfloor(N-1)/2\rfloor\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Real-DFTs">
+<h3>Real DFTs<a class="headerlink" href="#Real-DFTs" title="Permalink to this headline">¶</a></h3>
+<p>The analytic formulation is useful for the efficient representation of real physical quantities, and interfaces nicely with complex-valued fft and ifft functions. However, there are times when the real representation is necessary or more efficient, such as when an input array is strictly real or when dealing with nonlinear operations that are difficult to directly perform analytically. Numeric packages include fft implementations that specifically transform real input and that calculate and
+return only the positive half of a spectrum. With the help of array indexing operations, these <strong>rfft</strong> and <strong>irfft</strong> operations allow simple translation between analytic and real-valued representations:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\text{irfft:} \quad &amp; f\!\left[t_m\right] = \operatorname{irfft}\!\left( F\!\left[\nu\right] \ N_r d\nu, \quad n=N_r \right)_m
+\\
+\text{rfft:} \quad &amp; F\!\left[\nu_n\right] = \operatorname{rfft}\!\left( f\!\left[t\right] \ dt \right)_n
+\end{align}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather}
+N_r = \text{the number of sampled points in the time domain}
+\\
+dt \ d\nu = 1 / N_r
+\end{gather}\end{split}\]</div>
+<p>One important property of these functions is that <em>the output of a rfft does not have the same number of points as its input</em>. In general, the frequency domain output array has <span class="math notranslate nohighlight">\(N = \lfloor N_r/2 \rfloor + 1\)</span> number of points, where <span class="math notranslate nohighlight">\(N_r\)</span> is the total number of points in the time domain. This does not pose any complications when using the rfft, but in general <em>the number of real output points must be explicitly given to the irfft function</em>. The reduced number of points in the
+frequency domain has another implication, <em>the frequency domain output array is always arranged such that the coordinates are in monotonic order</em>. The time domain array is still ordered as described in the previous section, but since the rfft only returns the positive side of the spectrum the array ends before it wraps around. The slight caveat to this is that the Nyquist frequency (when reached) is considered positive instead of negative.</p>
+<p>When transforming between real and analytic representations of the spectrum the first and last points need to be adjusted due to the discrete nature of the frequency bins:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather}
+A\!\left[\nu_n\right] = \sqrt{2}
+\begin{cases}
+\frac{1}{\sqrt{2}} \ F\!\left[\nu_n\right] &amp;\text{if $\nu_n = 0$}
+\\ \\
+\frac{1}{2} \ F\!\left[\nu_n\right] &amp;\text{if $\nu_n = \lfloor N_r/2 \rfloor d\nu$ and } N_r \text{ is even}
+\\ \\
+F\!\left[\nu_n\right] &amp;\text{all other cases}
+\end{cases}
+\end{gather}\end{split}\]</div>
+<p>The first condition states that the amplitude at the origin of the analytic array is unchanged with respect to the real-valued representation. The frequency bin at the origin extends over both positive and negative frequencies regardless of the representation. To preserve the integrated power, the power in that bin must not change. When the number of points in the real representation is even the last bin contains information aliased from both the positive and negative Nyquist frequencies. The
+second condition states that the power is preserved only if one Nyquist component is considered, if only half of the combined amplitude is retained. In addition to the amplitude renormalization, the first and last point of the rfft array must be complex conjugate symmetric about the origin. This means that the amplitude at the origin must be real, and if the number of points in the real representation is even then the amplitude at the Nyquist frequency must also be real.</p>
+<p>Due to the added complexity of keeping track of those details, it is easier to just not include the origin or the real representation’s Nyquist frequency in the analytic array, i.e. to have both the origin and the Nyquist frequency of the real-valued representation be configured to have zero amplitude. This is easily accomplished by starting the frequency grid of the analytic representation away from the origin and using an odd number of points if the sampling is Nyquist limited. With that
+restriction, transformations from one representation to the other need only use a uniform <span class="math notranslate nohighlight">\(\sqrt{2}\)</span> scale factor at all points.</p>
+</div>
+<div class="section" id="FFT-Cookbook">
+<h3>FFT Cookbook<a class="headerlink" href="#FFT-Cookbook" title="Permalink to this headline">¶</a></h3>
+<p>When using fft and ifft functions it is best practice to follow a set of rules so that the normalization and array ordering quirks are always considered.</p>
+<div class="section" id="Analytic-Representation">
+<h4>Analytic Representation<a class="headerlink" href="#Analytic-Representation" title="Permalink to this headline">¶</a></h4>
+<p>Given the total number of points <span class="math notranslate nohighlight">\(N\)</span>, start by defining the time and frequency step sizes <span class="math notranslate nohighlight">\(dt\)</span> and <span class="math notranslate nohighlight">\(d\nu\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{gather}
+dt \, d\nu = 1/N
+\end{gather}\]</div>
+<p>Then define the full time and frequency grids <span class="math notranslate nohighlight">\(t_m\)</span> and <span class="math notranslate nohighlight">\(\nu_n\)</span> using the array indices <span class="math notranslate nohighlight">\(m\)</span> and <span class="math notranslate nohighlight">\(n\)</span> ranging from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(N-1\)</span>. The frequency domain may have an optional offset <span class="math notranslate nohighlight">\(\nu_0\)</span>. If planning to transform between the analytic and real-valued representations <span class="math notranslate nohighlight">\(\nu_0\)</span> must be integer divisible by <span class="math notranslate nohighlight">\(d\nu\)</span>, and <span class="math notranslate nohighlight">\(\nu_n\)</span> should be greater than <span class="math notranslate nohighlight">\(0\)</span> at all points:</p>
+<div class="math notranslate nohighlight">
+\[\begin{gather}
+t_m = (m - \lfloor N/2 \rfloor) \, dt
+\qquad
+\nu_n = \nu_0 + (n - \lfloor N/2 \rfloor) \, d\nu
+\end{gather}\]</div>
+</div>
+<div class="section" id="Real-Valued-Representation">
+<h4>Real-Valued Representation<a class="headerlink" href="#Real-Valued-Representation" title="Permalink to this headline">¶</a></h4>
+<p>The coordinate grids for the associated real-valued representation <span class="math notranslate nohighlight">\({t_r}_m\)</span> and <span class="math notranslate nohighlight">\({\nu_r}_n\)</span> use array index <span class="math notranslate nohighlight">\(m\)</span> ranging from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(N_r-1\)</span> and array index <span class="math notranslate nohighlight">\(n\)</span> ranging from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(\lfloor N_r/2 \rfloor\)</span>. The total number of points <span class="math notranslate nohighlight">\(N_r\)</span> should allow transforming from the analytic representation without aliasing:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather}
+dt_r \, d\nu = 1/N_r
+\\
+{t_r}_m = (m - \lfloor N_r/2 \rfloor) \, dt_r
+\qquad
+{\nu_r}_n = n \, d\nu
+\end{gather}\end{split}\]</div>
+</div>
+<div class="section" id="Array-Ordering">
+<h4>Array Ordering<a class="headerlink" href="#Array-Ordering" title="Permalink to this headline">¶</a></h4>
+<p>From this point there are two alternate paths that ensure fft and ifft functions always receive the correct ordering and that the ordering of the coordinate grids and amplitude arrays are always aligned. The first is to order all arrays such that the coordinate grids are in a monotonic order and then wrap calls to fft or ifft with ifftshift and fftshift operations. The second is to order all arrays in the standard fft order and then only use fftshift operations when one wants to display arrays
+with monotonically ordered coordinate arrays.</p>
+<div class="section" id="Monotonic-Order:">
+<h5>Monotonic Order:<a class="headerlink" href="#Monotonic-Order:" title="Permalink to this headline">¶</a></h5>
+<ul>
+<li><p>Keep the time and frequency grids as defined above.</p></li>
+<li><p>Construct amplitude arrays <span class="math notranslate nohighlight">\(a\left[t\right]_m\)</span> and <span class="math notranslate nohighlight">\(A\left[\nu\right]_n\)</span> using the same order as the coordinate arrays.</p></li>
+<li><p>Transform between the analytic and real representations using the same order as the coordinate arrays:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{gather}
+F\left[\nu_r\right]_n =
+\begin{cases}
+\frac{1}{\sqrt{2}} A\left[\nu_r\right]_n &amp;\text{if ${\nu_r}_n \in \nu$}
+\\
+0 &amp;\text{all other cases}
+\end{cases}
+\end{gather}\end{split}\]</div>
+</li>
+<li><p>Nest all calls to fft and ifft between fftshift and ifftshift, include normalization factors <span class="math notranslate nohighlight">\(dt\)</span> and <span class="math notranslate nohighlight">\(N d\nu\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{alignat}{4}
+&amp;\text{ifft:} &amp; a\left[t\right]_m &amp;= \operatorname{fftshift}\!\left(\operatorname{ifft}\!\left(\operatorname{ifftshift}\!\left( A\!\left[\nu\right] \ N d\nu \right)\right)\right)_m
+\\
+&amp;\text{fft:} &amp; A\left[\nu\right]_n &amp;= \operatorname{fftshift}\!\left(\operatorname{fft}\!\left(\operatorname{ifftshift}\!\left( a\!\left[t\right] \ dt \right)\right)\right)_n
+\\
+&amp;\text{irfft:} &amp; f\left[t_r\right]_m &amp;= \operatorname{fftshift}\!\left(\operatorname{irfft}\!\left( F\!\left[\nu_r\right] \ N_r d\nu , \quad n=N_r\right)\right)_m
+\\
+&amp;\text{rfft:} &amp; F\left[\nu_r\right]_n &amp;= \operatorname{rfft}\!\left(\operatorname{ifftshift}\!\left( f\!\left[t_r\right] \ dt_r \right)\right)_n
+\end{alignat}\end{split}\]</div>
+</li>
+<li><p>Display the coordinate and amplitude arrays without any other modification.</p></li>
+</ul>
+</div>
+<div class="section" id="Standard-FFT-Order:">
+<h5>Standard FFT Order:<a class="headerlink" href="#Standard-FFT-Order:" title="Permalink to this headline">¶</a></h5>
+<ul>
+<li><p>Store the time and frequency grids in standard fft order:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+t_m &amp;= \operatorname{ifftshift}\!\left(t\right)_m
+&amp;
+\nu_n &amp;= \operatorname{ifftshift}\!\left(\nu\right)_n
+\\
+{t_r}_m &amp;= \operatorname{ifftshift}\!\left(t_r\right)_m
+&amp;
+{\nu_r}_n &amp;= \text{as defined above}
+\end{align}\end{split}\]</div>
+</li>
+<li><p>Construct amplitude arrays <span class="math notranslate nohighlight">\(a\left[t\right]_m\)</span> and <span class="math notranslate nohighlight">\(A\left[\nu\right]_n\)</span> using the same order as the coordinate arrays.</p></li>
+<li><p>Transform between the analytic and real representations after an fftshift operation on the analytic array:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+F\left[\nu_r\right]_n =
+\begin{cases}
+\frac{1}{\sqrt{2}} \operatorname{fftshift}\!\left(A\!\left[\nu_r\right]\right)_n &amp;\text{if ${\nu_r}_n \in \nu$} \\
+0 &amp;\text{all other cases}
+\end{cases}
+\end{equation}\end{split}\]</div>
+</li>
+<li><p>Call fft and ifft without any fftshift or ifftshift, include normalization factors <span class="math notranslate nohighlight">\(dt\)</span> and <span class="math notranslate nohighlight">\(N d\nu\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{alignat}{4}
+&amp;\text{ifft:} &amp; a\left[t\right]_m &amp;= \operatorname{ifft}\!\left( A\!\left[\nu\right] \ N d\nu \right)_m
+\\
+&amp;\text{fft:} &amp; A\left[\nu\right]_n &amp;= \operatorname{fft}\!\left( a\!\left[t\right] \ dt \right)_n
+\\
+&amp;\text{irfft:} &amp; f\left[t_r\right]_m &amp;= \operatorname{irfft}\!\left( F\!\left[\nu_r\right] \ N_r d\nu , \quad n=N_r\right)_m
+\\
+&amp;\text{rfft:} &amp; F\left[\nu_r\right]_n &amp;= \operatorname{rfft}\!\left( f\!\left[t_r\right] \ dt_r \right)_n
+\end{alignat}\end{split}\]</div>
+</li>
+<li><p>Display the coordinate and amplitude arrays after applying fftshift.</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="../notes.html" title="previous page">Notes</a>
+    <a class='right-next' id="next-link" href="linear_optics.html" title="next page">Linear Optics</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, PyNLO authors.<br/>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.<br/>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

@@ -6,11 +6,12 @@ TODO: module docs... testing for pynlo.light methods and classes
 # %% Imports
 
 import numpy as np
-from scipy import constants, integrate, fft
+from scipy import constants, integrate
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
 
 from pynlo import light
+from pynlo.utility import fft
 
 # %% Constants
 
@@ -733,7 +734,7 @@ if __name__ == "__main__":
 
 t_grid = np.linspace(-2, 2, 10000)[:-1]
 dt = np.diff(t_grid).mean()
-cont_t = 0.25*np.cos(2*np.pi/2 * t_grid)
+cont_t = 0.25*np.cos(2*pi/2 * t_grid)
 print(np.sum(cont_t**2)*dt)
 
 n = 4
@@ -770,7 +771,7 @@ dv = 1
 n = 10000
 dt = 1/(n*dv)
 t_grid = dt*np.arange(-(n//2), n - (n//2))
-test_t = np.exp(1j*(2*np.pi/.5)*t_grid)*np.exp(1j*np.pi/5)
+test_t = np.exp(1j*(2*pi/.5)*t_grid)*np.exp(1j*pi/5)
 test_t = test_t.real
 plt.plot(t_grid, test_t.real, "-", color="C0")
 plt.plot(t_grid, test_t.imag, ":", color="C0")
@@ -778,7 +779,7 @@ plt.plot(t_grid, test_t.imag, ":", color="C0")
 n = 5
 dt = 1/(n*dv)
 t_grid = dt*np.arange(-(n//2), n - (n//2))
-test1_t = np.exp(1j*(2*np.pi/.5)*t_grid)*np.exp(1j*np.pi/5)
+test1_t = np.exp(1j*(2*pi/.5)*t_grid)*np.exp(1j*pi/5)
 test1_t = test1_t.real
 test1_v = np.fft.fftshift(np.fft.fft(np.fft.ifftshift(test1_t*dt)))
 print(test1_v.round(3))
@@ -788,7 +789,7 @@ plt.plot(t_grid, test1_t.imag, '.', color="C1")
 n = 4
 dt = 1/(n*dv)
 t_grid = dt*np.arange(-(n//2), n - (n//2))
-test2_t = np.exp(1j*(2*np.pi/.5)*t_grid)*np.exp(1j*np.pi/5)
+test2_t = np.exp(1j*(2*pi/.5)*t_grid)*np.exp(1j*pi/5)
 test2_t = test2_t.real
 test2_v = np.fft.fftshift(np.fft.fft(np.fft.ifftshift(test2_t*dt)))
 plt.plot(t_grid, test2_t.real, '.', color="C2")
@@ -878,6 +879,116 @@ test4 = np.sum(np.abs(test_at)**2 * adt)
 print(test2/test1)
 print(test3/test1)
 print(test4/test1)
+
+
+# %% Shot Noise
+rng = np.random.default_rng()
+from scipy import stats
+
+# %%%
+n = 2**14
+dt = 1
+t = dt * np.arange(n)
+dv = 1/(n*dt)
+n_avg = 100 # per bin
+
+test = np.exp(1j*2*pi/(n//5 * dt) * t) #* np.exp(-0.5 * ((t-5)/.5)**2)
+test *= ((n_avg*n)/np.sum(np.abs(test)**2 * dt))**0.5
+test_v = fft.fftshift(fft.fft(fft.ifftshift(test), fsc=dt))
+
+# Photon Detector Noise (poisson sample)
+ps_n = rng.poisson(lam=np.abs(test)**2 * dt)
+test_ps = (ps_n/dt)**0.5 * np.exp(1j*np.angle(test))
+test_ps_v = fft.fftshift(fft.fft(fft.ifftshift(test_ps), fsc=dt))
+
+test_ps_noise = test_ps - test
+test_ps_noise_v = fft.fftshift(fft.fft(fft.ifftshift(test_ps_noise), fsc=dt))
+
+# Quantum Coherent State Uncertainty (normal sample)
+    # ~coherent state (TD)
+test_nm_noise = 1/(2*dt)**0.5 * (rng.standard_normal(n) + 1j*rng.standard_normal(n))
+test_nm_noise_v = fft.fftshift(fft.fft(fft.ifftshift(test_nm_noise), fsc=dt))
+test_nm = test + test_nm_noise
+test_nm_v = fft.fftshift(fft.fft(fft.ifftshift(test_nm), fsc=dt))
+    # ~coherent state (FD)
+# test_nm_noise_v = 1/(2*dv)**0.5 * (rng.standard_normal(n) + 1j*rng.standard_normal(n))
+# test_nm_noise = fft.fftshift(fft.ifft(fft.ifftshift(test_nm_noise_v), fsc=dt))
+# test_nm_v = test_v + test_nm_noise_v
+# test_nm = fft.fftshift(fft.ifft(fft.ifftshift(test_nm_v), fsc=dt))
+
+
+plt.figure("Time Domain - Quadratures")
+plt.clf()
+plt.plot(t, test_nm.real * dt**0.5, '.', markersize=3, label="normal")
+plt.plot(t, test_nm.imag * dt**0.5, '.', color="C0", markersize=3)
+plt.plot(t, test_ps.real * dt**0.5, '.', markersize=3, label="poisson")
+plt.plot(t, test_ps.imag * dt**0.5, '.', color="C1", markersize=3)
+plt.plot(t, test.real * dt**0.5, linewidth=1, label="exact")
+plt.plot(t, test.imag * dt**0.5, color="C2", linewidth=1)
+plt.legend(markerscale=3)
+
+n_bins = np.arange(ps_n.max()+2) - 0.5
+n_range = np.arange(ps_n.max()+1)
+plt.figure("Photon Number - TD Histogram")
+plt.clf()
+plt.hist(np.abs(test_nm)**2 * dt, bins=n_bins, density=True, label="normal")
+plt.hist(np.abs(test_ps)**2 * dt, bins=n_bins, density=True, alpha=0.75, label="poisson")
+plt.plot(stats.poisson.pmf(n_range, n_avg), '.-', label="exact")
+plt.legend()
+
+
+plt.figure("IQ Noise - TD Histogram")
+plt.clf()
+hist_data = plt.hist(test_nm_noise.real * dt**0.5, bins=100, density=True, label="Amplitude")
+plt.hist(test_nm_noise.imag * dt**0.5, bins=hist_data[1], density=True, alpha=0.75, label="Phase")
+plt.plot(hist_data[1], stats.norm.pdf(hist_data[1], scale=2**-0.5), '.-', label="exact")
+plt.legend()
+
+plt.figure("IQ Noise - FD Histogram")
+plt.clf()
+hist_data = plt.hist(test_nm_noise_v.real * dv**0.5, bins=100, density=True, label="Amplitude")
+plt.hist(test_nm_noise_v.imag * dv**0.5, bins=hist_data[1], density=True, alpha=0.75, label="Phase")
+plt.plot(hist_data[1], stats.norm.pdf(hist_data[1], scale=2**-0.5), '.-', label="exact")
+plt.legend()
+
+
+plt.figure("IQ Diagram")
+plt.clf()
+plt.plot(np.abs(test_nm) * dt**0.5 * np.exp(1j*np.angle(test_nm)).real,
+         np.abs(test_nm) * dt**0.5 * np.exp(1j*np.angle(test_nm)).imag,
+         '.', markersize=1, label="normal")
+plt.plot(np.abs(test_ps) * dt**0.5 * np.exp(1j*np.angle(test_ps)).real,
+         np.abs(test_ps) * dt**0.5 * np.exp(1j*np.angle(test_ps)).imag,
+         '.', markersize=1, label="poisson")
+plt.plot(np.abs(test) * dt**0.5 * np.exp(1j*np.angle(test)).real,
+         np.abs(test) * dt**0.5 * np.exp(1j*np.angle(test)).imag,
+         label="exact")
+plt.legend(markerscale=10)
+ax0 = plt.gca()
+ax0.set_aspect("equal", adjustable="datalim")
+
+plt.figure("Frequency Domain - Photon Number")
+plt.clf()
+plt.semilogy(t, np.abs(test_nm_noise_v)**2, '.', markersize=3, label="normal")
+plt.semilogy(t, np.abs(test_ps_noise_v)**2, '.', markersize=3, label="poisson")
+plt.semilogy(t, np.abs(test_v)**2, label="exact")
+plt.legend(markerscale=3)
+
+print("Coherent State (normal distribution):")
+print("Time Domain")
+print("photon var/bin:\t", np.var(np.abs(test_nm)**2 * dt))
+print("noise/bin**0.5:\t", np.std(test_nm_noise * dt**0.5))
+print("Frequency Domain")
+print("photon var/bin:\t", np.var(np.abs(test_nm_v)**2 * dv))
+print("noise/bin**0.5:\t", np.std(test_nm_noise_v * dv**0.5))
+
+print("\nPhoton Detection (poisson distribution):")
+print("Time Domain")
+print("photon var/bin:\t", np.var(np.abs(test_ps)**2 * dt))
+print("noise/bin**0.5:\t", np.std(test_ps_noise * dt**0.5))
+print("Frequency Domain")
+print("photon var/bin:\t", np.var(np.abs(test_ps_v)**2 * dv))
+print("noise/bin**0.5:\t", np.std(test_ps_noise_v * dv**0.5))
 
 
 # %%

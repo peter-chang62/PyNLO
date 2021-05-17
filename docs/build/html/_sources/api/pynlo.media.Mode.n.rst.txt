@@ -1,0 +1,6 @@
+pynlo.media.Mode.n
+==================
+
+.. currentmodule:: pynlo.media
+
+.. automethod:: Mode.n
