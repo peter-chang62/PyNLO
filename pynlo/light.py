@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Module for representing optical pulses in both time and frequency domains.
+A class for representing optical pulses in both time and frequency domains.
 
 Notes
 -----
@@ -19,20 +19,20 @@ __all__ = ["Pulse"]
 import collections
 
 import numpy as np
-from scipy.constants import pi
+from scipy.constants import pi, h
 
 from pynlo.utility import TFGrid, fft, resample_v, resample_t
 
 
 # %% Collections
 
-_PowerSpectralWidths = collections.namedtuple("PowerSpectralWidths", ["fwhm", "rms"])
+PowerSpectralWidths = collections.namedtuple("PowerSpectralWidths", ["fwhm", "rms", "eff"])
 
-_PowerEnvelopeWidths = collections.namedtuple("PowerEnvelopeWidths", ["fwhm", "rms"])
+PowerEnvelopeWidths = collections.namedtuple("PowerEnvelopeWidths", ["fwhm", "rms", "eff"])
 
-_Autocorrelation = collections.namedtuple("Autocorrelation", ["t_grid", "ac_t", "fwhm", "rms"])
+Autocorrelation = collections.namedtuple("Autocorrelation", ["t_grid", "ac_t", "fwhm", "rms"])
 
-_Spectrogram = collections.namedtuple("Spectrogram", ["v_grid", "t_grid", "spg", "extent"])
+Spectrogram = collections.namedtuple("Spectrogram", ["v_grid", "t_grid", "spg", "extent"])
 
 
 # %% Classes
@@ -42,8 +42,8 @@ class Pulse(TFGrid):
     An optical pulse, defined over complementary time and frequency grids.
 
     The default initializer creates an empty `Pulse` object. Set one of four
-    attributes (`a_v`, `p_v`, `a_t`, or `p_t`) to populate the optical
-    spectrum or envelope.
+    attributes (`a_v`, `p_v`, `a_t`, or `p_t`) to populate the pulse spectrum
+    or envelope.
 
     Parameters
     ----------
@@ -84,7 +84,7 @@ class Pulse(TFGrid):
         populate with a zero-amplitude power spectrum.
 
         Set one of six attributes `a_v`, `p_v`, `phi_v`, `a_t`, `p_t`, or
-        `phi_t` to populate the optical spectrum or envelope.
+        `phi_t` to populate the pulse spectrum or envelope.
 
         Parameters
         ----------
@@ -211,7 +211,7 @@ class Pulse(TFGrid):
         e_p : float
             The pulse energy.
         t_fwhm : float
-            The full width at half maximum of the optical power envelope.
+            The full width at half maximum of the pulse's power envelope.
         m : float, optional
             The super-gaussian order. Default is 1.
 
@@ -249,7 +249,7 @@ class Pulse(TFGrid):
         e_p : float
             The pulse energy.
         t_fwhm : float
-            The full width at half maximum of the optical power envelope.
+            The full width at half maximum of the pulse's power envelope.
 
         """
         assert (t_fwhm > 0), "The pulse width must be greater than 0."
@@ -285,7 +285,7 @@ class Pulse(TFGrid):
         e_p : float
             The pulse energy.
         t_fwhm : float
-            The full width at half maximum of the optical power envelope.
+            The full width at half maximum of the pulse's power envelope.
 
         """
         assert (t_fwhm > 0), "The pulse width must be greater than 0."
@@ -322,7 +322,7 @@ class Pulse(TFGrid):
         e_p : float
             The pulse energy.
         t_fwhm : float
-            The full width at half maximum of the optical power envelope.
+            The full width at half maximum of the pulse's power envelope.
 
         """
         assert (t_fwhm > 0), "The pulse width must be greater than 0."
@@ -480,7 +480,7 @@ class Pulse(TFGrid):
         ndarray of float
 
         """
-        return self.t_ref - np.gradient(np.unwrap(self.phi_v)/(2*pi), self.v_grid)
+        return self.t_ref - np.gradient(np.unwrap(self.phi_v)/(2*pi), self.v_grid, edge_order=2)
 
     def v_width(self, n=None):
         """
@@ -501,6 +501,8 @@ class Pulse(TFGrid):
             The full width at half maximum of the power spectrum.
         rms : float
             The root mean square width of the power spectrum.
+        eff : float
+            The effective width of the power spectrum.
 
         """
         #---- Power
@@ -529,8 +531,11 @@ class Pulse(TFGrid):
         v_var = np.sum((v_grid - v_avg)**2 * p_v*dv)/p_norm
         v_rms = v_var**0.5
 
+        #---- Effective
+        v_eff = 1/np.sum((p_v/p_norm)**2 * dv)
+
         #---- Construct PowerSpectralWidths
-        v_widths = _PowerSpectralWidths(fwhm=v_fwhm, rms=v_rms)
+        v_widths = PowerSpectralWidths(fwhm=v_fwhm, rms=v_rms, eff=v_eff)
         return v_widths
 
     #---- Time Domain Properties
@@ -637,7 +642,7 @@ class Pulse(TFGrid):
         ndarray of float
 
         """
-        return self.v_ref + np.gradient(np.unwrap(self.phi_t)/(2*pi), self.t_grid)
+        return self.v_ref + np.gradient(np.unwrap(self.phi_t)/(2*pi), self.t_grid, edge_order=2)
 
     @property
     def _ra_t(self):
@@ -711,6 +716,8 @@ class Pulse(TFGrid):
             The full width at half maximum of the power envelope.
         rms : float
             The root mean square width of the power envelope.
+        eff : float
+            The effective width of the power envelope.
 
         """
         #---- Power
@@ -739,8 +746,11 @@ class Pulse(TFGrid):
         t_var = np.sum((t_grid - t_avg)**2 * p_t*dt)/p_norm
         t_rms = t_var**0.5
 
+        #---- Effective
+        t_eff = 1/np.sum((p_t/p_norm)**2 * dt)
+
         #---- Construct PowerEnvelopeWidths
-        t_widths = _PowerEnvelopeWidths(fwhm=t_fwhm, rms=t_rms)
+        t_widths = PowerEnvelopeWidths(fwhm=t_fwhm, rms=t_rms, eff=t_eff)
         return t_widths
 
     #---- Energy Properties
@@ -786,6 +796,8 @@ class Pulse(TFGrid):
             The full width at half maximum of the intensity autocorrelation.
         rms : float
             The root mean square width of the intensity autocorrelation.
+        eff : float
+            The effective width of the intensity autocorrelation.
 
         """
         #---- Intensity Autocorrelation
@@ -816,8 +828,11 @@ class Pulse(TFGrid):
         t_var = np.sum((t_grid - t_avg)**2 * ac_t*dt)/ac_norm
         t_rms = t_var**0.5
 
+        #---- Effective
+        t_eff = 1/np.sum((ac_t/ac_norm)**2 * dt)
+
         #---- Construct Autocorrelation
-        ac = _Autocorrelation(t_grid=t_grid, ac_t=ac_t, fwhm=t_fwhm, rms=t_rms)
+        ac = Autocorrelation(t_grid=t_grid, ac_t=ac_t, fwhm=t_fwhm, rms=t_rms, eff=t_eff)
         return ac
 
     def spectrogram(self, t_fwhm=None, v_range=None, n_t=None, t_range=None):
@@ -945,5 +960,5 @@ class Pulse(TFGrid):
                   v_grid.min()-0.5*self.dv, v_grid.max()+0.5*self.dv)
 
         #---- Construct Spectrogram
-        spg = _Spectrogram(v_grid=v_grid, t_grid=delay_t_grid, spg=p_spg, extent=extent)
+        spg = Spectrogram(v_grid=v_grid, t_grid=delay_t_grid, spg=p_spg, extent=extent)
         return spg

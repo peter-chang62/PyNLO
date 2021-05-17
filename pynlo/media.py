@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Module for representing optical modes in the frequency domain.
+Classes for representing optical modes in the frequency domain.
 
 """
 
@@ -22,7 +22,7 @@ _LinearOperator = collections.namedtuple("LinearOperator", ["u", "phase", "gain"
 
 # %% Base Classes
 class Mode():
-    r"""
+    """
     An optical mode, defined over a frequency grid.
 
     A given input parameter is interpreted as being z-dependent if it is
@@ -55,9 +55,9 @@ class Mode():
     -----
     Modes are defined for traveling waves of the form assumed below:
 
-    ..  math:: E, H \sim a \, e^{i(\omega t - \kappa z)} + \text{c.c} \\
-               \kappa = \beta + i \frac{\alpha}{2}, \quad
-               \beta = n \frac{\omega}{c}
+    .. math:: E, H \\sim a \\, e^{i(\\omega t - \\kappa z)} + \\text{c.c} \\\\
+              \\kappa = \\beta + i \\frac{\\alpha}{2}, \\quad
+              \\beta = n \\frac{\\omega}{c}
 
     """
 
@@ -181,6 +181,43 @@ class Mode():
         """
         return self._rv_grid
 
+    @property
+    def z_dep_linearity(self):
+        """
+        The z dependence of the linear terms.
+
+        Returns
+        -------
+        z_alpha : bool
+            The z dependence of gain constant.
+        z_beta : bool
+            The z dependence of angular wavenumber.
+
+        """
+        z_alpha = callable(self._alpha)
+        z_beta = callable(self._beta)
+        return z_alpha, z_beta
+
+    @property
+    def z_dep_nonlinearity(self):
+        """
+        The z dependence of the nonlinear terms.
+
+        Returns
+        -------
+        z_g2 : bool
+            The z dependence of the effective 2nd order nonlinear parameter.
+        z_g3 : bool
+            The z dependence of the effective 3rd order nonlinear parameter.
+        z_r3 : bool
+            The z dependence of the effective Raman response.
+
+        """
+        z_g2 = callable(self._g2)
+        z_g3 = callable(self._g3)
+        z_r3 = callable(self._r3)
+        return z_g2, z_g3, z_r3
+
     #---- 1st Order Properties
     def beta(self, m=0, z=None):
         """
@@ -294,7 +331,8 @@ class Mode():
 
     def d_12(self, v0=None, z=0):
         """
-        The walk-off parameter, with units of ``s/m``.
+        The group velocity mismatch, or walk-off parameter, with units of
+        ``s/m``.
 
         Parameters
         ----------
@@ -456,8 +494,8 @@ class Mode():
         return self._g3(self.z) if callable(self._g3) else self._g3
 
     def gamma(self, z=None):
-        r"""
-        The nonlinear parameter :math:`\gamma`, with units of ``1/(W*m)``.
+        """
+        The nonlinear parameter :math:`\\gamma`, with units of ``1/(W*m)``.
 
         Parameters
         ----------
@@ -467,7 +505,7 @@ class Mode():
 
         Returns
         -------
-        None or ndarray of float
+        None or ndarray of complex
         """
         if z is not None:
             self.z = z
@@ -475,7 +513,7 @@ class Mode():
         g3 = self.g3()
         if g3 is not None and len(g3.shape)==2:
             g3 = g3[0] * g3[1]**3
-        return (3/2*self._w_grid*g3).real if g3 is not None else None
+        return 3/2*self._w_grid*g3 if g3 is not None else None
 
 
     def r3(self, z=None):
@@ -506,8 +544,8 @@ class Mode():
 
 # class GaussianMode(Mode):
 #     """
-#     Approximation of free space gaussian mode...
-#     just need to keep track of TD radius of curvature and waist size?
+#     Collection of Hermite–Gaussian modes for simulating free space propagation
+#     -> effective area based on distance to nominal waist location
 #     """
 #     def __init__(self, modes, coupling):
 #         pass

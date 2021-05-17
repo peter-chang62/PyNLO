@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Module containing aliases to fast FFT implementations and associated helper
-functions.
+Aliases to fast FFT implementations and associated helper functions.
 
 """
 

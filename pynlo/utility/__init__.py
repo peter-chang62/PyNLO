@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-Module for representing time and frequency grids, manipulating
-the quantities defined over them, and converting between physically relevant
-parameters.
+A class for representing time and frequency grids, functions for
+manipulating the quantities defined over them, and other miscellaneous helper
+functions.
+
+The submodules contain calculator type functions for converting between
+physically relevant parameters related to the linear and nonlinear
+susceptibilities as well as an efficient interface to fast fourier transforms.
 
 """
 
 __all__ = ["chi1", "chi2", "chi3", "fft",
+           "taylor_series",
            "resample_v", "resample_t", "derivative_v", "derivative_t",
            "TFGrid"]
 
@@ -16,7 +21,7 @@ __all__ = ["chi1", "chi2", "chi3", "fft",
 import collections
 
 import numpy as np
-from scipy.constants import pi
+from scipy.constants import pi, h
 
 from pynlo.utility import chi1, chi2, chi3, fft
 
@@ -34,7 +39,117 @@ _RTFGrid = collections.namedtuple("RTFGrid", ["n", "v0",
 
 # %% Routines
 
-# TODO: time and frequency domain shift functions
+def taylor_series(x0, derivatives):
+    """
+    Calculate a Taylor series expansion given the derivatives of a function
+    about a point.
+
+    Parameters
+    ----------
+    x0 : float
+        The center point of the Taylor series expansion.
+    derivatives : array_like
+        The derivatives of the function with respect to `x` evaluated at `x0`.
+        The coefficients must be given in order of increasing degree, i.e.:
+
+            [f(x0), f`(x0), f``(x0), ...]
+
+    Returns
+    -------
+    pwr_series : numpy.polynomial.Polynomial
+        A NumPy `Polynomial` object representing the Taylor series expansion.
+
+    """
+    window = np.array([-1, 1])
+    domain = window + x0
+    poly_coefs = [coef/np.math.factorial(n) for (n, coef) in enumerate(derivatives)]
+    pwr_series = np.polynomial.Polynomial(poly_coefs, domain=domain, window=window)
+    return pwr_series
+
+def coherent_noise_v(v_grid, dv, rng=None):
+    """
+    Generate a randomized root-power noise spectrum due to the quantum
+    fluctuations of a coherent state.
+
+    This noise is independent of the field amplitude and is equivalent to
+    the noise due to vacuum fluctuations.
+
+    Parameters
+    ----------
+    v_grid : array_like of float
+        The frequency grid.
+    dv : float
+        The frequency grid spacing.
+    rng : np.random.Generator, optional
+        A NumPy random number generator. Set `rng` to pass in an already
+        initialized `Generator`, the default initializes a new `Generator`
+        at each function call.
+
+    Notes
+    -----
+    This **is not** shot noise (which is related to the collapse of coherent
+    states onto discrete number states during photon detection), but the noise
+    due to the quantum uncertainty of a coherent state's amplitude and phase.
+    A coherent state :math:`|\\alpha\\rangle` is defined by a displacement
+    :math:`\\alpha` and the set of number states :math:`|n\\rangle`:
+
+    ..  math::
+        |\\alpha\\rangle = e^{-\\frac{|\\alpha|^2}{2}}
+            \sum_{n=0}^\\infty \\frac{\\alpha^n}{\sqrt{n!}} |n\\rangle
+
+    The probability distribution :math:`P[\\alpha]` of finding a coherent
+    state with displacement :math:`\\alpha`, given an average displacement
+    :math:`\\beta`, is as follows:
+
+    ..  math::
+        &\\text{with } \\alpha = x_1 + i \\, x_2
+
+        P[\\alpha] &= \\frac{1}{\\pi} |\\langle \\alpha | \\beta\\rangle|^2
+            = \\frac{1}{\\pi} e^{-|\\alpha - \\beta|^2}
+
+    where :math:`x_1` and :math:`x_2` are the root-photon normalized
+    "amplitude" and "phase" (real and imaginary) field quadratures.
+
+    Since the probability distribution is gaussian the noise is completely
+    described by the variance of the two quadratures, which are scaled to the
+    number of photons (:math:`N=\\alpha^2`). The combined noise from both
+    quadratures gives a total variance of one photon per measurement:
+
+    ..  math:: \\sigma_{x_1}^2 = \\sigma_{x_2}^2 = \\frac{1}{2}
+
+    ..  math:: \\sigma_\\alpha^2 = \\sigma_{x_1}^2 + \\sigma_{x_2}^2 = 1
+
+    The width of the probability distribution is independent of the average
+    displacement of the coherent state, so the root-photon noise may be
+    generated independently by sampling a standard normal distribution
+    centered about zero mean. Also, since the Fourier transform of gaussian
+    noise is also gaussian noise, the root-photon noise can be equivalently
+    generated in either the time or frequency domains. Normalizing to the
+    number of photons per measurement interval, the root photon noise for both
+    quadratures becomes ``1/(2 * dt)**0.5`` for the time domain and
+    ``1/(2 * dv)**0.5`` for frequency domain. The final root-power noise is
+    found by multiplying the frequency domain root-photon noise by the square
+    root of the photon energy associated with each bin's frequency.
+
+    Returns
+    -------
+    a_v : ndarray of complex
+        The randomly generated coherent state root-power noise.
+
+    """
+    if rng is None:
+        np.random.default_rng()
+
+    v_grid = np.asarray(v_grid, dtype=float)
+    n = v_grid.size
+    a_v = ((h*v_grid)/(2*dv))**0.5 * (rng.standard_normal(n) + 1j*rng.standard_normal(n))
+    return a_v
+
+def shift_v(v_grid, f_v, dv):
+    pass #TODO: Fouier shift in frequency
+
+def shift_t(t_grid, f_t, dt):
+    pass #TODO: Fourier shift in time
 
 def derivative_v(v_grid, f_v, n, t_ref=0):
     """

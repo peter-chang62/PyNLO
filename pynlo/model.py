@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Module for simulating the evolution of optical pulses.
+Classes for simulating the evolution of optical pulses.
 
 """
 
-__all__ = ["UPE"]
+__all__ = ["SM_UPE"]
 
 
 # %% Imports
@@ -51,7 +51,7 @@ def l2_error(a_RK4, a_RK3):
 
 # %% Classes
 
-class UPE():
+class SM_UPE():
     """
     A model based on the single-mode unidirectional propagation equation.
 
@@ -157,12 +157,15 @@ class UPE():
         self.r3 = self.mode.r3()
 
         #---- Implementation Details
-        self._update_alpha = callable(self.mode._alpha)
-        self._update_beta = callable(self.mode._beta)
-        self._update_kappa = self._update_alpha or self._update_beta
-        self._update_g2 = callable(self.mode._g2)
-        self._update_g3 = callable(self.mode._g3)
-        self._update_r3 = callable(self.mode._r3)
+        self._update_alpha = self._update_beta = True
+        self.update_linearity() # initialize linearity
+        self._update_alpha, self._update_beta = self.mode.z_dep_linearity
+        self._z_linear = self._update_alpha or self._update_beta
+
+        self._update_g2 = self._update_g3 = self._update_r3 = True
+        self.update_nonlinearity() # initialize nonlinearity
+        self._update_g2, self._update_g3, self._update_r3 = self.mode.z_dep_nonlinearity
+        self._z_nonlinear = self._update_g2 or self._update_g3 or self._update_r3
 
         self._1j_w_grid = 1j * self.w_grid
         self._nl_v = np.zeros_like(self.v_grid, dtype=complex)
@@ -425,16 +428,18 @@ class UPE():
 
         """
         #---- k1
-        if k5_v is None:
+        if self._z_linear and self.mode.z != z: # check if previous step was rejected
             self.update_linearity(z)
-            self.update_nonlinearity(z)
+
+        if k5_v is None:
+            if self._z_nonlinear: self.update_nonlinearity(z)
             k5_v = self.nonlinear_operator(a_v)
-        IP_in_op_v = self.linear_operator(0.5*dz) # into interaction picture
-        aI_v = IP_in_op_v * a_v
-        kI1_v = IP_in_op_v * k5_v
+        IP_in_v = self.linear_operator(0.5*dz)
+        aI_v = IP_in_v * a_v # into interaction picture
+        kI1_v = IP_in_v * k5_v # into interaction picture
 
         #---- k2
-        self.update_nonlinearity(z+0.5*dz)
+        if self._z_nonlinear: self.update_nonlinearity(z+0.5*dz)
         aI2_v = aI_v + 0.5*dz * kI1_v
         kI2_v = self.nonlinear_operator(aI2_v)
 
@@ -443,16 +448,21 @@ class UPE():
         kI3_v = self.nonlinear_operator(aI3_v)
 
         #---- k4
-        self.update_linearity(z+dz)
-        self.update_nonlinearity(z+dz)
-        IP_out_op_v = self.linear_operator(0.5*dz) # out of interaction picture
+        if self._z_linear:
+            self.update_linearity(z+dz)
+            IP_out_v = self.linear_operator(0.5*dz)
+        else:
+            IP_out_v = IP_in_v
+        if self._z_nonlinear:
+            self.update_nonlinearity(z+dz)
+
         aI4_v = aI_v + dz*kI3_v
-        a4_v = IP_out_op_v * aI4_v
+        a4_v = IP_out_v * aI4_v # out of interaction picture
         k4_v = self.nonlinear_operator(a4_v)
 
         #---- RK4
         bI_v = aI_v + dz/6.0 * (kI1_v + 2.0*(kI2_v + kI3_v))
-        b_v = IP_out_op_v * bI_v
+        b_v = IP_out_v * bI_v # out of interaction picture
         a_RK4_v = b_v + dz/6.0 * k4_v
 
         #---- k5
@@ -465,7 +475,8 @@ class UPE():
     #---- Operators
     def linear_operator(self, dz):
         """
-        The frequency-domain linear operator for the given step size.
+        The frequency-domain linear operator integrated over the given step
+        size.
 
         Parameters
         ----------
@@ -484,6 +495,9 @@ class UPE():
     def nonlinear_operator(self, a_v):
         """
         The frequency-domain nonlinear response of the given pulse spectrum.
+
+        This is only the spectral change per unit propagation length. Estimate
+        the actual change by integrating this value over some step size.
 
         Parameters
         ----------
@@ -528,7 +542,7 @@ class UPE():
         return self._1j_w_grid * self._nl_v # minus sign included in nl_v
 
     #---- Z-Dependency
-    def update_linearity(self, z):
+    def update_linearity(self, z=None):
         """
         Update all z-dependent linear parameters.
 
@@ -538,25 +552,27 @@ class UPE():
             The position along the waveguide.
 
         """
+        if z is not None:
+            self.mode.z = z
+
         #---- Gain
         if self._update_alpha:
-            self.alpha = self.mode._alpha(z)
+            self.alpha = self.mode.alpha()
 
         #---- Phase
         if self._update_beta:
-            self.beta = self.mode._beta(z)
+            self.beta = self.mode.beta()
             beta1_v0 = fdd(self.beta, self.dw, self.v0_idx)
             # Beta in comoving frame
             self.beta_cm = self.beta - beta1_v0*self.w_grid
 
         #---- Propagation Constant
-        if self._update_kappa:
-            if self.alpha is not None:
-                self.kappa_cm = (self.beta_cm - self.alpha**2/(8*self.beta)) + 0.5j*self.alpha
-            else:
-                self.kappa_cm = self.beta_cm
+        if self.alpha is not None:
+            self.kappa_cm = (self.beta_cm - self.alpha**2/(8*self.beta)) + 0.5j*self.alpha
+        else:
+            self.kappa_cm = self.beta_cm
 
-    def update_nonlinearity(self, z):
+    def update_nonlinearity(self, z=None):
         """
         Update all z-dependent nonlinear parameters.
 
@@ -566,15 +582,18 @@ class UPE():
             The position along the waveguide.
 
         """
+        if z is not None:
+            self.mode.z = z
+
         #---- 2nd Order
         if self._update_g2:
-            self.g2 = self.mode._g2(z)
+            self.g2 = self.mode.g2()
 
         #---- 3rd Order
         if self._update_g3:
-            self.g3 = self.mode._g3(z)
+            self.g3 = self.mode.g3()
         if self._update_r3:
-            self.r3 = self.mode._r3(z)
+            self.r3 = self.mode.r3()
 
     #---- Plotting
     def _setup_plots(self, plot, pulse_out, z):

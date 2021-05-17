@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Module containing conversion functions and other calculators relevant to the
-linear susceptibility.
+Conversion functions and other calculators relevant to the linear
+susceptibility.
 
 """
 
-__all__ = []
+__all__ = ["n_to_beta", "beta_to_n", "D_to_beta2", "beta2_to_D"]
 
 
 # %% Imports
@@ -34,16 +34,78 @@ def k_to_chi1(v_grid, beta, alpha=None):
 
 #---- Wavenumber and Refractive Index
 def n_to_beta(v_grid, n):
+    """
+    Refractive index to angular wavenumber.
+
+    Parameters
+    ----------
+    v_grid : array_like of float
+        The frequency grid.
+    n : array_like of float
+        The refractive indices.
+
+    Returns
+    -------
+    beta
+
+    """
     return n * (2*pi*v_grid/c)
 
 def beta_to_n(v_grid, beta):
+    """
+    Angular wavenumber to refractive index
+
+    Parameters
+    ----------
+    v_grid : array_like of float
+        The frequency grid.
+    beta : array_like of float
+        The angular wavenumbers.
+
+    Returns
+    -------
+    n
+
+    """
     return beta / (2*pi*v_grid/c)
 
 #---- GVD and Dispersion Parameter D
 def D_to_beta2(v_grid, D):
+    """
+    Dispersion parameter D to group velocity dispersion (GVD) parameter beta2.
+
+    Parameters
+    ----------
+    v_grid : array_like of float
+        The frequency grid.
+    D : array_like of float
+        The dispersion parameter D, in units of ``s/m**2``.
+
+    Returns
+    -------
+    beta2
+        The GVD, in units of ``s**2/m``.
+
+    """
     return D / (-2*pi * v_grid**2/c)
 
 def beta2_to_D(v_grid, beta2):
+    """
+    Group velocity dispersion (GVD) parameter beta2 to dispersion parameter D.
+
+    Parameters
+    ----------
+    v_grid : array_like of float
+        The frequency grid.
+    beta2 : array_like of float
+        The GVD parameter, in units of ``s**2/m``.
+
+    Returns
+    -------
+    D
+        The dispersion parameter, in units of ``s/m**2``.
+
+    """
     return beta2 * (-2*pi * v_grid**2/c)
 
 

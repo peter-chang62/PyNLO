@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Module containing conversion functions and other calculators relevant to the
-2nd order nonlinear susceptibility.
+Conversion functions and other calculators relevant to the 2nd order nonlinear
+susceptibility.
 
 """
 
-__all__ = []
+__all__ = ["g2_shg", "polling_sign"]
 
 
 # %% Imports
@@ -31,17 +31,75 @@ def period_to_dk(period):
     return 2*pi/period
 
 
-# %% Estimators
+# %% Nonlinearity
 
-#TODO: setup media, solver to use slip g's
+#TODO: setup media, solver to use splip g's
 
 def g2_shg(v0, v_grid, n_eff, a_eff, chi2_eff):
-    # for cascaded chi2
-    # v0 is pump frequency
-    # (2*v0 < v_grid).any()
-    pass #TODO
+    """
+    The 2nd order nonlinear parameter weighted for second harmonic generation
+    driven from the given input frequency.
+
+    Parameters
+    ----------
+    v0 : float
+        The target fundamental frequency to be doubled.
+    v_grid : array_like of float
+        The frequency grid.
+    n_eff : array_like of float
+        The effective refractive indices.
+    a_eff : array_like of float
+        The effective areas.
+    chi2_eff : array_like
+        The effective 2nd order susceptibilities.
+
+    Returns
+    -------
+    g2 : ndarray
+
+    """
+    g2_out, g2_in = g2_split(n_eff, a_eff, chi2_eff)
+
+    v1_idx = np.argmin(np.abs(v_grid - v0))
+    v2_idx = np.argmin(np.abs(v_grid - 2*v0))
+    vc_idx = (v1_idx + v2_idx)//2 # crossover point
+
+    g2_in_fh = np.interp(2*v_grid, v_grid, g2_in) # input to fundamental harmonic
+    g2_in_sh = np.interp(0.5*v_grid, v_grid, g2_in) # input to second harmonic
+
+    # Fundamental (DFG)
+    g2_fh = g2_out * g2_in_fh * g2_in
+
+    # Second Harmonic (SFG)
+    g2_sh = g2_out * g2_in_sh**2
+
+    # Crossover
+    g2 = np.zeros_like(g2_out)
+    g2[:vc_idx] = g2_fh[:vc_idx]
+    g2[vc_idx:] = g2_sh[vc_idx:]
+    return g2
 
 def g2_split(n_eff, a_eff, chi2_eff):
+    """
+    The unit decomposition of the 2nd order nonlinear parameter.
+
+    Parameters
+    ----------
+    n_eff : array_like of float
+        The refractive indices.
+    a_eff : array_like of float
+        The effective areas.
+    chi2_eff : array_like
+        The effective 2nd order susceptibilities.
+
+    Returns
+    -------
+    ndarray (2, n)
+        The decomposition of the 2nd order nonlinear parameter. The first
+        index contains the output factors while the second index contains the
+        input factors.
+
+    """
     return np.array([1/2 * ((e0*a_eff)/(c*n_eff))**0.5 * chi2_eff,
                      1/(e0*c*n_eff*a_eff)**0.5]).T
 
@@ -62,9 +120,9 @@ def effective_chi3():
     pass #TODO: effective 3rd order from cascaded 2nd
 
 
-# %% Helper Functions
+# %% Phase Matching
 
-def poll_sign(z, z_invs):
+def polling_sign(z, z_invs):
     r"""
     Calculate the sign of a discrete quasi-phase matching (QPM) structure
     given the locations of each inversion.
