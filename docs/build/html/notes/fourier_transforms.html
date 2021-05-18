@@ -121,7 +121,7 @@
   <div class="bd-toc-item active">
     <p class="caption">
  <span class="caption-text">
-  Subjects
+  Topics
  </span>
 </p>
 <ul class="current nav bd-sidenav">
@@ -336,7 +336,7 @@ d\nu = 1/\Delta t,
 </div>
 <div class="section" id="Discrete-Fourier-Transforms">
 <h3>Discrete Fourier Transforms<a class="headerlink" href="#Discrete-Fourier-Transforms" title="Permalink to this headline">¶</a></h3>
-<p>An important numeric simplification arises due to the <a class="reference external" href="https://mathworld.wolfram.com/SamplingTheorem.html">sampling theorem</a>. A <strong>continuous, periodic</strong> signal can be discretely sampled <em>without any loss of information</em> if the sample rate is greater than twice the largest frequency component of the signal. When this condition holds, the above relationships can be cast as a <a class="reference external" href="https://mathworld.wolfram.com/DiscreteFourierTransform.html">discrete Fourier transform</a> (DFT):</p>
+<p>An important numeric simplification arises due to the <a class="reference external" href="https://mathworld.wolfram.com/SamplingTheorem.html">sampling theorem</a>. A <strong>continuous, periodic</strong> signal can be discretely sampled <em>without any loss of information</em> if the sample rate is greater than twice the largest frequency component of the signal. When this condition holds, the above relationships can be cast as <a class="reference external" href="https://mathworld.wolfram.com/DiscreteFourierTransform.html">discrete Fourier transforms</a> (DFTs):</p>
 <div class="math notranslate nohighlight">
 \[\begin{align}
 f\!\left[t_m\right] &amp;= \sum_{n=-\lfloor N/2 \rfloor}^{\lfloor (N-1)/2 \rfloor} F\!\left[\nu_n\right] e^{i \left(2 \pi \ t_m \ \nu_n \right)} d\nu
@@ -345,9 +345,9 @@ F\!\left[\nu_n\right] &amp;= \sum_{m=-\lfloor N/2 \rfloor}^{\lfloor (N-1)/2 \rfl
 \end{align}\]</div>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
-t_m = m \ dt,
+t_m = m \, dt,
 \qquad
-\nu_n = n \ d\nu \\
+\nu_n = n \, d\nu \\
 N = \text{the number of sampled points} \\
 N d\nu = 1 /dt = \text{the sample rate}
 \end{gather}\end{split}\]</div>
@@ -399,31 +399,31 @@ F\!\left[\nu\right] &amp;= \int_{-\infty}^{\infty} f\!\left[t\right] e^{-i \left
 <h3>Linearity<a class="headerlink" href="#Linearity" title="Permalink to this headline">¶</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{align}
-a \ f\!\left[t\right] + b \ g\!\left[t\right] &amp;= \mathscr{F}^{-1}\!\Bigl[ a \ F\!\left[\nu\right] + b \ G\!\left[\nu\right] \Bigr]
+a \, f\!\left[t\right] + b \, g\!\left[t\right] &amp;= \mathscr{F}^{-1}\!\Bigl[ a \, F\!\left[\nu\right] + b \, G\!\left[\nu\right] \Bigr]
 &amp;
-a \ F\!\left[\nu\right] + b \ G\!\left[\nu\right] &amp;= \mathscr{F}\!\Bigl[ a \ f\!\left[t\right] + b \ g\!\left[t\right] \Bigr]
+a \, F\!\left[\nu\right] + b \, G\!\left[\nu\right] &amp;= \mathscr{F}\!\Bigl[ a \, f\!\left[t\right] + b \, g\!\left[t\right] \Bigr]
 \end{align}\]</div>
 </div>
 <div class="section" id="Shifting-and-Scaling">
 <h3>Shifting and Scaling<a class="headerlink" href="#Shifting-and-Scaling" title="Permalink to this headline">¶</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-f\!\left[t-t_0\right] &amp;= \mathscr{F}^{-1}\!\left[F\!\left[\nu\right] e^{-i \left(2 \pi \ t_0 \ \nu\right)}\right]
+f\!\left[t-t_0\right] &amp;= \mathscr{F}^{-1}\!\left[F\!\left[\nu\right] e^{-i \left(2 \pi \, t_0 \, \nu\right)}\right]
 &amp;
-F\!\left[\nu - \nu_0\right] &amp;= \mathscr{F}\!\left[f\!\left[t\right] e^{+i \left(2 \pi \ t \ \nu_0 \right)} \right]
+F\!\left[\nu - \nu_0\right] &amp;= \mathscr{F}\!\left[f\!\left[t\right] e^{+i \left(2 \pi \, t \, \nu_0 \right)} \right]
 \\
-f\!\left[a \ t\right] &amp;= \mathscr{F}^{-1}\!\left[\frac{1}{\left\vert a \right\vert} F\!\left[\nu / a\right] \right]
+f\!\left[a \, t\right] &amp;= \mathscr{F}^{-1}\!\left[\frac{1}{\left\vert a \right\vert} F\!\left[\nu / a\right] \right]
 &amp;
-F\!\left[a \ \nu \right] &amp;= \mathscr{F}\!\left[\frac{1}{\left\vert a \right\vert} f\!\left[t / a\right] \right]
+F\!\left[a \, \nu \right] &amp;= \mathscr{F}\!\left[\frac{1}{\left\vert a \right\vert} f\!\left[t / a\right] \right]
 \end{align}\end{split}\]</div>
 </div>
 <div class="section" id="Derivatives-and-Integrals">
 <h3>Derivatives and Integrals<a class="headerlink" href="#Derivatives-and-Integrals" title="Permalink to this headline">¶</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{align}
-\frac{d^{n}}{dt^{n}} f\!\left[t\right] &amp;= \mathscr{F}^{-1}\!\Bigl[ \left(+i \ 2 \pi \ \nu\right)^{n} F\!\left[\nu\right] \Bigr]
+\frac{d^{n}}{dt^{n}} f\!\left[t\right] &amp;= \mathscr{F}^{-1}\!\Bigl[ \left(+i \, 2 \pi \, \nu\right)^{n} F\!\left[\nu\right] \Bigr]
 &amp;
-\frac{d^{n}}{d\nu^{n}} F\!\left[\nu\right] &amp;= \mathscr{F}\!\Bigl[ \left(-i \ 2 \pi \ t\right)^{n} f\!\left[t\right] \Bigr]
+\frac{d^{n}}{d\nu^{n}} F\!\left[\nu\right] &amp;= \mathscr{F}\!\Bigl[ \left(-i \, 2 \pi \, t\right)^{n} f\!\left[t\right] \Bigr]
 \end{align}\]</div>
 <p>Positive integer values of <span class="math notranslate nohighlight">\(n\)</span> represent derivatives and negative integers represent integrals (antiderivatives). All other values of <span class="math notranslate nohighlight">\(n\)</span> represent derivatives and integrals in the realm of fractional calculus.</p>
 <p>Negative values of <span class="math notranslate nohighlight">\(n\)</span> require special care as the integrand diverges at the origin. For continuous transforms the integral is performed using the <a class="reference external" href="https://mathworld.wolfram.com/CauchyPrincipalValue.html">Cauchy principal value</a> method. Without it, the derivatives and integrals are only strictly valid for the class of functions that have <span class="math notranslate nohighlight">\(0\)</span> mean. Leaving out the Cauchy principal value is accomplished by setting the amplitude of the integrand to <span class="math notranslate nohighlight">\(0\)</span> at the origin. When
@@ -434,9 +434,9 @@ performed numerically, such an approximation is usually the only choice.</p>
 <p>With convolution defined as:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\left(f * g\right)\!\left[t\right] &amp;= \iint_{-\infty}^{\infty} f\!\left[t_1\right] g\!\left[t_2\right] \delta\!\left[t - \left(t_1 + t_2\right)\right] dt_1 \ dt_2
+\left(f * g\right)\!\left[t\right] &amp;= \iint_{-\infty}^{\infty} f\!\left[t_1\right] g\!\left[t_2\right] \delta\!\left[t - \left(t_1 + t_2\right)\right] dt_1 \, dt_2
 \\
-\left(F * G\right)\!\left[\nu\right] &amp;= \int_{-\infty}^{\infty} F\!\left[\nu_1\right] G\!\left[\nu_2\right] \delta\!\left[\nu - \left(\nu_1 + \nu_2\right)\right] d\nu_1 \ d\nu_2
+\left(F * G\right)\!\left[\nu\right] &amp;= \int_{-\infty}^{\infty} F\!\left[\nu_1\right] G\!\left[\nu_2\right] \delta\!\left[\nu - \left(\nu_1 + \nu_2\right)\right] d\nu_1 \, d\nu_2
 \end{align}\end{split}\]</div>
 <p>The convolution of two functions in one domain is the product of the Fourier transforms in the other:</p>
 <div class="math notranslate nohighlight">
@@ -452,9 +452,9 @@ performed numerically, such an approximation is usually the only choice.</p>
 <p>With cross-correlation defined as:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\left(f \star g\right)\!\left[t\right] &amp;= \iint_{-\infty}^{\infty} \overline{f}\!\left[t_1\right] g\!\left[t_2\right] \delta\!\left[t + \left(t_1 - t_2\right)\right] dt_1 \ dt_2
+\left(f \star g\right)\!\left[t\right] &amp;= \iint_{-\infty}^{\infty} \overline{f}\!\left[t_1\right] g\!\left[t_2\right] \delta\!\left[t + \left(t_1 - t_2\right)\right] dt_1 \, dt_2
 \\
-\left(F \star G\right)\!\left[\nu\right] &amp;= \int_{-\infty}^{\infty} \overline{F}\!\left[\nu_1\right] G\!\left[\nu_2\right] \delta\!\left[\nu + \left(\nu_1 - \nu_2\right)\right] d\nu_1 \ d\nu_2
+\left(F \star G\right)\!\left[\nu\right] &amp;= \int_{-\infty}^{\infty} \overline{F}\!\left[\nu_1\right] G\!\left[\nu_2\right] \delta\!\left[\nu + \left(\nu_1 - \nu_2\right)\right] d\nu_1 \, d\nu_2
 \end{align}\end{split}\]</div>
 <p>where the barred symbols <span class="math notranslate nohighlight">\((\overline{f}, \overline{F})\)</span> indicate complex conjugates.</p>
 <p>The cross-correlation of two functions in one domain is the product of the Fourier transforms in the other domain, with the first function conjugated:</p>
@@ -600,15 +600,15 @@ to monotonic ordering, and ifftshift is used to translate monotonic ordering to 
 return only the positive half of a spectrum. With the help of array indexing operations, these <strong>rfft</strong> and <strong>irfft</strong> operations allow simple translation between analytic and real-valued representations:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\text{irfft:} \quad &amp; f\!\left[t_m\right] = \operatorname{irfft}\!\left( F\!\left[\nu\right] \ N_r d\nu, \quad n=N_r \right)_m
+\text{irfft:} \quad &amp; f\!\left[t_m\right] = \operatorname{irfft}\!\left( F\!\left[\nu\right] N_r d\nu, \quad n=N_r \right)_m
 \\
-\text{rfft:} \quad &amp; F\!\left[\nu_n\right] = \operatorname{rfft}\!\left( f\!\left[t\right] \ dt \right)_n
+\text{rfft:} \quad &amp; F\!\left[\nu_n\right] = \operatorname{rfft}\!\left( f\!\left[t\right] dt \right)_n
 \end{align}\end{split}\]</div>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
 N_r = \text{the number of sampled points in the time domain}
 \\
-dt \ d\nu = 1 / N_r
+dt \, d\nu = 1 / N_r
 \end{gather}\end{split}\]</div>
 <p>One important property of these functions is that <em>the output of a rfft does not have the same number of points as its input</em>. In general, the frequency domain output array has <span class="math notranslate nohighlight">\(N = \lfloor N_r/2 \rfloor + 1\)</span> number of points, where <span class="math notranslate nohighlight">\(N_r\)</span> is the total number of points in the time domain. This does not pose any complications when using the rfft, but in general <em>the number of real output points must be explicitly given to the irfft function</em>. The reduced number of points in the
 frequency domain has another implication, <em>the frequency domain output array is always arranged such that the coordinates are in monotonic order</em>. The time domain array is still ordered as described in the previous section, but since the rfft only returns the positive side of the spectrum the array ends before it wraps around. The slight caveat to this is that the Nyquist frequency (when reached) is considered positive instead of negative.</p>
@@ -617,9 +617,9 @@ frequency domain has another implication, <em>the frequency domain output array 
 \[\begin{split}\begin{gather}
 A\!\left[\nu_n\right] = \sqrt{2}
 \begin{cases}
-\frac{1}{\sqrt{2}} \ F\!\left[\nu_n\right] &amp;\text{if $\nu_n = 0$}
+\frac{1}{\sqrt{2}} F\!\left[\nu_n\right] &amp;\text{if $\nu_n = 0$}
 \\ \\
-\frac{1}{2} \ F\!\left[\nu_n\right] &amp;\text{if $\nu_n = \lfloor N_r/2 \rfloor d\nu$ and } N_r \text{ is even}
+\frac{1}{2} F\!\left[\nu_n\right] &amp;\text{if $\nu_n = \lfloor N_r/2 \rfloor d\nu$ and } N_r \text{ is even}
 \\ \\
 F\!\left[\nu_n\right] &amp;\text{all other cases}
 \end{cases}
@@ -682,13 +682,13 @@ F\left[\nu_r\right]_n =
 <li><p>Nest all calls to fft and ifft between fftshift and ifftshift, include normalization factors <span class="math notranslate nohighlight">\(dt\)</span> and <span class="math notranslate nohighlight">\(N d\nu\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{alignat}{4}
-&amp;\text{ifft:} &amp; a\left[t\right]_m &amp;= \operatorname{fftshift}\!\left(\operatorname{ifft}\!\left(\operatorname{ifftshift}\!\left( A\!\left[\nu\right] \ N d\nu \right)\right)\right)_m
+&amp;\text{ifft:} &amp; a\left[t\right]_m &amp;= \operatorname{fftshift}\!\left(\operatorname{ifft}\!\left(\operatorname{ifftshift}\!\left( A\!\left[\nu\right] N d\nu \right)\right)\right)_m
 \\
-&amp;\text{fft:} &amp; A\left[\nu\right]_n &amp;= \operatorname{fftshift}\!\left(\operatorname{fft}\!\left(\operatorname{ifftshift}\!\left( a\!\left[t\right] \ dt \right)\right)\right)_n
+&amp;\text{fft:} &amp; A\left[\nu\right]_n &amp;= \operatorname{fftshift}\!\left(\operatorname{fft}\!\left(\operatorname{ifftshift}\!\left( a\!\left[t\right] dt \right)\right)\right)_n
 \\
-&amp;\text{irfft:} &amp; f\left[t_r\right]_m &amp;= \operatorname{fftshift}\!\left(\operatorname{irfft}\!\left( F\!\left[\nu_r\right] \ N_r d\nu , \quad n=N_r\right)\right)_m
+&amp;\text{irfft:} &amp; f\left[t_r\right]_m &amp;= \operatorname{fftshift}\!\left(\operatorname{irfft}\!\left( F\!\left[\nu_r\right] N_r d\nu , \quad n=N_r\right)\right)_m
 \\
-&amp;\text{rfft:} &amp; F\left[\nu_r\right]_n &amp;= \operatorname{rfft}\!\left(\operatorname{ifftshift}\!\left( f\!\left[t_r\right] \ dt_r \right)\right)_n
+&amp;\text{rfft:} &amp; F\left[\nu_r\right]_n &amp;= \operatorname{rfft}\!\left(\operatorname{ifftshift}\!\left( f\!\left[t_r\right] dt_r \right)\right)_n
 \end{alignat}\end{split}\]</div>
 </li>
 <li><p>Display the coordinate and amplitude arrays without any other modification.</p></li>
@@ -723,13 +723,13 @@ F\left[\nu_r\right]_n =
 <li><p>Call fft and ifft without any fftshift or ifftshift, include normalization factors <span class="math notranslate nohighlight">\(dt\)</span> and <span class="math notranslate nohighlight">\(N d\nu\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{alignat}{4}
-&amp;\text{ifft:} &amp; a\left[t\right]_m &amp;= \operatorname{ifft}\!\left( A\!\left[\nu\right] \ N d\nu \right)_m
+&amp;\text{ifft:} &amp; a\left[t\right]_m &amp;= \operatorname{ifft}\!\left( A\!\left[\nu\right] N d\nu \right)_m
 \\
-&amp;\text{fft:} &amp; A\left[\nu\right]_n &amp;= \operatorname{fft}\!\left( a\!\left[t\right] \ dt \right)_n
+&amp;\text{fft:} &amp; A\left[\nu\right]_n &amp;= \operatorname{fft}\!\left( a\!\left[t\right] dt \right)_n
 \\
-&amp;\text{irfft:} &amp; f\left[t_r\right]_m &amp;= \operatorname{irfft}\!\left( F\!\left[\nu_r\right] \ N_r d\nu , \quad n=N_r\right)_m
+&amp;\text{irfft:} &amp; f\left[t_r\right]_m &amp;= \operatorname{irfft}\!\left( F\!\left[\nu_r\right] N_r d\nu, \quad n=N_r\right)_m
 \\
-&amp;\text{rfft:} &amp; F\left[\nu_r\right]_n &amp;= \operatorname{rfft}\!\left( f\!\left[t_r\right] \ dt_r \right)_n
+&amp;\text{rfft:} &amp; F\left[\nu_r\right]_n &amp;= \operatorname{rfft}\!\left( f\!\left[t_r\right] dt_r \right)_n
 \end{alignat}\end{split}\]</div>
 </li>
 <li><p>Display the coordinate and amplitude arrays after applying fftshift.</p></li>

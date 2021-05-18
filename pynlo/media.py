@@ -511,8 +511,8 @@ class Mode():
             self.z = z
 
         g3 = self.g3()
-        if g3 is not None and len(g3.shape)==2:
-            g3 = g3[0] * g3[1]**3
+        if g3 is not None and len(g3.shape)>=2:
+            g3 = g3[0] * np.sum(g3[1:]**3, axis=0)
         return 3/2*self._w_grid*g3 if g3 is not None else None
 
 

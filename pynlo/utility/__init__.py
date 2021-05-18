@@ -50,9 +50,8 @@ def taylor_series(x0, derivatives):
         The center point of the Taylor series expansion.
     derivatives : array_like
         The derivatives of the function with respect to `x` evaluated at `x0`.
-        The coefficients must be given in order of increasing degree, i.e.:
-
-            [f(x0), f`(x0), f``(x0), ...]
+        The coefficients must be given in order of increasing degree, i.e.
+        ``[f(x0), f'(x0), f''(x0), ...]``.
 
     Returns
     -------

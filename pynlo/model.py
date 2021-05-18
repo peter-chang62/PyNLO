@@ -433,7 +433,7 @@ class SM_UPE():
 
         if k5_v is None:
             if self._z_nonlinear: self.update_nonlinearity(z)
-            k5_v = self.nonlinear_operator(a_v)
+            k5_v = self._nonlinear_operator(a_v)
         IP_in_v = self.linear_operator(0.5*dz)
         aI_v = IP_in_v * a_v # into interaction picture
         kI1_v = IP_in_v * k5_v # into interaction picture
@@ -441,11 +441,11 @@ class SM_UPE():
         #---- k2
         if self._z_nonlinear: self.update_nonlinearity(z+0.5*dz)
         aI2_v = aI_v + 0.5*dz * kI1_v
-        kI2_v = self.nonlinear_operator(aI2_v)
+        kI2_v = self._nonlinear_operator(aI2_v)
 
         #---- k3
         aI3_v = aI_v + 0.5*dz * kI2_v
-        kI3_v = self.nonlinear_operator(aI3_v)
+        kI3_v = self._nonlinear_operator(aI3_v)
 
         #---- k4
         if self._z_linear:
@@ -458,7 +458,7 @@ class SM_UPE():
 
         aI4_v = aI_v + dz*kI3_v
         a4_v = IP_out_v * aI4_v # out of interaction picture
-        k4_v = self.nonlinear_operator(a4_v)
+        k4_v = self._nonlinear_operator(a4_v)
 
         #---- RK4
         bI_v = aI_v + dz/6.0 * (kI1_v + 2.0*(kI2_v + kI3_v))
@@ -466,7 +466,7 @@ class SM_UPE():
         a_RK4_v = b_v + dz/6.0 * k4_v
 
         #---- k5
-        k5_v = self.nonlinear_operator(a_RK4_v)
+        k5_v = self._nonlinear_operator(a_RK4_v)
 
         #---- RK3
         a_RK3_v = b_v + dz/30.0 * (2.0*k4_v + 3.0*k5_v)
@@ -511,35 +511,81 @@ class SM_UPE():
         """
         #---- Setup
         self._nl_v = np.zeros(self.n_points, dtype=complex)
-        self._nl_a_v[self.cr_pre_slice] = 0j
         self._nl_a_v[self.cr_slice] = a_v
-        self._nl_a_v[self.cr_post_slice] = 0j
-
         nl_a_t = fft.irfft(self._nl_a_v, fsc=self.nl_dt * 2**0.5, n=self.nl_n_points)
         nl_a2_t = nl_a_t * nl_a_t
 
         #---- 2nd Order Nonlinearity
         if self.g2 is not None:
-            nl2_a2_v = fft.rfft(nl_a2_t, fsc=self.nl_dt * 2**0.5)
-            a2_v = nl2_a2_v[self.cr_slice]
-            self._nl_v -= self.g2 * a2_v
+            nl_a2_v = fft.rfft(nl_a2_t, fsc=self.nl_dt * 2**0.5)
+            self._nl_v -= self.g2 * nl_a2_v[self.cr_slice]
 
         #---- 3rd Order Nonlinearity
         if self.g3 is not None:
             if self.r3 is not None:
-                nl3_a2_v = (fft.rfft(nl_a2_t, fsc=self.nl_dt) if self.g2 is None
-                            else nl2_a2_v * 2**-0.5)
-                nl3_a2r3_v = nl3_a2_v * self.r3
-                nl3_a2r3_t = fft.irfft(nl3_a2r3_v, fsc=self.nl_dt, n=self.nl_n_points)
-            else:
-                nl3_a2r3_t = nl_a2_t
-            nl3_a3r3_t = nl_a_t * nl3_a2r3_t
-            nl3_a3r3_v = fft.rfft(nl3_a3r3_t, fsc=self.nl_dt * 2**0.5)
-            a3r3_v = nl3_a3r3_v[self.cr_slice]
-            self._nl_v -= self.g3 * a3r3_v
+                nl_a2_v = (fft.rfft(nl_a2_t, fsc=self.nl_dt) if self.g2 is None
+                           else nl_a2_v * 2**-0.5)
+                nl_a2r3_v = nl_a2_v * self.r3
+                nl_a2_t = fft.irfft(nl_a2r3_v, fsc=self.nl_dt, n=self.nl_n_points)
+            nl_a3_t = nl_a_t * nl_a2_t
+            nl_a3_v = fft.rfft(nl_a3_t, fsc=self.nl_dt * 2**0.5)
+            self._nl_v -= self.g3 * nl_a3_v[self.cr_slice]
 
         #---- Nonlinear Response
-        return self._1j_w_grid * self._nl_v # minus sign included in nl_v
+        return self._1j_w_grid * self._nl_v # minus sign included in _nl_v
+
+    def nonlinear_operator_svd(self, a_v):
+        """
+        The frequency-domain nonlinear response of the given pulse spectrum,
+        calculated using the nonlinear parameters given in separable form.
+
+        This is only the spectral change per unit propagation length. Estimate
+        the actual change by integrating this value over some step size.
+
+        Parameters
+        ----------
+        a_v : array_like of complex
+            The root-power spectrum of the pulse.
+
+        Returns
+        -------
+        ndarray of complex
+
+        Notes
+        -----
+        TODO: describe expected separable form
+
+        """
+        #---- Setup
+        self._nl_v = np.zeros(self.n_points, dtype=complex)
+
+        #---- 2nd Order Nonlinearity
+        if self.g2 is not None:
+            nl_a2_t = np.zeros(self.nl_n_points, dtype=float)
+            for g2_internal in self.g2[1:]:
+                self._nl_a_v[self.cr_slice] = a_v * g2_internal
+                nl_a_t = fft.irfft(self._nl_a_v, fsc=self.nl_dt * 2**0.5, n=self.nl_n_points)
+                nl_a2_t += nl_a_t * nl_a_t
+            nl_a2_v = fft.rfft(nl_a2_t, fsc=self.nl_dt * 2**0.5)
+            self._nl_v -= self.g2[0] * nl_a2_v[self.cr_slice]
+
+        #---- 3rd Order Nonlinearity
+        if self.g3 is not None:
+            nl_a3_t = np.zeros(self.nl_n_points, dtype=float)
+            for g3_internal in self.g2[1:]:
+                self._nl_a_v[self.cr_slice] = a_v * g3_internal
+                nl_a_t = fft.irfft(self._nl_a_v, fsc=self.nl_dt * 2**0.5, n=self.nl_n_points)
+                nl_a2_t = nl_a_t * nl_a_t
+                if self.r3 is not None:
+                    nl_a2_v = fft.rfft(nl_a2_t, fsc=self.nl_dt)
+                    nl_a2r3_v = nl_a2_v * self.r3
+                    nl_a2_t = fft.irfft(nl_a2r3_v, fsc=self.nl_dt, n=self.nl_n_points)
+                nl_a3_t += nl_a_t * nl_a2_t
+            nl_a3_v = fft.rfft(nl_a3_t, fsc=self.nl_dt * 2**0.5)
+            self._nl_v -= self.g3[0] * nl_a3_v[self.cr_slice]
+
+        #---- Nonlinear Response
+        return self._1j_w_grid * self._nl_v # minus sign included in _nl_v
 
     #---- Z-Dependency
     def update_linearity(self, z=None):
@@ -588,12 +634,35 @@ class SM_UPE():
         #---- 2nd Order
         if self._update_g2:
             self.g2 = self.mode.g2()
+            self._g2_dim = len(self.g2.shape) if self.g2 is not None else 0
 
         #---- 3rd Order
         if self._update_g3:
             self.g3 = self.mode.g3()
+            self._g3_dim = len(self.g3.shape) if self.g3 is not None else 0
         if self._update_r3:
             self.r3 = self.mode.r3()
+
+        #---- Select Nonlinear Operator
+        if (self._g2_dim >=2) and (self._g3_dim >= 2):
+            # Separable 2nd and 3rd order terms
+            self._nonlinear_operator = self.nonlinear_operator_svd
+        elif (self._g2_dim >=2):
+            # Separable 2nd order terms
+            self._nonlinear_operator = self.nonlinear_operator_svd
+            if self.g3 is not None:
+                self.g3 = [self.g3, complex(1.0)]
+                self._g2_dim = 2
+        elif (self._g3_dim >= 2):
+            # Separable 3rd order terms
+            self._nonlinear_operator = self.nonlinear_operator_svd
+            if self.g2 is not None:
+                self.g2 = [self.g2, complex(1.0)]
+                self._g2_dim = 2
+        else:
+            # Standard nonlinearity terms
+            self._nonlinear_operator = self.nonlinear_operator
+
 
     #---- Plotting
     def _setup_plots(self, plot, pulse_out, z):

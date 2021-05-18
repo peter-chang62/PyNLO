@@ -11,4 +11,5 @@ Functions
    gamma_to_g3
    g3_to_gamma
    g3_spm
+   g3_split
    raman_t

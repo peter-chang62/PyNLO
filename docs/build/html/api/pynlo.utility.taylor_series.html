@@ -442,6 +442,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="pynlo.model.SM_UPE.nonlinear_operator_svd.html">
+       pynlo.model.SM_UPE.nonlinear_operator_svd
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="pynlo.model.SM_UPE.update_linearity.html">
        pynlo.model.SM_UPE.update_linearity
       </a>
@@ -513,6 +518,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="pynlo.utility.chi2.g2_split.html">
+       pynlo.utility.chi2.g2_split
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="pynlo.utility.chi2.polling_sign.html">
        pynlo.utility.chi2.polling_sign
       </a>
@@ -542,6 +552,11 @@
      <li class="toctree-l3">
       <a class="reference internal" href="pynlo.utility.chi3.g3_spm.html">
        pynlo.utility.chi3.g3_spm
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="pynlo.utility.chi3.g3_split.html">
+       pynlo.utility.chi3.g3_split
       </a>
      </li>
      <li class="toctree-l3">
@@ -795,16 +810,14 @@
 <span class="sig-prename descclassname"><span class="pre">pynlo.utility.</span></span><span class="sig-name descname"><span class="pre">taylor_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">derivatives</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/utility.html#taylor_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.utility.taylor_series" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate a Taylor series expansion given the derivatives of a function
 about a point.</p>
-<dl class="field-list">
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl>
+<dd class="field-odd"><dl class="simple">
 <dt><strong>x0</strong><span class="classifier">float</span></dt><dd><p>The center point of the Taylor series expansion.</p>
 </dd>
 <dt><strong>derivatives</strong><span class="classifier">array_like</span></dt><dd><p>The derivatives of the function with respect to <cite>x</cite> evaluated at <cite>x0</cite>.
-The coefficients must be given in order of increasing degree, i.e.:</p>
-<blockquote>
-<div><p>[f(x0), f`(x0), f``(x0), …]</p>
-</div></blockquote>
+The coefficients must be given in order of increasing degree, i.e.
+<code class="docutils literal notranslate"><span class="pre">[f(x0),</span> <span class="pre">f'(x0),</span> <span class="pre">f''(x0),</span> <span class="pre">...]</span></code>.</p>
 </dd>
 </dl>
 </dd>

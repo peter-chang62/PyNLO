@@ -9,4 +9,5 @@ Functions
    :caption: Functions
 
    g2_shg
+   g2_split
    polling_sign

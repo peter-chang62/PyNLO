@@ -16,5 +16,6 @@ Methods
    ~SM_UPE.integrate
    ~SM_UPE.linear_operator
    ~SM_UPE.nonlinear_operator
+   ~SM_UPE.nonlinear_operator_svd
    ~SM_UPE.update_linearity
    ~SM_UPE.update_nonlinearity

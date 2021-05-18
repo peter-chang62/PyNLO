@@ -5,7 +5,7 @@ susceptibility.
 
 """
 
-__all__ = ["g2_shg", "polling_sign"]
+__all__ = ["g2_shg", "g2_split", "polling_sign"]
 
 
 # %% Imports
