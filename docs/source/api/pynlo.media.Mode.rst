@@ -20,6 +20,7 @@ Methods
    ~Mode.D
    ~Mode.linear_operator
    ~Mode.g2
+   ~Mode.g2_inv
    ~Mode.g3
    ~Mode.gamma
    ~Mode.r3

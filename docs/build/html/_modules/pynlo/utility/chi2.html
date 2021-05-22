@@ -32,7 +32,6 @@
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -69,7 +68,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../about.html">
+ <a class="reference internal nav-link" href="../../../guides.html">
   User Guide
  </a>
 </li>
@@ -177,7 +176,7 @@
 <div class="viewcode-block" id="g2_shg"><a class="viewcode-back" href="../../../api/pynlo.utility.chi2.g2_shg.html#pynlo.utility.chi2.g2_shg">[docs]</a><span class="k">def</span> <span class="nf">g2_shg</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v_grid</span><span class="p">,</span> <span class="n">n_eff</span><span class="p">,</span> <span class="n">a_eff</span><span class="p">,</span> <span class="n">chi2_eff</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The 2nd order nonlinear parameter weighted for second harmonic generation</span>
-<span class="sd">    driven from the given input frequency.</span>
+<span class="sd">    driven by the given input frequency.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -240,7 +239,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="p">((</span><span class="n">e0</span><span class="o">*</span><span class="n">a_eff</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">n_eff</span><span class="p">))</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">chi2_eff</span><span class="p">,</span>
-                     <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">e0</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">n_eff</span><span class="o">*</span><span class="n">a_eff</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="p">])</span><span class="o">.</span><span class="n">T</span></div>
+                     <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">e0</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">n_eff</span><span class="o">*</span><span class="n">a_eff</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="p">])</span></div>
 
 <span class="k">def</span> <span class="nf">g2_least_phase</span><span class="p">(</span><span class="n">n_eff</span><span class="p">,</span> <span class="n">a_eff</span><span class="p">,</span> <span class="n">chi2_eff</span><span class="p">,</span> <span class="n">paths</span><span class="p">):</span>
     <span class="n">g2s</span> <span class="o">=</span> <span class="n">g2_split</span><span class="p">(</span><span class="n">n_eff</span><span class="p">,</span> <span class="n">a_eff</span><span class="p">,</span> <span class="n">chi2_eff</span><span class="p">)</span>
@@ -251,7 +250,7 @@
         <span class="k">if</span> <span class="kc">None</span> <span class="ow">in</span> <span class="n">path</span><span class="p">:</span>
             <span class="n">g2_p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">g2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">g2s</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">g2s</span><span class="p">[</span><span class="n">cpl</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">g2s</span><span class="p">[</span><span class="n">cpl</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">cpl</span> <span class="ow">in</span> <span class="n">path</span><span class="p">])</span>
+            <span class="n">g2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">g2s</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">g2s</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">cpl</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">*</span><span class="n">g2s</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">cpl</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="k">for</span> <span class="n">cpl</span> <span class="ow">in</span> <span class="n">path</span><span class="p">])</span>
             <span class="n">g2_p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g2</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">arary</span><span class="p">(</span><span class="n">g2_p</span><span class="p">)</span>
 
@@ -261,39 +260,41 @@
 
 <span class="c1"># %% Phase Matching</span>
 
-<div class="viewcode-block" id="polling_sign"><a class="viewcode-back" href="../../../api/pynlo.utility.chi2.polling_sign.html#pynlo.utility.chi2.polling_sign">[docs]</a><span class="k">def</span> <span class="nf">polling_sign</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">z_invs</span><span class="p">):</span>
+<div class="viewcode-block" id="polling_sign"><a class="viewcode-back" href="../../../api/pynlo.utility.chi2.polling_sign.html#pynlo.utility.chi2.polling_sign">[docs]</a><span class="k">def</span> <span class="nf">polling_sign</span><span class="p">(</span><span class="n">n_periods</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the sign of a discrete quasi-phase matching (QPM) structure</span>
-<span class="sd">    given the locations of each inversion.</span>
+<span class="sd">    A wrapper for calculating the sign of a discrete quasi-phase matching</span>
+<span class="sd">    (QPM) structure given the instantaneous period number.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    z : float</span>
-<span class="sd">        The position along the waveguide.</span>
-<span class="sd">    z_invs : array_like of float</span>
-<span class="sd">        The locations along the waveguide where the sign of the polling</span>
-<span class="sd">        changes.</span>
+<span class="sd">    n_periods : callable</span>
+<span class="sd">        The instantaneous number of accumulated periods, callable at every</span>
+<span class="sd">        point along the waveguide.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    int</span>
+<span class="sd">    callable</span>
+<span class="sd">        The polling sign as a function of the position along the waveguide.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    For continous QPM profiles, the inversion locations can</span>
-<span class="sd">    be calculated by inverting the integral equation that gives the total</span>
-<span class="sd">    number of periods:</span>
+<span class="sd">    For continuous QPM profiles, the inversion locations can</span>
+<span class="sd">    be calculated by inverting the integral equation that gives the</span>
+<span class="sd">    instantaneous total number of periods:</span>
 
 <span class="sd">    .. math::</span>
-<span class="sd">        \text{cycles}[z] &amp;= \int_{z_0}^z \frac{\Delta k[z^\prime]}{2 \pi} dz^\prime</span>
-<span class="sd">                          = \int_{z_0}^z \frac{dz^\prime}{\text{period}[z^\prime]} \\</span>
-<span class="sd">        \text{z}_{inv}[n] &amp;= \text{cycles}^{-1}[n/2]</span>
+<span class="sd">        N[z] &amp;= \int_{z_0}^z \frac{\Delta k[z^\prime]}{2 \pi} dz^\prime</span>
+<span class="sd">                          = \int_{z_0}^z \frac{dz^\prime}{\Lambda[z^\prime]} \\</span>
+<span class="sd">        \text{z}_{inv}[n] &amp;= N^{-1}[n/2]</span>
 
-<span class="sd">    where &quot;:math:`\Delta k`&quot; is the wavenumber mismatch compensated by the</span>
-<span class="sd">    polling and &quot;:math:`n`&quot; is an integer.</span>
+<span class="sd">    where :math:`\Delta k` is the wavenumber mismatch compensated by polling</span>
+<span class="sd">    period :math:`\Lambda`, and :math:`n` is an integer.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="mi">1</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">z_invs</span> <span class="o">&lt;=</span> <span class="n">z</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span></div>
+    <span class="k">assert</span> <span class="n">callable</span><span class="p">(</span><span class="n">n_periods</span><span class="p">),</span> <span class="s2">&quot;The instantaneous number of periods must be callable.&quot;</span>
+    <span class="k">def</span> <span class="nf">polling_sign</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n_periods</span><span class="p">(</span><span class="n">z</span><span class="p">))</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">polling_sign</span></div>
 
 <span class="k">def</span> <span class="nf">dominant_paths</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">beta_qpm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>

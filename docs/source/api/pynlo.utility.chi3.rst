@@ -12,4 +12,4 @@ Functions
    g3_to_gamma
    g3_spm
    g3_split
-   raman_t
+   nl_response_v

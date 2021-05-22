@@ -32,7 +32,6 @@
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -69,7 +68,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../about.html">
+ <a class="reference internal nav-link" href="../../guides.html">
   User Guide
  </a>
 </li>
@@ -139,9 +138,7 @@
   <h1>Source code for pynlo.utility</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">A class for representing time and frequency grids, functions for</span>
-<span class="sd">manipulating the quantities defined over them, and other miscellaneous helper</span>
-<span class="sd">functions.</span>
+<span class="sd">Time and frequency grid utilites and and other miscellaneous helper functions.</span>
 
 <span class="sd">The submodules contain calculator type functions for converting between</span>
 <span class="sd">physically relevant parameters related to the linear and nonlinear</span>
@@ -276,7 +273,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">rng</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+        <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
 
     <span class="n">v_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">v_grid</span><span class="o">.</span><span class="n">size</span>
@@ -576,12 +573,12 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    n_points : int</span>
+<span class="sd">        The number of grid points.</span>
 <span class="sd">    v_max : float</span>
 <span class="sd">        The target maximum frequency.</span>
 <span class="sd">    dv : float</span>
 <span class="sd">        The target frequency grid step size.</span>
-<span class="sd">    n_points : int</span>
-<span class="sd">        The number of grid points.</span>
 <span class="sd">    v0 : float, optional</span>
 <span class="sd">        The comoving frame reference frequency. The default selects the</span>
 <span class="sd">        central frequency of the resulting grid.</span>
@@ -619,28 +616,28 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="TFGrid.__init__"><a class="viewcode-back" href="../../api/pynlo.utility.TFGrid.__init__.html#pynlo.utility.TFGrid.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="TFGrid.__init__"><a class="viewcode-back" href="../../api/pynlo.utility.TFGrid.__init__.html#pynlo.utility.TFGrid.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a time and frequency grid given a target maximum frequency,</span>
 <span class="sd">        a target frequency step size, and the total number of grid points.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        n_points : int</span>
+<span class="sd">            The number of grid points.</span>
 <span class="sd">        v_max : float</span>
 <span class="sd">            The target maximum frequency.</span>
 <span class="sd">        dv : float</span>
 <span class="sd">            The target frequency step size.</span>
-<span class="sd">        n_points : int</span>
-<span class="sd">            The number of grid points.</span>
 <span class="sd">        v0 : float, optional</span>
 <span class="sd">            The comoving frame reference frequency. The default selects the</span>
 <span class="sd">            central frequency of the resulting grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="p">(</span><span class="n">dv</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The frequency grid step size must be greater than 0.&quot;</span>
-        <span class="k">assert</span> <span class="p">(</span><span class="n">v_max</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The target maximum frequency must be greater than 0.&quot;</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)),</span> <span class="s2">&quot;The number of points must be an integer.&quot;</span>
         <span class="k">assert</span> <span class="p">(</span><span class="n">n_points</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">),</span>  <span class="s2">&quot;The number of points must be greater than 1.&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">dv</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The frequency grid step size must be greater than 0.&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">v_max</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The target maximum frequency must be greater than 0.&quot;</span>
 
         <span class="c1">#---- Align Frequency Grid</span>
         <span class="n">v_max_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">modf</span><span class="p">(</span><span class="n">v_max</span> <span class="o">/</span> <span class="n">dv</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
@@ -674,32 +671,31 @@
 
     <span class="c1">#---- Class Methods</span>
 <div class="viewcode-block" id="TFGrid.FromFreqRange"><a class="viewcode-back" href="../../api/pynlo.utility.TFGrid.FromFreqRange.html#pynlo.utility.TFGrid.FromFreqRange">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">FromFreqRange</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">FromFreqRange</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a time and frequency grid given a target minimum and maximum</span>
 <span class="sd">        frequency and the total number of grid points.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        n_points : int</span>
+<span class="sd">            The number of grid points.</span>
 <span class="sd">        v_min : float</span>
 <span class="sd">            The target minimum frequency.</span>
 <span class="sd">        v_max : float</span>
 <span class="sd">            The target maximum frequency.</span>
-<span class="sd">        n_points : int</span>
-<span class="sd">            The number of grid points.</span>
 <span class="sd">        v0 : float, optional</span>
 <span class="sd">            The comoving frame reference frequency. The default selects the</span>
 <span class="sd">            central frequency of the resulting grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="p">(</span><span class="n">n_points</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;The number of points must be greater than 1.&quot;</span>
         <span class="k">assert</span> <span class="p">(</span><span class="n">v_max</span> <span class="o">&gt;</span> <span class="n">v_min</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;The target maximum frequency must be greater&quot;</span>
                                  <span class="s2">&quot; than the target minimum frequency.&quot;</span><span class="p">)</span>
         <span class="n">dv</span> <span class="o">=</span> <span class="p">(</span><span class="n">v_max</span> <span class="o">-</span> <span class="n">v_min</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">n_points</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">v_max</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TFGrid.FromTimeWindowAndFreq"><a class="viewcode-back" href="../../api/pynlo.utility.TFGrid.FromTimeWindowAndFreq.html#pynlo.utility.TFGrid.FromTimeWindowAndFreq">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">FromTimeWindowAndFreq</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">t_window</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">n_points</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">FromTimeWindowAndFreq</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">t_window</span><span class="p">,</span> <span class="n">v0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a time and frequency grid given a target time window, a</span>
 <span class="sd">        target center frequency, and the total number of grid points.</span>
@@ -709,18 +705,17 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        n_points : int</span>
+<span class="sd">            The number of grid points.</span>
 <span class="sd">        t_window : float</span>
 <span class="sd">            The target time window.</span>
 <span class="sd">        v0 : float</span>
 <span class="sd">            The target center frequency, which is also taken as the comoving</span>
 <span class="sd">            frame reference frequency.</span>
-<span class="sd">        n_points : int</span>
-<span class="sd">            The number of grid points.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="p">(</span><span class="n">t_window</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The target time window must be greater than 0.&quot;</span>
         <span class="k">assert</span> <span class="p">(</span><span class="n">v0</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The target center frequency must be greater than 0.&quot;</span>
-        <span class="k">assert</span> <span class="p">(</span><span class="n">n_points</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;The number of points must be greater than 1.&quot;</span>
 
         <span class="n">dt</span> <span class="o">=</span> <span class="n">t_window</span><span class="o">/</span><span class="n">n_points</span>
         <span class="n">dv</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n_points</span><span class="o">*</span><span class="n">dt</span><span class="p">)</span>
@@ -732,7 +727,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">v_max_index</span> <span class="o">=</span> <span class="n">v_min_index</span> <span class="o">+</span> <span class="p">(</span><span class="n">n_points</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">v_max</span> <span class="o">=</span> <span class="n">dv</span> <span class="o">*</span> <span class="n">v_max_index</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">v_max</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">)</span></div>
 
     <span class="c1">#---- General Properties</span>
     <span class="nd">@property</span>
@@ -1142,9 +1137,7 @@
 <span class="sd">            np.sum(ra_t**2 * rtf.dt) == np.sum(np.abs(a_v)**2 * tf.dv)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="p">(</span><span class="n">n_harmonic</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The harmonic support must be greater than 0.&quot;</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_harmonic</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)),</span> <span class="p">(</span><span class="s2">&quot;The harmonic support&quot;</span>
-                                                           <span class="s2">&quot; must be an integer.&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">n_harmonic</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;The harmonic support must be atleast 1.&quot;</span>
         <span class="c1">#---- Number of Points</span>
         <span class="n">target_n_v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rn_range</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">*</span><span class="n">n_harmonic</span>
         <span class="k">if</span> <span class="n">n_harmonic</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -1152,7 +1145,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">target_n_t</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">target_n_v</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># even</span>
         <span class="k">if</span> <span class="n">fast_n</span><span class="p">:</span>
-            <span class="n">n</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">next_fast_len</span><span class="p">(</span><span class="n">target_n_t</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">next_fast_len</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">target_n_t</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">=</span> <span class="n">target_n_t</span>
         <span class="n">n_v</span> <span class="o">=</span> <span class="n">n</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>

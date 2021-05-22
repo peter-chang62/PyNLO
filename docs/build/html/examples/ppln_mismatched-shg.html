@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PPLN: Mismatched SHG &#8212; PyNLO dev documentation</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Notes" href="../notes.html" />
+    <link rel="prev" title="Silica PCF: Supercontinuum" href="silica-pcf_anomalous.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../index.html">
+  <img src="../_static/pynlo.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../guides.html">
+  User Guide
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../notes.html">
+  Notes
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../api.html">
+  API Reference
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <p class="caption">
+ <span class="caption-text">
+  Examples
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="silica-pcf_anomalous.html">
+   Silica PCF: Supercontinuum
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   PPLN: Mismatched SHG
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#code">
+   Code
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div class="section" id="ppln-mismatched-shg">
+<h1>PPLN: Mismatched SHG<a class="headerlink" href="#ppln-mismatched-shg" title="Permalink to this headline">¶</a></h1>
+<p>This example demonstrates supercontinuum generation due to highly phase-mismatched second harmonic generation in periodically polled lithium niobate. The simulation is similar to that reported in Fig.2 of  Conforti et al. <cite>Nonlinear envelope equation for broadband optical pulses in quadratic media</cite> <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
+<div class="section" id="code">
+<h2>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">examples/ppln_mismatched-shg.py</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This example demonstrates supercontinuum generation due to highly</span>
+<span class="sd">phase-mismatched second harmonic generation in periodically polled lithium</span>
+<span class="sd">niobate.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># %% Imports</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">c</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="kn">import</span> <span class="nn">pynlo</span>
+<span class="kn">from</span> <span class="nn">pynlo</span> <span class="kn">import</span> <span class="n">utility</span> <span class="k">as</span> <span class="n">utils</span>
+
+
+<span class="c1"># %% Pulse Properties</span>
+
+<span class="n">n_points</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">13</span>
+<span class="n">v_min</span> <span class="o">=</span> <span class="n">c</span><span class="o">/</span><span class="mf">3500e-9</span>   <span class="c1"># c / 3500 nm</span>
+<span class="n">v_max</span> <span class="o">=</span> <span class="n">c</span><span class="o">/</span><span class="mf">450e-9</span>    <span class="c1"># c / 900 nm</span>
+<span class="n">v0</span> <span class="o">=</span> <span class="n">c</span><span class="o">/</span><span class="mf">1550e-9</span>      <span class="c1"># c / 1550 nm</span>
+<span class="n">e_p</span> <span class="o">=</span> <span class="mf">1e-9</span>          <span class="c1"># 1 nJ</span>
+<span class="n">t_fwhm</span> <span class="o">=</span> <span class="mf">50e-15</span>     <span class="c1"># 50 fs</span>
+
+<span class="n">pulse</span> <span class="o">=</span> <span class="n">pynlo</span><span class="o">.</span><span class="n">light</span><span class="o">.</span><span class="n">Pulse</span><span class="o">.</span><span class="n">Sech</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">e_p</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="p">)</span>
+<span class="n">pulse</span><span class="o">.</span><span class="n">rtf_grids</span><span class="p">(</span><span class="n">n_harmonic</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># anti-aliasing</span>
+
+<span class="n">v_grid</span> <span class="o">=</span> <span class="n">pulse</span><span class="o">.</span><span class="n">v_grid</span>
+<span class="n">t_grid</span> <span class="o">=</span> <span class="n">pulse</span><span class="o">.</span><span class="n">t_grid</span>
+
+
+<span class="c1"># %% Waveguide Properties</span>
+
+<span class="n">length</span> <span class="o">=</span> <span class="mf">10e-3</span> <span class="c1"># 10 mm</span>
+<span class="n">a_eff</span> <span class="o">=</span> <span class="mf">10e-6</span> <span class="o">*</span> <span class="mf">10e-6</span> <span class="c1"># 10 um * 10 um</span>
+
+<span class="c1">#---- Wavenumbers</span>
+<span class="k">def</span> <span class="nf">n_MgLN_G</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">24.5</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Range of Validity:</span>
+<span class="sd">        - 500 nm to 4000 nm</span>
+<span class="sd">        - 20 C to 200 C</span>
+<span class="sd">        - 48.5 mol % Li</span>
+<span class="sd">        - 5 mol % Mg</span>
+
+<span class="sd">    Gayer, O., Sacks, Z., Galun, E. et al. Temperature and wavelength</span>
+<span class="sd">    dependent refractive index equations for MgO-doped congruent and</span>
+<span class="sd">    stoichiometric LiNbO3 . Appl. Phys. B 91, 343–348 (2008).</span>
+
+<span class="sd">    https://doi.org/10.1007/s00340-008-2998-2</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">axis</span><span class="o">==</span><span class="s2">&quot;e&quot;</span><span class="p">:</span>
+        <span class="n">a1</span> <span class="o">=</span> <span class="mf">5.756</span> <span class="c1"># plasmons in the far UV</span>
+        <span class="n">a2</span> <span class="o">=</span> <span class="mf">0.0983</span> <span class="c1"># weight of UV pole</span>
+        <span class="n">a3</span> <span class="o">=</span> <span class="mf">0.2020</span> <span class="c1"># pole in UV</span>
+        <span class="n">a4</span> <span class="o">=</span> <span class="mf">189.32</span> <span class="c1"># weight of IR pole</span>
+        <span class="n">a5</span> <span class="o">=</span> <span class="mf">12.52</span> <span class="c1"># pole in IR</span>
+        <span class="n">a6</span> <span class="o">=</span> <span class="mf">1.32e-2</span> <span class="c1"># phonon absorption in IR</span>
+        <span class="n">b1</span> <span class="o">=</span> <span class="mf">2.860e-6</span>
+        <span class="n">b2</span> <span class="o">=</span> <span class="mf">4.700e-8</span>
+        <span class="n">b3</span> <span class="o">=</span> <span class="mf">6.113e-8</span>
+        <span class="n">b4</span> <span class="o">=</span> <span class="mf">1.516e-4</span>
+    <span class="k">elif</span> <span class="n">axis</span><span class="o">==</span><span class="s2">&quot;o&quot;</span><span class="p">:</span>
+        <span class="n">a1</span> <span class="o">=</span> <span class="mf">5.653</span> <span class="c1"># plasmons in the far UV</span>
+        <span class="n">a2</span> <span class="o">=</span> <span class="mf">0.1185</span> <span class="c1"># weight of UV pole</span>
+        <span class="n">a3</span> <span class="o">=</span> <span class="mf">0.2091</span> <span class="c1"># pole in UV</span>
+        <span class="n">a4</span> <span class="o">=</span> <span class="mf">89.61</span> <span class="c1"># weight of IR pole</span>
+        <span class="n">a5</span> <span class="o">=</span> <span class="mf">10.85</span> <span class="c1"># pole in IR</span>
+        <span class="n">a6</span> <span class="o">=</span> <span class="mf">1.97e-2</span> <span class="c1"># phonon absorption in IR</span>
+        <span class="n">b1</span> <span class="o">=</span> <span class="mf">7.941e-7</span>
+        <span class="n">b2</span> <span class="o">=</span> <span class="mf">3.134e-8</span>
+        <span class="n">b3</span> <span class="o">=</span> <span class="o">-</span><span class="mf">4.641e-9</span>
+        <span class="n">b4</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.188e-6</span>
+
+    <span class="n">wvl</span> <span class="o">=</span> <span class="n">c</span><span class="o">/</span><span class="n">v</span> <span class="o">*</span> <span class="mf">1e6</span> <span class="c1"># um</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="p">(</span><span class="n">T</span><span class="o">-</span><span class="mf">24.5</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mf">570.82</span><span class="p">)</span>
+    <span class="n">n2</span> <span class="o">=</span> <span class="p">((</span><span class="n">a1</span> <span class="o">+</span> <span class="n">b1</span><span class="o">*</span><span class="n">f</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">a2</span> <span class="o">+</span> <span class="n">b2</span><span class="o">*</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">wvl</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="p">(</span><span class="n">a3</span> <span class="o">+</span> <span class="n">b3</span><span class="o">*</span><span class="n">f</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+          <span class="o">+</span> <span class="p">(</span><span class="n">a4</span> <span class="o">+</span> <span class="n">b4</span><span class="o">*</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">wvl</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">a5</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">a6</span><span class="o">*</span><span class="n">wvl</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">n2</span><span class="o">**</span><span class="mf">0.5</span>
+<span class="n">n_eff</span> <span class="o">=</span> <span class="n">n_MgLN_G</span><span class="p">(</span><span class="n">v_grid</span><span class="p">)</span>
+
+<span class="n">beta</span> <span class="o">=</span> <span class="n">n_eff</span> <span class="o">*</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">v_grid</span><span class="o">/</span><span class="n">c</span>
+
+<span class="c1">#---- 2nd order nonlinearity</span>
+<span class="n">d_eff</span> <span class="o">=</span> <span class="mf">27e-12</span> <span class="c1"># 27 pm / V</span>
+<span class="n">chi2_eff</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">d_eff</span>
+<span class="n">g2</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">chi2</span><span class="o">.</span><span class="n">g2_shg</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v_grid</span><span class="p">,</span> <span class="n">n_eff</span><span class="p">,</span> <span class="n">a_eff</span><span class="p">,</span> <span class="n">chi2_eff</span><span class="p">)</span>
+
+<span class="c1"># Polling</span>
+<span class="n">p_0</span> <span class="o">=</span> <span class="mf">31e-6</span> <span class="c1"># 31 um</span>
+<span class="k">def</span> <span class="nf">n_cycles</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;integral(dz/period(z))&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">z</span><span class="o">/</span><span class="n">p_0</span>
+<span class="k">def</span> <span class="nf">z_inversion</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;the z position of the nth polling inversion&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">n</span><span class="o">*</span><span class="n">p_0</span>
+<span class="n">z_invs</span> <span class="o">=</span> <span class="n">z_inversion</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">n_cycles</span><span class="p">(</span><span class="n">length</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># all inversion points</span>
+<span class="n">z_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z_invs</span><span class="p">[</span><span class="n">z_invs</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">],</span><span class="n">length</span><span class="p">)</span> <span class="c1"># include last point</span>
+
+<span class="n">g2_poll</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">chi2</span><span class="o">.</span><span class="n">polling_sign</span><span class="p">(</span><span class="n">n_cycles</span><span class="p">)</span>
+
+<span class="c1">#---- 3rd order nonlinearity</span>
+<span class="n">chi3_eff</span> <span class="o">=</span> <span class="mf">5200e-24</span> <span class="c1"># 5200 pm**2 / V**2</span>
+<span class="n">g3</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">chi3</span><span class="o">.</span><span class="n">g3_spm</span><span class="p">(</span><span class="n">n_eff</span><span class="p">,</span> <span class="n">a_eff</span><span class="p">,</span> <span class="n">chi3_eff</span><span class="p">)</span>
+
+<span class="n">mode</span> <span class="o">=</span> <span class="n">pynlo</span><span class="o">.</span><span class="n">media</span><span class="o">.</span><span class="n">Mode</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">g2_v</span><span class="o">=</span><span class="n">g2</span><span class="p">,</span> <span class="n">g2_inv</span><span class="o">=</span><span class="n">g2_poll</span><span class="p">,</span> <span class="n">g3_v</span><span class="o">=</span><span class="n">g3</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+
+
+<span class="c1"># %% Model</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">pynlo</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">SM_UPE</span><span class="p">(</span><span class="n">pulse</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+
+<span class="c1">#---- Estimate step size</span>
+<span class="n">local_error</span> <span class="o">=</span> <span class="mf">1e-6</span>
+<span class="n">dz</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">estimate_step_size</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">local_error</span><span class="o">=</span><span class="n">local_error</span><span class="p">)</span>
+
+
+<span class="c1"># %% Simulate</span>
+
+<span class="n">pulse_out</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">a_t</span><span class="p">,</span> <span class="n">a_v</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span>
+    <span class="n">z_grid</span><span class="p">,</span> <span class="n">dz</span><span class="o">=</span><span class="n">dz</span><span class="p">,</span> <span class="n">local_error</span><span class="o">=</span><span class="n">local_error</span><span class="p">,</span> <span class="n">n_records</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+
+<span class="c1"># %% Plot Results</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="s2">&quot;Simulation Results&quot;</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax0</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">rowspan</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">rowspan</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">rowspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="n">ax0</span><span class="p">)</span>
+<span class="n">ax3</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">rowspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
+
+<span class="n">p_v_dB</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">a_v</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">p_v_dB</span> <span class="o">-=</span> <span class="n">p_v_dB</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">ax0</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mf">1e-12</span><span class="o">*</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">p_v_dB</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="n">ax0</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mf">1e-12</span><span class="o">*</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">p_v_dB</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="mf">1e-12</span><span class="o">*</span><span class="n">v_grid</span><span class="p">,</span> <span class="mf">1e3</span><span class="o">*</span><span class="n">z</span><span class="p">,</span> <span class="n">p_v_dB</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">40.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+<span class="n">ax0</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=-</span><span class="mi">50</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (THz)&#39;</span><span class="p">)</span>
+
+<span class="n">p_t_dB</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">a_t</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">p_t_dB</span> <span class="o">-=</span> <span class="n">p_t_dB</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mf">1e12</span><span class="o">*</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">p_t_dB</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mf">1e12</span><span class="o">*</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">p_t_dB</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="mf">1e12</span><span class="o">*</span><span class="n">t_grid</span><span class="p">,</span> <span class="mf">1e3</span><span class="o">*</span><span class="n">z</span><span class="p">,</span> <span class="n">p_t_dB</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">40.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=-</span><span class="mi">50</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (ps)&#39;</span><span class="p">)</span>
+
+<span class="n">ax0</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Power (dB)&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Propagation Distance (mm)&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Conforti M, Baronio F, De Angelis C. Nonlinear envelope equation for broadband optical pulses in quadratic media. Physical review. A, Atomic, molecular, and optical physics. 2010;81(5). <a class="reference external" href="https://doi.org/10.1103/PhysRevA.81.053841">https://doi.org/10.1103/PhysRevA.81.053841</a></p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+              </div>
+              
+              
+              <div class='prev-next-bottom'>
+                
+    <a class='left-prev' id="prev-link" href="silica-pcf_anomalous.html" title="previous page">Silica PCF: Supercontinuum</a>
+    <a class='right-next' id="next-link" href="../notes.html" title="next page">Notes</a>
+
+              </div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, PyNLO authors.<br/>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.<br/>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Classes for representing optical modes in the frequency domain.
+Optical modes in the frequency domain.
 
 """
 
@@ -41,13 +41,16 @@ class Mode():
         constant. The default is None.
     g2_v : array_like of complex or callable, optional
         The effective 2nd order nonlinearity. The default is None.
+    g2_inv : callable, optional
+        Discrete polling of the 2nd order nonlinearity. The default is None.
     g3_v : array_like of complex or callable, optional
         The effective 3rd order nonlinearity. The default is None.
     rv_grid : array_like of float, optional
-        An origin contiguous frequency grid associated with the Raman
-        response. The default is None.
+        An origin contiguous frequency grid associated with the 3rd order
+        nonlinear response function. The default is None.
     r3_v : array_like of complex or callable, optional
-        The effective Raman response. The default is None.
+        The effective 3rd order nonlinear response function containing both
+        the instantaneous and Raman nonlinearities. The default is None.
     z : float, optional
         The position along the waveguide. The default is 0.0.
 
@@ -62,7 +65,8 @@ class Mode():
     """
 
     def __init__(self, v_grid, beta_v, alpha_v=None,
-                 g2_v=None, g3_v=None, rv_grid=None, r3_v=None, z=0.0):
+                 g2_v=None, g2_inv=None, g3_v=None, rv_grid=None, r3_v=None,
+                 z=0.0):
         """
         Initialize a mode given a set of frequencies, wavenumbers, and other
         parameters. If a given parameters is callable, its first argument must
@@ -80,13 +84,17 @@ class Mode():
             propagation constant. The default is None.
         g2_v : array_like of complex or callable, optional
             The effective 2nd order nonlinearity. The default is None.
+        g2_inv : callable, optional
+            Discrete polling of the 2nd order nonlinearity. The default is
+            None.
         g3_v : array_like of complex or callable, optional
             The effective 3rd order nonlinearity. The default is None.
-        rv_grid : array_like of float, optional
-            An origin contiguous frequency grid associated with the Raman
-            response. The default is None.
+            An origin contiguous frequency grid associated with the 3rd order
+            nonlinear response function. The default is None.
         r3_v : array_like of complex or callable, optional
-            The effective Raman response. The default is None.
+            The effective 3rd order nonlinear response function containing
+            both the instantaneous and Raman nonlinearities. The default is
+            None.
         z : float, optional
             The position along the waveguide. The default is 0.
 
@@ -118,6 +126,12 @@ class Mode():
         else:
             self._g2 = np.asarray(g2_v, dtype=complex)
 
+        if (g2_inv is None) or callable(g2_inv):
+            self._g2_inv = g2_inv
+        else:
+            assert callable(g2_inv), ("If defined, the discrete 2nd order"
+                                       "polling must be callable")
+
         #---- 3rd Order Nonlinearity
         if (g3_v is None) or callable(g3_v):
             self._g3 = g3_v
@@ -127,7 +141,7 @@ class Mode():
         if (rv_grid is not None) and (r3_v is not None):
             self._rv_grid = np.asarray(rv_grid, dtype=float)
 
-            #---- Raman Nonlinearity
+            #---- Nonlinear Response Function
             if callable(r3_v):
                 assert (len(r3_v(z)) == len(rv_grid)), "The length of r3_v must match rv_grid."
                 self._r3 = r3_v
@@ -207,6 +221,9 @@ class Mode():
         -------
         z_g2 : bool
             The z dependence of the effective 2nd order nonlinear parameter.
+        z_g2_inv : bool
+            The z dependence of the polling of the effective 2nd order
+            nonlinear parameter.
         z_g3 : bool
             The z dependence of the effective 3rd order nonlinear parameter.
         z_r3 : bool
@@ -214,9 +231,10 @@ class Mode():
 
         """
         z_g2 = callable(self._g2)
+        z_g2_inv = callable(self._g2_inv)
         z_g3 = callable(self._g3)
         z_r3 = callable(self._r3)
-        return z_g2, z_g3, z_r3
+        return z_g2, z_g2_inv, z_g3, z_r3
 
     #---- 1st Order Properties
     def beta(self, m=0, z=None):
@@ -454,8 +472,8 @@ class Mode():
     #---- 2nd Order Properties
     def g2(self, z=None):
         """
-        The effective 2nd order nonlinear parameter, with units of
-        ``1/(W**0.5*m*Hz)``.
+        The magnitude of the effective 2nd order nonlinear parameter, with
+        units of ``1/(W**0.5*m*Hz)``.
 
         Parameters
         ----------
@@ -471,6 +489,25 @@ class Mode():
         if z is not None:
             self.z = z
         return self._g2(self.z) if callable(self._g2) else self._g2
+
+    def g2_inv(self, z=None):
+        """
+        The sign of the polled 2nd order nonlinearity.
+
+        Parameters
+        ----------
+        z : float, optional
+            The position along the waveguide. The default uses the last known
+            value.
+
+        Returns
+        -------
+        int
+
+        """
+        if z is not None:
+            self.z = z
+        return 1 if self._g2_inv is None else self._g2_inv(self.z)
 
     #---- 3rd Order Properties
     def g3(self, z=None):
@@ -518,7 +555,8 @@ class Mode():
 
     def r3(self, z=None):
         """
-        The effective Raman response.
+        The effective 3rd order nonlinear response function containing both
+        the instantaneous and Raman nonlinearities.
 
         Parameters
         ----------
@@ -542,10 +580,14 @@ class Mode():
 #     def __init__(self, modes, coupling):
 #         pass
 
-# class GaussianMode(Mode):
+# class GaussianMode(Waveguide):
 #     """
-#     Collection of Hermite–Gaussian modes for simulating free space propagation
-#     -> effective area based on distance to nominal waist location
+#     Collection of Hermite–Gaussian or Laguerre–Gaussian modes for simulating
+#     free space propagation
+#     - effective area based on distance to nominal waist location
+#     - could also include convenience functions for setting up the beam
+#       through focusing, propagation, etc.
+#
 #     """
 #     def __init__(self, modes, coupling):
 #         pass

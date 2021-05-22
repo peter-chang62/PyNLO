@@ -38,7 +38,7 @@ def period_to_dk(period):
 def g2_shg(v0, v_grid, n_eff, a_eff, chi2_eff):
     """
     The 2nd order nonlinear parameter weighted for second harmonic generation
-    driven from the given input frequency.
+    driven by the given input frequency.
 
     Parameters
     ----------
@@ -101,7 +101,7 @@ def g2_split(n_eff, a_eff, chi2_eff):
 
     """
     return np.array([1/2 * ((e0*a_eff)/(c*n_eff))**0.5 * chi2_eff,
-                     1/(e0*c*n_eff*a_eff)**0.5]).T
+                     1/(e0*c*n_eff*a_eff)**0.5])
 
 def g2_least_phase(n_eff, a_eff, chi2_eff, paths):
     g2s = g2_split(n_eff, a_eff, chi2_eff)
@@ -112,7 +112,7 @@ def g2_least_phase(n_eff, a_eff, chi2_eff, paths):
         if None in path:
             g2_p.append(0.0)
         else:
-            g2 = np.mean([g2s[idx, 0] * g2s[cpl[0], 1]*g2s[cpl[0], 1] for cpl in path])
+            g2 = np.mean([g2s[0, idx] * g2s[1, cpl[0]]*g2s[1, cpl[0]] for cpl in path])
             g2_p.append(g2)
     return np.arary(g2_p)
 
@@ -122,39 +122,41 @@ def effective_chi3():
 
 # %% Phase Matching
 
-def polling_sign(z, z_invs):
+def polling_sign(n_periods):
     r"""
-    Calculate the sign of a discrete quasi-phase matching (QPM) structure
-    given the locations of each inversion.
+    A wrapper for calculating the sign of a discrete quasi-phase matching
+    (QPM) structure given the instantaneous period number.
 
     Parameters
     ----------
-    z : float
-        The position along the waveguide.
-    z_invs : array_like of float
-        The locations along the waveguide where the sign of the polling
-        changes.
+    n_periods : callable
+        The instantaneous number of accumulated periods, callable at every
+        point along the waveguide.
 
     Returns
     -------
-    int
+    callable
+        The polling sign as a function of the position along the waveguide.
 
     Notes
     -----
-    For continous QPM profiles, the inversion locations can
-    be calculated by inverting the integral equation that gives the total
-    number of periods:
+    For continuous QPM profiles, the inversion locations can
+    be calculated by inverting the integral equation that gives the
+    instantaneous total number of periods:
 
     .. math::
-        \text{cycles}[z] &= \int_{z_0}^z \frac{\Delta k[z^\prime]}{2 \pi} dz^\prime
-                          = \int_{z_0}^z \frac{dz^\prime}{\text{period}[z^\prime]} \\
-        \text{z}_{inv}[n] &= \text{cycles}^{-1}[n/2]
+        N[z] &= \int_{z_0}^z \frac{\Delta k[z^\prime]}{2 \pi} dz^\prime
+                          = \int_{z_0}^z \frac{dz^\prime}{\Lambda[z^\prime]} \\
+        \text{z}_{inv}[n] &= N^{-1}[n/2]
 
-    where ":math:`\Delta k`" is the wavenumber mismatch compensated by the
-    polling and ":math:`n`" is an integer.
+    where :math:`\Delta k` is the wavenumber mismatch compensated by polling
+    period :math:`\Lambda`, and :math:`n` is an integer.
 
     """
-    return 1-2*(np.count_nonzero(z_invs <= z) % 2)
+    assert callable(n_periods), "The instantaneous number of periods must be callable."
+    def polling_sign(z):
+        return 1 - 2*(int(2*n_periods(z)) % 2)
+    return polling_sign
 
 def dominant_paths(v_grid, beta, beta_qpm=None, full=False):
     """

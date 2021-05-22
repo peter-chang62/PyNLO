@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pynlo.utility.chi3.raman_t &#8212; PyNLO dev documentation</title>
+    <title>pynlo.utility.chi3.nl_response_v &#8212; PyNLO dev documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -32,7 +32,6 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pynlo.utility.fft" href="pynlo.utility.fft.html" />
@@ -71,7 +70,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../about.html">
+ <a class="reference internal nav-link" href="../guides.html">
   User Guide
  </a>
 </li>
@@ -338,6 +337,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="pynlo.media.Mode.g2_inv.html">
+       pynlo.media.Mode.g2_inv
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="pynlo.media.Mode.g3.html">
        pynlo.media.Mode.g3
       </a>
@@ -561,7 +565,7 @@
      </li>
      <li class="toctree-l3 current active">
       <a class="current reference internal" href="#">
-       pynlo.utility.chi3.raman_t
+       pynlo.utility.chi3.nl_response_v
       </a>
      </li>
     </ul>
@@ -803,29 +807,33 @@
               
               <div>
                 
-  <div class="section" id="pynlo-utility-chi3-raman-t">
-<h1>pynlo.utility.chi3.raman_t<a class="headerlink" href="#pynlo-utility-chi3-raman-t" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="pynlo-utility-chi3-nl-response-v">
+<h1>pynlo.utility.chi3.nl_response_v<a class="headerlink" href="#pynlo-utility-chi3-nl-response-v" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="pynlo.utility.chi3.raman_t">
-<span class="sig-prename descclassname"><span class="pre">pynlo.utility.chi3.</span></span><span class="sig-name descname"><span class="pre">raman_t</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/utility/chi3.html#raman_t"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.utility.chi3.raman_t" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the time-domain Raman and instantaneous normalized nonlinear
-response function.</p>
+<dt class="sig sig-object py" id="pynlo.utility.chi3.nl_response_v">
+<span class="sig-prename descclassname"><span class="pre">pynlo.utility.chi3.</span></span><span class="sig-name descname"><span class="pre">nl_response_v</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/utility/chi3.html#nl_response_v"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.utility.chi3.nl_response_v" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the normalized frequency-domain Raman and instantaneous
+nonlinear response function.</p>
+<p>This calculates the Raman response in the time domain using approximate,
+analytic equations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>t_grid</strong><span class="classifier">array_like of float</span></dt><dd><p>The time grid over which to calculate the nonlinear response function.</p>
+<dt><strong>t_grid</strong><span class="classifier">array_like of float</span></dt><dd><p>The time grid over which to calculate the nonlinear response function.
+This should be the same time grid as given by <cite>Pulse.rt_grid</cite>.</p>
 </dd>
-<dt><strong>dt</strong><span class="classifier">float</span></dt><dd><p>The time grid step size.</p>
+<dt><strong>dt</strong><span class="classifier">float</span></dt><dd><p>The time grid step size. This should be the same time step as given by
+<cite>Pulse.rdt</cite>.</p>
 </dd>
-<dt><strong>weights</strong><span class="classifier">array_like of float</span></dt><dd><p>The contributions due to vibrational resonances in the material. Must
-be given as <cite>[fraction, tau_1, tau_2]</cite>, where <cite>fraction</cite> is the
+<dt><strong>r_weights</strong><span class="classifier">array_like of float</span></dt><dd><p>The contributions due to vibrational resonances in the material. Must
+be given as <code class="docutils literal notranslate"><span class="pre">[fraction,</span> <span class="pre">tau_1,</span> <span class="pre">tau_2]</span></code>, where <cite>fraction</cite> is the
 fractional contribution of the resonance to the total nonlinear
 response function, <cite>tau_1</cite> is the period of the vibrational frequency,
 and <cite>tau_2</cite> is the resonance’s characteristic decay time. Enter more
 than one resonance using an (n, 3) shaped input array.</p>
 </dd>
 <dt><strong>b_weights</strong><span class="classifier">array_like of float, optional</span></dt><dd><p>The contributions due to boson peaks found in amorphous materials.
-Must be given as <cite>[fraction, tau_b]</cite>, where <cite>fraction</cite> is the
+Must be given as <code class="docutils literal notranslate"><span class="pre">[fraction,</span> <span class="pre">tau_b]</span></code>, where <cite>fraction</cite> is the
 fractional contribution of the boson peak to the total nonlinear
 response function, and <cite>tau_b</cite> is the boson peak’s characteristic
 decay time. Enter more than one peak using an (n, 2) shaped input
@@ -835,23 +843,25 @@ array. The default behavior is to ignore this term.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>nonlinear_t</strong><span class="classifier">ndarray of float</span></dt><dd><p>The time-domain nonlinear response function.</p>
+<dt><strong>nonlinear_t</strong><span class="classifier">ndarray of float</span></dt><dd><p>The time-domain nonlinear response function. This is defined over the
+same frequency grid as <cite>Pulse.rv_grid</cite>.</p>
 </dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>These are the analytical formulations as summarized in section 2.3.3
-Agrawal’s Nonlinear Fiber Optics <a class="reference internal" href="#rb61fe59c977a-1" id="id1">[1]</a>. More accurate simulations may be
-obtainable using digitized spectral measurements, such as from <a class="reference internal" href="#rb61fe59c977a-2" id="id2">[2]</a>.</p>
+<p>The equations used are the analytical formulations as summarized in
+section 2.3.3 Agrawal’s Nonlinear Fiber Optics <a class="reference internal" href="#rbdb662d46217-1" id="id1">[1]</a>. More accurate
+simulations may be obtainable using digitized spectral measurements, such
+as from <a class="reference internal" href="#rbdb662d46217-2" id="id2">[2]</a>.</p>
 <p class="rubric">References</p>
 <dl class="citation">
-<dt class="label" id="rb61fe59c977a-1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dt class="label" id="rbdb662d46217-1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
 <dd><p>Agrawal GP. Nonlinear Fiber Optics. Sixth ed. London; San Diego,
 CA;: Academic Press; 2019.</p>
 <p><a class="reference external" href="https://doi.org/10.1016/B978-0-12-817042-7.00009-9">https://doi.org/10.1016/B978-0-12-817042-7.00009-9</a></p>
 </dd>
-<dt class="label" id="rb61fe59c977a-2"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dt class="label" id="rbdb662d46217-2"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
 <dd><p>R.H. Stolen in “Raman Amplifiers for Telecommunications”. See
 figure 2.10 and comments in reference 28.</p>
 <p><a class="reference external" href="https://doi.org/10.1007/978-0-387-21583-9_2">https://doi.org/10.1007/978-0-387-21583-9_2</a></p>

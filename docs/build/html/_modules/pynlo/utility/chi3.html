@@ -32,7 +32,6 @@
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -69,7 +68,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../about.html">
+ <a class="reference internal nav-link" href="../../../guides.html">
   User Guide
  </a>
 </li>
@@ -144,7 +143,7 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gamma_to_g3&quot;</span><span class="p">,</span> <span class="s2">&quot;g3_to_gamma&quot;</span><span class="p">,</span> <span class="s2">&quot;g3_spm&quot;</span><span class="p">,</span> <span class="s2">&quot;g3_split&quot;</span><span class="p">,</span> <span class="s2">&quot;raman_t&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gamma_to_g3&quot;</span><span class="p">,</span> <span class="s2">&quot;g3_to_gamma&quot;</span><span class="p">,</span> <span class="s2">&quot;g3_spm&quot;</span><span class="p">,</span> <span class="s2">&quot;g3_split&quot;</span><span class="p">,</span> <span class="s2">&quot;nl_response_v&quot;</span><span class="p">]</span>
 
 
 <span class="c1"># %% Imports</span>
@@ -152,16 +151,20 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">epsilon_0</span> <span class="k">as</span> <span class="n">e0</span>
 
+<span class="kn">from</span> <span class="nn">pynlo.utility</span> <span class="kn">import</span> <span class="n">fft</span>
+
 
 <span class="c1">#%% Converters</span>
 
 <span class="c1">#---- Effective Nonlinearities g3 and gamma</span>
-<div class="viewcode-block" id="gamma_to_g3"><a class="viewcode-back" href="../../../api/pynlo.utility.chi3.gamma_to_g3.html#pynlo.utility.chi3.gamma_to_g3">[docs]</a><span class="k">def</span> <span class="nf">gamma_to_g3</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+<div class="viewcode-block" id="gamma_to_g3"><a class="viewcode-back" href="../../../api/pynlo.utility.chi3.gamma_to_g3.html#pynlo.utility.chi3.gamma_to_g3">[docs]</a><span class="k">def</span> <span class="nf">gamma_to_g3</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">t_shock</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert from the gamma to g3 nonlinear parameter.</span>
 
-<span class="sd">    If the given gamma is frequency independent, the returned g3 parameter</span>
-<span class="sd">    will cancel out the self-steeping effect.</span>
+<span class="sd">    The `t_shock` parameter is used to determine the strength of the</span>
+<span class="sd">    self-steepening effect when gamma is only given at a single point. If an</span>
+<span class="sd">    array is given for gamma, it is assumed to already contain the</span>
+<span class="sd">    self-steepening effect.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -169,12 +172,24 @@
 <span class="sd">        The frequency grid.</span>
 <span class="sd">    gamma : array_like</span>
 <span class="sd">        The effective nonlinear parameter.</span>
+<span class="sd">    t_shock : float, optional</span>
+<span class="sd">        The characteristic time scale of optical shock formation. This</span>
+<span class="sd">        time scale is typically equal to ``1/(2*pi*v0)``, where `v0` is the</span>
+<span class="sd">        frequency at which `gamma` is defined, but it may also contain</span>
+<span class="sd">        corrections to `gamma` due to the frequency dependence of the optical</span>
+<span class="sd">        mode. This parameter is only valid if `gamma` is given at a single</span>
+<span class="sd">        point.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    g3</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">gamma</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">t_shock</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">gamma</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;t_shock is only valid when a gamma is given at a single point.&quot;</span>
+        <span class="n">v0_eff</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">t_shock</span><span class="p">)</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">v_grid</span><span class="o">/</span><span class="n">v0_eff</span>
     <span class="k">return</span> <span class="n">gamma</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">v_grid</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="g3_to_gamma"><a class="viewcode-back" href="../../../api/pynlo.utility.chi3.g3_to_gamma.html#pynlo.utility.chi3.g3_to_gamma">[docs]</a><span class="k">def</span> <span class="nf">g3_to_gamma</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">g3</span><span class="p">):</span>
@@ -213,33 +228,75 @@
 <span class="c1"># %% Nonlinearity</span>
 
 <div class="viewcode-block" id="g3_spm"><a class="viewcode-back" href="../../../api/pynlo.utility.chi3.g3_spm.html#pynlo.utility.chi3.g3_spm">[docs]</a><span class="k">def</span> <span class="nf">g3_spm</span><span class="p">(</span><span class="n">n_eff</span><span class="p">,</span> <span class="n">a_eff</span><span class="p">,</span> <span class="n">chi3_eff</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The 3rd order nonlinear parameter weighted for self-phase modulation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_eff : array_like of float</span>
+<span class="sd">        The effective refractive indices.</span>
+<span class="sd">    a_eff : array_like of float</span>
+<span class="sd">        The effective areas.</span>
+<span class="sd">    chi3_eff : array_like</span>
+<span class="sd">        The effective 3rd order susceptibilities.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    g3 : ndarray</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">chi3_eff</span><span class="o">/</span><span class="p">(</span><span class="n">e0</span><span class="o">*</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n_eff</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a_eff</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="g3_split"><a class="viewcode-back" href="../../../api/pynlo.utility.chi3.g3_split.html#pynlo.utility.chi3.g3_split">[docs]</a><span class="k">def</span> <span class="nf">g3_split</span><span class="p">(</span><span class="n">n_eff</span><span class="p">,</span> <span class="n">a_eff</span><span class="p">,</span> <span class="n">chi3_eff</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="p">((</span><span class="n">e0</span><span class="o">*</span><span class="n">a_eff</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">n_eff</span><span class="p">))</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">chi3_eff</span><span class="p">,</span>
-                     <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">e0</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">n_eff</span><span class="o">*</span><span class="n">a_eff</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="p">])</span><span class="o">.</span><span class="n">T</span></div>
-
-<div class="viewcode-block" id="raman_t"><a class="viewcode-back" href="../../../api/pynlo.utility.chi3.raman_t.html#pynlo.utility.chi3.raman_t">[docs]</a><span class="k">def</span> <span class="nf">raman_t</span><span class="p">(</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">b_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the time-domain Raman and instantaneous normalized nonlinear</span>
-<span class="sd">    response function.</span>
+<span class="sd">    The unit decomposition of the 3rd order nonlinear parameter.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_eff : array_like of float</span>
+<span class="sd">        The refractive indices.</span>
+<span class="sd">    a_eff : array_like of float</span>
+<span class="sd">        The effective areas.</span>
+<span class="sd">    chi3_eff : array_like</span>
+<span class="sd">        The effective 3rd order susceptibilities.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray (2, n)</span>
+<span class="sd">        The decomposition of the 3rd order nonlinear parameter. The first</span>
+<span class="sd">        index contains the output factors while the second index contains the</span>
+<span class="sd">        input factors.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="p">((</span><span class="n">e0</span><span class="o">*</span><span class="n">a_eff</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">n_eff</span><span class="p">))</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">chi3_eff</span><span class="p">,</span>
+                     <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">e0</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">n_eff</span><span class="o">*</span><span class="n">a_eff</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="nl_response_v"><a class="viewcode-back" href="../../../api/pynlo.utility.chi3.nl_response_v.html#pynlo.utility.chi3.nl_response_v">[docs]</a><span class="k">def</span> <span class="nf">nl_response_v</span><span class="p">(</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">r_weights</span><span class="p">,</span> <span class="n">b_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the normalized frequency-domain Raman and instantaneous</span>
+<span class="sd">    nonlinear response function.</span>
+
+<span class="sd">    This calculates the Raman response in the time domain using approximate,</span>
+<span class="sd">    analytic equations.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    t_grid : array_like of float</span>
 <span class="sd">        The time grid over which to calculate the nonlinear response function.</span>
+<span class="sd">        This should be the same time grid as given by `Pulse.rt_grid`.</span>
 <span class="sd">    dt : float</span>
-<span class="sd">        The time grid step size.</span>
-<span class="sd">    weights : array_like of float</span>
+<span class="sd">        The time grid step size. This should be the same time step as given by</span>
+<span class="sd">        `Pulse.rdt`.</span>
+<span class="sd">    r_weights : array_like of float</span>
 <span class="sd">        The contributions due to vibrational resonances in the material. Must</span>
-<span class="sd">        be given as `[fraction, tau_1, tau_2]`, where `fraction` is the</span>
+<span class="sd">        be given as ``[fraction, tau_1, tau_2]``, where `fraction` is the</span>
 <span class="sd">        fractional contribution of the resonance to the total nonlinear</span>
 <span class="sd">        response function, `tau_1` is the period of the vibrational frequency,</span>
 <span class="sd">        and `tau_2` is the resonance&#39;s characteristic decay time. Enter more</span>
 <span class="sd">        than one resonance using an (n, 3) shaped input array.</span>
 <span class="sd">    b_weights : array_like of float, optional</span>
 <span class="sd">        The contributions due to boson peaks found in amorphous materials.</span>
-<span class="sd">        Must be given as `[fraction, tau_b]`, where `fraction` is the</span>
+<span class="sd">        Must be given as ``[fraction, tau_b]``, where `fraction` is the</span>
 <span class="sd">        fractional contribution of the boson peak to the total nonlinear</span>
 <span class="sd">        response function, and `tau_b` is the boson peak&#39;s characteristic</span>
 <span class="sd">        decay time. Enter more than one peak using an (n, 2) shaped input</span>
@@ -248,13 +305,15 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    nonlinear_t : ndarray of float</span>
-<span class="sd">        The time-domain nonlinear response function.</span>
+<span class="sd">        The time-domain nonlinear response function. This is defined over the</span>
+<span class="sd">        same frequency grid as `Pulse.rv_grid`.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    These are the analytical formulations as summarized in section 2.3.3</span>
-<span class="sd">    Agrawal&#39;s Nonlinear Fiber Optics [1]_. More accurate simulations may be</span>
-<span class="sd">    obtainable using digitized spectral measurements, such as from [2]_.</span>
+<span class="sd">    The equations used are the analytical formulations as summarized in</span>
+<span class="sd">    section 2.3.3 Agrawal&#39;s Nonlinear Fiber Optics [1]_. More accurate</span>
+<span class="sd">    simulations may be obtainable using digitized spectral measurements, such</span>
+<span class="sd">    as from [2]_.</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
@@ -315,12 +374,12 @@
         <span class="n">h_b</span> <span class="o">*=</span> <span class="n">fraction</span>
         <span class="k">return</span> <span class="n">h_b</span>
 
-    <span class="c1"># Vibrational Modes</span>
+    <span class="c1"># Resonant Vibrational Modes</span>
     <span class="n">raman_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t_grid</span><span class="p">)</span>
-    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">:</span>
+    <span class="n">r_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">r_weights</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">r_weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">r_weights</span> <span class="o">=</span> <span class="n">r_weights</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">r_weights</span><span class="p">:</span>
         <span class="n">raman_t</span> <span class="o">+=</span> <span class="n">h_r</span><span class="p">(</span><span class="o">*</span><span class="n">weight</span><span class="p">)</span>
 
     <span class="c1"># Boson Peaks</span>
@@ -328,17 +387,18 @@
         <span class="n">b_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">b_weights</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">b_weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">b_weights</span> <span class="o">=</span> <span class="n">b_weights</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">b_weight</span> <span class="ow">in</span> <span class="n">b_weights</span><span class="p">:</span>
-            <span class="n">raman_t</span> <span class="o">+=</span> <span class="n">h_b</span><span class="p">(</span><span class="o">*</span><span class="n">b_weight</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">b_weights</span><span class="p">:</span>
+            <span class="n">raman_t</span> <span class="o">+=</span> <span class="n">h_b</span><span class="p">(</span><span class="o">*</span><span class="n">weight</span><span class="p">)</span>
 
     <span class="c1">#---- Instantaneous Response</span>
     <span class="n">delta_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t_grid</span><span class="p">)</span>
     <span class="n">delta_t</span><span class="p">[</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">delta_t</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta_t</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span>
-    <span class="n">delta_t</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">raman_t</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span>
+    <span class="n">delta_t</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">raman_t</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span> <span class="c1"># leftovers</span>
 
     <span class="n">nonlinear_t</span> <span class="o">=</span> <span class="n">raman_t</span> <span class="o">+</span> <span class="n">delta_t</span>
-    <span class="k">return</span> <span class="n">nonlinear_t</span></div>
+    <span class="n">nonlinear_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">nonlinear_t</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">nonlinear_v</span></div>
 
 
 <span class="c1"># %% Solitons</span>
@@ -360,8 +420,8 @@
 <span class="k">def</span> <span class="nf">soliton_DW_dk</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">pass</span> <span class="c1">#TODO</span>
 
-<span class="k">def</span> <span class="nf">soliton_SFS</span><span class="p">():</span>
-    <span class="k">pass</span> <span class="c1">#TODO: cleo 2021 JTu3A.66, Analytical Expression of Raman Induced Soliton Self Frequency Shift</span>
+<span class="k">def</span> <span class="nf">soliton_SFS</span><span class="p">(</span><span class="n">gamma</span><span class="p">,</span> <span class="p">):</span>
+    <span class="k">pass</span> <span class="c1">#TODO: https://doi.org/10.1364/JOSAB.409240</span>
 </pre></div>
 
               </div>

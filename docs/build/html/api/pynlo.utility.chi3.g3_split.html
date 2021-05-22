@@ -32,10 +32,9 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pynlo.utility.chi3.raman_t" href="pynlo.utility.chi3.raman_t.html" />
+    <link rel="next" title="pynlo.utility.chi3.nl_response_v" href="pynlo.utility.chi3.nl_response_v.html" />
     <link rel="prev" title="pynlo.utility.chi3.g3_spm" href="pynlo.utility.chi3.g3_spm.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -71,7 +70,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../about.html">
+ <a class="reference internal nav-link" href="../guides.html">
   User Guide
  </a>
 </li>
@@ -338,6 +337,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="pynlo.media.Mode.g2_inv.html">
+       pynlo.media.Mode.g2_inv
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="pynlo.media.Mode.g3.html">
        pynlo.media.Mode.g3
       </a>
@@ -560,8 +564,8 @@
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi3.raman_t.html">
-       pynlo.utility.chi3.raman_t
+      <a class="reference internal" href="pynlo.utility.chi3.nl_response_v.html">
+       pynlo.utility.chi3.nl_response_v
       </a>
      </li>
     </ul>
@@ -808,7 +812,28 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="pynlo.utility.chi3.g3_split">
 <span class="sig-prename descclassname"><span class="pre">pynlo.utility.chi3.</span></span><span class="sig-name descname"><span class="pre">g3_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_eff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_eff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chi3_eff</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/utility/chi3.html#g3_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.utility.chi3.g3_split" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The unit decomposition of the 3rd order nonlinear parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n_eff</strong><span class="classifier">array_like of float</span></dt><dd><p>The refractive indices.</p>
+</dd>
+<dt><strong>a_eff</strong><span class="classifier">array_like of float</span></dt><dd><p>The effective areas.</p>
+</dd>
+<dt><strong>chi3_eff</strong><span class="classifier">array_like</span></dt><dd><p>The effective 3rd order susceptibilities.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>ndarray (2, n)</dt><dd><p>The decomposition of the 3rd order nonlinear parameter. The first
+index contains the output factors while the second index contains the
+input factors.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 
@@ -819,7 +844,7 @@
               <div class='prev-next-bottom'>
                 
     <a class='left-prev' id="prev-link" href="pynlo.utility.chi3.g3_spm.html" title="previous page">pynlo.utility.chi3.g3_spm</a>
-    <a class='right-next' id="next-link" href="pynlo.utility.chi3.raman_t.html" title="next page">pynlo.utility.chi3.raman_t</a>
+    <a class='right-next' id="next-link" href="pynlo.utility.chi3.nl_response_v.html" title="next page">pynlo.utility.chi3.nl_response_v</a>
 
               </div>
               

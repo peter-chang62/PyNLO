@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PyNLO: Nonlinear Optics Modeling for Python &#8212; PyNLO dev documentation</title>
+    <title>PyNLO: Nonlinear Optics for Python &#8212; PyNLO dev documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -34,10 +34,9 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
-    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="User Guide" href="about.html" />
+    <link rel="next" title="User Guide" href="guides.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -72,7 +71,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="about.html">
+ <a class="reference internal nav-link" href="guides.html">
   User Guide
  </a>
 </li>
@@ -139,7 +138,7 @@
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#">
-   PyNLO: Nonlinear Optics Modeling for Python
+   PyNLO: Nonlinear Optics for Python
   </a>
   <ul class="visible nav section-nav flex-column">
    <li class="toc-h2 nav-item toc-entry">
@@ -197,14 +196,14 @@
               
               <div>
                 
-  <div class="section" id="pynlo-nonlinear-optics-modeling-for-python">
-<h1>PyNLO: Nonlinear Optics Modeling for Python<a class="headerlink" href="#pynlo-nonlinear-optics-modeling-for-python" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="pynlo-nonlinear-optics-for-python">
+<h1>PyNLO: Nonlinear Optics for Python<a class="headerlink" href="#pynlo-nonlinear-optics-for-python" title="Permalink to this headline">¶</a></h1>
 <p>This repo is a fork of the original PyNLO. It started as a rewrite of the pulse propagation model and has grown into something that contains many backwards incompatible changes. It is not yet at feature parity with the original, but it still has some things worth checking out!</p>
 <p>Complete documentation for the main branch is available on the repo’s <a class="reference external" href="https://cdfredrick.github.io/PyNLO/build/html/index.html">GitHub-Page</a>.</p>
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>The PyNLO package provides an easy-to-use, object-oriented set of tools for modeling the nonlinear interaction of light with materials. It provides many functionalities for representing pulses of light and nonlinear materials. Also, it features <strong>a unified interface</strong> for simulating both <strong>three-wave-mixing</strong> processes (such as second order sum and difference frequency generation) and <strong>four-wave-mixing</strong> processes (such as self-phase modulation, and third order sum and difference frequency generation).</p>
-<p>In pyNLO, object-oriented programming is used to emulate physical objects. Whenever possible, each physical entity with intrinic properties – for example an optical pulse or nonlinear fiber – is mapped to a Python class. These classes keep track of the objects’ properties, calculate interactions, and provide simple calculator-type helper functions.</p>
+<p>The PyNLO package provides an easy-to-use, object-oriented set of tools for modeling the nonlinear interaction of light with materials. It provides many functionalities for representing pulses of light and nonlinear materials. It features <strong>a unified interface</strong> for simultaneously simulating both <strong>three-wave-mixing</strong> processes (such as second order sum and difference frequency generation) and <strong>four-wave-mixing</strong> processes (such as self-phase modulation, and third order sum and difference frequency generation).</p>
+<p>In pyNLO, object-oriented programming is used to emulate physical objects. Whenever possible, each physical entity with intrinsic properties – for example an optical pulse or nonlinear fiber – is mapped to a Python class. These classes keep track of the objects’ properties, calculate interactions, and provide simple calculator-type helper functions.</p>
 <dl class="simple">
 <dt>Features:</dt><dd><ul class="simple">
 <li><p>A solver for the propagation of light through <span class="math notranslate nohighlight">\(\chi^2\)</span> and <span class="math notranslate nohighlight">\(\chi^3\)</span> optical waveguides. This solver is highly efficient, thanks to an adaptive-step-size implementation of the embedded 4th order Runge-Kutta in-the-interaction-picture (ERK4(3)-IP) method from <a class="reference external" href="https://doi.org/10.1016/j.cpc.2012.12.020">Balac and Mahé (2013)</a>.</p></li>
@@ -216,16 +215,16 @@
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>PyNLO requires Python 3. If you don’t already have Python, the open-source Anaconda distribution is a good all-in-one collection of Python packages, or if you are looking for a more minimalist installation try Miniconda.</p>
+<p>PyNLO requires Python 3. If you do not already have Python, the open-source Anaconda distribution is a good all-in-one collection of Python packages, or if you are looking for a more minimalist installation try Miniconda. In addition to NumPy and SciPy, PyNLO only requires the Numba and mkl_fft packages (and don’t forget matplotlib if you want to look at the results).</p>
 <p>The easiest way to start using this fork is to download or clone the repo into a directory of your choice, and then add that directory to the top of your <a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.path">sys.path</a> variable before importing the package.</p>
 </div>
 <div class="section" id="contributing">
 <h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>
-<p>Open a new issue or discussion on the github repository to add suggestions for improvement, questions, or other comments.</p>
+<p>Open a new issue or discussion on the GitHub repository to add suggestions for improvement, questions, or other comments. Since a lot of the code is new, contributing tests and examples is highly appreciated. New additions should be based off of the <cite>develop</cite> branch.</p>
 </div>
 <div class="section" id="license">
 <h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
-<p>PyNLO is licensed under the <a class="reference external" href="https://choosealicense.com/licenses/lgpl-3.0/">GNU LGPLv3 license</a>. This means that you are free to use PyNLO for any project, but all modifications to its source code need to be kept open-source. Of course, PyNLO is provided “as is” with absolutely no warrenty.</p>
+<p>PyNLO is licensed under the <a class="reference external" href="https://choosealicense.com/licenses/lgpl-3.0/">GNU LGPLv3 license</a>. This means that you are free to use PyNLO for any project, but all modifications to its source code need to be kept open source. PyNLO is provided “as is” with absolutely no warranty.</p>
 </div>
 </div>
 <div class="section" id="documentation">
@@ -233,7 +232,11 @@
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="about.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guides.html">User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/silica-pcf_anomalous.html">Silica PCF: Supercontinuum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/ppln_mismatched-shg.html">PPLN: Mismatched SHG</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="notes.html">Notes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="notes/fourier_transforms.html">Fourier Transforms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notes/linear_optics.html">Linear Optics</a></li>
@@ -267,7 +270,7 @@
               
               <div class='prev-next-bottom'>
                 
-    <a class='right-next' id="next-link" href="about.html" title="next page">User Guide</a>
+    <a class='right-next' id="next-link" href="guides.html" title="next page">User Guide</a>
 
               </div>
               

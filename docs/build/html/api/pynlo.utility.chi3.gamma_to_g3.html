@@ -32,7 +32,6 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pynlo.utility.chi3.g3_to_gamma" href="pynlo.utility.chi3.g3_to_gamma.html" />
@@ -71,7 +70,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../about.html">
+ <a class="reference internal nav-link" href="../guides.html">
   User Guide
  </a>
 </li>
@@ -338,6 +337,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="pynlo.media.Mode.g2_inv.html">
+       pynlo.media.Mode.g2_inv
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="pynlo.media.Mode.g3.html">
        pynlo.media.Mode.g3
       </a>
@@ -560,8 +564,8 @@
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi3.raman_t.html">
-       pynlo.utility.chi3.raman_t
+      <a class="reference internal" href="pynlo.utility.chi3.nl_response_v.html">
+       pynlo.utility.chi3.nl_response_v
       </a>
      </li>
     </ul>
@@ -807,16 +811,25 @@
 <h1>pynlo.utility.chi3.gamma_to_g3<a class="headerlink" href="#pynlo-utility-chi3-gamma-to-g3" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pynlo.utility.chi3.gamma_to_g3">
-<span class="sig-prename descclassname"><span class="pre">pynlo.utility.chi3.</span></span><span class="sig-name descname"><span class="pre">gamma_to_g3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/utility/chi3.html#gamma_to_g3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.utility.chi3.gamma_to_g3" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pynlo.utility.chi3.</span></span><span class="sig-name descname"><span class="pre">gamma_to_g3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_shock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/utility/chi3.html#gamma_to_g3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.utility.chi3.gamma_to_g3" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert from the gamma to g3 nonlinear parameter.</p>
-<p>If the given gamma is frequency independent, the returned g3 parameter
-will cancel out the self-steeping effect.</p>
+<p>The <cite>t_shock</cite> parameter is used to determine the strength of the
+self-steepening effect when gamma is only given at a single point. If an
+array is given for gamma, it is assumed to already contain the
+self-steepening effect.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>v_grid</strong><span class="classifier">array_like of float</span></dt><dd><p>The frequency grid.</p>
 </dd>
 <dt><strong>gamma</strong><span class="classifier">array_like</span></dt><dd><p>The effective nonlinear parameter.</p>
+</dd>
+<dt><strong>t_shock</strong><span class="classifier">float, optional</span></dt><dd><p>The characteristic time scale of optical shock formation. This
+time scale is typically equal to <code class="docutils literal notranslate"><span class="pre">1/(2*pi*v0)</span></code>, where <cite>v0</cite> is the
+frequency at which <cite>gamma</cite> is defined, but it may also contain
+corrections to <cite>gamma</cite> due to the frequency dependence of the optical
+mode. This parameter is only valid if <cite>gamma</cite> is given at a single
+point.</p>
 </dd>
 </dl>
 </dd>

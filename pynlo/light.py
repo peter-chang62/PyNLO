@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-A class for representing optical pulses in both time and frequency domains.
+Optical pulses in both the time and frequency domains.
 
 Notes
 -----
@@ -19,7 +19,7 @@ __all__ = ["Pulse"]
 import collections
 
 import numpy as np
-from scipy.constants import pi, h
+from scipy.constants import pi
 
 from pynlo.utility import TFGrid, fft, resample_v, resample_t
 
@@ -47,12 +47,12 @@ class Pulse(TFGrid):
 
     Parameters
     ----------
+    n_points : int
+        The number of grid points.
     v_max : float
         The target maximum frequency.
     dv : float
         The target frequency grid step size.
-    n_points : int
-        The number of grid points.
     v0 : float, optional
         The comoving frame reference frequency. The default is the center of
         the resulting frequency grid.
@@ -77,7 +77,7 @@ class Pulse(TFGrid):
 
     """
 
-    def __init__(self, v_max, dv, n_points, v0=None, a_v=None):
+    def __init__(self, n_points, v_max, dv, v0=None, a_v=None):
         """
         Initialize a time and frequency grid given a target maximum frequency,
         a target frequency step size, and the total number of grid points, and
@@ -88,12 +88,12 @@ class Pulse(TFGrid):
 
         Parameters
         ----------
+        n_points : int
+            The number of grid points.
         v_max : float
             The target maximum frequency.
         dv : float
             The target frequency grid step size.
-        n_points : int
-            The number of grid points.
         v0 : float, optional
             The comoving frame reference frequency. The default is the center
             of the resulting frequency grid.
@@ -102,7 +102,7 @@ class Pulse(TFGrid):
 
         """
         #---- Construct TF Grids
-        super().__init__(v_max, dv, n_points, v0=v0)
+        super().__init__(n_points, v_max, dv, v0=v0)
 
         #---- Set Spectrum
         if a_v is None:
@@ -143,18 +143,18 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def FromPowerSpectrum(cls, v_min, v_max, n_points, p_v, phi_v=None, v0=None, e_p=None):
+    def FromPowerSpectrum(cls, n_points, v_min, v_max, p_v, phi_v=None, v0=None, e_p=None):
         """
         Initialize a pulse using existing spectral data.
 
         Parameters
         ----------
+        n_points : int, optional
+            The number of grid points.
         v_min : float, optional
             The target minimum frequency.
         v_max : float, optional
             The target maximum frequency.
-        n_points : int, optional
-            The number of grid points.
         p_v : callable -> array_like of float
             The power spectrum to be evaluated along the resulting frequency
             grid.
@@ -172,7 +172,7 @@ class Pulse(TFGrid):
         assert callable(p_v), "The power spectrum must be a callable function."
 
         #---- Construct TF Grids
-        self = super().FromFreqRange(v_min, v_max, n_points, v0=v0)
+        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0)
 
         #---- Evaluate Input
         p_v = np.asarray(p_v(self.v_grid), dtype=float)
@@ -193,18 +193,18 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def Gaussian(cls, v_min, v_max, n_points, v0, e_p, t_fwhm, m=1):
+    def Gaussian(cls, n_points, v_min, v_max, v0, e_p, t_fwhm, m=1):
         """
         Initialize a gaussian or super-gaussian pulse.
 
         Parameters
         ----------
+        n_points : int
+            The number of grid points.
         v_min : float
             The target minimum frequency.
         v_max : float
             The target maximum frequency.
-        n_points : int
-            The number of grid points.
         v0 : float
             The pulse's center frequency. Also taken as the comoving frame
             reference frequency.
@@ -219,7 +219,7 @@ class Pulse(TFGrid):
         assert (t_fwhm > 0), "The pulse width must be greater than 0."
 
         #---- Construct TF Grids
-        self = super().FromFreqRange(v_min, v_max, n_points, v0=v0)
+        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0)
 
         #---- Set Spectrum
         p_t = 2**(-((2*self.t_grid/t_fwhm)**2)**m)
@@ -231,18 +231,18 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def Sech(cls, v_min, v_max, n_points, v0, e_p, t_fwhm):
+    def Sech(cls, n_points, v_min, v_max, v0, e_p, t_fwhm):
         """
         Initialize a squared hyperbolic secant pulse.
 
         Parameters
         ----------
+        n_points : int
+            The number of grid points.
         v_min : float
             The target minimum frequency.
         v_max : float
             The target maximum frequency.
-        n_points : int
-            The number of grid points.
         v0 : float
             The pulse's center frequency. Also taken as the comoving frame
             reference frequency.
@@ -255,7 +255,7 @@ class Pulse(TFGrid):
         assert (t_fwhm > 0), "The pulse width must be greater than 0."
 
         #---- Construct TF Grids
-        self = super().FromFreqRange(v_min, v_max, n_points, v0=v0)
+        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0)
 
         #---- Set Spectrum
         p_t = 1/np.cosh(2*np.arccosh(2**0.5) * self.t_grid/t_fwhm)**2
@@ -267,18 +267,18 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def Parabolic(cls, v_min, v_max, n_points, v0, e_p, t_fwhm):
+    def Parabolic(cls, n_points, v_min, v_max, v0, e_p, t_fwhm):
         """
         Initialize a parabolic pulse.
 
         Parameters
         ----------
+        n_points : int
+            The number of grid points.
         v_min : float
             The target minimum frequency.
         v_max : float
             The target maximum frequency.
-        n_points : int
-            The number of grid points.
         v0 : float
             The pulse's center frequency. Also taken as the comoving frame
             reference frequency.
@@ -291,7 +291,7 @@ class Pulse(TFGrid):
         assert (t_fwhm > 0), "The pulse width must be greater than 0."
 
         #---- Construct TF Grids
-        self = super().FromFreqRange(v_min, v_max, n_points, v0=v0)
+        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0)
 
         #---- Set Spectrum
         p_t = 1-2*(self.t_grid/t_fwhm)**2
@@ -304,18 +304,18 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def Lorentzian(cls, v_min, v_max, n_points, v0, e_p, t_fwhm):
+    def Lorentzian(cls, n_points, v_min, v_max, v0, e_p, t_fwhm):
         """
         Initialize a squared lorentzian pulse.
 
         Parameters
         ----------
+        n_points : int
+            The number of grid points.
         v_min : float
             The target minimum frequency.
         v_max : float
             The target maximum frequency.
-        n_points : int
-            The number of grid points.
         v0 : float
             The pulse's center frequency. Also taken as the comoving frame
             reference frequency.
@@ -328,7 +328,7 @@ class Pulse(TFGrid):
         assert (t_fwhm > 0), "The pulse width must be greater than 0."
 
         #---- Construct TF Grids
-        self = super().FromFreqRange(v_min, v_max, n_points, v0=v0)
+        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0)
 
         #---- Set Spectrum
         p_t = 1/(1+4*(2**0.5-1)*(self.t_grid/t_fwhm)**2)**2
@@ -340,7 +340,7 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def CW(cls, v_min, v_max, n_points, v0, p_avg):
+    def CW(cls, n_points, v_min, v_max, v0, p_avg):
         """
         Initialize an optical spectrum with a single target frequency.
 
@@ -350,12 +350,12 @@ class Pulse(TFGrid):
 
         Parameters
         ----------
+        n_points : int
+            The number of grid points.
         v_min : float
             The target minimum frequency.
         v_max : float
             The target maximum frequency.
-        n_points : int
-            The number of grid points.
         v0 : float
             The target continuous wave frequency.
         p_avg : float
@@ -363,7 +363,7 @@ class Pulse(TFGrid):
 
         """
         #---- Construct TF Grids
-        self = super().FromFreqRange(v_min, v_max, n_points)
+        self = super().FromFreqRange(n_points, v_min, v_max)
         v0_selector = np.argmin(np.abs(self.v_grid - v0))
         v0 = self.v_grid[v0_selector]
         self.v0 = v0

@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-A class for representing time and frequency grids, functions for
-manipulating the quantities defined over them, and other miscellaneous helper
-functions.
+Time and frequency grid utilites and and other miscellaneous helper functions.
 
 The submodules contain calculator type functions for converting between
 physically relevant parameters related to the linear and nonlinear
@@ -137,7 +135,7 @@ def coherent_noise_v(v_grid, dv, rng=None):
 
     """
     if rng is None:
-        np.random.default_rng()
+        rng = np.random.default_rng()
 
     v_grid = np.asarray(v_grid, dtype=float)
     n = v_grid.size
@@ -437,12 +435,12 @@ class TFGrid():
 
     Parameters
     ----------
+    n_points : int
+        The number of grid points.
     v_max : float
         The target maximum frequency.
     dv : float
         The target frequency grid step size.
-    n_points : int
-        The number of grid points.
     v0 : float, optional
         The comoving frame reference frequency. The default selects the
         central frequency of the resulting grid.
@@ -480,28 +478,28 @@ class TFGrid():
 
     """
 
-    def __init__(self, v_max, dv, n_points, v0=None):
+    def __init__(self, n_points, v_max, dv, v0=None):
         """
         Initialize a time and frequency grid given a target maximum frequency,
         a target frequency step size, and the total number of grid points.
 
         Parameters
         ----------
+        n_points : int
+            The number of grid points.
         v_max : float
             The target maximum frequency.
         dv : float
             The target frequency step size.
-        n_points : int
-            The number of grid points.
         v0 : float, optional
             The comoving frame reference frequency. The default selects the
             central frequency of the resulting grid.
 
         """
-        assert (dv > 0), "The frequency grid step size must be greater than 0."
-        assert (v_max > 0), "The target maximum frequency must be greater than 0."
         assert isinstance(n_points, (int, np.integer)), "The number of points must be an integer."
         assert (n_points > 1),  "The number of points must be greater than 1."
+        assert (dv > 0), "The frequency grid step size must be greater than 0."
+        assert (v_max > 0), "The target maximum frequency must be greater than 0."
 
         #---- Align Frequency Grid
         v_max_index = int(round(np.modf(v_max / dv)[1]))
@@ -535,32 +533,31 @@ class TFGrid():
 
     #---- Class Methods
     @classmethod
-    def FromFreqRange(cls, v_min, v_max, n_points, v0=None):
+    def FromFreqRange(cls, n_points, v_min, v_max, v0=None):
         """
         Initialize a time and frequency grid given a target minimum and maximum
         frequency and the total number of grid points.
 
         Parameters
         ----------
+        n_points : int
+            The number of grid points.
         v_min : float
             The target minimum frequency.
         v_max : float
             The target maximum frequency.
-        n_points : int
-            The number of grid points.
         v0 : float, optional
             The comoving frame reference frequency. The default selects the
             central frequency of the resulting grid.
 
         """
-        assert (n_points > 1), "The number of points must be greater than 1."
         assert (v_max > v_min), ("The target maximum frequency must be greater"
                                  " than the target minimum frequency.")
         dv = (v_max - v_min)/(n_points-1)
-        return cls(v_max, dv, n_points, v0=v0)
+        return cls(n_points, v_max, dv, v0=v0)
 
     @classmethod
-    def FromTimeWindowAndFreq(cls, t_window, v0, n_points):
+    def FromTimeWindowAndFreq(cls, n_points, t_window, v0):
         """
         Initialize a time and frequency grid given a target time window, a
         target center frequency, and the total number of grid points.
@@ -570,18 +567,17 @@ class TFGrid():
 
         Parameters
         ----------
+        n_points : int
+            The number of grid points.
         t_window : float
             The target time window.
         v0 : float
             The target center frequency, which is also taken as the comoving
             frame reference frequency.
-        n_points : int
-            The number of grid points.
 
         """
         assert (t_window > 0), "The target time window must be greater than 0."
         assert (v0 > 0), "The target center frequency must be greater than 0."
-        assert (n_points > 1), "The number of points must be greater than 1."
 
         dt = t_window/n_points
         dv = 1/(n_points*dt)
@@ -593,7 +589,7 @@ class TFGrid():
         else:
             v_max_index = v_min_index + (n_points-1)
         v_max = dv * v_max_index
-        return cls(v_max, dv, n_points, v0=v0)
+        return cls(n_points, v_max, dv, v0=v0)
 
     #---- General Properties
     @property
@@ -1003,9 +999,7 @@ class TFGrid():
             np.sum(ra_t**2 * rtf.dt) == np.sum(np.abs(a_v)**2 * tf.dv)
 
         """
-        assert (n_harmonic > 0), "The harmonic support must be greater than 0."
-        assert isinstance(n_harmonic, (int, np.integer)), ("The harmonic support"
-                                                           " must be an integer.")
+        assert (n_harmonic >= 1), "The harmonic support must be atleast 1."
         #---- Number of Points
         target_n_v = self.rn_range.max()*n_harmonic
         if n_harmonic == 1:
@@ -1013,7 +1007,7 @@ class TFGrid():
         else:
             target_n_t = 2*(target_n_v - 1) # even
         if fast_n:
-            n = fft.next_fast_len(target_n_t)
+            n = fft.next_fast_len(round(target_n_t))
         else:
             n = target_n_t
         n_v = n//2 + 1

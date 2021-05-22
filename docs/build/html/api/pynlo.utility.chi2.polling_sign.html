@@ -34,7 +34,6 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
-    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pynlo.utility.chi3" href="pynlo.utility.chi3.html" />
@@ -73,7 +72,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../about.html">
+ <a class="reference internal nav-link" href="../guides.html">
   User Guide
  </a>
 </li>
@@ -340,6 +339,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="pynlo.media.Mode.g2_inv.html">
+       pynlo.media.Mode.g2_inv
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="pynlo.media.Mode.g3.html">
        pynlo.media.Mode.g3
       </a>
@@ -562,8 +566,8 @@
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi3.raman_t.html">
-       pynlo.utility.chi3.raman_t
+      <a class="reference internal" href="pynlo.utility.chi3.nl_response_v.html">
+       pynlo.utility.chi3.nl_response_v
       </a>
      </li>
     </ul>
@@ -809,35 +813,34 @@
 <h1>pynlo.utility.chi2.polling_sign<a class="headerlink" href="#pynlo-utility-chi2-polling-sign" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pynlo.utility.chi2.polling_sign">
-<span class="sig-prename descclassname"><span class="pre">pynlo.utility.chi2.</span></span><span class="sig-name descname"><span class="pre">polling_sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_invs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/utility/chi2.html#polling_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.utility.chi2.polling_sign" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the sign of a discrete quasi-phase matching (QPM) structure
-given the locations of each inversion.</p>
+<span class="sig-prename descclassname"><span class="pre">pynlo.utility.chi2.</span></span><span class="sig-name descname"><span class="pre">polling_sign</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_periods</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/utility/chi2.html#polling_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.utility.chi2.polling_sign" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for calculating the sign of a discrete quasi-phase matching
+(QPM) structure given the instantaneous period number.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>z</strong><span class="classifier">float</span></dt><dd><p>The position along the waveguide.</p>
-</dd>
-<dt><strong>z_invs</strong><span class="classifier">array_like of float</span></dt><dd><p>The locations along the waveguide where the sign of the polling
-changes.</p>
+<dt><strong>n_periods</strong><span class="classifier">callable</span></dt><dd><p>The instantaneous number of accumulated periods, callable at every
+point along the waveguide.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt>int</dt><dd></dd>
+<dt>callable</dt><dd><p>The polling sign as a function of the position along the waveguide.</p>
+</dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>For continous QPM profiles, the inversion locations can
-be calculated by inverting the integral equation that gives the total
-number of periods:</p>
+<p>For continuous QPM profiles, the inversion locations can
+be calculated by inverting the integral equation that gives the
+instantaneous total number of periods:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\text{cycles}[z] &amp;= \int_{z_0}^z \frac{\Delta k[z^\prime]}{2 \pi} dz^\prime
-                  = \int_{z_0}^z \frac{dz^\prime}{\text{period}[z^\prime]} \\
-\text{z}_{inv}[n] &amp;= \text{cycles}^{-1}[n/2]\end{split}\]</div>
-<p>where “<span class="math notranslate nohighlight">\(\Delta k\)</span>” is the wavenumber mismatch compensated by the
-polling and “<span class="math notranslate nohighlight">\(n\)</span>” is an integer.</p>
+\[\begin{split}N[z] &amp;= \int_{z_0}^z \frac{\Delta k[z^\prime]}{2 \pi} dz^\prime
+                  = \int_{z_0}^z \frac{dz^\prime}{\Lambda[z^\prime]} \\
+\text{z}_{inv}[n] &amp;= N^{-1}[n/2]\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Delta k\)</span> is the wavenumber mismatch compensated by polling
+period <span class="math notranslate nohighlight">\(\Lambda\)</span>, and <span class="math notranslate nohighlight">\(n\)</span> is an integer.</p>
 </dd></dl>
 
 </div>

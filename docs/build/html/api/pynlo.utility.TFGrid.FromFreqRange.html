@@ -32,7 +32,6 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pynlo.utility.TFGrid.FromTimeWindowAndFreq" href="pynlo.utility.TFGrid.FromTimeWindowAndFreq.html" />
@@ -71,7 +70,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../about.html">
+ <a class="reference internal nav-link" href="../guides.html">
   User Guide
  </a>
 </li>
@@ -338,6 +337,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="pynlo.media.Mode.g2_inv.html">
+       pynlo.media.Mode.g2_inv
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="pynlo.media.Mode.g3.html">
        pynlo.media.Mode.g3
       </a>
@@ -560,8 +564,8 @@
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi3.raman_t.html">
-       pynlo.utility.chi3.raman_t
+      <a class="reference internal" href="pynlo.utility.chi3.nl_response_v.html">
+       pynlo.utility.chi3.nl_response_v
       </a>
      </li>
     </ul>
@@ -807,17 +811,17 @@
 <h1>pynlo.utility.TFGrid.FromFreqRange<a class="headerlink" href="#pynlo-utility-tfgrid-fromfreqrange" title="Permalink to this headline">¶</a></h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="pynlo.utility.TFGrid.FromFreqRange">
-<em class="property"><span class="pre">classmethod</span> </em><span class="sig-prename descclassname"><span class="pre">TFGrid.</span></span><span class="sig-name descname"><span class="pre">FromFreqRange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/utility.html#TFGrid.FromFreqRange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.utility.TFGrid.FromFreqRange" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-prename descclassname"><span class="pre">TFGrid.</span></span><span class="sig-name descname"><span class="pre">FromFreqRange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/utility.html#TFGrid.FromFreqRange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.utility.TFGrid.FromFreqRange" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize a time and frequency grid given a target minimum and maximum
 frequency and the total number of grid points.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
+<dt><strong>n_points</strong><span class="classifier">int</span></dt><dd><p>The number of grid points.</p>
+</dd>
 <dt><strong>v_min</strong><span class="classifier">float</span></dt><dd><p>The target minimum frequency.</p>
 </dd>
 <dt><strong>v_max</strong><span class="classifier">float</span></dt><dd><p>The target maximum frequency.</p>
-</dd>
-<dt><strong>n_points</strong><span class="classifier">int</span></dt><dd><p>The number of grid points.</p>
 </dd>
 <dt><strong>v0</strong><span class="classifier">float, optional</span></dt><dd><p>The comoving frame reference frequency. The default selects the
 central frequency of the resulting grid.</p>

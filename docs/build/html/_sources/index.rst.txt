@@ -1,14 +1,14 @@
 .. include:: ../../README.rst
 
 Documentation
-=========================
+=============
 .. toctree::
    :includehidden:
    :titlesonly:
    :maxdepth: 2
    :caption: Contents
 
-   about
+   guides
    notes
    API Reference <api>
 

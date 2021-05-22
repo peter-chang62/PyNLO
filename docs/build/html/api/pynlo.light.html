@@ -32,7 +32,6 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pynlo.light.Pulse" href="pynlo.light.Pulse.html" />
@@ -71,7 +70,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../about.html">
+ <a class="reference internal nav-link" href="../guides.html">
   User Guide
  </a>
 </li>
@@ -338,6 +337,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="pynlo.media.Mode.g2_inv.html">
+       pynlo.media.Mode.g2_inv
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="pynlo.media.Mode.g3.html">
        pynlo.media.Mode.g3
       </a>
@@ -560,8 +564,8 @@
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi3.raman_t.html">
-       pynlo.utility.chi3.raman_t
+      <a class="reference internal" href="pynlo.utility.chi3.nl_response_v.html">
+       pynlo.utility.chi3.nl_response_v
       </a>
      </li>
     </ul>
@@ -820,7 +824,7 @@
                 
   <div class="section" id="module-pynlo.light">
 <span id="pynlo-light"></span><h1>pynlo.light<a class="headerlink" href="#module-pynlo.light" title="Permalink to this headline">¶</a></h1>
-<p>A class for representing optical pulses in both time and frequency domains.</p>
+<p>Optical pulses in both the time and frequency domains.</p>
 <div class="section" id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
 <p>The public facing routines and properties of the defined classes have inputs
@@ -836,7 +840,7 @@ the standard fft order.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.light.Pulse.html#pynlo.light.Pulse" title="pynlo.light.Pulse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Pulse</span></code></a>(v_max, dv, n_points[, v0, a_v])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.light.Pulse.html#pynlo.light.Pulse" title="pynlo.light.Pulse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Pulse</span></code></a>(n_points, v_max, dv[, v0, a_v])</p></td>
 <td><p>An optical pulse, defined over complementary time and frequency grids.</p></td>
 </tr>
 </tbody>

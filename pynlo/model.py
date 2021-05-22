@@ -1,6 +1,24 @@
 # -*- coding: utf-8 -*-
 """
-Classes for simulating the evolution of optical pulses.
+Models for simulating the propagation of optical pulses.
+
+Notes
+-----
+Multiplications of functions in the time domain (operations intrinsic to
+nonlinear optics) are equivalent to convolutions in the frequency domain and
+vice versa. The support of a convolution is the sum of the support of its
+parts. Thus, 2nd and 3rd order processes in the time domain need 2x and 3x
+number of points in the frequency domain to avoid aliasing.
+
+`Pulse` objects only initialize the minimum number of points necessary to
+represent the real-valued time domain pulse (i.e. 1x). While this minimizes
+the numerical complexity of individual nonlinear operations, aliasing
+introduces systematic error and can even increase the total simulation time by
+forcing shorter step sizes. More points can be generated for a specific
+`Pulse` object by running its `rtf_grids` method with `update` set to ``True``
+and with a `n_harmonic` parameter greater than 1. Anti-aliasing is not always
+necessary as phase matching can suppress the aliased interactions, but it is
+best practice to verify that behavior on a case-by-case basis.
 
 """
 
@@ -9,6 +27,8 @@ __all__ = ["SM_UPE"]
 
 # %% Imports
 
+import collections
+
 import numpy as np
 from scipy.constants import c, pi
 from numba import njit
@@ -16,6 +36,11 @@ from numba import njit
 from pynlo.light import Pulse
 from pynlo.media import Mode
 from pynlo.utility import fft
+
+
+# %% Collections
+
+SimulationResult = collections.namedtuple("SimulationResult", ["pulse", "z", "a_t", "a_v"])
 
 
 # %% Routines
@@ -53,9 +78,10 @@ def l2_error(a_RK4, a_RK3):
 
 class SM_UPE():
     """
-    A model based on the single-mode unidirectional propagation equation.
+    A model for simulating single-mode pulse propagation.
 
-    This model can simulate both 2nd and 3rd order nonlinear effects.
+    This model can simultaneously simulate both 2nd and 3rd order nonlinear
+    effects.
 
     Parameters
     ----------
@@ -66,30 +92,11 @@ class SM_UPE():
         A `Mode` object containing the linear and nonlinear properties of
         the waveguide mode.
 
-    Notes
-    -----
-    Multiplication of functions in the time domain (operations intrinsic to
-    nonlinear optics) are equivalent to convolutions in the frequency domain
-    and vice versa. The support of a convolution is the sum of the support of
-    its parts. Thus, 2nd and 3rd order processes in the time domain need 2x
-    and 3x number of points in the frequency domain in order to avoid
-    aliasing.
-
-    `Pulse` objects only initialize the minimum number of points necessary to
-    represent a real-valued time domain pulse without aliasing (i.e. 1x).
-    While this allows for a faster calculation, the aliased nonlinear
-    components could introduce systematic error. More points can be generated
-    for a specific `Pulse` object by running its `rtf_grids` method with
-    `update` set to ``True`` and a larger `n_harmonic` parameter. However,
-    anti-aliasing is not usually necessary as phase matching suppresses
-    aliased interactions due to large phase mismatch.
-
     """
 
     def __init__(self, pulse, mode):
         """
-        Initialize a model based on the single-mode unidirectional propagation
-        equation.
+        Initialize a single-mode model for simulating pulse propagation.
 
         Parameters
         ----------
@@ -102,11 +109,11 @@ class SM_UPE():
         """
         assert isinstance(pulse, Pulse)
         assert isinstance(mode, Mode)
-        assert (pulse.v_grid==mode.v_grid), ("The pulse and mode must be defined"
-                                             " over the same frequency grid")
-        if mode.rv_grid is not None:
-            assert (pulse.rv_grid==mode.rv_grid), ("The pulse and mode must be defined"
+        assert (pulse.v_grid==mode.v_grid).all(), ("The pulse and mode must be defined"
                                                    " over the same frequency grid")
+        if mode.rv_grid is not None:
+            assert (pulse.rv_grid==mode.rv_grid).all(), ("The pulse and mode must be defined"
+                                                         " over the same frequency grid")
         self.pulse_in = pulse
         self.mode = mode
 
@@ -162,16 +169,18 @@ class SM_UPE():
         self._update_alpha, self._update_beta = self.mode.z_dep_linearity
         self._z_linear = self._update_alpha or self._update_beta
 
-        self._update_g2 = self._update_g3 = self._update_r3 = True
+        self._update_g2 = self._update_g2_inv = self._update_g3 = self._update_r3 = True
         self.update_nonlinearity() # initialize nonlinearity
-        self._update_g2, self._update_g3, self._update_r3 = self.mode.z_dep_nonlinearity
-        self._z_nonlinear = self._update_g2 or self._update_g3 or self._update_r3
+        (self._update_g2, self._update_g2_inv,
+         self._update_g3, self._update_r3) = self.mode.z_dep_nonlinearity
+        self._z_nonlinear = (self._update_g2 or self._update_g2_inv
+                             or self._update_g3 or self._update_r3)
 
         self._1j_w_grid = 1j * self.w_grid
         self._nl_v = np.zeros_like(self.v_grid, dtype=complex)
-        self._nl_a_v = np.zeros_like(self.pulse_in.nl_v_grid, dtype=complex)
+        self._nl_a_v = np.zeros_like(self.pulse_in.rv_grid, dtype=complex)
 
-    def estimate_step_size(self, a_v, z, local_error=1e-6, dz=10e-6, n=1, db=False):
+    def estimate_step_size(self, a_v=None, z=None, local_error=1e-6, dz=10e-6, n=1, db=False):
         """
         Estimate a more optimal step size, relative to the local error, given
         a test step size `dz`.
@@ -200,6 +209,11 @@ class SM_UPE():
             The new step size.
 
         """
+        if a_v is None:
+            a_v = self.pulse_in.a_v
+        if z is None:
+            z = self.mode.z
+
         for _ in range(n):
             #---- Integrate by dz
             a_RK4_v, a_RK3_v, _ = self.integrate(a_v, z, dz)
@@ -242,14 +256,15 @@ class SM_UPE():
 
         Returns
         -------
-        pulse_out : pynlo.light.Pulse
+        pulse : pynlo.light.Pulse
             The output pulse. This object can be used as the input to another
             waveguide.
-        z_record : ndarray of float
-            The points along the waveguide at which the pulses are returned.
-        a_t_record : ndarray of complex
+        z : ndarray of float
+            The points along the waveguide at which the pulse spectrum (`a_v`)
+            and envelope (`a_t`) are returned.
+        a_t : ndarray of complex
             The root-power complex envelope of the pulse along the waveguide.
-        a_v_record : ndarray of complex
+        a_v : ndarray of complex
             The root-power spectrum of the pulse along the waveguide.
         """
         #---- Z Sample Space
@@ -265,7 +280,7 @@ class SM_UPE():
         else:
             assert n_records>=2, "The output must include atleast 2 points."
             z_record = np.linspace(z_grid.min(), z_grid.max(), n_records)
-            z_grid = np.unique([z_grid, z_record])
+            z_grid = np.unique(np.append(z_grid, z_record))
 
         #---- Setup Pulse
         pulse_out = Pulse.FromTFGrid(self.pulse_in, a_v=self.pulse_in.a_v)
@@ -300,7 +315,7 @@ class SM_UPE():
 
             #---- Record
             if z in z_record:
-                idx = np.flatnonzero(z==z_stop)
+                idx = np.flatnonzero(z==z_record)
                 a_t_record[idx,:] = pulse_out.a_t
                 a_v_record[idx,:] = pulse_out.a_v
 
@@ -313,13 +328,17 @@ class SM_UPE():
                         # End animation with the last step
                         for artist in self._artists:
                             artist.set_animated(False)
-        return pulse_out, z_record, a_t_record, a_v_record
+            sim_res = SimulationResult(
+                pulse=pulse_out, z=z_record, a_t=a_t_record, a_v=a_v_record)
+        return sim_res
 
     def propagate(self, a_v, z_start, z_stop, dz, local_error, k5_v=None):
         """
         Propagates the given pulse spectrum from `z_start` to `z_stop` using
-        an adaptive step size algorithm based on an embedded 4th order
-        Runge-Kutta method in the interaction picture (ERK4(3)-IP) [1]_.
+        an adaptive step size algorithm.
+
+        The algorithm is based on an embedded 4th order Runge-Kutta method in
+        the interaction picture (ERK4(3)-IP) [1]_.
 
         Parameters
         ----------
@@ -362,6 +381,7 @@ class SM_UPE():
         z = z_start
         while z < z_stop:
             z_next = z + dz
+            dz_next = dz
             if z_next >= z_stop:
                 final_step = True
                 z_next = z_stop
@@ -392,9 +412,10 @@ class SM_UPE():
 
     def integrate(self, a_v, z, dz, k5_v=None):
         """
-        Integrates the given pulse spectrum over a step size of `dz` using an
-        embedded 4th order Runge-Kutta method in the interaction picture
-        (ERK4(3)-IP) [1]_.
+        Integrates the given pulse spectrum over a step size of `dz`.
+
+        This uses an embedded 4th order Runge-Kutta method in the interaction
+        picture (ERK4(3)-IP) [1]_.
 
         Parameters
         ----------
@@ -518,7 +539,10 @@ class SM_UPE():
         #---- 2nd Order Nonlinearity
         if self.g2 is not None:
             nl_a2_v = fft.rfft(nl_a2_t, fsc=self.nl_dt * 2**0.5)
-            self._nl_v -= self.g2 * nl_a2_v[self.cr_slice]
+            if self.g2_inv == 1:
+                self._nl_v -= self.g2 * nl_a2_v[self.cr_slice]
+            else:
+                self._nl_v += self.g2 * nl_a2_v[self.cr_slice]
 
         #---- 3rd Order Nonlinearity
         if self.g3 is not None:
@@ -567,12 +591,15 @@ class SM_UPE():
                 nl_a_t = fft.irfft(self._nl_a_v, fsc=self.nl_dt * 2**0.5, n=self.nl_n_points)
                 nl_a2_t += nl_a_t * nl_a_t
             nl_a2_v = fft.rfft(nl_a2_t, fsc=self.nl_dt * 2**0.5)
-            self._nl_v -= self.g2[0] * nl_a2_v[self.cr_slice]
+            if self.g2_inv==1:
+                self._nl_v -= self.g2[0] * nl_a2_v[self.cr_slice]
+            else:
+                self._nl_v += self.g2[0] * nl_a2_v[self.cr_slice]
 
         #---- 3rd Order Nonlinearity
         if self.g3 is not None:
             nl_a3_t = np.zeros(self.nl_n_points, dtype=float)
-            for g3_internal in self.g2[1:]:
+            for g3_internal in self.g3[1:]:
                 self._nl_a_v[self.cr_slice] = a_v * g3_internal
                 nl_a_t = fft.irfft(self._nl_a_v, fsc=self.nl_dt * 2**0.5, n=self.nl_n_points)
                 nl_a2_t = nl_a_t * nl_a_t
@@ -635,6 +662,8 @@ class SM_UPE():
         if self._update_g2:
             self.g2 = self.mode.g2()
             self._g2_dim = len(self.g2.shape) if self.g2 is not None else 0
+        if self._update_g2_inv:
+            self.g2_inv = self.mode.g2_inv()
 
         #---- 3rd Order
         if self._update_g3:
@@ -644,24 +673,25 @@ class SM_UPE():
             self.r3 = self.mode.r3()
 
         #---- Select Nonlinear Operator
-        if (self._g2_dim >=2) and (self._g3_dim >= 2):
-            # Separable 2nd and 3rd order terms
-            self._nonlinear_operator = self.nonlinear_operator_svd
-        elif (self._g2_dim >=2):
-            # Separable 2nd order terms
-            self._nonlinear_operator = self.nonlinear_operator_svd
-            if self.g3 is not None:
-                self.g3 = [self.g3, complex(1.0)]
-                self._g2_dim = 2
-        elif (self._g3_dim >= 2):
-            # Separable 3rd order terms
-            self._nonlinear_operator = self.nonlinear_operator_svd
-            if self.g2 is not None:
-                self.g2 = [self.g2, complex(1.0)]
-                self._g2_dim = 2
-        else:
-            # Standard nonlinearity terms
-            self._nonlinear_operator = self.nonlinear_operator
+        if self._update_g2 or self._update_g3:
+            if (self._g2_dim >=2) and (self._g3_dim >= 2):
+                # Separable 2nd and 3rd order terms
+                self._nonlinear_operator = self.nonlinear_operator_svd
+            elif (self._g2_dim >=2):
+                # Separable 2nd order terms
+                self._nonlinear_operator = self.nonlinear_operator_svd
+                if self.g3 is not None:
+                    self.g3 = [self.g3, complex(1.0)]
+                    self._g3_dim = 2
+            elif (self._g3_dim >= 2):
+                # Separable 3rd order terms
+                self._nonlinear_operator = self.nonlinear_operator_svd
+                if self.g2 is not None:
+                    self.g2 = [self.g2, complex(1.0)]
+                    self._g2_dim = 2
+            else:
+                # Standard nonlinearity terms
+                self._nonlinear_operator = self.nonlinear_operator
 
 
     #---- Plotting
@@ -691,6 +721,7 @@ class SM_UPE():
         self._rt_fig = self._plt.figure("Real-Time Simulation", clear=True)
         self._ax_0 = self._plt.subplot2grid((2,1), (0,0), fig=self._rt_fig)
         self._ax_1 = self._plt.subplot2grid((2,1), (1,0), sharex=self._ax_0, fig=self._rt_fig)
+        self._rt_fig.show()
 
         #---- Time Domain
         if plot=="time":

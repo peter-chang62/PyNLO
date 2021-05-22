@@ -32,7 +32,6 @@
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -69,7 +68,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../about.html">
+ <a class="reference internal nav-link" href="../../guides.html">
   User Guide
  </a>
 </li>
@@ -139,7 +138,7 @@
   <h1>Source code for pynlo.media</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Classes for representing optical modes in the frequency domain.</span>
+<span class="sd">Optical modes in the frequency domain.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -180,13 +179,16 @@
 <span class="sd">        constant. The default is None.</span>
 <span class="sd">    g2_v : array_like of complex or callable, optional</span>
 <span class="sd">        The effective 2nd order nonlinearity. The default is None.</span>
+<span class="sd">    g2_inv : callable, optional</span>
+<span class="sd">        Discrete polling of the 2nd order nonlinearity. The default is None.</span>
 <span class="sd">    g3_v : array_like of complex or callable, optional</span>
 <span class="sd">        The effective 3rd order nonlinearity. The default is None.</span>
 <span class="sd">    rv_grid : array_like of float, optional</span>
-<span class="sd">        An origin contiguous frequency grid associated with the Raman</span>
-<span class="sd">        response. The default is None.</span>
+<span class="sd">        An origin contiguous frequency grid associated with the 3rd order</span>
+<span class="sd">        nonlinear response function. The default is None.</span>
 <span class="sd">    r3_v : array_like of complex or callable, optional</span>
-<span class="sd">        The effective Raman response. The default is None.</span>
+<span class="sd">        The effective 3rd order nonlinear response function containing both</span>
+<span class="sd">        the instantaneous and Raman nonlinearities. The default is None.</span>
 <span class="sd">    z : float, optional</span>
 <span class="sd">        The position along the waveguide. The default is 0.0.</span>
 
@@ -201,7 +203,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Mode.__init__"><a class="viewcode-back" href="../../api/pynlo.media.Mode.__init__.html#pynlo.media.Mode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v_grid</span><span class="p">,</span> <span class="n">beta_v</span><span class="p">,</span> <span class="n">alpha_v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">g2_v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">g3_v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rv_grid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">r3_v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+                 <span class="n">g2_v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">g2_inv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">g3_v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rv_grid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">r3_v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">z</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a mode given a set of frequencies, wavenumbers, and other</span>
 <span class="sd">        parameters. If a given parameters is callable, its first argument must</span>
@@ -219,13 +222,17 @@
 <span class="sd">            propagation constant. The default is None.</span>
 <span class="sd">        g2_v : array_like of complex or callable, optional</span>
 <span class="sd">            The effective 2nd order nonlinearity. The default is None.</span>
+<span class="sd">        g2_inv : callable, optional</span>
+<span class="sd">            Discrete polling of the 2nd order nonlinearity. The default is</span>
+<span class="sd">            None.</span>
 <span class="sd">        g3_v : array_like of complex or callable, optional</span>
 <span class="sd">            The effective 3rd order nonlinearity. The default is None.</span>
-<span class="sd">        rv_grid : array_like of float, optional</span>
-<span class="sd">            An origin contiguous frequency grid associated with the Raman</span>
-<span class="sd">            response. The default is None.</span>
+<span class="sd">            An origin contiguous frequency grid associated with the 3rd order</span>
+<span class="sd">            nonlinear response function. The default is None.</span>
 <span class="sd">        r3_v : array_like of complex or callable, optional</span>
-<span class="sd">            The effective Raman response. The default is None.</span>
+<span class="sd">            The effective 3rd order nonlinear response function containing</span>
+<span class="sd">            both the instantaneous and Raman nonlinearities. The default is</span>
+<span class="sd">            None.</span>
 <span class="sd">        z : float, optional</span>
 <span class="sd">            The position along the waveguide. The default is 0.</span>
 
@@ -257,6 +264,12 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_g2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">g2_v</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="p">(</span><span class="n">g2_inv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">callable</span><span class="p">(</span><span class="n">g2_inv</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_g2_inv</span> <span class="o">=</span> <span class="n">g2_inv</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">callable</span><span class="p">(</span><span class="n">g2_inv</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;If defined, the discrete 2nd order&quot;</span>
+                                       <span class="s2">&quot;polling must be callable&quot;</span><span class="p">)</span>
+
         <span class="c1">#---- 3rd Order Nonlinearity</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">g3_v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">callable</span><span class="p">(</span><span class="n">g3_v</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_g3</span> <span class="o">=</span> <span class="n">g3_v</span>
@@ -266,7 +279,7 @@
         <span class="k">if</span> <span class="p">(</span><span class="n">rv_grid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">r3_v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rv_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">rv_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
-            <span class="c1">#---- Raman Nonlinearity</span>
+            <span class="c1">#---- Nonlinear Response Function</span>
             <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">r3_v</span><span class="p">):</span>
                 <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">r3_v</span><span class="p">(</span><span class="n">z</span><span class="p">))</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">rv_grid</span><span class="p">)),</span> <span class="s2">&quot;The length of r3_v must match rv_grid.&quot;</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_r3</span> <span class="o">=</span> <span class="n">r3_v</span>
@@ -346,6 +359,9 @@
 <span class="sd">        -------</span>
 <span class="sd">        z_g2 : bool</span>
 <span class="sd">            The z dependence of the effective 2nd order nonlinear parameter.</span>
+<span class="sd">        z_g2_inv : bool</span>
+<span class="sd">            The z dependence of the polling of the effective 2nd order</span>
+<span class="sd">            nonlinear parameter.</span>
 <span class="sd">        z_g3 : bool</span>
 <span class="sd">            The z dependence of the effective 3rd order nonlinear parameter.</span>
 <span class="sd">        z_r3 : bool</span>
@@ -353,9 +369,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">z_g2</span> <span class="o">=</span> <span class="n">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_g2</span><span class="p">)</span>
+        <span class="n">z_g2_inv</span> <span class="o">=</span> <span class="n">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_g2_inv</span><span class="p">)</span>
         <span class="n">z_g3</span> <span class="o">=</span> <span class="n">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_g3</span><span class="p">)</span>
         <span class="n">z_r3</span> <span class="o">=</span> <span class="n">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_r3</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">z_g2</span><span class="p">,</span> <span class="n">z_g3</span><span class="p">,</span> <span class="n">z_r3</span>
+        <span class="k">return</span> <span class="n">z_g2</span><span class="p">,</span> <span class="n">z_g2_inv</span><span class="p">,</span> <span class="n">z_g3</span><span class="p">,</span> <span class="n">z_r3</span>
 
     <span class="c1">#---- 1st Order Properties</span>
 <div class="viewcode-block" id="Mode.beta"><a class="viewcode-back" href="../../api/pynlo.media.Mode.beta.html#pynlo.media.Mode.beta">[docs]</a>    <span class="k">def</span> <span class="nf">beta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -593,8 +610,8 @@
     <span class="c1">#---- 2nd Order Properties</span>
 <div class="viewcode-block" id="Mode.g2"><a class="viewcode-back" href="../../api/pynlo.media.Mode.g2.html#pynlo.media.Mode.g2">[docs]</a>    <span class="k">def</span> <span class="nf">g2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The effective 2nd order nonlinear parameter, with units of</span>
-<span class="sd">        ``1/(W**0.5*m*Hz)``.</span>
+<span class="sd">        The magnitude of the effective 2nd order nonlinear parameter, with</span>
+<span class="sd">        units of ``1/(W**0.5*m*Hz)``.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -610,6 +627,25 @@
         <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_g2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_g2</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_g2</span></div>
+
+<div class="viewcode-block" id="Mode.g2_inv"><a class="viewcode-back" href="../../api/pynlo.media.Mode.g2_inv.html#pynlo.media.Mode.g2_inv">[docs]</a>    <span class="k">def</span> <span class="nf">g2_inv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The sign of the polled 2nd order nonlinearity.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        z : float, optional</span>
+<span class="sd">            The position along the waveguide. The default uses the last known</span>
+<span class="sd">            value.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_g2_inv</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_g2_inv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span></div>
 
     <span class="c1">#---- 3rd Order Properties</span>
 <div class="viewcode-block" id="Mode.g3"><a class="viewcode-back" href="../../api/pynlo.media.Mode.g3.html#pynlo.media.Mode.g3">[docs]</a>    <span class="k">def</span> <span class="nf">g3</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -657,7 +693,8 @@
 
 <div class="viewcode-block" id="Mode.r3"><a class="viewcode-back" href="../../api/pynlo.media.Mode.r3.html#pynlo.media.Mode.r3">[docs]</a>    <span class="k">def</span> <span class="nf">r3</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The effective Raman response.</span>
+<span class="sd">        The effective 3rd order nonlinear response function containing both</span>
+<span class="sd">        the instantaneous and Raman nonlinearities.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -681,10 +718,14 @@
 <span class="c1">#     def __init__(self, modes, coupling):</span>
 <span class="c1">#         pass</span>
 
-<span class="c1"># class GaussianMode(Mode):</span>
+<span class="c1"># class GaussianMode(Waveguide):</span>
 <span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     Collection of Hermite–Gaussian modes for simulating free space propagation</span>
-<span class="c1">#     -&gt; effective area based on distance to nominal waist location</span>
+<span class="c1">#     Collection of Hermite–Gaussian or Laguerre–Gaussian modes for simulating</span>
+<span class="c1">#     free space propagation</span>
+<span class="c1">#     - effective area based on distance to nominal waist location</span>
+<span class="c1">#     - could also include convenience functions for setting up the beam</span>
+<span class="c1">#       through focusing, propagation, etc.</span>
+<span class="c1">#</span>
 <span class="c1">#     &quot;&quot;&quot;</span>
 <span class="c1">#     def __init__(self, modes, coupling):</span>
 <span class="c1">#         pass</span>

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-TODO: module docs
+Python Nonlinear Optics
 
 Notes
 -----
-**All quantities are in base SI units**:
+All quantities are in base SI units:
     frequency in ``Hz``, time in ``s``, and energy in ``J``
 """
 

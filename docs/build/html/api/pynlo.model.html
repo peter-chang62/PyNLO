@@ -32,7 +32,6 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pynlo.model.SM_UPE" href="pynlo.model.SM_UPE.html" />
@@ -71,7 +70,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../about.html">
+ <a class="reference internal nav-link" href="../guides.html">
   User Guide
  </a>
 </li>
@@ -338,6 +337,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="pynlo.media.Mode.g2_inv.html">
+       pynlo.media.Mode.g2_inv
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="pynlo.media.Mode.g3.html">
        pynlo.media.Mode.g3
       </a>
@@ -560,8 +564,8 @@
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi3.raman_t.html">
-       pynlo.utility.chi3.raman_t
+      <a class="reference internal" href="pynlo.utility.chi3.nl_response_v.html">
+       pynlo.utility.chi3.nl_response_v
       </a>
      </li>
     </ul>
@@ -788,6 +792,11 @@
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#notes">
+   Notes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#classes">
    Classes
   </a>
@@ -815,7 +824,24 @@
                 
   <div class="section" id="module-pynlo.model">
 <span id="pynlo-model"></span><h1>pynlo.model<a class="headerlink" href="#module-pynlo.model" title="Permalink to this headline">¶</a></h1>
-<p>Classes for simulating the evolution of optical pulses.</p>
+<p>Models for simulating the propagation of optical pulses.</p>
+<div class="section" id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<p>Multiplications of functions in the time domain (operations intrinsic to
+nonlinear optics) are equivalent to convolutions in the frequency domain and
+vice versa. The support of a convolution is the sum of the support of its
+parts. Thus, 2nd and 3rd order processes in the time domain need 2x and 3x
+number of points in the frequency domain to avoid aliasing.</p>
+<p><cite>Pulse</cite> objects only initialize the minimum number of points necessary to
+represent the real-valued time domain pulse (i.e. 1x). While this minimizes
+the numerical complexity of individual nonlinear operations, aliasing
+introduces systematic error and can even increase the total simulation time by
+forcing shorter step sizes. More points can be generated for a specific
+<cite>Pulse</cite> object by running its <cite>rtf_grids</cite> method with <cite>update</cite> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>
+and with a <cite>n_harmonic</cite> parameter greater than 1. Anti-aliasing is not always
+necessary as phase matching can suppress the aliased interactions, but it is
+best practice to verify that behavior on a case-by-case basis.</p>
+</div>
 <div class="section" id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
 <table class="longtable table autosummary">
@@ -825,7 +851,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="pynlo.model.SM_UPE.html#pynlo.model.SM_UPE" title="pynlo.model.SM_UPE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SM_UPE</span></code></a>(pulse, mode)</p></td>
-<td><p>A model based on the single-mode unidirectional propagation equation.</p></td>
+<td><p>A model for simulating single-mode pulse propagation.</p></td>
 </tr>
 </tbody>
 </table>

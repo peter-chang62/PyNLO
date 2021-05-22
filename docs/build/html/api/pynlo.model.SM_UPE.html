@@ -32,7 +32,6 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pynlo.model.SM_UPE.__init__" href="pynlo.model.SM_UPE.__init__.html" />
@@ -71,7 +70,7 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../about.html">
+ <a class="reference internal nav-link" href="../guides.html">
   User Guide
  </a>
 </li>
@@ -338,6 +337,11 @@
       </a>
      </li>
      <li class="toctree-l3">
+      <a class="reference internal" href="pynlo.media.Mode.g2_inv.html">
+       pynlo.media.Mode.g2_inv
+      </a>
+     </li>
+     <li class="toctree-l3">
       <a class="reference internal" href="pynlo.media.Mode.g3.html">
        pynlo.media.Mode.g3
       </a>
@@ -560,8 +564,8 @@
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi3.raman_t.html">
-       pynlo.utility.chi3.raman_t
+      <a class="reference internal" href="pynlo.utility.chi3.nl_response_v.html">
+       pynlo.utility.chi3.nl_response_v
       </a>
      </li>
     </ul>
@@ -819,8 +823,9 @@
 <dt class="sig sig-object py" id="pynlo.model.SM_UPE">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pynlo.model.</span></span><span class="sig-name descname"><span class="pre">SM_UPE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pulse</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/model.html#SM_UPE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.model.SM_UPE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A model based on the single-mode unidirectional propagation equation.</p>
-<p>This model can simulate both 2nd and 3rd order nonlinear effects.</p>
+<p>A model for simulating single-mode pulse propagation.</p>
+<p>This model can simultaneously simulate both 2nd and 3rd order nonlinear
+effects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -833,21 +838,6 @@ the waveguide mode.</p>
 </dl>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>Multiplication of functions in the time domain (operations intrinsic to
-nonlinear optics) are equivalent to convolutions in the frequency domain
-and vice versa. The support of a convolution is the sum of the support of
-its parts. Thus, 2nd and 3rd order processes in the time domain need 2x
-and 3x number of points in the frequency domain in order to avoid
-aliasing.</p>
-<p><cite>Pulse</cite> objects only initialize the minimum number of points necessary to
-represent a real-valued time domain pulse without aliasing (i.e. 1x).
-While this allows for a faster calculation, the aliased nonlinear
-components could introduce systematic error. More points can be generated
-for a specific <cite>Pulse</cite> object by running its <cite>rtf_grids</cite> method with
-<cite>update</cite> set to <code class="docutils literal notranslate"><span class="pre">True</span></code> and a larger <cite>n_harmonic</cite> parameter. However,
-anti-aliasing is not usually necessary as phase matching suppresses
-aliased interactions due to large phase mismatch.</p>
 </dd></dl>
 
 <div class="section" id="methods">
@@ -859,19 +849,19 @@ aliased interactions due to large phase mismatch.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="pynlo.model.SM_UPE.__init__.html#pynlo.model.SM_UPE.__init__" title="pynlo.model.SM_UPE.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(pulse, mode)</p></td>
-<td><p>Initialize a model based on the single-mode unidirectional propagation equation.</p></td>
+<td><p>Initialize a single-mode model for simulating pulse propagation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.model.SM_UPE.estimate_step_size.html#pynlo.model.SM_UPE.estimate_step_size" title="pynlo.model.SM_UPE.estimate_step_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">estimate_step_size</span></code></a>(a_v, z[, local_error, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pynlo.model.SM_UPE.estimate_step_size.html#pynlo.model.SM_UPE.estimate_step_size" title="pynlo.model.SM_UPE.estimate_step_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">estimate_step_size</span></code></a>([a_v, z, local_error, …])</p></td>
 <td><p>Estimate a more optimal step size, relative to the local error, given a test step size <cite>dz</cite>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pynlo.model.SM_UPE.simulate.html#pynlo.model.SM_UPE.simulate" title="pynlo.model.SM_UPE.simulate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">simulate</span></code></a>(z_grid[, dz, local_error, …])</p></td>
 <td><p>Simulate the propagation of the pulse along the waveguide.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pynlo.model.SM_UPE.propagate.html#pynlo.model.SM_UPE.propagate" title="pynlo.model.SM_UPE.propagate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">propagate</span></code></a>(a_v, z_start, z_stop, dz, local_error)</p></td>
-<td><p>Propagates the given pulse spectrum from <cite>z_start</cite> to <cite>z_stop</cite> using an adaptive step size algorithm based on an embedded 4th order Runge-Kutta method in the interaction picture (ERK4(3)-IP) <a class="reference internal" href="pynlo.model.SM_UPE.propagate.html#r3a2cf336ffd2-1" id="id1"><span>[R3a2cf336ffd2-1]</span></a>.</p></td>
+<td><p>Propagates the given pulse spectrum from <cite>z_start</cite> to <cite>z_stop</cite> using an adaptive step size algorithm.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pynlo.model.SM_UPE.integrate.html#pynlo.model.SM_UPE.integrate" title="pynlo.model.SM_UPE.integrate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">integrate</span></code></a>(a_v, z, dz[, k5_v])</p></td>
-<td><p>Integrates the given pulse spectrum over a step size of <cite>dz</cite> using an embedded 4th order Runge-Kutta method in the interaction picture (ERK4(3)-IP) <a class="reference internal" href="pynlo.model.SM_UPE.integrate.html#rdebfd017f235-1" id="id2"><span>[Rdebfd017f235-1]</span></a>.</p></td>
+<td><p>Integrates the given pulse spectrum over a step size of <cite>dz</cite>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pynlo.model.SM_UPE.linear_operator.html#pynlo.model.SM_UPE.linear_operator" title="pynlo.model.SM_UPE.linear_operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linear_operator</span></code></a>(dz)</p></td>
 <td><p>The frequency-domain linear operator integrated over the given step size.</p></td>
