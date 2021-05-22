@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Optical pulses in both the time and frequency domains.
+Optical pulses in the time and frequency domains.
 
 Notes
 -----

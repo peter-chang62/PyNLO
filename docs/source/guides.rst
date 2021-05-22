@@ -13,7 +13,7 @@ Optical pulses are represented in PyNLO with :py:class:`pynlo.light.Pulse` objec
 
 Media
 -----
-PyNLO represents single optical modes with :py:class:`pynlo.media.Mode` objects. These objects are defined over the frequency domain and contain information due to the coupling of material and spatial properties of a mode. In addition to defining the angular wavenumbers (:math:`\beta`), loss (:math:`\alpha`), and related properties of a mode, :py:class:`~pynlo.media.Mode` objects also contain information related to an optical mode's effective nonlinearity. Spatially dependent properties can be input as callable functions in which the first argument is the propagation distance (:math:`z`).
+PyNLO represents single optical modes with :py:class:`pynlo.media.Mode` objects. These objects are defined over the frequency domain and contain information due to the coupling of material and spatial properties of a mode. In addition to defining the angular wavenumbers (:math:`\beta`), loss (:math:`\alpha`), and related properties of a mode, :py:class:`~pynlo.media.Mode` objects also contain information about an optical mode's effective nonlinearity. Spatially dependent properties can be input as callable functions in which the first argument is the propagation distance (:math:`z`).
 
 
 Models
