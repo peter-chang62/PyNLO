@@ -886,11 +886,15 @@ rng = np.random.default_rng()
 from scipy import stats
 
 # %%%
+
+# needs more thought: in what basis does the measurement take place?
+
+
 n = 2**14
 dt = 1
 t = dt * np.arange(n)
 dv = 1/(n*dt)
-n_avg = 100 # per bin
+n_avg = 100 # number per bin
 
 test = np.exp(1j*2*pi/(n//5 * dt) * t) #* np.exp(-0.5 * ((t-5)/.5)**2)
 test *= ((n_avg*n)/np.sum(np.abs(test)**2 * dt))**0.5
@@ -906,15 +910,19 @@ test_ps_noise_v = fft.fftshift(fft.fft(fft.ifftshift(test_ps_noise), fsc=dt))
 
 # Quantum Coherent State Uncertainty (normal sample)
     # ~coherent state (TD)
-test_nm_noise = 1/(2*dt)**0.5 * (rng.standard_normal(n) + 1j*rng.standard_normal(n))
-test_nm_noise_v = fft.fftshift(fft.fft(fft.ifftshift(test_nm_noise), fsc=dt))
-test_nm = test + test_nm_noise
-test_nm_v = fft.fftshift(fft.fft(fft.ifftshift(test_nm), fsc=dt))
+# test_nm_noise = 1/(2*dt)**0.5 * (rng.standard_normal(n) + 1j*rng.standard_normal(n))
+# # test_nm_noise = 1/dt**0.5 * (rng.standard_normal(n) * np.exp(1j*2*pi*rng.random(n)))
+# test_nm_noise_v = fft.fftshift(fft.fft(fft.ifftshift(test_nm_noise), fsc=dt))
+# test_nm = test + test_nm_noise
+# test_nm_v = fft.fftshift(fft.fft(fft.ifftshift(test_nm), fsc=dt))
     # ~coherent state (FD)
-# test_nm_noise_v = 1/(2*dv)**0.5 * (rng.standard_normal(n) + 1j*rng.standard_normal(n))
-# test_nm_noise = fft.fftshift(fft.ifft(fft.ifftshift(test_nm_noise_v), fsc=dt))
-# test_nm_v = test_v + test_nm_noise_v
-# test_nm = fft.fftshift(fft.ifft(fft.ifftshift(test_nm_v), fsc=dt))
+test_nm_noise_v = 1/(dv)**0.5 * (0.5*rng.standard_normal(n) + 0.5j*rng.standard_normal(n))
+# test_nm_noise_v = 1/(dv)**0.5 * (rng.standard_normal(n)*np.exp(1j*2*pi*rng.random(n))) # not right
+test_nm_noise = fft.fftshift(fft.ifft(fft.ifftshift(test_nm_noise_v), fsc=dt))
+test_nm_v = test_v + test_nm_noise_v
+test_nm = fft.fftshift(fft.ifft(fft.ifftshift(test_nm_v), fsc=dt))
+
+test_nm_r = (np.round(np.abs(test_nm)**2 * dt)/dt)**0.5 * np.exp(1j*np.angle(test_nm))
 
 
 plt.figure("Time Domain - Quadratures")
@@ -936,19 +944,28 @@ plt.hist(np.abs(test_ps)**2 * dt, bins=n_bins, density=True, alpha=0.75, label="
 plt.plot(stats.poisson.pmf(n_range, n_avg), '.-', label="exact")
 plt.legend()
 
+n_bins = 100#np.arange(10+2) - 0.5
+n_range = np.arange(10+1)
+plt.figure("Photon Noise - FD Histogram")
+plt.clf()
+plt.hist(np.abs(test_nm_noise_v)**2 * dv, bins=n_bins, density=True, label="normal")
+plt.hist(np.abs(test_ps_noise_v)**2 * dv, bins=n_bins, density=True, alpha=0.75, label="poisson")
+plt.plot(stats.poisson.pmf(n_range, 0.5), '.-', label="exact")
+plt.legend()
+
 
 plt.figure("IQ Noise - TD Histogram")
 plt.clf()
 hist_data = plt.hist(test_nm_noise.real * dt**0.5, bins=100, density=True, label="Amplitude")
 plt.hist(test_nm_noise.imag * dt**0.5, bins=hist_data[1], density=True, alpha=0.75, label="Phase")
-plt.plot(hist_data[1], stats.norm.pdf(hist_data[1], scale=2**-0.5), '.-', label="exact")
+plt.plot(hist_data[1], stats.norm.pdf(hist_data[1], scale=1/2), '.-', label="exact")
 plt.legend()
 
 plt.figure("IQ Noise - FD Histogram")
 plt.clf()
 hist_data = plt.hist(test_nm_noise_v.real * dv**0.5, bins=100, density=True, label="Amplitude")
 plt.hist(test_nm_noise_v.imag * dv**0.5, bins=hist_data[1], density=True, alpha=0.75, label="Phase")
-plt.plot(hist_data[1], stats.norm.pdf(hist_data[1], scale=2**-0.5), '.-', label="exact")
+plt.plot(hist_data[1], stats.norm.pdf(hist_data[1], scale=1/2), '.-', label="exact")
 plt.legend()
 
 
@@ -974,22 +991,85 @@ plt.semilogy(t, np.abs(test_ps_noise_v)**2, '.', markersize=3, label="poisson")
 plt.semilogy(t, np.abs(test_v)**2, label="exact")
 plt.legend(markerscale=3)
 
+# Per bin -> per unit
 print("Coherent State (normal distribution):")
 print("Time Domain")
+print("photon/bin:\t\t", np.mean(np.abs(test_nm)**2 * dt))
 print("photon var/bin:\t", np.var(np.abs(test_nm)**2 * dt))
 print("noise/bin**0.5:\t", np.std(test_nm_noise * dt**0.5))
 print("Frequency Domain")
-print("photon var/bin:\t", np.var(np.abs(test_nm_v)**2 * dv))
+print("photon/bin:\t\t", np.mean(np.abs(test_nm_noise_v)**2 * dv))
 print("noise/bin**0.5:\t", np.std(test_nm_noise_v * dv**0.5))
 
 print("\nPhoton Detection (poisson distribution):")
 print("Time Domain")
+print("photon/bin:\t\t", np.mean(np.abs(test_ps)**2 * dt))
 print("photon var/bin:\t", np.var(np.abs(test_ps)**2 * dt))
 print("noise/bin**0.5:\t", np.std(test_ps_noise * dt**0.5))
 print("Frequency Domain")
-print("photon var/bin:\t", np.var(np.abs(test_ps_v)**2 * dv))
+print("photon/bin:\t\t", np.mean(np.abs(test_ps_noise_v)**2 * dv))
 print("noise/bin**0.5:\t", np.std(test_ps_noise_v * dv**0.5))
 
+# %%%
+
+import numpy as np
+rng = np.random.default_rng()
+from scipy import stats
+
+n = 2**14
+
+test_noise = rng.standard_normal(n) * np.exp(1j*2*pi*rng.random(n))
+
+plt.figure("IQ Noise - Histogram")
+plt.clf()
+hist_data = plt.hist(test_noise.real, bins=100, density=True, label="Real")
+plt.hist(test_noise.imag, bins=hist_data[1], density=True, alpha=0.75, label="Imag")
+plt.plot(hist_data[1], stats.norm.pdf(hist_data[1], scale=2**-0.5), '.-', label="Exact")
+plt.xlim(-3,3)
+plt.ylim(top=1.35)
+plt.legend()
+
+
+test_noise = 1/(2)**0.5 * (rng.standard_normal(n) + 1j*rng.standard_normal(n))
+
+plt.figure("IQ Noise - Histogram 2")
+plt.clf()
+hist_data = plt.hist(test_noise.real, bins=100, density=True, label="Real")
+plt.hist(test_noise.imag, bins=hist_data[1], density=True, alpha=0.75, label="Imag")
+plt.plot(hist_data[1], stats.norm.pdf(hist_data[1], scale=2**-0.5), '.-', label="Exact")
+plt.xlim(-3,3)
+plt.ylim(top=1.35)
+plt.legend()
+
+
+# %%% Shot Noise in Frequency Domain
+
+n = 2**14
+dt = 1
+t = dt * np.arange(n)
+dv = 1/(n*dt)
+n_avg = 10000 # number per bin
+
+test = np.exp(1j*2*pi/(n//5 * dt) * t) #* np.exp(-0.5 * ((t-5)/.5)**2)
+test *= ((n_avg*n)/np.sum(np.abs(test)**2 * dt))**0.5
+test_v = fft.fftshift(fft.fft(fft.ifftshift(test), fsc=dt))
+
+# Photon Detector Noise (poisson sample)
+ps_n = rng.poisson(lam=np.abs(test)**2 * dt)
+test_ps = (ps_n/dt)**0.5 * np.exp(1j*np.angle(test))
+test_ps_v = fft.fftshift(fft.fft(fft.ifftshift(test_ps), fsc=dt))
+
+test_ps_noise = test_ps - test
+test_ps_noise_v = fft.fftshift(fft.fft(fft.ifftshift(test_ps_noise), fsc=dt))
+
+print("\nPhoton Detection (poisson distribution):")
+print("Time Domain")
+print("photon/bin:\t\t", np.mean(np.abs(test_ps)**2 * dt))
+print("photon var/bin:\t", np.var(np.abs(test_ps)**2 * dt))
+print("noise/bin**0.5:\t", np.std(test_ps_noise * dt**0.5))
+print("Frequency Domain")
+print("photon/bin:\t\t", np.mean(np.abs(test_ps_noise_v)**2 * dv))
+print("noise/bin**0.5:\t", np.std(test_ps_noise_v * dv**0.5))
 
 # %%
 # # # test_grid = TFGrid(100e12, 1e12, 50)

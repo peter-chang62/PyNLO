@@ -12,7 +12,7 @@ The PyNLO package provides an easy-to-use, object-oriented set of tools for mode
 In pyNLO, object-oriented programming is used to emulate physical objects. Whenever possible, each physical entity with intrinsic properties – for example an optical pulse or nonlinear fiber – is mapped to a Python class. These classes keep track of the objects’ properties, calculate interactions, and provide simple calculator-type helper functions.
 
 Features:
-	- A solver for the propagation of light through :math:`\chi^2` and :math:`\chi^3` optical waveguides. This solver is highly efficient, thanks to an adaptive-step-size implementation of the embedded 4th order Runge-Kutta in-the-interaction-picture (ERK4(3)-IP) method from `Balac and Mahé (2013) <https://doi.org/10.1016/j.cpc.2012.12.020>`_.
+	- A solver for the propagation of light through optical waveguides with both 2nd and 3rd order nonlinearities. This solver is highly efficient, thanks to an adaptive-step-size implementation of the embedded 4th order Runge-Kutta in-the-interaction-picture (ERK4(3)-IP) method from `Balac and Mahé (2013) <https://doi.org/10.1016/j.cpc.2012.12.020>`_.
 	
 	- A flexible object-oriented system for treating laser pulses and optical waveguides.
 	

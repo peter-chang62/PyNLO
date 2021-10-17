@@ -63,7 +63,7 @@ def taylor_series(x0, derivatives):
     pwr_series = np.polynomial.Polynomial(poly_coefs, domain=domain, window=window)
     return pwr_series
 
-def coherent_noise_v(v_grid, dv, rng=None):
+def noise_sql_v(v_grid, dv, rng=None):
     """
     Generate a randomized root-power noise spectrum due to the quantum
     fluctuations of a coherent state.
@@ -84,11 +84,12 @@ def coherent_noise_v(v_grid, dv, rng=None):
 
     Notes
     -----
-    This **is not** shot noise (which is related to the collapse of coherent
-    states onto discrete number states during photon detection), but the noise
-    due to the quantum uncertainty of a coherent state's amplitude and phase.
-    A coherent state :math:`|\\alpha\\rangle` is defined by a displacement
-    :math:`\\alpha` and the set of number states :math:`|n\\rangle`:
+    This is not technically shot noise (which is related to the collapse of
+    coherent states onto discrete number states during photon detection), but
+    the noise due to the quantum uncertainty of a coherent state's amplitude
+    and phase. A coherent state :math:`|\\alpha\\rangle` is defined by a
+    displacement :math:`\\alpha` and the set of number states
+    :math:`|n\\rangle`:
 
     ..  math::
         |\\alpha\\rangle = e^{-\\frac{|\\alpha|^2}{2}}
