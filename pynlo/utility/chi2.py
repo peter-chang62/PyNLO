@@ -38,7 +38,7 @@ def period_to_dk(period):
 def g2_shg(v0, v_grid, n_eff, a_eff, chi2_eff):
     """
     The 2nd order nonlinear parameter weighted for second harmonic generation
-    driven by the given input frequency.
+    centered around the given input frequency.
 
     Parameters
     ----------
@@ -77,6 +77,49 @@ def g2_shg(v0, v_grid, n_eff, a_eff, chi2_eff):
     g2 = np.zeros_like(g2_out)
     g2[:vc_idx] = g2_fh[:vc_idx]
     g2[vc_idx:] = g2_sh[vc_idx:]
+    return g2
+
+def g2_sfg(v0, v_grid, n_eff, a_eff, chi2_eff):
+    """
+    The 2nd order nonlinear parameter weighted for sum frequency generation
+    driven by the given input frequency.
+
+    Parameters
+    ----------
+    v0 : float
+        The target pump frequency.
+    v_grid : array_like of float
+        The frequency grid.
+    n_eff : array_like of float
+        The effective refractive indices.
+    a_eff : array_like of float
+        The effective areas.
+    chi2_eff : array_like
+        The effective 2nd order susceptibilities.
+
+    Returns
+    -------
+    g2 : ndarray
+
+    """
+    g2_out, g2_in = g2_split(n_eff, a_eff, chi2_eff)
+
+    vc_idx = np.argmin(np.abs(v_grid - (v_grid.min() + v0))) # crossover point
+
+    g2_in_v0 = np.interp(v0, v_grid, g2_in)
+    g2_in_sf = np.interp(v_grid - v0, v_grid, g2_in) # input to sum (out = in + v0)
+    g2_in_df = np.interp(v_grid + v0, v_grid, g2_in) # input to diff (out = in - v0)
+
+    # Fundamental (DFG)
+    g2_sf = g2_out * g2_in_sf * g2_in_v0
+
+    # Second Harmonic (SFG)
+    g2_df = g2_out * g2_in_df * g2_in_v0
+
+    # Crossover
+    g2 = np.zeros_like(g2_out)
+    g2[:vc_idx] = g2_df[:vc_idx]
+    g2[vc_idx:] = g2_sf[vc_idx:]
     return g2
 
 def g2_split(n_eff, a_eff, chi2_eff):
@@ -122,7 +165,7 @@ def effective_chi3():
 
 # %% Phase Matching
 
-def polling_sign(n_periods):
+def polling_sign(n_periods): #TODO: make faster
     r"""
     A wrapper for calculating the sign of a discrete quasi-phase matching
     (QPM) structure given the instantaneous period number.
@@ -158,7 +201,7 @@ def polling_sign(n_periods):
         return 1 - 2*(int(2*n_periods(z)) % 2)
     return polling_sign
 
-def dominant_paths(v_grid, beta, beta_qpm=None, full=False):
+def dominant_paths(v_grid, beta, beta_qpm=None, full=False): #TODO: add extent (imshow)
     """
     For each output frequency, find the input frequencies that are coupled
     with the least phase mismatch.

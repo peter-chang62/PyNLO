@@ -143,18 +143,14 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def FromPowerSpectrum(cls, n_points, v_min, v_max, p_v, phi_v=None, v0=None, e_p=None):
+    def FromPowerSpectrum(cls, tfgrid, p_v, phi_v=None, v0=None, e_p=None):
         """
         Initialize a pulse using existing spectral data.
 
         Parameters
         ----------
-        n_points : int, optional
-            The number of grid points.
-        v_min : float, optional
-            The target minimum frequency.
-        v_max : float, optional
-            The target maximum frequency.
+        tfgrid : pynlo.utility.TFGrid
+            An instance of a `TFGrid` object.
         p_v : callable -> array_like of float
             The power spectrum to be evaluated along the resulting frequency
             grid.
@@ -169,10 +165,12 @@ class Pulse(TFGrid):
             input spectrum.
 
         """
+        assert isinstance(tfgrid, TFGrid), "The input must be an instance of the TFGrid class."
         assert callable(p_v), "The power spectrum must be a callable function."
 
-        #---- Construct TF Grids
-        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0)
+        #---- Copy TFGrid
+        self = super().__new__(cls)
+        self.__dict__.update(tfgrid.__dict__)
 
         #---- Evaluate Input
         p_v = np.asarray(p_v(self.v_grid), dtype=float)
@@ -258,7 +256,8 @@ class Pulse(TFGrid):
         self = super().FromFreqRange(n_points, v_min, v_max, v0=v0)
 
         #---- Set Spectrum
-        p_t = 1/np.cosh(2*np.arccosh(2**0.5) * self.t_grid/t_fwhm)**2
+        t0 = t_fwhm / (2 * np.arccosh(2**0.5))
+        p_t = 1/np.cosh(self.t_grid/t0)**2
         phi_t = 2*pi*(v0-self.v_ref)*self.t_grid
         self.a_t = p_t**0.5 * np.exp(1j*phi_t)
 
@@ -917,7 +916,7 @@ class Pulse(TFGrid):
         g_t = (2**(-(2*t_grid/t_fwhm)**2))**0.5
 
         g_t /= np.sum(np.abs(g_t)**2 * dt)**0.5
-        g_v = fft.fftshift(fft.fft(g_t, fsc=dt))
+        g_v = fft.fftshift(fft.fft(fft.ifftshift(g_t), fsc=dt))
 
         #---- Set Delays
         if t_range is None:
@@ -945,7 +944,7 @@ class Pulse(TFGrid):
         delay_dt = (t_max - t_min)/(n_t - 1)
 
         gate_pulses_v = (g_v[:, np.newaxis]
-                         * np.exp(1j*2*pi*delay_t_grid[np.newaxis, :]*v_grid[:, np.newaxis]))
+                         * np.exp(-1j*2*pi*delay_t_grid[np.newaxis, :]*v_grid[:, np.newaxis]))
         gate_pulses_t = fft.fftshift(fft.ifft(
             fft.ifftshift(gate_pulses_v, axes=0), fsc=dt, axis=0, overwrite_x=True), axes=0)
 

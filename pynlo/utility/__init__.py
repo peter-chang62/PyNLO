@@ -17,6 +17,7 @@ __all__ = ["chi1", "chi2", "chi3", "fft",
 # %% Imports
 
 import collections
+import copy
 
 import numpy as np
 from scipy.constants import pi, h
@@ -591,6 +592,10 @@ class TFGrid():
             v_max_index = v_min_index + (n_points-1)
         v_max = dv * v_max_index
         return cls(n_points, v_max, dv, v0=v0)
+
+    def copy(self):
+        """An idependent copy of the object."""
+        return copy.deepcopy(self)
 
     #---- General Properties
     @property
