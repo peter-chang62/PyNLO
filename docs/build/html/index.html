@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PyNLO: Nonlinear Optics for Python &#8212; PyNLO dev documentation</title>
     
-  <link href="_static/css/theme.css" rel="stylesheet" />
-  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -23,22 +23,23 @@
 
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/blank.css" />
     
-  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="User Guide" href="guides.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
     
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -206,7 +207,7 @@
 <p>In pyNLO, object-oriented programming is used to emulate physical objects. Whenever possible, each physical entity with intrinsic properties – for example an optical pulse or nonlinear fiber – is mapped to a Python class. These classes keep track of the objects’ properties, calculate interactions, and provide simple calculator-type helper functions.</p>
 <dl class="simple">
 <dt>Features:</dt><dd><ul class="simple">
-<li><p>A solver for the propagation of light through <span class="math notranslate nohighlight">\(\chi^2\)</span> and <span class="math notranslate nohighlight">\(\chi^3\)</span> optical waveguides. This solver is highly efficient, thanks to an adaptive-step-size implementation of the embedded 4th order Runge-Kutta in-the-interaction-picture (ERK4(3)-IP) method from <a class="reference external" href="https://doi.org/10.1016/j.cpc.2012.12.020">Balac and Mahé (2013)</a>.</p></li>
+<li><p>A solver for the propagation of light through optical waveguides with both 2nd and 3rd order nonlinearities. This solver is highly efficient, thanks to an adaptive-step-size implementation of the embedded 4th order Runge-Kutta in-the-interaction-picture (ERK4(3)-IP) method from <a class="reference external" href="https://doi.org/10.1016/j.cpc.2012.12.020">Balac and Mahé (2013)</a>.</p></li>
 <li><p>A flexible object-oriented system for treating laser pulses and optical waveguides.</p></li>
 <li><p>…and much more!</p></li>
 </ul>
@@ -230,7 +231,7 @@
 <div class="section" id="documentation">
 <h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Contents</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="guides.html">User Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples/silica-pcf_anomalous.html">Silica PCF: Supercontinuum</a></li>
@@ -268,11 +269,16 @@
               </div>
               
               
-              <div class='prev-next-bottom'>
-                
-    <a class='right-next' id="next-link" href="guides.html" title="next page">User Guide</a>
-
-              </div>
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='right-next' id="next-link" href="guides.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">User Guide</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
               
           </main>
           
@@ -280,20 +286,19 @@
       </div>
     </div>
   
-  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
-
-  <footer class="footer mt-5 mt-md-0">
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2021, PyNLO authors.<br/>
+    &copy; Copyright 2021, PyNLO authors.<br>
 </p>
     </div>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.<br/>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
 </p>
     </div>
     

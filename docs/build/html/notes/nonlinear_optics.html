@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nonlinear Optics &#8212; PyNLO dev documentation</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet" />
-  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -23,23 +23,26 @@
 
     
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/blank.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Supplementary Material" href="supplemental.html" />
     <link rel="prev" title="Linear Optics" href="linear_optics.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
     
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -118,7 +121,7 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    <p class="caption">
+    <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
   Topics
  </span>
@@ -507,7 +510,7 @@ b\!\left[L\right] &amp;\approx -i \frac{f}{\Delta\beta} \left(1 - e^{-i \, \Delt
 \\
 {\beta_\alpha}_{nm}\!\left[\nu\right] &amp;= \iint_{A_\infty} \epsilon_0 \, c \, n_\text{eff} \, {\hat{\mathbf{e}}^*_n}_t \cdot \left(\frac{1}{8} \frac{\alpha^2}{\beta_n}\right) \cdot {\hat{\mathbf{e}}_m}_t \, dA
 \end{align}\end{split}\]</div>
-<p>Since <span class="math notranslate nohighlight">\(\beta_n\)</span> is of the order of <span class="math notranslate nohighlight">\(10^{6}\)</span> per meter for near-infrared light <span class="math notranslate nohighlight">\(\beta_\alpha\)</span> can usually be ignored. However, it should be inluded when the magnitude of <span class="math notranslate nohighlight">\(\alpha\)</span> is unusually large such as in an absorptive material or in an amplifier gain medium.</p>
+<p>Since <span class="math notranslate nohighlight">\(\beta_n\)</span> is of the order of <span class="math notranslate nohighlight">\(10^{6}\)</span> per meter for near-infrared light <span class="math notranslate nohighlight">\(\beta_\alpha\)</span> can usually be ignored. However, it should be included when the magnitude of <span class="math notranslate nohighlight">\(\alpha\)</span> is unusually large such as in an absorptive material or in an amplifier gain medium.</p>
 <p>From the orthogonality relationship, <span class="math notranslate nohighlight">\({\hat{\mathbf{e}}_n^*}_t \cdot {\hat{\mathbf{e}}_m}_t\)</span> only equals <span class="math notranslate nohighlight">\(\delta_{m n}\)</span> if the longitudinal component of the electric fields (<span class="math notranslate nohighlight">\(\hat{e}_z\)</span>) are negligible. Thus, if <span class="math notranslate nohighlight">\(\alpha\)</span> is not homogenous across the transverse plane, or if <span class="math notranslate nohighlight">\(\hat{e}_z\)</span> cannot be ignored, then gain and loss have the potential to couple modes together.</p>
 </div>
 <div class="section" id="Changing-Mode-Profiles">
@@ -779,8 +782,8 @@ R\!\left[t\right] = f_R \, h_R\!\left[t\right] + \left(1 - f_R\right) \delta\!\l
 \\
 1 = \int_{0}^{\infty} R\!\left[t\right] dt = \int_{0}^{\infty} h_R\!\left[t\right] dt
 \end{gather}\end{split}\]</div>
-<p>Where the Raman fraction <span class="math notranslate nohighlight">\((f_R)\)</span> sets the relative strength of the instantaneous and delayed responses. The Raman term <span class="math notranslate nohighlight">\((h_R)\)</span> only acts on difference frequencies and is typically strongest at input frequencies on the order of 10 THz.</p>
-<p>When only dealing with single-mode self-phase modulation, the symmetric form of the Raman nonlinearity collapses to a convolution with the square of the time domain amplitude:</p>
+<p>Where the Raman fraction <span class="math notranslate nohighlight">\((f_R)\)</span> sets the relative strength of the instantaneous and delayed responses. The Raman term <span class="math notranslate nohighlight">\((h_R)\)</span> primarily acts on the difference frequencies of the two inputs. In silica it is strongest at offsets between 10 to 15 THz.</p>
+<p>In the time domain, the nonlinear response parameter acts through convolution with the square of the time domain amplitude:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 \frac{\partial}{\partial z} a\!\left[\nu\right] = \ldots - i \, \omega \, g^{(3)}_\text{eff}\!\left[\nu\right] \, \mathscr{F}\!\left[a\!\left[t\right] \int^{\infty}_{0} R\!\left[\tau\right] a\left[t - \tau\right]^2 d\tau\right]
@@ -987,12 +990,23 @@ a''\!\left[t\right] = a + i \, \mathcal{H}\!\left[a\right]
               </div>
               
               
-              <div class='prev-next-bottom'>
-                
-    <a class='left-prev' id="prev-link" href="linear_optics.html" title="previous page">Linear Optics</a>
-    <a class='right-next' id="next-link" href="supplemental.html" title="next page">Supplementary Material</a>
-
-              </div>
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="linear_optics.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Linear Optics</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="supplemental.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Supplementary Material</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
               
           </main>
           
@@ -1000,20 +1014,19 @@ a''\!\left[t\right] = a + i \, \mathcal{H}\!\left[a\right]
       </div>
     </div>
   
-  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
-
-  <footer class="footer mt-5 mt-md-0">
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2021, PyNLO authors.<br/>
+    &copy; Copyright 2021, PyNLO authors.<br>
 </p>
     </div>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.<br/>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
 </p>
     </div>
     

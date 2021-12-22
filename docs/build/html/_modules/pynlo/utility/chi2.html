@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>pynlo.utility.chi2 &#8212; PyNLO dev documentation</title>
     
-  <link href="../../../_static/css/theme.css" rel="stylesheet" />
-  <link href="../../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+  <link href="../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -23,9 +23,9 @@
 
     
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/blank.css" />
     
-  <link rel="preload" as="script" href="../../../_static/js/index.1c5a1a01449ed65a7b51.js">
+  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
 
     <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
     <script src="../../../_static/jquery.js"></script>
@@ -35,7 +35,10 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
     
   </head>
   <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
@@ -176,7 +179,7 @@
 <div class="viewcode-block" id="g2_shg"><a class="viewcode-back" href="../../../api/pynlo.utility.chi2.g2_shg.html#pynlo.utility.chi2.g2_shg">[docs]</a><span class="k">def</span> <span class="nf">g2_shg</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v_grid</span><span class="p">,</span> <span class="n">n_eff</span><span class="p">,</span> <span class="n">a_eff</span><span class="p">,</span> <span class="n">chi2_eff</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The 2nd order nonlinear parameter weighted for second harmonic generation</span>
-<span class="sd">    driven by the given input frequency.</span>
+<span class="sd">    centered around the given input frequency.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -216,6 +219,49 @@
     <span class="n">g2</span><span class="p">[:</span><span class="n">vc_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">g2_fh</span><span class="p">[:</span><span class="n">vc_idx</span><span class="p">]</span>
     <span class="n">g2</span><span class="p">[</span><span class="n">vc_idx</span><span class="p">:]</span> <span class="o">=</span> <span class="n">g2_sh</span><span class="p">[</span><span class="n">vc_idx</span><span class="p">:]</span>
     <span class="k">return</span> <span class="n">g2</span></div>
+
+<span class="k">def</span> <span class="nf">g2_sfg</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v_grid</span><span class="p">,</span> <span class="n">n_eff</span><span class="p">,</span> <span class="n">a_eff</span><span class="p">,</span> <span class="n">chi2_eff</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The 2nd order nonlinear parameter weighted for sum frequency generation</span>
+<span class="sd">    driven by the given input frequency.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v0 : float</span>
+<span class="sd">        The target pump frequency.</span>
+<span class="sd">    v_grid : array_like of float</span>
+<span class="sd">        The frequency grid.</span>
+<span class="sd">    n_eff : array_like of float</span>
+<span class="sd">        The effective refractive indices.</span>
+<span class="sd">    a_eff : array_like of float</span>
+<span class="sd">        The effective areas.</span>
+<span class="sd">    chi2_eff : array_like</span>
+<span class="sd">        The effective 2nd order susceptibilities.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    g2 : ndarray</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">g2_out</span><span class="p">,</span> <span class="n">g2_in</span> <span class="o">=</span> <span class="n">g2_split</span><span class="p">(</span><span class="n">n_eff</span><span class="p">,</span> <span class="n">a_eff</span><span class="p">,</span> <span class="n">chi2_eff</span><span class="p">)</span>
+
+    <span class="n">vc_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v_grid</span> <span class="o">-</span> <span class="p">(</span><span class="n">v_grid</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">+</span> <span class="n">v0</span><span class="p">)))</span> <span class="c1"># crossover point</span>
+
+    <span class="n">g2_in_v0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">v_grid</span><span class="p">,</span> <span class="n">g2_in</span><span class="p">)</span>
+    <span class="n">g2_in_sf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">v_grid</span> <span class="o">-</span> <span class="n">v0</span><span class="p">,</span> <span class="n">v_grid</span><span class="p">,</span> <span class="n">g2_in</span><span class="p">)</span> <span class="c1"># input to sum (out = in + v0)</span>
+    <span class="n">g2_in_df</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">v_grid</span> <span class="o">+</span> <span class="n">v0</span><span class="p">,</span> <span class="n">v_grid</span><span class="p">,</span> <span class="n">g2_in</span><span class="p">)</span> <span class="c1"># input to diff (out = in - v0)</span>
+
+    <span class="c1"># Fundamental (DFG)</span>
+    <span class="n">g2_sf</span> <span class="o">=</span> <span class="n">g2_out</span> <span class="o">*</span> <span class="n">g2_in_sf</span> <span class="o">*</span> <span class="n">g2_in_v0</span>
+
+    <span class="c1"># Second Harmonic (SFG)</span>
+    <span class="n">g2_df</span> <span class="o">=</span> <span class="n">g2_out</span> <span class="o">*</span> <span class="n">g2_in_df</span> <span class="o">*</span> <span class="n">g2_in_v0</span>
+
+    <span class="c1"># Crossover</span>
+    <span class="n">g2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">g2_out</span><span class="p">)</span>
+    <span class="n">g2</span><span class="p">[:</span><span class="n">vc_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">g2_df</span><span class="p">[:</span><span class="n">vc_idx</span><span class="p">]</span>
+    <span class="n">g2</span><span class="p">[</span><span class="n">vc_idx</span><span class="p">:]</span> <span class="o">=</span> <span class="n">g2_sf</span><span class="p">[</span><span class="n">vc_idx</span><span class="p">:]</span>
+    <span class="k">return</span> <span class="n">g2</span>
 
 <div class="viewcode-block" id="g2_split"><a class="viewcode-back" href="../../../api/pynlo.utility.chi2.g2_split.html#pynlo.utility.chi2.g2_split">[docs]</a><span class="k">def</span> <span class="nf">g2_split</span><span class="p">(</span><span class="n">n_eff</span><span class="p">,</span> <span class="n">a_eff</span><span class="p">,</span> <span class="n">chi2_eff</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -260,7 +306,7 @@
 
 <span class="c1"># %% Phase Matching</span>
 
-<div class="viewcode-block" id="polling_sign"><a class="viewcode-back" href="../../../api/pynlo.utility.chi2.polling_sign.html#pynlo.utility.chi2.polling_sign">[docs]</a><span class="k">def</span> <span class="nf">polling_sign</span><span class="p">(</span><span class="n">n_periods</span><span class="p">):</span>
+<div class="viewcode-block" id="polling_sign"><a class="viewcode-back" href="../../../api/pynlo.utility.chi2.polling_sign.html#pynlo.utility.chi2.polling_sign">[docs]</a><span class="k">def</span> <span class="nf">polling_sign</span><span class="p">(</span><span class="n">n_periods</span><span class="p">):</span> <span class="c1">#TODO: make faster</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A wrapper for calculating the sign of a discrete quasi-phase matching</span>
 <span class="sd">    (QPM) structure given the instantaneous period number.</span>
@@ -296,7 +342,7 @@
         <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n_periods</span><span class="p">(</span><span class="n">z</span><span class="p">))</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">polling_sign</span></div>
 
-<span class="k">def</span> <span class="nf">dominant_paths</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">beta_qpm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">dominant_paths</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">beta_qpm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span> <span class="c1">#TODO: add extent (imshow)</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    For each output frequency, find the input frequencies that are coupled</span>
 <span class="sd">    with the least phase mismatch.</span>
@@ -436,10 +482,9 @@
               </div>
               
               
-              <div class='prev-next-bottom'>
-                
-
-              </div>
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
               
           </main>
           
@@ -447,20 +492,19 @@
       </div>
     </div>
   
-  <script src="../../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
-
-  <footer class="footer mt-5 mt-md-0">
+  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+<footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2021, PyNLO authors.<br/>
+    &copy; Copyright 2021, PyNLO authors.<br>
 </p>
     </div>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.<br/>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
 </p>
     </div>
     

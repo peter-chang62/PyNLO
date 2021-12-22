@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pynlo.media.Mode &#8212; PyNLO dev documentation</title>
+    <title>pynlo.utility.TFGrid.copy &#8212; PyNLO dev documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -32,12 +32,10 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pynlo.media.Mode.__init__" href="pynlo.media.Mode.__init__.html" />
-    <link rel="prev" title="pynlo.media" href="pynlo.media.html" />
+    <link rel="next" title="pynlo.utility.TFGrid.rtf_grids" href="pynlo.utility.TFGrid.rtf_grids.html" />
+    <link rel="prev" title="pynlo.utility.TFGrid.FromTimeWindowAndFreq" href="pynlo.utility.TFGrid.FromTimeWindowAndFreq.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -266,21 +264,21 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1 current active has-children">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="pynlo.media.html">
    pynlo.media
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
   <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul class="current">
-   <li class="toctree-l2 current active has-children">
-    <a class="current reference internal" href="#">
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="pynlo.media.Mode.html">
      pynlo.media.Mode
     </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
     <label for="toctree-checkbox-4">
      <i class="fas fa-chevron-down">
      </i>
@@ -469,16 +467,16 @@
    </li>
   </ul>
  </li>
- <li class="toctree-l1 has-children">
+ <li class="toctree-l1 current active has-children">
   <a class="reference internal" href="pynlo.utility.html">
    pynlo.utility
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
   <label for="toctree-checkbox-7">
    <i class="fas fa-chevron-down">
    </i>
   </label>
-  <ul>
+  <ul class="current">
    <li class="toctree-l2 has-children">
     <a class="reference internal" href="pynlo.utility.chi1.html">
      pynlo.utility.chi1
@@ -632,16 +630,16 @@
      pynlo.utility.derivative_t
     </a>
    </li>
-   <li class="toctree-l2 has-children">
+   <li class="toctree-l2 current active has-children">
     <a class="reference internal" href="pynlo.utility.TFGrid.html">
      pynlo.utility.TFGrid
     </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
     <label for="toctree-checkbox-12">
      <i class="fas fa-chevron-down">
      </i>
     </label>
-    <ul>
+    <ul class="current">
      <li class="toctree-l3">
       <a class="reference internal" href="pynlo.utility.TFGrid.__init__.html">
        pynlo.utility.TFGrid.__init__
@@ -657,8 +655,8 @@
        pynlo.utility.TFGrid.FromTimeWindowAndFreq
       </a>
      </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.copy.html">
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
        pynlo.utility.TFGrid.copy
       </a>
      </li>
@@ -795,24 +793,9 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
 
 <nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#methods">
-   Methods
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#attributes">
-   Attributes
-  </a>
- </li>
-</ul>
-
+    
 </nav>
               </div>
               
@@ -832,134 +815,14 @@
               
               <div>
                 
-  <div class="section" id="pynlo-media-mode">
-<h1>pynlo.media.Mode<a class="headerlink" href="#pynlo-media-mode" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="pynlo.media.Mode">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pynlo.media.</span></span><span class="sig-name descname"><span class="pre">Mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g2_v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g2_inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g3_v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rv_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r3_v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/media.html#Mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.media.Mode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>An optical mode, defined over a frequency grid.</p>
-<p>A given input parameter is interpreted as being z-dependent if it is
-callable. All z-dependent parameters must have the position along the
-waveguide (<cite>z</cite>) as their first argument.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>v_grid</strong><span class="classifier">array_like of float</span></dt><dd><p>The frequency grid.</p>
-</dd>
-<dt><strong>beta_v</strong><span class="classifier">array_like of float or callable</span></dt><dd><p>The angular wavenumber, or the real part of the propagation constant,
-defined over the frequency grid.</p>
-</dd>
-<dt><strong>alpha_v</strong><span class="classifier">array_like of float or callable, optional</span></dt><dd><p>The gain coefficient, or twice the imaginary part of the propagation
-constant. The default is None.</p>
-</dd>
-<dt><strong>g2_v</strong><span class="classifier">array_like of complex or callable, optional</span></dt><dd><p>The effective 2nd order nonlinearity. The default is None.</p>
-</dd>
-<dt><strong>g2_inv</strong><span class="classifier">callable, optional</span></dt><dd><p>Discrete polling of the 2nd order nonlinearity. The default is None.</p>
-</dd>
-<dt><strong>g3_v</strong><span class="classifier">array_like of complex or callable, optional</span></dt><dd><p>The effective 3rd order nonlinearity. The default is None.</p>
-</dd>
-<dt><strong>rv_grid</strong><span class="classifier">array_like of float, optional</span></dt><dd><p>An origin contiguous frequency grid associated with the 3rd order
-nonlinear response function. The default is None.</p>
-</dd>
-<dt><strong>r3_v</strong><span class="classifier">array_like of complex or callable, optional</span></dt><dd><p>The effective 3rd order nonlinear response function containing both
-the instantaneous and Raman nonlinearities. The default is None.</p>
-</dd>
-<dt><strong>z</strong><span class="classifier">float, optional</span></dt><dd><p>The position along the waveguide. The default is 0.0.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>Modes are defined for traveling waves of the form assumed below:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}E, H \sim a \, e^{i(\omega t - \kappa z)} + \text{c.c} \\
-\kappa = \beta + i \frac{\alpha}{2}, \quad
-\beta = n \frac{\omega}{c}\end{split}\]</div>
+  <div class="section" id="pynlo-utility-tfgrid-copy">
+<h1>pynlo.utility.TFGrid.copy<a class="headerlink" href="#pynlo-utility-tfgrid-copy" title="Permalink to this headline">¶</a></h1>
+<dl class="py method">
+<dt class="sig sig-object py" id="pynlo.utility.TFGrid.copy">
+<span class="sig-prename descclassname"><span class="pre">TFGrid.</span></span><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/utility.html#TFGrid.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.utility.TFGrid.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>An idependent copy of the object.</p>
 </dd></dl>
 
-<div class="section" id="methods">
-<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
-<table class="longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.__init__.html#pynlo.media.Mode.__init__" title="pynlo.media.Mode.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(v_grid, beta_v[, alpha_v, g2_v, ...])</p></td>
-<td><p>Initialize a mode given a set of frequencies, wavenumbers, and other parameters.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.beta.html#pynlo.media.Mode.beta" title="pynlo.media.Mode.beta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">beta</span></code></a>([m, z])</p></td>
-<td><p>The angular wavenumber, with units of <code class="docutils literal notranslate"><span class="pre">1/m</span></code>, or its derivatives with respect to angular frequency.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.n.html#pynlo.media.Mode.n" title="pynlo.media.Mode.n"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n</span></code></a>([z])</p></td>
-<td><p>The refractive index.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.alpha.html#pynlo.media.Mode.alpha" title="pynlo.media.Mode.alpha"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alpha</span></code></a>([z])</p></td>
-<td><p>The gain constant, with units of <code class="docutils literal notranslate"><span class="pre">1/m</span></code>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.n_g.html#pynlo.media.Mode.n_g" title="pynlo.media.Mode.n_g"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_g</span></code></a>([z])</p></td>
-<td><p>The group index.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.v_g.html#pynlo.media.Mode.v_g" title="pynlo.media.Mode.v_g"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v_g</span></code></a>([z])</p></td>
-<td><p>The group velocity, with units of <code class="docutils literal notranslate"><span class="pre">m/s</span></code>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.d_12.html#pynlo.media.Mode.d_12" title="pynlo.media.Mode.d_12"><code class="xref py py-obj docutils literal notranslate"><span class="pre">d_12</span></code></a>([v0, z])</p></td>
-<td><p>The group velocity mismatch, or walk-off parameter, with units of <code class="docutils literal notranslate"><span class="pre">s/m</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.GVD.html#pynlo.media.Mode.GVD" title="pynlo.media.Mode.GVD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GVD</span></code></a>([z])</p></td>
-<td><p>The group velocity dispersion, with units of <code class="docutils literal notranslate"><span class="pre">s**2/m</span></code>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.D.html#pynlo.media.Mode.D" title="pynlo.media.Mode.D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">D</span></code></a>([z])</p></td>
-<td><p>The dispersion parameter D, with units of <code class="docutils literal notranslate"><span class="pre">s/m**2</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.linear_operator.html#pynlo.media.Mode.linear_operator" title="pynlo.media.Mode.linear_operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linear_operator</span></code></a>(dz[, v0, z])</p></td>
-<td><p>The linear operator which advances the spectrum over a distance <cite>dz</cite>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.g2.html#pynlo.media.Mode.g2" title="pynlo.media.Mode.g2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">g2</span></code></a>([z])</p></td>
-<td><p>The magnitude of the effective 2nd order nonlinear parameter, with units of <code class="docutils literal notranslate"><span class="pre">1/(W**0.5*m*Hz)</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.g2_inv.html#pynlo.media.Mode.g2_inv" title="pynlo.media.Mode.g2_inv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">g2_inv</span></code></a>([z])</p></td>
-<td><p>The sign of the polled 2nd order nonlinearity.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.g3.html#pynlo.media.Mode.g3" title="pynlo.media.Mode.g3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">g3</span></code></a>([z])</p></td>
-<td><p>The effective 3rd order nonlinear parameter, with units of <code class="docutils literal notranslate"><span class="pre">1/(W*m*Hz)</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.gamma.html#pynlo.media.Mode.gamma" title="pynlo.media.Mode.gamma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gamma</span></code></a>([z])</p></td>
-<td><p>The nonlinear parameter <span class="math notranslate nohighlight">\(\gamma\)</span>, with units of <code class="docutils literal notranslate"><span class="pre">1/(W*m)</span></code>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.r3.html#pynlo.media.Mode.r3" title="pynlo.media.Mode.r3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">r3</span></code></a>([z])</p></td>
-<td><p>The effective 3rd order nonlinear response function containing both the instantaneous and Raman nonlinearities.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="attributes">
-<h2>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h2>
-<table class="longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.z.html#pynlo.media.Mode.z" title="pynlo.media.Mode.z"><code class="xref py py-obj docutils literal notranslate"><span class="pre">z</span></code></a></p></td>
-<td><p>The position along the waveguide, with units of <code class="docutils literal notranslate"><span class="pre">m</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.v_grid.html#pynlo.media.Mode.v_grid" title="pynlo.media.Mode.v_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v_grid</span></code></a></p></td>
-<td><p>The frequency grid, with units of <code class="docutils literal notranslate"><span class="pre">Hz</span></code>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.rv_grid.html#pynlo.media.Mode.rv_grid" title="pynlo.media.Mode.rv_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rv_grid</span></code></a></p></td>
-<td><p>The origin contiguous frequency grid associated with the Raman response.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.z_dep_linearity.html#pynlo.media.Mode.z_dep_linearity" title="pynlo.media.Mode.z_dep_linearity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">z_dep_linearity</span></code></a></p></td>
-<td><p>The z dependence of the linear terms.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.z_dep_nonlinearity.html#pynlo.media.Mode.z_dep_nonlinearity" title="pynlo.media.Mode.z_dep_nonlinearity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">z_dep_nonlinearity</span></code></a></p></td>
-<td><p>The z dependence of the nonlinear terms.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
 </div>
 
 
@@ -968,17 +831,17 @@ the instantaneous and Raman nonlinearities. The default is None.</p>
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="pynlo.media.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="pynlo.utility.TFGrid.FromTimeWindowAndFreq.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">pynlo.media</p>
+            <p class="prev-next-title">pynlo.utility.TFGrid.FromTimeWindowAndFreq</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="pynlo.media.Mode.__init__.html" title="next page">
+    <a class='right-next' id="next-link" href="pynlo.utility.TFGrid.rtf_grids.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">pynlo.media.Mode.__init__</p>
+        <p class="prev-next-title">pynlo.utility.TFGrid.rtf_grids</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

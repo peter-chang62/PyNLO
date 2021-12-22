@@ -489,8 +489,19 @@
       "cell_type": "markdown",
       "source": [
         "### FFT Cookbook\n",
-        "When using fft and ifft functions it is best practice to follow a set of rules so that the normalization and array ordering quirks are always considered.\n",
-        "\n",
+        "When using fft and ifft functions it is best practice to follow a set of rules so that the normalization and array ordering quirks are always considered."
+      ],
+      "metadata": {
+        "nteract": {
+          "transient": {
+            "deleting": false
+          }
+        }
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
         "#### Analytic Representation\n",
         "Given the total number of points $N$, start by defining the time and frequency step sizes $dt$ and $d\\nu$:\n",
         "$$\n",
@@ -506,22 +517,7 @@
         "\\qquad\n",
         "\\nu_n = \\nu_0 + (n - \\lfloor N/2 \\rfloor) \\, d\\nu\n",
         "\\end{gather}\n",
-        "$$\n",
-        "\n",
-        "#### Real-Valued Representation\n",
-        "The coordinate grids for the associated real-valued representation ${t_r}_m$ and ${\\nu_r}_n$ use array index $m$ ranging from $0$ to $N_r-1$ and array index $n$ ranging from $0$ to $\\lfloor N_r/2 \\rfloor$. The total number of points $N_r$ should allow transforming from the analytic representation without aliasing:\n",
-        "$$\n",
-        "\\begin{gather}\n",
-        "dt_r \\, d\\nu = 1/N_r\n",
-        "\\\\\n",
-        "{t_r}_m = (m - \\lfloor N_r/2 \\rfloor) \\, dt_r\n",
-        "\\qquad\n",
-        "{\\nu_r}_n = n \\, d\\nu\n",
-        "\\end{gather}\n",
-        "$$\n",
-        "\n",
-        "#### Array Ordering\n",
-        "From this point there are two alternate paths that ensure fft and ifft functions always receive the correct ordering and that the ordering of the coordinate grids and amplitude arrays are always aligned. The first is to order all arrays such that the coordinate grids are in a monotonic order and then wrap calls to fft or ifft with ifftshift and fftshift operations. The second is to order all arrays in the standard fft order and then only use fftshift operations when one wants to display arrays with monotonically ordered coordinate arrays."
+        "$$"
       ],
       "metadata": {
         "nteract": {
@@ -534,6 +530,32 @@
     {
       "cell_type": "markdown",
       "source": [
+        "#### Real-Valued Representation\n",
+        "The coordinate grids for the associated real-valued representation ${t_r}_m$ and ${\\nu_r}_n$ use array index $m$ ranging from $0$ to $N_r-1$ and array index $n$ ranging from $0$ to $\\lfloor N_r/2 \\rfloor$. The total number of points $N_r$ should allow transforming from the analytic representation without aliasing:\n",
+        "$$\n",
+        "\\begin{gather}\n",
+        "dt_r \\, d\\nu = 1/N_r\n",
+        "\\\\\n",
+        "{t_r}_m = (m - \\lfloor N_r/2 \\rfloor) \\, dt_r\n",
+        "\\qquad\n",
+        "{\\nu_r}_n = n \\, d\\nu\n",
+        "\\end{gather}\n",
+        "$$"
+      ],
+      "metadata": {
+        "nteract": {
+          "transient": {
+            "deleting": false
+          }
+        }
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "#### Array Ordering\n",
+        "From this point there are two alternate paths that ensure fft and ifft functions always receive the correct ordering and that the ordering of the coordinate grids and amplitude arrays are always aligned. The first is to order all arrays such that the coordinate grids are in a monotonic order and then wrap calls to fft or ifft with ifftshift and fftshift operations. The second is to order all arrays in the standard fft order and then only use fftshift operations when one wants to display arrays with monotonically ordered coordinate arrays.\n",
+        "\n",
         "##### Monotonic Order:\n",
         "\n",
         "- Keep the time and frequency grids as defined above.\n",
@@ -561,19 +583,8 @@
         "&\\text{rfft:} & F\\left[\\nu_r\\right]_n &= \\operatorname{rfft}\\!\\left(\\operatorname{ifftshift}\\!\\left( f\\!\\left[t_r\\right] dt_r \\right)\\right)_n\n",
         "\\end{alignat}\n",
         "$$\n",
-        "- Display the coordinate and amplitude arrays without any other modification."
-      ],
-      "metadata": {
-        "nteract": {
-          "transient": {
-            "deleting": false
-          }
-        }
-      }
-    },
-    {
-      "cell_type": "markdown",
-      "source": [
+        "- Display the coordinate and amplitude arrays without any other modification.\n",
+        "\n",
         "##### Standard FFT Order:\n",
         "\n",
         "- Store the time and frequency grids in standard fft order:\n",
