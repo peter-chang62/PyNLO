@@ -55,9 +55,9 @@ def ifft(x, fsc=1.0, n=None, axis=-1, overwrite_x=False):
     x : array_like
         Input array, can be complex.
     fsc : float, optional
-        The forward transform scale factor. The reverse transform scale factor
-        is set as ``1/(n*fsc)`` to yield an inverse transform. The default is
-        1.0.
+        The forward transform scale factor. Internally, this function sets the
+        reverse transform scale factor as ``1/(n*fsc)`` to yield the properly
+        normalized inverse transform. The default is 1.0.
     n : int, optional
         Length of the transformed axis of the output. If `n` is smaller than
         the length of the input, the input is cropped. If it is larger, the
@@ -120,9 +120,9 @@ def irfft(x, fsc=1.0, n=None, axis=-1):
     x : array_like
         Input array, can be complex.
     fsc : float, optional
-        The forward transform scale factor. The reverse transform scale factor
-        is set to ``1/(n*fsc)`` to yield an inverse transform. The default is
-        1.0.
+        The forward transform scale factor. Internally, this function sets the
+        reverse transform scale factor as ``1/(n*fsc)`` to yield the properly
+        normalized inverse transform. The default is 1.0.
     n : int, optional
         Length of the transformed axis of the output. For `n` output points,
         ``n//2+1`` input points are necessary. If the input is longer than
