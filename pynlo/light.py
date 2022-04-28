@@ -257,7 +257,7 @@ class Pulse(TFGrid):
 
         #---- Set Spectrum
         t0 = t_fwhm / (2 * np.arccosh(2**0.5))
-        p_t = 1/np.cosh(self.t_grid/t0)**2
+        p_t = (1/np.cosh(self.t_grid/t0))**2
         phi_t = 2*pi*(v0-self.v_ref)*self.t_grid
         self.a_t = p_t**0.5 * np.exp(1j*phi_t)
 
