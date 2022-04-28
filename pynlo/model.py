@@ -69,9 +69,9 @@ def fdd(f, dx, idx):
 @njit(parallel=True)
 def l2_error(a_RK4, a_RK3):
     """JIT compiled l2 error norm."""
-    l2_norm = np.sum(a_RK4.real**2 + a_RK4.imag**2)**0.5
+    l2_norm = np.sum(np.real(a_RK4)**2 + np.imag(a_RK4)**2)**0.5
     rel_error = (a_RK4 - a_RK3)/l2_norm
-    return np.sum(rel_error.real**2 + rel_error.imag**2)**0.5
+    return np.sum(np.real(rel_error)**2 + np.imag(rel_error)**2)**0.5
 
 
 # %% Classes
