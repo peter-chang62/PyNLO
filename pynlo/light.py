@@ -143,34 +143,35 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def FromPowerSpectrum(cls, tfgrid, p_v, phi_v=None, v0=None, e_p=None):
+    def FromPowerSpectrum(cls, p_v, n_points, v_min, v_max, v0=None, e_p=None, phi_v=None):
         """
         Initialize a pulse using existing spectral data.
 
         Parameters
         ----------
-        tfgrid : pynlo.utility.TFGrid
-            An instance of a `TFGrid` object.
         p_v : callable -> array_like of float
             The power spectrum to be evaluated along the resulting frequency
             grid.
-        phi_v : callable -> array_like of float, optional
-            The phase of the power spectrum. The default initializes a
-            transform limited pulse.
+        n_points : int, optional
+            The number of grid points.
+        v_min : float, optional
+            The target minimum frequency.
+        v_max : float, optional
+            The target maximum frequency.
         v0 : float, optional
             The comoving frame reference frequency. The default is the center
             of the resulting frequency grid.
         e_p : float, optional
             The pulse energy. The default inherits the pulse energy of the
             input spectrum.
-
+        phi_v : callable -> array_like of float, optional
+            The phase of the power spectrum. The default initializes a
+            transform limited pulse.
         """
-        assert isinstance(tfgrid, TFGrid), "The input must be an instance of the TFGrid class."
         assert callable(p_v), "The power spectrum must be a callable function."
 
-        #---- Copy TFGrid
-        self = super().__new__(cls)
-        self.__dict__.update(tfgrid.__dict__)
+        #---- Construct TF Grids
+        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0)
 
         #---- Evaluate Input
         p_v = np.asarray(p_v(self.v_grid), dtype=float)
