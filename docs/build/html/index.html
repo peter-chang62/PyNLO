@@ -4,11 +4,13 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>PyNLO: Nonlinear Optics for Python &#8212; PyNLO dev documentation</title>
     
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -18,14 +20,10 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/css/blank.css" />
     
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -42,7 +40,7 @@
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -113,7 +111,8 @@
           
             
             <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
@@ -121,6 +120,9 @@
     
   </div>
 </nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
             </div>
             
           
@@ -131,7 +133,7 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
 
@@ -197,12 +199,12 @@
               
               <div>
                 
-  <div class="section" id="pynlo-nonlinear-optics-for-python">
-<h1>PyNLO: Nonlinear Optics for Python<a class="headerlink" href="#pynlo-nonlinear-optics-for-python" title="Permalink to this headline">¶</a></h1>
+  <section id="pynlo-nonlinear-optics-for-python">
+<h1>PyNLO: Nonlinear Optics for Python<a class="headerlink" href="#pynlo-nonlinear-optics-for-python" title="Permalink to this headline">#</a></h1>
 <p>This repo is a fork of the original PyNLO. It started as a rewrite of the pulse propagation model and has grown into something that contains many backwards incompatible changes. It is not yet at feature parity with the original, but it still has some things worth checking out!</p>
 <p>Complete documentation for the main branch is available on the repo’s <a class="reference external" href="https://cdfredrick.github.io/PyNLO/build/html/index.html">GitHub-Page</a>.</p>
-<div class="section" id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
 <p>The PyNLO package provides an easy-to-use, object-oriented set of tools for modeling the nonlinear interaction of light with materials. It provides many functionalities for representing pulses of light and nonlinear materials. It features <strong>a unified interface</strong> for simultaneously simulating both <strong>three-wave-mixing</strong> processes (such as second order sum and difference frequency generation) and <strong>four-wave-mixing</strong> processes (such as self-phase modulation, and third order sum and difference frequency generation).</p>
 <p>In pyNLO, object-oriented programming is used to emulate physical objects. Whenever possible, each physical entity with intrinsic properties – for example an optical pulse or nonlinear fiber – is mapped to a Python class. These classes keep track of the objects’ properties, calculate interactions, and provide simple calculator-type helper functions.</p>
 <dl class="simple">
@@ -213,23 +215,23 @@
 </ul>
 </dd>
 </dl>
-</div>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h2>
 <p>PyNLO requires Python 3. If you do not already have Python, the open-source Anaconda distribution is a good all-in-one collection of Python packages, or if you are looking for a more minimalist installation try Miniconda. In addition to NumPy and SciPy, PyNLO only requires the Numba and mkl_fft packages (and don’t forget matplotlib if you want to look at the results).</p>
 <p>The easiest way to start using this fork is to download or clone the repo into a directory of your choice, and then add that directory to the top of your <a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.path">sys.path</a> variable before importing the package.</p>
-</div>
-<div class="section" id="contributing">
-<h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">#</a></h2>
 <p>Open a new issue or discussion on the GitHub repository to add suggestions for improvement, questions, or other comments. Since a lot of the code is new, contributing tests and examples is highly appreciated. New additions should be based off of the <cite>develop</cite> branch.</p>
-</div>
-<div class="section" id="license">
-<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">#</a></h2>
 <p>PyNLO is licensed under the <a class="reference external" href="https://choosealicense.com/licenses/lgpl-3.0/">GNU LGPLv3 license</a>. This means that you are free to use PyNLO for any project, but all modifications to its source code need to be kept open source. PyNLO is provided “as is” with absolutely no warranty.</p>
-</div>
-</div>
-<div class="section" id="documentation">
-<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
+</section>
+</section>
+<section id="documentation">
+<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">#</a></h1>
 <div class="toctree-wrapper compound">
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
@@ -255,15 +257,15 @@
 </li>
 </ul>
 </div>
-<div class="section" id="indices-and-tables">
-<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<section id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
-</div>
-</div>
+</section>
+</section>
 
 
               </div>
@@ -286,19 +288,20 @@
       </div>
     </div>
   
-  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
 <footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2021, PyNLO authors.<br>
+    &copy; Copyright 2022, PyNLO authors.<br>
 </p>
     </div>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
 </p>
     </div>
     

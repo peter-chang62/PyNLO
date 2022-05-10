@@ -135,11 +135,10 @@ def g3_split(n_eff, a_eff, chi3_eff):
 
 def nl_response_v(t_grid, dt, r_weights, b_weights=None):
     """
-    Calculate the normalized frequency-domain Raman and instantaneous
-    nonlinear response function.
+    Calculate the Raman and instantaneous nonlinear response function.
 
-    This calculates the Raman response in the time domain using approximate,
-    analytic equations.
+    This calculates the normalized Raman response using approximate, analytic
+    equations in the time domain.
 
     Parameters
     ----------
@@ -166,14 +165,14 @@ def nl_response_v(t_grid, dt, r_weights, b_weights=None):
 
     Returns
     -------
-    nonlinear_t : ndarray of float
-        The time-domain nonlinear response function. This is defined over the
-        same frequency grid as `Pulse.rv_grid`.
+    nonlinear_v : ndarray of float
+        The frequency-domain nonlinear response function. This is defined over
+        the same frequency grid as `Pulse.rv_grid`.
 
     Notes
     -----
     The equations used are the analytical formulations as summarized in
-    section 2.3.3 Agrawal's Nonlinear Fiber Optics [1]_. More accurate
+    section 2.3.3 of Agrawal's Nonlinear Fiber Optics [1]_. More accurate
     simulations may be obtainable using digitized spectral measurements, such
     as from [2]_.
 

@@ -4,11 +4,13 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Nonlinear Optics &#8212; PyNLO dev documentation</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet">
-  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -18,22 +20,18 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/blank.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Supplementary Material" href="supplemental.html" />
@@ -45,7 +43,7 @@
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -116,7 +114,8 @@
           
             
             <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
@@ -151,6 +150,9 @@
 
   </div>
 </nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
             </div>
             
           
@@ -161,7 +163,7 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
 
@@ -312,10 +314,10 @@
               
               <div>
                 
-  <div class="section" id="Nonlinear-Optics">
-<h1>Nonlinear Optics<a class="headerlink" href="#Nonlinear-Optics" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Local-Modes">
-<h2>Local Modes<a class="headerlink" href="#Local-Modes" title="Permalink to this headline">¶</a></h2>
+  <section id="Nonlinear-Optics">
+<h1>Nonlinear Optics<a class="headerlink" href="#Nonlinear-Optics" title="Permalink to this headline">#</a></h1>
+<section id="Local-Modes">
+<h2>Local Modes<a class="headerlink" href="#Local-Modes" title="Permalink to this headline">#</a></h2>
 <p>Local modes are a generalization of the idealized waveguide modes from the <a class="reference internal" href="linear_optics.html#Waveguides"><span class="std std-ref">previous page</span></a>, and allow for the modal expansion of the electromagnetic field under non-longitudinally invariant conditions. Local modes are defined as the set of <span class="math notranslate nohighlight">\(z\)</span> dependent modes that locally satisfy Maxwell’s equations under idealized waveguide conditions. Local modes are the modes of an ideal waveguide’s instantaneous cross section. The local modes at different locations in
 the waveguide are considered the same mode if they are related to one another through a continuous topological transformation. Any arbitrary field may be described through the linear combinations of an orthogonal set, and with local modes each point along the waveguide can be represented by a different set. Having such a generalized representation allows the modal expansion to best capture the physical properties of the waveguide and the underlying physics.</p>
 <p>The expansion used below is restricted to positive mode designators <span class="math notranslate nohighlight">\(\left(n\right)\)</span> and explicitly includes both the forward and backward propagating modes. In the mixed frequency and spatial domain <span class="math notranslate nohighlight">\(\left(\omega, \mathbf{x}\right)\)</span>:</p>
@@ -358,9 +360,9 @@ the waveguide are considered the same mode if they are related to one another th
 \mathbf{0} &amp;= \nabla_t \times {\hat{\mathbf{h}}_n}_t - i \, \omega \, \epsilon_0 \, \epsilon^{\prime}_{zz} \, {\hat{e}_n}_z \, \hat{\mathbf{z}} \tag{3f}
 \end{align}\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\epsilon^{\prime}\)</span> is the idealized, lossless relative permittivity.</p>
-</div>
-<div class="section" id="Unidirectional-Propagation-Equations">
-<h2>Unidirectional Propagation Equations<a class="headerlink" href="#Unidirectional-Propagation-Equations" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="Unidirectional-Propagation-Equations">
+<h2>Unidirectional Propagation Equations<a class="headerlink" href="#Unidirectional-Propagation-Equations" title="Permalink to this headline">#</a></h2>
 <p>The full set of Maxwell’s equations in the mixed frequency and spatial domains <span class="math notranslate nohighlight">\(\left(\omega, \mathbf{x}\right)\)</span> are as follows:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -383,8 +385,8 @@ the waveguide are considered the same mode if they are related to one another th
 \text{free sources and nonlinearity}
 \end{cases}
 \end{gather}\end{split}\]</div>
-<div class="section" id="Forward-Propagation-Equation">
-<h3>Forward Propagation Equation<a class="headerlink" href="#Forward-Propagation-Equation" title="Permalink to this headline">¶</a></h3>
+<section id="Forward-Propagation-Equation">
+<h3>Forward Propagation Equation<a class="headerlink" href="#Forward-Propagation-Equation" title="Permalink to this headline">#</a></h3>
 <p>The forward mode propagation equation is found by adding the two curl relations (4c + 4d).</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -406,9 +408,9 @@ the waveguide are considered the same mode if they are related to one another th
 \\
 &amp; \quad -\iint_{A_\infty} \frac{1}{2} \left({\hat{\mathbf{e}}_n^*}_t \cdot {\mathbf{J}_{f}}_t + i \, \omega \, {\hat{\mathbf{e}}_n^*}_t \cdot {\mathbf{P}_\text{NL}}_t\right) \, dA
 \end{align}\end{split}\]</div>
-</div>
-<div class="section" id="Backward-Propagation-Equation">
-<h3>Backward Propagation Equation<a class="headerlink" href="#Backward-Propagation-Equation" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="Backward-Propagation-Equation">
+<h3>Backward Propagation Equation<a class="headerlink" href="#Backward-Propagation-Equation" title="Permalink to this headline">#</a></h3>
 <p>The backward mode propagation equation is found by subtracting the two curl relations (4c - 4d).</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -430,9 +432,9 @@ the waveguide are considered the same mode if they are related to one another th
 \\
 &amp; \quad +\iint_{A_\infty} \frac{1}{2} \left({\hat{\mathbf{e}}_n^*}_t \cdot {\mathbf{J}_{f}}_t + i \, \omega \, {\hat{\mathbf{e}}_n^*}_t \cdot {\mathbf{P}_\text{NL}}_t\right) \, dA
 \end{align}\end{split}\]</div>
-</div>
-<div class="section" id="Linear-Dispersion">
-<h3>Linear Dispersion<a class="headerlink" href="#Linear-Dispersion" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="Linear-Dispersion">
+<h3>Linear Dispersion<a class="headerlink" href="#Linear-Dispersion" title="Permalink to this headline">#</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 \frac{\partial}{\partial z} a_n\!\left[\nu\right] = \ldots - i \, \beta_n \, a_n
@@ -442,8 +444,8 @@ the waveguide are considered the same mode if they are related to one another th
 \[\begin{gather}
 a_n\!\left[z\right] \approx a_n\!\left[0\right] \, e^{-i \int^z \beta_n \, dz^\prime}
 \end{gather}\]</div>
-<div class="section" id="Phase-Matching">
-<h4>Phase Matching<a class="headerlink" href="#Phase-Matching" title="Permalink to this headline">¶</a></h4>
+<section id="Phase-Matching">
+<h4>Phase Matching<a class="headerlink" href="#Phase-Matching" title="Permalink to this headline">#</a></h4>
 <p>It is useful to consider an alternative definition of the modal amplitude that explicitly separates out contributions due to the dispersion term:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -469,10 +471,10 @@ b\!\left[L\right] &amp;\approx -i \frac{f}{\Delta\beta} \left(1 - e^{-i \, \Delt
 \\
 \Bigl|b\!\left[L\right]\Bigr|^2 &amp;\approx 4 \frac{f^2}{\Delta\beta^2} \sin\!\!\left[\frac{\Delta\beta \ L}{2}\right]^2
 \end{align}\end{split}\]</div>
-</div>
-</div>
-<div class="section" id="Gain-and-Loss">
-<h3>Gain and Loss<a class="headerlink" href="#Gain-and-Loss" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="Gain-and-Loss">
+<h3>Gain and Loss<a class="headerlink" href="#Gain-and-Loss" title="Permalink to this headline">#</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 \frac{\partial}{\partial z} a_n\!\left[\nu\right] = \ldots - \sum_{m} \left(a_m + a_{-m}\right) \iint_{A_\infty} \frac{1}{2} \left(
@@ -512,9 +514,9 @@ b\!\left[L\right] &amp;\approx -i \frac{f}{\Delta\beta} \left(1 - e^{-i \, \Delt
 \end{align}\end{split}\]</div>
 <p>Since <span class="math notranslate nohighlight">\(\beta_n\)</span> is of the order of <span class="math notranslate nohighlight">\(10^{6}\)</span> per meter for near-infrared light <span class="math notranslate nohighlight">\(\beta_\alpha\)</span> can usually be ignored. However, it should be included when the magnitude of <span class="math notranslate nohighlight">\(\alpha\)</span> is unusually large such as in an absorptive material or in an amplifier gain medium.</p>
 <p>From the orthogonality relationship, <span class="math notranslate nohighlight">\({\hat{\mathbf{e}}_n^*}_t \cdot {\hat{\mathbf{e}}_m}_t\)</span> only equals <span class="math notranslate nohighlight">\(\delta_{m n}\)</span> if the longitudinal component of the electric fields (<span class="math notranslate nohighlight">\(\hat{e}_z\)</span>) are negligible. Thus, if <span class="math notranslate nohighlight">\(\alpha\)</span> is not homogenous across the transverse plane, or if <span class="math notranslate nohighlight">\(\hat{e}_z\)</span> cannot be ignored, then gain and loss have the potential to couple modes together.</p>
-</div>
-<div class="section" id="Changing-Mode-Profiles">
-<h3>Changing Mode Profiles<a class="headerlink" href="#Changing-Mode-Profiles" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="Changing-Mode-Profiles">
+<h3>Changing Mode Profiles<a class="headerlink" href="#Changing-Mode-Profiles" title="Permalink to this headline">#</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \frac{\partial}{\partial z} a_n\!\left[\nu\right] = \ldots &amp; - \sum_{m} a_m \iint_{A_\infty} \frac{1}{2} \left(
@@ -526,9 +528,9 @@ b\!\left[L\right] &amp;\approx -i \frac{f}{\Delta\beta} \left(1 - e^{-i \, \Delt
     \right) \cdot \hat{\mathbf{z}} \, dA &amp; \quad \text{b.p.m.}
 \end{align}\end{split}\]</div>
 <p>These term couple modes together due to changes in the modal profiles themselves, which occur due to changes in the underlying geometry or material properties that determine the set of ideal modes. These terms bear a resemblance to the orthogonality relationship and can be thought of as a differential orthogonality relationship that applies when smoothly changing from one set of modes to another.</p>
-</div>
-<div class="section" id="Free-Sources-and-Nonlinearity">
-<h3>Free Sources and Nonlinearity<a class="headerlink" href="#Free-Sources-and-Nonlinearity" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="Free-Sources-and-Nonlinearity">
+<h3>Free Sources and Nonlinearity<a class="headerlink" href="#Free-Sources-and-Nonlinearity" title="Permalink to this headline">#</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \frac{\partial}{\partial z} a_n\!\left[\nu\right] = \ldots &amp; -\iint_{A_\infty} \frac{1}{2} {\hat{\mathbf{e}}_n^*}_t \cdot {\mathbf{J}_{f}}_t \, dA &amp; \quad \text{free sources}
@@ -543,8 +545,8 @@ of the nonlinear term is similar but is modified by <span class="math notranslat
 \end{gather}\]</div>
 <p>Individually, these terms are convolutions of the time domain electric field and the nonlinear optical susceptibilities <span class="math notranslate nohighlight">\((\chi^{\left(2\right)}, \chi^{\left(3\right)})\)</span>. In the frequency domain this corresponds to the sum of all possible interactions that end at a particular output frequency. In terms of the modal expansion, the nonlinear terms are represented as the sum of all possible terms given by the product of the sum of modes. See <a class="reference external" href="https://doi.org/10.1016/C2015-0-05510-1">Nonlinear Optics (Boyd
 2020)</a> for an exhaustive discussion of the important properties and symmetries associated with the nonlinear susceptibilities.</p>
-<div class="section" id="Second-Order-Nonlinearity">
-<h4>Second Order Nonlinearity<a class="headerlink" href="#Second-Order-Nonlinearity" title="Permalink to this headline">¶</a></h4>
+<section id="Second-Order-Nonlinearity">
+<h4>Second Order Nonlinearity<a class="headerlink" href="#Second-Order-Nonlinearity" title="Permalink to this headline">#</a></h4>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \frac{\partial}{\partial z} a_n\!\left[\nu\right] = \ldots -i \, \omega \sum_{r s} \iint_{-\infty}^{\infty} &amp; g_{n r s}^{\left(2\right)}\!\left[\nu_1, \nu_2\right] a_r\!\left[\nu_1\right] a_s\!\left[\nu_2\right]
@@ -582,9 +584,9 @@ g_{n r s}^{\left(2\right)}\!\left[\nu_1, \nu_2\right] = \iint_{A_\infty} \frac{1
 g_{n r s}^{\left(2\right)} = \frac{1}{2} \sqrt{\frac{{A_\text{eff}}_n}{{A_\text{eff}}_r \, {A_\text{eff}}_s}} \frac{{\chi^{\left(2\right)}_\text{eff}}_{n r s}}{\sqrt{\epsilon_0 \, c^3 \, {n_\text{eff}}_n \, {n_\text{eff}}_r \, {n_\text{eff}}_s}}
 \end{gather}\]</div>
 <p>where the frequency dependence of each mode is implicitly assumed. By definition this is the same quantity as given by the first definition of <span class="math notranslate nohighlight">\(g^{\left(2\right)}\)</span>, but in separating out the physical origin of the contributing terms we arrive at an equation that better yields to the intuition and allows for back of the envelope estimates when full spatial mode profiles are not available.</p>
-</div>
-<div class="section" id="Third-Order-Nonlinearity">
-<h4>Third Order Nonlinearity<a class="headerlink" href="#Third-Order-Nonlinearity" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="Third-Order-Nonlinearity">
+<h4>Third Order Nonlinearity<a class="headerlink" href="#Third-Order-Nonlinearity" title="Permalink to this headline">#</a></h4>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \frac{\partial}{\partial z} a_n\!\left[\nu\right] = \ldots -i \, \omega \sum_{q r s} \iiint_{-\infty}^{\infty} &amp; g_{n q r s}^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] a_q\!\left[\nu_1\right] a_r\!\left[\nu_2\right] a_s\!\left[\nu_3\right]
@@ -623,11 +625,11 @@ g_{n q r s}^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] = \iint_{A_\infty
 g_{n q r s}^{\left(3\right)} = \frac{1}{2} \sqrt{\frac{{A_\text{eff}}_n}{{A_\text{eff}}_q \, {A_\text{eff}}_r \, {A_\text{eff}}_s}} \frac{{\chi^{\left(3\right)}_\text{eff}}_{n q r s}}{\epsilon_0 \, c^2 \, \sqrt{{n_\text{eff}}_n \, {n_\text{eff}}_q \, {n_\text{eff}}_r \, {n_\text{eff}}_s}}
 \end{gather}\]</div>
 <p>where the frequency dependence of each mode is implicitly assumed.</p>
-</div>
-</div>
-</div>
-<div class="section" id="Single-Mode-UPE">
-<h2>Single Mode UPE<a class="headerlink" href="#Single-Mode-UPE" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+</section>
+<section id="Single-Mode-UPE">
+<h2>Single Mode UPE<a class="headerlink" href="#Single-Mode-UPE" title="Permalink to this headline">#</a></h2>
 <p>The propagation equation simplifies when considering only a single, forward propagating waveguide mode. Due to the phase mismatch between different modes this is typically a good approximation:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -642,8 +644,8 @@ g_{n q r s}^{\left(3\right)} = \frac{1}{2} \sqrt{\frac{{A_\text{eff}}_n}{{A_\tex
     i \, \omega \, \hat{\mathbf{e}}^*_t \cdot {\mathbf{P}_\text{NL}}_t
 \right) \ dA &amp; \quad \text{nonlinearity}
 \end{align}\end{split}\]</div>
-<div class="section" id="id1">
-<h3>Gain and Loss<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<section id="id1">
+<h3>Gain and Loss<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \frac{\partial}{\partial z} a\!\left[\nu\right] &amp;= \ldots
@@ -673,9 +675,9 @@ g_{n q r s}^{\left(3\right)} = \frac{1}{2} \sqrt{\frac{{A_\text{eff}}_n}{{A_\tex
 \[\begin{gather}
 a\!\left[z\right] \approx a\!\left[0\right] e^{\int^{z} \left(-i \ \left(\beta - \beta_\alpha\right) + \frac{1}{2}\alpha\right) \ dz^\prime}
 \end{gather}\]</div>
-</div>
-<div class="section" id="id2">
-<h3>Third Order Nonlinearity<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id2">
+<h3>Third Order Nonlinearity<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \frac{\partial}{\partial z} a\!\left[\nu\right] = \ldots - i \, \omega \iiint_{-\infty}^{\infty} &amp; g^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] a\!\left[\nu_1\right] a\!\left[\nu_2\right] a\!\left[\nu_3\right]
@@ -693,8 +695,8 @@ g^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] = \iint_{A_\infty} \frac{1}
 g^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] = \frac{1}{2} \sqrt{\frac{A_\text{eff}\!\left[\nu\right]}{A_\text{eff}\!\left[\nu_1\right] \, A_\text{eff}\!\left[\nu_2\right] \, A_\text{eff}\!\left[\nu_3\right]}} \frac{\chi^{\left(3\right)}_\text{eff}\!\left[\nu_1, \nu_2, \nu_3\right]}{\epsilon_0 \, c^2 \sqrt{n_\text{eff}\!\left[\nu\right] \, n_\text{eff}\!\left[\nu_1\right] \, n_\text{eff}\!\left[\nu_2\right] \, n_\text{eff}\!\left[\nu_3\right]}}
 \end{gather}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\nu\)</span> is the sum of <span class="math notranslate nohighlight">\(\nu_1\)</span>, <span class="math notranslate nohighlight">\(\nu_2\)</span>, and <span class="math notranslate nohighlight">\(\nu_3\)</span>.</p>
-<div class="section" id="Self-Phase-Modulation">
-<h4>Self-Phase Modulation<a class="headerlink" href="#Self-Phase-Modulation" title="Permalink to this headline">¶</a></h4>
+<section id="Self-Phase-Modulation">
+<h4>Self-Phase Modulation<a class="headerlink" href="#Self-Phase-Modulation" title="Permalink to this headline">#</a></h4>
 <p>Of the <span class="math notranslate nohighlight">\(\chi^{\left(3\right)}\)</span> processes, self-phase modulation is always phase matched and corresponds to the nonlinear interaction between positive and negative frequency components from the same three modes <span class="math notranslate nohighlight">\(\left(\omega = \omega + \omega - \omega\right)\)</span>. In this case the effective nonlinearity collapses to a function of a single variable:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
@@ -725,9 +727,9 @@ P = \left|a'\right|^2 = \text{RMS power}
 \qquad
 L = \text{propagation length}
 \end{gather}\end{split}\]</div>
-</div>
-<div class="section" id="Intensity-Dependent-Refractive-Index">
-<h4>Intensity Dependent Refractive Index<a class="headerlink" href="#Intensity-Dependent-Refractive-Index" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="Intensity-Dependent-Refractive-Index">
+<h4>Intensity Dependent Refractive Index<a class="headerlink" href="#Intensity-Dependent-Refractive-Index" title="Permalink to this headline">#</a></h4>
 <p>The <span class="math notranslate nohighlight">\(\gamma\)</span> factor is often cast in terms of the nonlinear Kerr parameter (<span class="math notranslate nohighlight">\(n_2\)</span>), which describes the change in refractive index due to the instantaneous, time averaged optical power. For single frequency, linearly polarized light:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
@@ -741,9 +743,9 @@ n = n_0 + n_2 \left&lt;I\right&gt;
 \\
 \gamma &amp;= \frac{\omega \, n_2}{c \, A_\text{eff}}
 \end{align}\end{split}\]</div>
-</div>
-<div class="section" id="Shock-Term">
-<h4>Shock Term<a class="headerlink" href="#Shock-Term" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="Shock-Term">
+<h4>Shock Term<a class="headerlink" href="#Shock-Term" title="Permalink to this headline">#</a></h4>
 <p>The shock term typically seen in the literature is an artifact of using a constant nonlinear parameter <span class="math notranslate nohighlight">\((\gamma\!\left[\omega\right] \approx \gamma\!\left[\omega_0\right])\)</span>. If everything is properly accounted for, then the shock term <span class="math notranslate nohighlight">\(\left(\gamma_1\right)\)</span> and the standard nonlinear term <span class="math notranslate nohighlight">\(\left(\gamma\!\left[\omega_0\right]\right)\)</span> collapse into a frequency dependent nonlinear parameter consistent with the previous sections:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
@@ -767,9 +769,9 @@ i \left(\gamma\!\left[\omega_0\right] + i \, \gamma_1 \, \frac{\partial}{\partia
 \\
 &amp;= i \, \gamma\!\left[\omega\right] \, f\!\left[\omega - \omega_0\right]
 \end{align}\end{split}\]</div>
-</div>
-<div class="section" id="Raman-Nonlinearity">
-<h4>Raman Nonlinearity<a class="headerlink" href="#Raman-Nonlinearity" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="Raman-Nonlinearity">
+<h4>Raman Nonlinearity<a class="headerlink" href="#Raman-Nonlinearity" title="Permalink to this headline">#</a></h4>
 <p>Raman nonlinearity is a third order effect that couples energy between the light field and vibrational modes of the substrate. It is represented in terms of a unitless nonlinear response parameter <span class="math notranslate nohighlight">\((R)\)</span> that couples two of the three input frequencies. The symmetrized form is given as follows:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
@@ -788,10 +790,10 @@ R\!\left[t\right] = f_R \, h_R\!\left[t\right] + \left(1 - f_R\right) \delta\!\l
 \[\begin{gather}
 \frac{\partial}{\partial z} a\!\left[\nu\right] = \ldots - i \, \omega \, g^{(3)}_\text{eff}\!\left[\nu\right] \, \mathscr{F}\!\left[a\!\left[t\right] \int^{\infty}_{0} R\!\left[\tau\right] a\left[t - \tau\right]^2 d\tau\right]
 \end{gather}\]</div>
-</div>
-</div>
-<div class="section" id="id3">
-<h3>Second Order Nonlinearity<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="id3">
+<h3>Second Order Nonlinearity<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \frac{\partial}{\partial z} a\!\left[\nu\right] = \ldots - i \, \omega \iint_{-\infty}^{\infty} &amp; g^{\left(2\right)}\!\left[\nu_1, \nu_2\right] a\!\left[\nu_1\right] a\!\left[\nu_2\right]
@@ -811,10 +813,10 @@ g^{\left(2\right)}\!\left[\nu_1, \nu_2\right] = \frac{1}{2} \sqrt{\frac{{A_\text
 <p>where <span class="math notranslate nohighlight">\(\nu\)</span> is the sum of <span class="math notranslate nohighlight">\(\nu_1\)</span> and <span class="math notranslate nohighlight">\(\nu_2\)</span>.</p>
 <p>The second order nonlinearity is best known for sum <span class="math notranslate nohighlight">\((\omega = \omega_1 + \omega_2)\)</span> and difference <span class="math notranslate nohighlight">\((\omega = \omega_1 - \omega_2)\)</span> frequency generation, but in certain cases cascaded effects can also be important. Cascaded nonlinearity produces an effective higher order nonlinearity through repeated action of a lower order nonlinearity. One of the more interesting effects is an effective third order nonlinearity due to the cascade of sum and difference frequency generation within
 phase-mismatched second harmonic generation. This produces an effective nonlinear refractive index that has the same form as that for the third order nonlinearity. Depending on the sign of the phase mismatch this nonlinear index can be either positive or negative. See <a class="reference external" href="https://doi.org/10.1364/OL.17.000028">DeSalvo (1992)</a> for more details.</p>
-</div>
-</div>
-<div class="section" id="Numerical-Implementation">
-<h2>Numerical Implementation<a class="headerlink" href="#Numerical-Implementation" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="Numerical-Implementation">
+<h2>Numerical Implementation<a class="headerlink" href="#Numerical-Implementation" title="Permalink to this headline">#</a></h2>
 <p>The numerical complexity of the convolutions necessary to calculate the second and third order nonlinear terms go as <span class="math notranslate nohighlight">\(N^2\)</span> and <span class="math notranslate nohighlight">\(N^3\)</span> respectively. However, if the terms in the convolution can be put in separable form, where the convolution is represented by the product of single variable functions, then the convolution can be recast as a product of those functions’ Fourier transforms. Using the fast Fourier transform the complexity of the convolutions then scale as
 <span class="math notranslate nohighlight">\(N \log\left[N\right]\)</span>. For the number of points typically used in nonlinear simulations, that difference can mean multiple orders of magnitude improvement to the run time. The goal of a fast and accurate numerical implementation is to cast the equations into a form that minimizes both the numerical complexity and the degree of approximation.</p>
 <p>The most general procedure involves numerically calculating all terms in the <span class="math notranslate nohighlight">\(g\)</span> parameters and then using techniques such as eigenvalue or singular value decomposition to represent the inseparable nonlinear parameters as the sum of the products of separable functions. In general, the <span class="math notranslate nohighlight">\(g\)</span> parameters may be written as the product of a function <span class="math notranslate nohighlight">\((\eta)\)</span> dependent only on the sum of the input frequencies with the sum of functions <span class="math notranslate nohighlight">\((h)\)</span> dependent only on the input frequencies
@@ -860,15 +862,15 @@ g^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] &amp;\approx g^{\left(3\rig
 &amp; - i \, \omega \, g^{\left(3\right)}_\text{eff}\!\left[\nu\right] \, \mathscr{F}\!\left[a\left[t\right]^3 \right]
 \end{align}\end{split}\]</div>
 <p>Besides just reducing the numerical complexity of individual terms, it is important to use an accurate and efficient numerical differential equation solver. For this purpose, the embedded 4th order Runge-Kutta method of <a class="reference external" href="https://doi.org/10.1016/j.cpc.2012.12.020">Balac and Mahé (2013)</a> is quite optimal.</p>
-<div class="section" id="Analytic-Representation">
-<h3>Analytic Representation<a class="headerlink" href="#Analytic-Representation" title="Permalink to this headline">¶</a></h3>
+<section id="Analytic-Representation">
+<h3>Analytic Representation<a class="headerlink" href="#Analytic-Representation" title="Permalink to this headline">#</a></h3>
 <p>The analytic representation is an important concept for the theoretical and numerical manipulation of optical pulses. Since the physical <span class="math notranslate nohighlight">\(\mathbf{E}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> fields are real, as mentioned in <a class="reference internal" href="fourier_transforms.html#Real-Functions-and-the-Analytic-Representation"><span class="std std-ref">Fourier Transforms</span></a>, it is possible to represent them in analytical form using only the amplitudes from the positive frequency side of the spectrum. This is straightforward when only linear interactions are
 considered but becomes more difficult when nonlinear terms are involved. Nonlinearity mixes positive and negative frequency components together in an inseparable way. For the second order nonlinearity the following interactions are possible:</p>
 <table class="table">
 <colgroup>
 <col style="width: 35%" />
-<col style="width: 18%" />
-<col style="width: 47%" />
+<col style="width: 16%" />
+<col style="width: 50%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(\chi^{\left(2\right)}\)</span> Process</p></th>
@@ -965,8 +967,8 @@ g^{\left(2\right)}_\text{eff} = \frac{1}{2} \frac{\chi^{\left(2\right)}_\text{ef
 g^{\left(3\right)}_\text{eff} = \frac{1}{2} \frac{\chi^{\left(3\right)}_\text{eff}}{\epsilon_0 \, c^2 \, n_\text{eff}^2 \, A_\text{eff}}
 \end{gather}\end{split}\]</div>
 <p>where the amplitudes <span class="math notranslate nohighlight">\(\left(a\right)\)</span> are defined over only the positive half of the spectrum.</p>
-<div class="section" id="Analytic-Normalizations">
-<h4>Analytic Normalizations<a class="headerlink" href="#Analytic-Normalizations" title="Permalink to this headline">¶</a></h4>
+<section id="Analytic-Normalizations">
+<h4>Analytic Normalizations<a class="headerlink" href="#Analytic-Normalizations" title="Permalink to this headline">#</a></h4>
 <p>It is important to consider the normalization of the analytic amplitudes when comparing against other formulas in the literature. There are two common alternatives to, as above, simply using the amplitudes as given by the positive half of the double-sided spectrum. The first rescales the analytic representation such that the integral of the absolute amplitude squared over positive frequencies is equal to the total energy <span class="math notranslate nohighlight">\(\left(E\right)\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
@@ -981,17 +983,17 @@ a''\!\left[\nu\right] = 2 \, a
 \\
 a''\!\left[t\right] = a + i \, \mathcal{H}\!\left[a\right]
 \end{gather}\end{split}\]</div>
-</div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
+</section>
 
 
               </div>
               
               
               <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="linear_optics.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -1014,19 +1016,20 @@ a''\!\left[t\right] = a + i \, \mathcal{H}\!\left[a\right]
       </div>
     </div>
   
-  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
 <footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2021, PyNLO authors.<br>
+    &copy; Copyright 2022, PyNLO authors.<br>
 </p>
     </div>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
 </p>
     </div>
     

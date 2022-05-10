@@ -4,11 +4,13 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Linear Optics &#8212; PyNLO dev documentation</title>
     
-  <link href="../_static/css/theme.css" rel="stylesheet">
-  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -18,22 +20,18 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/blank.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Nonlinear Optics" href="nonlinear_optics.html" />
@@ -45,7 +43,7 @@
     <!-- Google Analytics -->
     
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
     
     <div class="container-fluid" id="banner"></div>
 
@@ -116,7 +114,8 @@
           
             
             <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
@@ -151,6 +150,9 @@
 
   </div>
 </nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
             </div>
             
           
@@ -161,7 +163,7 @@
               
               <div class="toc-item">
                 
-<div class="tocsection onthispage pt-5 pb-3">
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
 
@@ -327,10 +329,10 @@
               
               <div>
                 
-  <div class="section" id="Linear-Optics">
-<h1>Linear Optics<a class="headerlink" href="#Linear-Optics" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="Maxwell’s-Equations">
-<h2>Maxwell’s Equations<a class="headerlink" href="#Maxwell’s-Equations" title="Permalink to this headline">¶</a></h2>
+  <section id="Linear-Optics">
+<h1>Linear Optics<a class="headerlink" href="#Linear-Optics" title="Permalink to this headline">#</a></h1>
+<section id="Maxwell’s-Equations">
+<h2>Maxwell’s Equations<a class="headerlink" href="#Maxwell’s-Equations" title="Permalink to this headline">#</a></h2>
 <p>Maxwell’s equations fully describe the dynamical evolution of classical electromagnetic fields. In the time and spatial domain <span class="math notranslate nohighlight">\(\left(t, \mathbf{x}\right)\)</span>, the equations are as follows:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -355,8 +357,8 @@
 \[\begin{gather}
 \mu_{0} \, \epsilon_{0} = \frac{1}{c^{2}}
 \end{gather}\]</div>
-<div class="section" id="Electric-and-Magnetic-Polarization">
-<h3>Electric and Magnetic Polarization<a class="headerlink" href="#Electric-and-Magnetic-Polarization" title="Permalink to this headline">¶</a></h3>
+<section id="Electric-and-Magnetic-Polarization">
+<h3>Electric and Magnetic Polarization<a class="headerlink" href="#Electric-and-Magnetic-Polarization" title="Permalink to this headline">#</a></h3>
 <p>For common optical materials, the electric polarization is the most important term and is given as a power series in the field strength. The magnetic response is generally taken to be negligible. In the time and spatial domain <span class="math notranslate nohighlight">\(\left(t, \mathbf{x}\right)\)</span> each term in the power series is given by a tensor product of higher order convolutions:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -386,12 +388,12 @@ M_{i} &amp;\approx 0
 \epsilon = \mathbf{1} + \chi^{(1)}
 \end{gather}\]</div>
 <p>where the <span class="math notranslate nohighlight">\(\chi^{(1)}\)</span> response is absorbed into the linear relative permittivity term <span class="math notranslate nohighlight">\(\left(\mathbf{\epsilon}\right)\)</span>, leaving the nonlinear polarization <span class="math notranslate nohighlight">\(\left(\mathbf{P}_{NL}\right)\)</span> to contain all higher order terms.</p>
-</div>
-<div class="section" id="Boundary-Conditions">
-<h3>Boundary Conditions<a class="headerlink" href="#Boundary-Conditions" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="Boundary-Conditions">
+<h3>Boundary Conditions<a class="headerlink" href="#Boundary-Conditions" title="Permalink to this headline">#</a></h3>
 <p>Boundary conditions are necessary for electromagnetic fields when treating materials in discrete, homogenous chunks. With <span class="math notranslate nohighlight">\(\hat{\mathbf{n}}\)</span> being the unit normal to the surface,</p>
-<div class="section" id="Normal-Components">
-<h4>Normal Components<a class="headerlink" href="#Normal-Components" title="Permalink to this headline">¶</a></h4>
+<section id="Normal-Components">
+<h4>Normal Components<a class="headerlink" href="#Normal-Components" title="Permalink to this headline">#</a></h4>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \sigma &amp;= \hat{\mathbf{n}} \cdot \left( \mathbf{D}_{2} - \mathbf{D}_{1} \right)
@@ -399,9 +401,9 @@ M_{i} &amp;\approx 0
 0 &amp;= \hat{\mathbf{n}} \cdot \left( \mathbf{B}_{2} - \mathbf{B}_{1} \right)
 \end{align}\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\sigma\)</span> is the free charge density on the surface.</p>
-</div>
-<div class="section" id="Tangential-Components">
-<h4>Tangential Components<a class="headerlink" href="#Tangential-Components" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="Tangential-Components">
+<h4>Tangential Components<a class="headerlink" href="#Tangential-Components" title="Permalink to this headline">#</a></h4>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \mathbf{K} &amp;= \hat{\mathbf{n}} \times \left( \mathbf{H}_{2} - \mathbf{H}_{1} \right)
@@ -409,11 +411,11 @@ M_{i} &amp;\approx 0
 \mathbf{0} &amp;= \hat{\mathbf{n}} \times \left( \mathbf{E}_{2} - \mathbf{E}_{1} \right)
 \end{align}\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mathbf{K}\)</span> is the free current density on the surface.</p>
-</div>
-</div>
-</div>
-<div class="section" id="Traveling-Waves">
-<h2>Traveling Waves<a class="headerlink" href="#Traveling-Waves" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+</section>
+<section id="Traveling-Waves">
+<h2>Traveling Waves<a class="headerlink" href="#Traveling-Waves" title="Permalink to this headline">#</a></h2>
 <p>The wave equation is found by taking the curl of 1c and 1d of Maxwell’s equations. Assuming that the medium is <em>linear, isotropic, homogenous, and without any free charges or currents</em>, the wave equation simplifies to the following in the Fourier domain <span class="math notranslate nohighlight">\(\left(\omega, \mathbf{k}\right)\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -442,8 +444,8 @@ k^2 = \epsilon \frac{\omega^2}{c^2}
 \\
 \mathbf{H} &amp;= \frac{1}{\mu_0} \frac{\mathbf{k}}{\omega} \times \mathbf{E}
 \end{align}\end{split}\]</div>
-<div class="section" id="A-Note-on-Fourier-Transforms-and-Units">
-<h3>A Note on Fourier Transforms and Units<a class="headerlink" href="#A-Note-on-Fourier-Transforms-and-Units" title="Permalink to this headline">¶</a></h3>
+<section id="A-Note-on-Fourier-Transforms-and-Units">
+<h3>A Note on Fourier Transforms and Units<a class="headerlink" href="#A-Note-on-Fourier-Transforms-and-Units" title="Permalink to this headline">#</a></h3>
 <p>Fourier transforms are most intuitively cast in terms of complementary reciprocal quantities:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -468,9 +470,9 @@ F\!\left[\mathbf{\tilde{\nu}}\right] &amp;= \int_{-\infty}^{\infty} f\!\left[\ma
 \text{Angular Wavenumber} &amp;: \mathbf{k} = 2 \pi \, \mathbf{\tilde{\nu}} = 2 \pi / \lambda
 \end{align}\end{split}\]</div>
 <p>It should also be noted that as defined above, there is a sign difference between the exponent in the time domain transform and the spatial domain transform. This is to explicitly set positive <span class="math notranslate nohighlight">\(\omega\)</span> and positive <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> as forward traveling waves, and positive <span class="math notranslate nohighlight">\(\omega\)</span> and negative <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> as backward traveling waves.</p>
-</div>
-<div class="section" id="Relative-Permittivity">
-<h3>Relative Permittivity<a class="headerlink" href="#Relative-Permittivity" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="Relative-Permittivity">
+<h3>Relative Permittivity<a class="headerlink" href="#Relative-Permittivity" title="Permalink to this headline">#</a></h3>
 <p>The relative permittivity <span class="math notranslate nohighlight">\(\left(\epsilon\right)\)</span> may be cast in terms of the frequency and wavenumber of the traveling wave. This quantity can further be broken apart into complementary real quantities representing the index of refraction <span class="math notranslate nohighlight">\(\left(n\right)\)</span> and the attenuation or gain coefficient <span class="math notranslate nohighlight">\(\left(\alpha\right)\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -489,8 +491,8 @@ k\ &amp;= \beta + i \frac{\alpha}{2}
 \\
 \beta &amp;= \frac{\omega}{c} n
 \end{align}\end{split}\]</div>
-<div class="section" id="Gain-and-Loss">
-<h4>Gain and Loss<a class="headerlink" href="#Gain-and-Loss" title="Permalink to this headline">¶</a></h4>
+<section id="Gain-and-Loss">
+<h4>Gain and Loss<a class="headerlink" href="#Gain-and-Loss" title="Permalink to this headline">#</a></h4>
 <p>Power rises or falls off at the exponential of the gain coefficient <span class="math notranslate nohighlight">\(\left(\exp\!{\left(\alpha \, z\right)}\right)\)</span>. Only one half of <span class="math notranslate nohighlight">\(\alpha\)</span> is included in the complex wavenumber since power is proportional to the square of the electric and magnetic fields:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -498,9 +500,9 @@ k\ &amp;= \beta + i \frac{\alpha}{2}
 \\
 \text{Loss} &amp;: \alpha &lt; 0
 \end{align}\end{split}\]</div>
-</div>
-<div class="section" id="Dispersion">
-<h4>Dispersion<a class="headerlink" href="#Dispersion" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="Dispersion">
+<h4>Dispersion<a class="headerlink" href="#Dispersion" title="Permalink to this headline">#</a></h4>
 <p>The change of <span class="math notranslate nohighlight">\(\beta\)</span> with respect to frequency determines the group velocity of different frequency components and the rate at which frequency components spread apart during propagation:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -518,11 +520,11 @@ k\ &amp;= \beta + i \frac{\alpha}{2}
 \text{Anomalous} &amp;: \beta_2 \lt 0, \ D \gt 0
 \end{align}\end{split}\]</div>
 <p>Most materials are normal, in that higher frequency components travel at a slower rate than lower frequency components.</p>
-</div>
-</div>
-</div>
-<div class="section" id="Waveguides">
-<h2>Waveguides<a class="headerlink" href="#Waveguides" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+</section>
+<section id="Waveguides">
+<h2>Waveguides<a class="headerlink" href="#Waveguides" title="Permalink to this headline">#</a></h2>
 <p><a class="reference external" href="https://doi.org/10.1007/978-1-4613-2813-1">Optical Waveguide Theory (1983)</a> by Snyder and Love is an invaluable reference for this topic. The reader is encouraged to browse this resource for a more in-depth discussion of orthogonality, waveguide modes, propagation equations and more.</p>
 <p>An interesting class of devices takes advantage of inhomogeneous materials, wherein the refractive index is greater in some cross-sectional area than in any other. With this configuration, the material guides optical radiation along invariant spatial modes. Assuming that the medium is <em>source free</em>, that there is <em>no nonlinearity</em>, and that the <em>relative electric permittivity is longitudinally invariant, separable into transverse and longitudinal components, and is lossless</em>, the wave equations
 in the mixed Fourier domain <span class="math notranslate nohighlight">\(\left(\omega, \left[\mathbf{x}_t, k_z\right]\right)\)</span> represent eigenvalue equations for the electric and magnetic fields:</p>
@@ -538,38 +540,38 @@ in the mixed Fourier domain <span class="math notranslate nohighlight">\(\left(\
 \\
 \text{Lossless} &amp;: \epsilon = \epsilon^{*T} = \epsilon^\dagger
 \end{align}\end{split}\]</div>
-<div class="section" id="Transverse-and-Longitudinal-Components">
-<h3>Transverse and Longitudinal Components<a class="headerlink" href="#Transverse-and-Longitudinal-Components" title="Permalink to this headline">¶</a></h3>
+<section id="Transverse-and-Longitudinal-Components">
+<h3>Transverse and Longitudinal Components<a class="headerlink" href="#Transverse-and-Longitudinal-Components" title="Permalink to this headline">#</a></h3>
 <p>In order to derive the properties of waveguide modes, Maxwell’s equations must be broken apart into transverse and longitudinal components (see the <a class="reference internal" href="supplemental.html#Transverse-and-Longitudinal-Vector-Components"><span class="std std-ref">supplemental</span></a> for the vector identities involved).</p>
-<div class="section" id="Divergence-Equations">
-<h4>Divergence Equations<a class="headerlink" href="#Divergence-Equations" title="Permalink to this headline">¶</a></h4>
+<section id="Divergence-Equations">
+<h4>Divergence Equations<a class="headerlink" href="#Divergence-Equations" title="Permalink to this headline">#</a></h4>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 0 &amp;= \nabla_t \cdot \left(\epsilon_t \cdot \mathbf{E}_t\right) - i \ k_z \, \epsilon_{zz} \, E_z
 \\
 0 &amp;= \nabla_t \cdot \mathbf{H}_t - i \, k_z \, H_z
 \end{align}\end{split}\]</div>
-</div>
-<div class="section" id="Transverse-Curl-Equations">
-<h4>Transverse Curl Equations<a class="headerlink" href="#Transverse-Curl-Equations" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="Transverse-Curl-Equations">
+<h4>Transverse Curl Equations<a class="headerlink" href="#Transverse-Curl-Equations" title="Permalink to this headline">#</a></h4>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \mathbf{0} &amp;= \hat{\mathbf{z}} \times \left(-i \, k_z \, \mathbf{E}_t - \nabla_t E_z\right) + i \, \omega \, \mu_0 \, \mathbf{H}_t
 \\
 \mathbf{0} &amp;= \hat{\mathbf{z}} \times \left(-i \, k_z \, \mathbf{H}_t - \nabla_t H_z\right) - i \, \omega \, \epsilon_0 \left( \epsilon_t \cdot \mathbf{E}_t \right)
 \end{align}\end{split}\]</div>
-</div>
-<div class="section" id="Longitudinal-Curl-Equations">
-<h4>Longitudinal Curl Equations<a class="headerlink" href="#Longitudinal-Curl-Equations" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="Longitudinal-Curl-Equations">
+<h4>Longitudinal Curl Equations<a class="headerlink" href="#Longitudinal-Curl-Equations" title="Permalink to this headline">#</a></h4>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \mathbf{0} &amp;= \nabla_t \times \mathbf{E}_t + i \, \omega \, \mu_0 \, H_z \hat{\mathbf{z}}
 \\
 \mathbf{0} &amp;= \nabla_t \times \mathbf{H}_t - i \, \omega \, \epsilon_0 \, \epsilon_{zz} \, E_z \, \hat{\mathbf{z}}
 \end{align}\end{split}\]</div>
-</div>
-<div class="section" id="Transverse-Only-Equations">
-<h4>Transverse Only Equations<a class="headerlink" href="#Transverse-Only-Equations" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="Transverse-Only-Equations">
+<h4>Transverse Only Equations<a class="headerlink" href="#Transverse-Only-Equations" title="Permalink to this headline">#</a></h4>
 <p>The curl relations may be entirely cast in terms of the transverse components by applying the divergence relations:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -581,9 +583,9 @@ in the mixed Fourier domain <span class="math notranslate nohighlight">\(\left(\
 \\
 \mathbf{0} &amp;= \nabla_t \times \mathbf{H}_t - \frac{\omega}{k_z} \ \epsilon_0 \, \left(\nabla_t \cdot \left(\epsilon_t \cdot \mathbf{E}_t\right) \right) \, \hat{\mathbf{z}}
 \end{align}\end{split}\]</div>
-</div>
-<div class="section" id="Transverse-Wave-Equations">
-<h4>Transverse Wave Equations<a class="headerlink" href="#Transverse-Wave-Equations" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="Transverse-Wave-Equations">
+<h4>Transverse Wave Equations<a class="headerlink" href="#Transverse-Wave-Equations" title="Permalink to this headline">#</a></h4>
 <p>The wave equations can then also be cast in terms of only the transverse components:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -624,10 +626,10 @@ in the mixed Fourier domain <span class="math notranslate nohighlight">\(\left(\
 \end{align}\end{split}\]</div>
 <p>The transverse wave equations are <em>eigenvalue equations</em> for the spatial fields <span class="math notranslate nohighlight">\(\mathbf{E}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{H}\)</span>. For every frequency <span class="math notranslate nohighlight">\(\omega\)</span> there is a set of <span class="math notranslate nohighlight">\(\mathbf{E}_n\)</span> and <span class="math notranslate nohighlight">\(\mathbf{H}_n\)</span> that satisfy the wave equations for discrete <span class="math notranslate nohighlight">\(k_z = \beta_n\)</span>, where <span class="math notranslate nohighlight">\(n\)</span> is a unique mode identifier. See <a class="reference external" href="https://doi.org/10.1109/JLT.2008.923643">Fallahkhair (2008)</a> for a mode solver that numerically implements the full transverse wave equations using finite
 difference techniques.</p>
-</div>
-</div>
-<div class="section" id="Wavenumbers-at-Positive-and-Negative-Frequencies">
-<h3>Wavenumbers at Positive and Negative Frequencies<a class="headerlink" href="#Wavenumbers-at-Positive-and-Negative-Frequencies" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="Wavenumbers-at-Positive-and-Negative-Frequencies">
+<h3>Wavenumbers at Positive and Negative Frequencies<a class="headerlink" href="#Wavenumbers-at-Positive-and-Negative-Frequencies" title="Permalink to this headline">#</a></h3>
 <p>By inspection of Maxwell’s equations in the <span class="math notranslate nohighlight">\(\left(\omega, \left[\mathbf{x}_t, k_z\right]\right)\)</span> mixed Fourier domain, the modal solutions of the electric and magnetic field take the following form:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -654,9 +656,9 @@ difference techniques.</p>
 \frac{\partial}{\partial z} \mathbf{H}_n\!\left[\omega, z\right] &amp;= -i \ \beta_n \ \mathbf{H}_n\!\left[\omega, z\right]
 \end{align}\end{split}\]</div>
 <p>where the frequency dependence of <span class="math notranslate nohighlight">\(\beta\)</span> is implicit.</p>
-</div>
-<div class="section" id="Forward-and-Backward-Modes">
-<h3>Forward and Backward Modes<a class="headerlink" href="#Forward-and-Backward-Modes" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="Forward-and-Backward-Modes">
+<h3>Forward and Backward Modes<a class="headerlink" href="#Forward-and-Backward-Modes" title="Permalink to this headline">#</a></h3>
 <p>Forward travelling and backward travelling modes both satisfy Maxwell’s equations, and given the relationships between the transverse and longitudinal components there is a fixed relationship between the complementary modes. There are two possible transformations between the forward and backward fields, and for consistency the following convention will be used throughout the rest of this document.</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
@@ -668,9 +670,9 @@ difference techniques.</p>
 \\
 \mathbf{H}^-_t &amp;= -\mathbf{H}^+_t &amp; H^-_z &amp;= +H^+_z
 \end{align}\end{split}\]</div>
-</div>
-<div class="section" id="Reciprocity-Theorem">
-<h3>Reciprocity Theorem<a class="headerlink" href="#Reciprocity-Theorem" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="Reciprocity-Theorem">
+<h3>Reciprocity Theorem<a class="headerlink" href="#Reciprocity-Theorem" title="Permalink to this headline">#</a></h3>
 <p>The reciprocity theorem is based on the two-dimensional form of the divergence theorem:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
@@ -683,9 +685,9 @@ dropping the line integral:</p>
 \[\begin{gather}
 \int_{A_\infty} \nabla \cdot \mathbf{F} \, dA = \frac{\partial}{\partial z} \int_{A_\infty} \mathbf{F} \cdot \hat{\mathbf{z}} \, dA
 \end{gather}\]</div>
-</div>
-<div class="section" id="Orthogonality">
-<h3>Orthogonality<a class="headerlink" href="#Orthogonality" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="Orthogonality">
+<h3>Orthogonality<a class="headerlink" href="#Orthogonality" title="Permalink to this headline">#</a></h3>
 <p>The orthogonality relationship is derived by applying the reciprocity theorem to Poynting-vector-like combinations of the waveguide modes. We start by defining a composite vector function in the <span class="math notranslate nohighlight">\(\left(\omega, \mathbf{x}\right)\)</span> mixed Fourier domain containing two arbitrary modes of the waveguide (<span class="math notranslate nohighlight">\(\mathbf{E}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{H}\)</span>, and <span class="math notranslate nohighlight">\(\bar{\mathbf{E}}\)</span>, <span class="math notranslate nohighlight">\(\bar{\mathbf{H}}\)</span>):</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -732,9 +734,9 @@ dropping the line integral:</p>
 \\
 0 = \int_{A_\infty} \left(\mathbf{E}_r \times \mathbf{H}_{s}^\ast\right) \cdot \hat{\mathbf{z}} \, dA = \int_{A_\infty} \left(\mathbf{E}_s^\ast \times \mathbf{H}_{r}\right) \cdot \hat{\mathbf{z}} \, dA
 \end{gather}\end{split}\]</div>
-</div>
-<div class="section" id="Orthonormal-Modes">
-<h3>Orthonormal Modes<a class="headerlink" href="#Orthonormal-Modes" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="Orthonormal-Modes">
+<h3>Orthonormal Modes<a class="headerlink" href="#Orthonormal-Modes" title="Permalink to this headline">#</a></h3>
 <p>In general, any arbitrary distribution can be constructed through linear combinations of an orthogonal set. For electromagnetic fields these are best given as the product of amplitude profiles and orthonormal spatial modes. In the <span class="math notranslate nohighlight">\(\left(\omega, \mathbf{x}\right)\)</span> mixed Fourier domain:</p>
 <div class="math notranslate nohighlight">
 \[\begin{align}
@@ -749,8 +751,8 @@ I_n = \mathbf{S}_n \cdot \hat{\mathbf{z}} &amp;= \left(\mathbf{E}_n \times \math
 \\
 &amp;= \left|a_n\right|^2 \left(\hat{\mathbf{e}}_n \times \hat{\mathbf{h}}_n^*\right) \cdot \hat{\mathbf{z}}
 \end{align}\end{split}\]</div>
-<div class="section" id="Normalization">
-<h4>Normalization<a class="headerlink" href="#Normalization" title="Permalink to this headline">¶</a></h4>
+<section id="Normalization">
+<h4>Normalization<a class="headerlink" href="#Normalization" title="Permalink to this headline">#</a></h4>
 <p>The modes <span class="math notranslate nohighlight">\(\hat{e}_n\)</span> and <span class="math notranslate nohighlight">\(\hat{h}_n\)</span> are normalized so that the integral over the transverse plane is equal to 1:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
@@ -783,9 +785,9 @@ n_\text{eff} = \frac{c}{\omega} \beta
 \frac{i}{\beta} \nabla_t \hat{e}_z^* \sim \frac{1}{\beta^2} \nabla_t \left(\nabla_t \cdot \hat{\mathbf{e}}_t^*\right)
 \end{gather}\]</div>
 <p>Thus, smaller <span class="math notranslate nohighlight">\(\beta\)</span> (lower frequencies) and smaller waveguide cross sections or higher order modes (larger spatial derivatives) increase the importance of this term. The first and second term become comparable when the transverse spatial derivative is of the same order of magnitude as the wavenumber <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
-</div>
-<div class="section" id="Units">
-<h4>Units<a class="headerlink" href="#Units" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="Units">
+<h4>Units<a class="headerlink" href="#Units" title="Permalink to this headline">#</a></h4>
 <p>The above normalization relations fix the units of their respective quantities:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -805,9 +807,9 @@ n_\text{eff} = \frac{c}{\omega} \beta
 &amp;
 \hat{h}^2 &amp;\sim \frac{1}{\left(\mu_0 \ c\right) \text{area}}
 \end{align}\]</div>
-</div>
-<div class="section" id="Effective-Area">
-<h4>Effective Area<a class="headerlink" href="#Effective-Area" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="Effective-Area">
+<h4>Effective Area<a class="headerlink" href="#Effective-Area" title="Permalink to this headline">#</a></h4>
 <p>The effective area is a derived quantity of the waveguide mode and is defined as the ratio of the squared integral of the transverse intensity to the integral of the squared transverse intensity:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -816,17 +818,17 @@ A_\text{eff} = \frac{\left(\int_{A_\infty} \mathbf{S}_n \cdot \hat{\mathbf{z}} \
 &amp;= \frac{1}{\left(\epsilon_0 \ c \ n_\text{eff}\right)^2} \left(\int_{A_\infty} \left(\left|\hat{\mathbf{e}}_t\right|^2 + \frac{i}{\beta} \hat{\mathbf{e}}_t \cdot \nabla_t \hat{e}_z^* \right)^2 dA\right)^{-1}
 \end{align}\end{split}\]</div>
 <p>This definition has two illuminating cases. In the limit of a constant mode profile, the effective area is the full area over which the mode is defined. For a Gaussian profile with <span class="math notranslate nohighlight">\(1/e^2\)</span> radius of <span class="math notranslate nohighlight">\(r\)</span>, this formula gives an effective area of <span class="math notranslate nohighlight">\(\pi \, r^2\)</span>, the area within the <span class="math notranslate nohighlight">\(1/e^2\)</span> radius. Thus, while the equation itself may not yield to the intuition, the resulting effective area does provide a reasonable measure of a waveguide mode’s spatial extent.</p>
-</div>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
+</section>
 
 
               </div>
               
               
               <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="fourier_transforms.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -849,19 +851,20 @@ A_\text{eff} = \frac{\left(\int_{A_\infty} \mathbf{S}_n \cdot \hat{\mathbf{z}} \
       </div>
     </div>
   
-  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
 <footer class="footer mt-5 mt-md-0">
   <div class="container">
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2021, PyNLO authors.<br>
+    &copy; Copyright 2022, PyNLO authors.<br>
 </p>
     </div>
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
 </p>
     </div>
     

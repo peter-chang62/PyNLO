@@ -837,12 +837,8 @@ class Pulse(TFGrid):
 
     def spectrogram(self, t_fwhm=None, v_range=None, n_t=None, t_range=None):
         """
-        Calculate the power spectrogram of the pulse convoluted with a
+        Calculate the power spectrogram of the pulse through convolution with a
         gaussian window.
-
-        Changing the number of points and range changes the resolution in the
-        time domain, but the resolution in both domains is ultimately limited
-        by the time-bandwidth product of the gaussian window.
 
         Parameters
         ----------
@@ -878,9 +874,11 @@ class Pulse(TFGrid):
 
         Notes
         -----
-        The full width at half maximum of the gaussian window should be
-        similar to the full width at half maximum of the pulse in order to
-        evenly distribute resolution between the time and frequency domains.
+        The resolution in both domains is limited by the time-bandwidth product
+        of the gaussian window. The full width at half maximum of the gaussian
+        window should be similar to the full width at half maximum of the pulse
+        in order to evenly distribute resolution bandwidth between the time and
+        frequency domains.
 
         """
         #---- Resample
