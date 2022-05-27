@@ -9,11 +9,51 @@ __all__ = ["fft", "ifft", "rfft", "irfft", "fftshift", "ifftshift", "next_fast_l
 
 # %% Imports
 
-from scipy.fft import fftshift, ifftshift, next_fast_len
+from scipy.fft import next_fast_len, fftshift as _fftshift, ifftshift as _ifftshift
 import mkl_fft
 
 
 # %% Definitions
+
+#---- FFT Shifts
+def fftshift(x, axis=-1):
+    """
+    Shift the zero-frequency component to the center of the spectrum.
+
+    Parameters
+    ----------
+    x : array_like
+        Input array
+    axis : TYPE, optional
+        The axis over which to shift. The default is the last axis.
+
+    Returns
+    -------
+    ndarray
+        The shifted array.
+
+    """
+    return _fftshift(x, axes=axis)
+
+def ifftshift(x, axis=-1):
+    """
+    The inverse of fftshift. Although identical for even-length x, the
+    functions differ by one sample for odd-length x.
+
+    Parameters
+    ----------
+    x : array_like
+        Input array.
+    axis : TYPE, optional
+        The axis over which to shift. The default is the last axis.
+
+    Returns
+    -------
+    ndarray
+        The shifted array.
+
+    """
+    return _ifftshift(x, axes=axis)
 
 #---- FFTs
 def fft(x, fsc=1.0, n=None, axis=-1, overwrite_x=False):

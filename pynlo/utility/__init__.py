@@ -144,11 +144,41 @@ def noise_sql_v(v_grid, dv, rng=None):
     a_v = ((h*v_grid)/(2*dv))**0.5 * (rng.standard_normal(n) + 1j*rng.standard_normal(n))
     return a_v
 
-def shift_v(v_grid, f_v, dv):
-    pass #TODO: Fouier shift in frequency
+def shift(f_t, dt, t_shift):
+    """
+    Fourier shift.
 
-def shift_t(t_grid, f_t, dt):
-    pass #TODO: Fourier shift in time
+    The output array is at `f(t - t_shift)`.
+
+    Parameters
+    ----------
+    f_t : array_like
+        Input array, can be complex or real valued.
+    dt : float
+        The grid step size.
+    shift_t : float
+        The amount to shift.
+
+    Returns
+    -------
+    ndarray
+        The shifted array.
+
+    """
+    f_t = np.asarray(f_t)
+
+    # Grid
+    n = f_t.shape[-1]
+    dv = 1/(n*dt)
+    v_grid = dv*(np.arange(n) - n//2)
+    # Shift
+    f_v = fft.fftshift(fft.fft(fft.ifftshift(f_t), fsc=dt))
+    shift_v = np.exp(-1j*2*pi * v_grid * t_shift)
+    shift_f_t = fft.fftshift(fft.ifft(fft.ifftshift(f_v * shift_v), fsc=dt))
+    #
+    if np.isreal(f_t).all():
+        shift_f_t = shift_f_t.real
+    return shift_f_t
 
 def derivative_v(v_grid, f_v, n, t_ref=0):
     """
