@@ -30,7 +30,7 @@ PowerSpectralWidths = collections.namedtuple("PowerSpectralWidths", ["fwhm", "rm
 
 PowerEnvelopeWidths = collections.namedtuple("PowerEnvelopeWidths", ["fwhm", "rms", "eff"])
 
-Autocorrelation = collections.namedtuple("Autocorrelation", ["t_grid", "ac_t", "fwhm", "rms"])
+Autocorrelation = collections.namedtuple("Autocorrelation", ["t_grid", "ac_t", "fwhm", "rms", "eff"])
 
 Spectrogram = collections.namedtuple("Spectrogram", ["v_grid", "t_grid", "spg", "extent"])
 
@@ -801,8 +801,8 @@ class Pulse(TFGrid):
 
         """
         #---- Intensity Autocorrelation
-        ac_v = fft.fftshift(fft.fft(self._p_t, fsc=self.dt))**2
-        ac_t = np.abs(fft.fftshift(fft.ifft(fft.ifftshift(ac_v), fsc=self.dt, overwrite_x=True)))
+        ac_v = np.abs(fft.fftshift(fft.fft(self._p_t, fsc=self.dt)))**2
+        ac_t = fft.fftshift(fft.ifft(fft.ifftshift(ac_v), fsc=self.dt, overwrite_x=True).real)
 
         #---- Resample
         if n is None:
