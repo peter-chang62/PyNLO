@@ -2,7 +2,7 @@ PyNLO: Nonlinear Optics for Python
 ==================================
 This repo is a fork of the original PyNLO. It started as a rewrite of the pulse propagation model and has grown into something that contains many backwards incompatible changes. It is not yet at feature parity with the original, but it still has some things worth checking out!
 
-Complete documentation for the main branch is available on the repo's `GitHub-Page <https://cdfredrick.github.io/PyNLO/build/html/index.html>`_.
+Complete documentation for the development branch is available on the repo's `GitHub-Page <https://cdfredrick.github.io/PyNLO/build/html/index.html>`_.
 
 
 Introduction
