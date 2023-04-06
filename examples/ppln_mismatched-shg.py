@@ -2,7 +2,8 @@
 """
 This example demonstrates supercontinuum generation due to highly
 phase-mismatched second harmonic generation in periodically polled lithium
-niobate.
+niobate. The simulation is based on the parameters given for the second example
+in part III of Conforti et al. https://doi.org/10.1103/PhysRevA.81.053841
 
 """
 
@@ -26,7 +27,7 @@ e_p = 1e-9          # 1 nJ
 t_fwhm = 50e-15     # 50 fs
 
 pulse = pynlo.light.Pulse.Sech(n_points, v_min, v_max, v0, e_p, t_fwhm)
-pulse.rtf_grids(n_harmonic=2, update=True) # anti-aliasing
+pulse.rtf_grids(alias=2, update=True) # anti-aliasing
 
 v_grid = pulse.v_grid
 t_grid = pulse.t_grid
@@ -107,7 +108,7 @@ g2_poll = utils.chi2.polling_sign(n_cycles)
 chi3_eff = 5200e-24 # 5200 pm**2 / V**2
 g3 = utils.chi3.g3_spm(n_eff, a_eff, chi3_eff)
 
-mode = pynlo.media.Mode(v_grid, beta, g2_v=g2, g2_inv=g2_poll, g3_v=g3, z=0.0)
+mode = pynlo.media.Mode(v_grid, beta, g2_v=g2, g2_inv=g2_poll, g3_v=g3)
 
 
 # %% Model

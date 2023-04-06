@@ -20,7 +20,7 @@ import sys
 sys.path.insert(0, os.path.abspath('../..'))
 sys.path.insert(1, os.path.abspath('..'))
 
-#!!!: modify to sort in bysource ordering, and use __all__
+#!!!: modified to use bysource ordering (__dict__ instead of dir, check git diff after updates)
 import autosummary as new_autosummary
 from sphinx.ext import autosummary
 autosummary.__dict__.update(new_autosummary.__dict__)
@@ -36,17 +36,16 @@ release = 'dev'
 
 
 #--- General configuration ---------------------------------------------------
+html_show_sourcelink = False
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
     "sphinx.ext.autodoc",
-    # "sphinx.ext.autosummary",
     "numpydoc",
     "sphinx.ext.viewcode",
     "nbsphinx",
-    # 'sphinx.ext.mathjax',
 ]
 
 autodoc_default_options = {
@@ -55,6 +54,7 @@ autodoc_default_options = {
     }
 
 autosummary_generate = True # Turn on sphinx.ext.autosummary
+autosummary_ignore_module_all = False # Use __all__
 
 numpydoc_show_class_members = False
 numpydoc_show_inherited_class_members = False

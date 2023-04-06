@@ -1,144 +1,322 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>pynlo.light &#8212; PyNLO dev documentation</title>
-    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-
-    
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    
-  <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
-
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
-  </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-    
-    <div class="container-fluid" id="banner"></div>
-
-    
-    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
-
-  <div id="navbar-start">
-    
-    
-
-<a class="navbar-brand" href="../../index.html">
-  <img src="../../_static/pynlo.svg" class="logo" alt="logo">
-</a>
-
-
-    
-  </div>
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
   
-  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
-    <div id="navbar-center" class="mr-auto">
-      
-      <div class="navbar-center-item">
-        <ul id="navbar-main-elements" class="navbar-nav">
-    <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../guides.html">
-  User Guide
- </a>
-</li>
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../notes.html">
-  Notes
- </a>
-</li>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../api.html">
-  API Reference
- </a>
-</li>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pynlo/light';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-</ul>
-      </div>
-      
-    </div>
-
-    <div id="navbar-end">
-      
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
-      </ul>
-      </div>
-      
-    </div>
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
   </div>
-</div>
-    </nav>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
     
+      <div class="navbar-item">
+  
 
-    <div class="container-xl">
-      <div class="row">
-          
-            
-            <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar">
-              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-  <div class="bd-toc-item active">
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/pynlo.svg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/pynlo.svg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
     
   </div>
-</nav>
-              </div>
-              <div class="sidebar-end-items">
-              </div>
-            </div>
-            
-          
-
-          
-          <div class="d-none d-xl-block col-xl-2 bd-toc">
-            
-          </div>
-          
-
-          
-          
-            
-          
-          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
-              
-              <div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../guides.html">
+                        User Guide
+                      </a>
+                    </li>
                 
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../notes.html">
+                        Notes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../guides.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../notes.html">
+                        Notes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">pynlo.light</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <h1>Source code for pynlo.light</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -164,6 +342,7 @@
 <span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="kn">import</span> <span class="n">pi</span>
 
 <span class="kn">from</span> <span class="nn">pynlo.utility</span> <span class="kn">import</span> <span class="n">TFGrid</span><span class="p">,</span> <span class="n">fft</span><span class="p">,</span> <span class="n">resample_v</span><span class="p">,</span> <span class="n">resample_t</span>
+<span class="kn">from</span> <span class="nn">pynlo.utility.misc</span> <span class="kn">import</span> <span class="n">ArrayProperty</span><span class="p">,</span> <span class="n">replace</span>
 
 
 <span class="c1"># %% Collections</span>
@@ -172,7 +351,7 @@
 
 <span class="n">PowerEnvelopeWidths</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;PowerEnvelopeWidths&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;fwhm&quot;</span><span class="p">,</span> <span class="s2">&quot;rms&quot;</span><span class="p">,</span> <span class="s2">&quot;eff&quot;</span><span class="p">])</span>
 
-<span class="n">Autocorrelation</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Autocorrelation&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;t_grid&quot;</span><span class="p">,</span> <span class="s2">&quot;ac_t&quot;</span><span class="p">,</span> <span class="s2">&quot;fwhm&quot;</span><span class="p">,</span> <span class="s2">&quot;rms&quot;</span><span class="p">])</span>
+<span class="n">Autocorrelation</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Autocorrelation&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;t_grid&quot;</span><span class="p">,</span> <span class="s2">&quot;ac_t&quot;</span><span class="p">,</span> <span class="s2">&quot;fwhm&quot;</span><span class="p">,</span> <span class="s2">&quot;rms&quot;</span><span class="p">,</span> <span class="s2">&quot;eff&quot;</span><span class="p">])</span>
 
 <span class="n">Spectrogram</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Spectrogram&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;v_grid&quot;</span><span class="p">,</span> <span class="s2">&quot;t_grid&quot;</span><span class="p">,</span> <span class="s2">&quot;spg&quot;</span><span class="p">,</span> <span class="s2">&quot;extent&quot;</span><span class="p">])</span>
 
@@ -180,28 +359,32 @@
 <span class="c1"># %% Classes</span>
 
 <div class="viewcode-block" id="Pulse"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.html#pynlo.light.Pulse">[docs]</a><span class="k">class</span> <span class="nc">Pulse</span><span class="p">(</span><span class="n">TFGrid</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An optical pulse, defined over complementary time and frequency grids.</span>
 
 <span class="sd">    The default initializer creates an empty `Pulse` object. Set one of four</span>
-<span class="sd">    attributes (`a_v`, `p_v`, `a_t`, or `p_t`) to populate the pulse spectrum</span>
-<span class="sd">    or envelope.</span>
+<span class="sd">    attributes, `a_v`, `p_v`, `a_t`, or `p_t`, to populate the pulse spectrum</span>
+<span class="sd">    or temporal envelope.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    n_points : int</span>
 <span class="sd">        The number of grid points.</span>
-<span class="sd">    v_max : float</span>
-<span class="sd">        The target maximum frequency.</span>
 <span class="sd">    dv : float</span>
-<span class="sd">        The target frequency grid step size.</span>
-<span class="sd">    v0 : float, optional</span>
-<span class="sd">        The comoving frame reference frequency. The default is the center of</span>
-<span class="sd">        the resulting frequency grid.</span>
+<span class="sd">        The frequency step size. This is equal to the reciprocal of the time</span>
+<span class="sd">        window.</span>
+<span class="sd">    v_ref : float</span>
+<span class="sd">        The target central frequency of the grid.</span>
+<span class="sd">    a_v : array_like of complex, optional</span>
+<span class="sd">        The root-power spectrum. The default selection is an empty spectrum.</span>
+<span class="sd">    alias : int, optional</span>
+<span class="sd">        The number of harmonics supported by the real-valued time grid without</span>
+<span class="sd">        aliasing. The default is 1, the fundamental harmonic. A higher number</span>
+<span class="sd">        may be useful when simulating nonlinear interactions.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    See `TFGrid` for other attributes.</span>
+<span class="sd">    See :py:class:`~pynlo.utility.TFGrid` for other attributes.</span>
 
 <span class="sd">    The power spectrum and power envelope are normalized to the pulse energy</span>
 <span class="sd">    `e_p`::</span>
@@ -219,36 +402,39 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Pulse.__init__"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.__init__.html#pynlo.light.Pulse.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">a_v</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a time and frequency grid given a target maximum frequency,</span>
-<span class="sd">        a target frequency step size, and the total number of grid points, and</span>
-<span class="sd">        populate with a zero-amplitude power spectrum.</span>
+<div class="viewcode-block" id="Pulse.__init__"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.__init__.html#pynlo.light.Pulse.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">v_ref</span><span class="p">,</span> <span class="n">a_v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a pulse given the total number of points, the frequency step</span>
+<span class="sd">        size (reciprocal of the time window), and a target central frequency.</span>
 
-<span class="sd">        Set one of six attributes `a_v`, `p_v`, `phi_v`, `a_t`, `p_t`, or</span>
-<span class="sd">        `phi_t` to populate the pulse spectrum or envelope.</span>
+<span class="sd">        If necessary, the reference frequency will be increased so that the</span>
+<span class="sd">        grid is formed without any negative frequencies.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        n_points : int</span>
 <span class="sd">            The number of grid points.</span>
-<span class="sd">        v_max : float</span>
-<span class="sd">            The target maximum frequency.</span>
 <span class="sd">        dv : float</span>
-<span class="sd">            The target frequency grid step size.</span>
-<span class="sd">        v0 : float, optional</span>
-<span class="sd">            The comoving frame reference frequency. The default is the center</span>
-<span class="sd">            of the resulting frequency grid.</span>
+<span class="sd">            The frequency step size. This is equal to the reciprocal of the</span>
+<span class="sd">            time window.</span>
+<span class="sd">        v_ref : float</span>
+<span class="sd">            The target central frequency of the grid.</span>
 <span class="sd">        a_v : array_like of complex, optional</span>
-<span class="sd">            The root-power spectrum. The default populates an empty spectrum.</span>
+<span class="sd">            The root-power spectrum. The default selection is an empty</span>
+<span class="sd">            spectrum.</span>
+<span class="sd">        alias : int, optional</span>
+<span class="sd">            The number of harmonics supported by the real-valued time grid</span>
+<span class="sd">            without aliasing. The default is 1, the fundamental harmonic. A</span>
+<span class="sd">            higher number may be useful when simulating nonlinear interactions.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1">#---- Construct TF Grids</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">)</span>
+        <span class="c1">#---- Initialize Grids</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">v_ref</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="n">alias</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
 
         <span class="c1">#---- Set Spectrum</span>
         <span class="k">if</span> <span class="n">a_v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a_v</span><span class="p">)</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">)),</span> <span class="s2">&quot;The length of a_v must match v_grid.&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a_v</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span></div>
@@ -256,7 +442,7 @@
     <span class="c1">#---- Class Methods</span>
 <div class="viewcode-block" id="Pulse.FromTFGrid"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.FromTFGrid.html#pynlo.light.Pulse.FromTFGrid">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">FromTFGrid</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tfgrid</span><span class="p">,</span> <span class="n">a_v</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a pulse given a `TFGrid` instance.</span>
 
 <span class="sd">        Use this method to create `Pulse` objects from an existing set of</span>
@@ -272,21 +458,22 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tfgrid</span><span class="p">,</span> <span class="n">TFGrid</span><span class="p">),</span> <span class="s2">&quot;The input must be an instance of the TFGrid class.&quot;</span>
 
-        <span class="c1">#---- Copy TFGrid</span>
+        <span class="c1">#---- Initialize Grids</span>
         <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tfgrid</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tfgrid</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span> <span class="c1"># copy TFGrid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
 
         <span class="c1">#---- Set Spectrum</span>
         <span class="k">if</span> <span class="n">a_v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a_v</span><span class="p">)</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">)),</span> <span class="s2">&quot;The length of a_v must match v_grid.&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">=</span> <span class="n">a_v</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="Pulse.FromPowerSpectrum"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.FromPowerSpectrum.html#pynlo.light.Pulse.FromPowerSpectrum">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">FromPowerSpectrum</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">p_v</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">e_p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phi_v</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">FromPowerSpectrum</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">p_v</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">e_p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phi_v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a pulse using existing spectral data.</span>
 
 <span class="sd">        Parameters</span>
@@ -301,8 +488,8 @@
 <span class="sd">        v_max : float, optional</span>
 <span class="sd">            The target maximum frequency.</span>
 <span class="sd">        v0 : float, optional</span>
-<span class="sd">            The comoving frame reference frequency. The default is the center</span>
-<span class="sd">            of the resulting frequency grid.</span>
+<span class="sd">            The comoving frame reference frequency. The default selection is</span>
+<span class="sd">            the center of the resulting frequency grid.</span>
 <span class="sd">        e_p : float, optional</span>
 <span class="sd">            The pulse energy. The default inherits the pulse energy of the</span>
 <span class="sd">            input spectrum.</span>
@@ -312,8 +499,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="n">callable</span><span class="p">(</span><span class="n">p_v</span><span class="p">),</span> <span class="s2">&quot;The power spectrum must be a callable function.&quot;</span>
 
-        <span class="c1">#---- Construct TF Grids</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">)</span>
+        <span class="c1">#---- Initialize Grids</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
 
         <span class="c1">#---- Evaluate Input</span>
         <span class="n">p_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">p_v</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
@@ -334,8 +522,8 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="Pulse.Gaussian"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.Gaussian.html#pynlo.light.Pulse.Gaussian">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">Gaussian</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">e_p</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">Gaussian</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">e_p</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a gaussian or super-gaussian pulse.</span>
 
 <span class="sd">        Parameters</span>
@@ -347,8 +535,8 @@
 <span class="sd">        v_max : float</span>
 <span class="sd">            The target maximum frequency.</span>
 <span class="sd">        v0 : float</span>
-<span class="sd">            The pulse&#39;s center frequency. Also taken as the comoving frame</span>
-<span class="sd">            reference frequency.</span>
+<span class="sd">            The pulse&#39;s center frequency. Also taken as the reference frequency</span>
+<span class="sd">            for the comoving frame.</span>
 <span class="sd">        e_p : float</span>
 <span class="sd">            The pulse energy.</span>
 <span class="sd">        t_fwhm : float</span>
@@ -359,8 +547,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="p">(</span><span class="n">t_fwhm</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The pulse width must be greater than 0.&quot;</span>
 
-        <span class="c1">#---- Construct TF Grids</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">)</span>
+        <span class="c1">#---- Initialize Grids</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
 
         <span class="c1">#---- Set Spectrum</span>
         <span class="n">p_t</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span><span class="o">/</span><span class="n">t_fwhm</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="n">m</span><span class="p">)</span>
@@ -372,8 +561,8 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="Pulse.Sech"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.Sech.html#pynlo.light.Pulse.Sech">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">Sech</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">e_p</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">Sech</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">e_p</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a squared hyperbolic secant pulse.</span>
 
 <span class="sd">        Parameters</span>
@@ -385,8 +574,8 @@
 <span class="sd">        v_max : float</span>
 <span class="sd">            The target maximum frequency.</span>
 <span class="sd">        v0 : float</span>
-<span class="sd">            The pulse&#39;s center frequency. Also taken as the comoving frame</span>
-<span class="sd">            reference frequency.</span>
+<span class="sd">            The pulse&#39;s center frequency. Also taken as the reference frequency</span>
+<span class="sd">            for the comoving frame.</span>
 <span class="sd">        e_p : float</span>
 <span class="sd">            The pulse energy.</span>
 <span class="sd">        t_fwhm : float</span>
@@ -395,8 +584,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="p">(</span><span class="n">t_fwhm</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The pulse width must be greater than 0.&quot;</span>
 
-        <span class="c1">#---- Construct TF Grids</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">)</span>
+        <span class="c1">#---- Initialize Grids</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
 
         <span class="c1">#---- Set Spectrum</span>
         <span class="n">t0</span> <span class="o">=</span> <span class="n">t_fwhm</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arccosh</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mf">0.5</span><span class="p">))</span>
@@ -409,8 +599,8 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="Pulse.Parabolic"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.Parabolic.html#pynlo.light.Pulse.Parabolic">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">Parabolic</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">e_p</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">Parabolic</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">e_p</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a parabolic pulse.</span>
 
 <span class="sd">        Parameters</span>
@@ -422,8 +612,8 @@
 <span class="sd">        v_max : float</span>
 <span class="sd">            The target maximum frequency.</span>
 <span class="sd">        v0 : float</span>
-<span class="sd">            The pulse&#39;s center frequency. Also taken as the comoving frame</span>
-<span class="sd">            reference frequency.</span>
+<span class="sd">            The pulse&#39;s center frequency. Also taken as the reference frequency</span>
+<span class="sd">            for the comoving frame.</span>
 <span class="sd">        e_p : float</span>
 <span class="sd">            The pulse energy.</span>
 <span class="sd">        t_fwhm : float</span>
@@ -432,8 +622,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="p">(</span><span class="n">t_fwhm</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The pulse width must be greater than 0.&quot;</span>
 
-        <span class="c1">#---- Construct TF Grids</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">)</span>
+        <span class="c1">#---- Initialize Grids</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
 
         <span class="c1">#---- Set Spectrum</span>
         <span class="n">p_t</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span><span class="o">/</span><span class="n">t_fwhm</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
@@ -446,9 +637,9 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="Pulse.Lorentzian"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.Lorentzian.html#pynlo.light.Pulse.Lorentzian">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">Lorentzian</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">e_p</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a squared lorentzian pulse.</span>
+    <span class="k">def</span> <span class="nf">Lorentzian</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">e_p</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a squared Lorentzian pulse.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -459,8 +650,8 @@
 <span class="sd">        v_max : float</span>
 <span class="sd">            The target maximum frequency.</span>
 <span class="sd">        v0 : float</span>
-<span class="sd">            The pulse&#39;s center frequency. Also taken as the comoving frame</span>
-<span class="sd">            reference frequency.</span>
+<span class="sd">            The pulse&#39;s center frequency. Also taken as the reference frequency</span>
+<span class="sd">            for the comoving frame.</span>
 <span class="sd">        e_p : float</span>
 <span class="sd">            The pulse energy.</span>
 <span class="sd">        t_fwhm : float</span>
@@ -469,8 +660,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="p">(</span><span class="n">t_fwhm</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The pulse width must be greater than 0.&quot;</span>
 
-        <span class="c1">#---- Construct TF Grids</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">)</span>
+        <span class="c1">#---- Initialize Grids</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
 
         <span class="c1">#---- Set Spectrum</span>
         <span class="n">p_t</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mf">0.5</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span><span class="o">/</span><span class="n">t_fwhm</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
@@ -482,13 +674,12 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="Pulse.CW"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.CW.html#pynlo.light.Pulse.CW">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">CW</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">p_avg</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">CW</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">p_avg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize an optical spectrum with a single target frequency.</span>
 
 <span class="sd">        The target frequency will be offset so that it directly aligns with one</span>
-<span class="sd">        of the `v_grid` coordinates. The resulting frequency is taken as the</span>
-<span class="sd">        comoving frame reference frequency.</span>
+<span class="sd">        of the `v_grid` coordinates.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -499,20 +690,19 @@
 <span class="sd">        v_max : float</span>
 <span class="sd">            The target maximum frequency.</span>
 <span class="sd">        v0 : float</span>
-<span class="sd">            The target continuous wave frequency.</span>
+<span class="sd">            The target continuous wave frequency. Also taken as the reference</span>
+<span class="sd">            frequency for the comoving frame.</span>
 <span class="sd">        p_avg : float</span>
 <span class="sd">            The average power of the CW light.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1">#---- Construct TF Grids</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">)</span>
-        <span class="n">v0_selector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span> <span class="o">-</span> <span class="n">v0</span><span class="p">))</span>
-        <span class="n">v0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">[</span><span class="n">v0_selector</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">v0</span> <span class="o">=</span> <span class="n">v0</span>
+        <span class="c1">#---- Initialize Grids</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
 
         <span class="c1">#---- Set Spectrum</span>
         <span class="n">p_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span><span class="p">)</span>
-        <span class="n">phi_t</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">v0</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">v_ref</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span>
+        <span class="n">phi_t</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v0</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">v_ref</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">a_t</span> <span class="o">=</span> <span class="n">p_t</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">phi_t</span><span class="p">)</span>
 
         <span class="c1">#---- Set Pulse Energy</span>
@@ -522,23 +712,8 @@
 
     <span class="c1">#---- Frequency Domain Properties</span>
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_a_v</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The root-power spectrum arranged in standard fft order.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        ndarray of complex</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a_v</span><span class="p">)</span>
-    <span class="nd">@_a_v</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">_a_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_a_v</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">_a_v</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">a_v</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The root-power spectrum, with units of ``(J/Hz)**0.5``.</span>
 
 <span class="sd">        Returns</span>
@@ -549,27 +724,28 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span>
     <span class="nd">@a_v</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">a_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a_v</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a_v</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">)),</span> <span class="s2">&quot;The length of a_v must match v_grid.&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a_v</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">a_v</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_p_v</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The power spectrum arranged in standard fft order.</span>
+    <span class="nd">@ArrayProperty</span>
+    <span class="k">def</span> <span class="nf">_a_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The root-power spectrum arranged in standard fft order.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        ndarray of float</span>
+<span class="sd">        ndarray of complex</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_v</span><span class="p">)</span>
-    <span class="nd">@_p_v</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">_p_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_p_v</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">p_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">_p_v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a_v</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
+    <span class="nd">@_a_v</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">_a_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_a_v</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="o">...</span><span class="p">:</span>
+            <span class="n">_a_v</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_a_v</span><span class="p">,</span> <span class="n">_a_v</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">_a_v</span><span class="p">)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">p_v</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="nd">@ArrayProperty</span>
+    <span class="k">def</span> <span class="nf">p_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The power spectrum, with units of ``J/Hz``.</span>
 
 <span class="sd">        Returns</span>
@@ -577,29 +753,31 @@
 <span class="sd">        ndarray of float</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span><span class="o">.</span><span class="n">real</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span><span class="o">.</span><span class="n">imag</span><span class="o">**</span><span class="mi">2</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">imag</span><span class="o">**</span><span class="mi">2</span>
     <span class="nd">@p_v</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">p_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_v</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">=</span> <span class="n">p_v</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_v</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">p_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_v</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_v</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_v</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_phi_v</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The phase of the power spectrum arranged in standard fft order.</span>
+    <span class="nd">@ArrayProperty</span>
+    <span class="k">def</span> <span class="nf">_p_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The power spectrum arranged in standard fft order.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ndarray of float</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_v</span><span class="p">)</span>
-    <span class="nd">@_phi_v</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">_phi_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_phi_v</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">phi_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">_phi_v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_v</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
+    <span class="nd">@_p_v</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">_p_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_p_v</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="o">...</span><span class="p">:</span>
+            <span class="n">_p_v</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p_v</span><span class="p">,</span> <span class="n">_p_v</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">_p_v</span><span class="p">)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">phi_v</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="nd">@ArrayProperty</span>
+    <span class="k">def</span> <span class="nf">phi_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The phase of the power spectrum, in radians.</span>
 
 <span class="sd">        Returns</span>
@@ -607,14 +785,31 @@
 <span class="sd">        ndarray of float</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a_v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a_v</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
     <span class="nd">@phi_v</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">phi_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phi_v</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_v</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">phi_v</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">phi_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phi_v</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_v</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">phi_v</span><span class="p">)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">tg_v</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="nd">@ArrayProperty</span>
+    <span class="k">def</span> <span class="nf">_phi_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The phase of the power spectrum arranged in standard fft order.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ndarray of float</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_v</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
+    <span class="nd">@_phi_v</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">_phi_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_phi_v</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="o">...</span><span class="p">:</span>
+            <span class="n">_phi_v</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_phi_v</span><span class="p">,</span> <span class="n">_phi_v</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">_phi_v</span><span class="p">)</span>
+
+    <span class="nd">@ArrayProperty</span>
+    <span class="k">def</span> <span class="nf">tg_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The group delay of the power spectrum, with units of ``s``.</span>
 
 <span class="sd">        Returns</span>
@@ -622,10 +817,10 @@
 <span class="sd">        ndarray of float</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_ref</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unwrap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_v</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">edge_order</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_ref</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unwrap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_v</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">edge_order</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Pulse.v_width"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.v_width.html#pynlo.light.Pulse.v_width">[docs]</a>    <span class="k">def</span> <span class="nf">v_width</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the spectral width of the power spectrum.</span>
 
 <span class="sd">        Set `n` to optionally resample the number of points and change the</span>
@@ -681,25 +876,9 @@
         <span class="k">return</span> <span class="n">v_widths</span></div>
 
     <span class="c1">#---- Time Domain Properties</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_a_t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The complex root-power envelope arranged in standard fft order.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        ndarray of complex</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_a_v</span><span class="p">,</span> <span class="n">fsc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
-    <span class="nd">@_a_t</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">_a_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_a_t</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">_a_t</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span><span class="p">)),</span> <span class="s2">&quot;The length of a_t must match t_grid.&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_a_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">_a_t</span><span class="p">,</span> <span class="n">fsc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">a_t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="nd">@ArrayProperty</span>
+    <span class="k">def</span> <span class="nf">a_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The complex root-power envelope, with units of ``(J/s)**0.5``.</span>
 
 <span class="sd">        Returns</span>
@@ -707,30 +886,33 @@
 <span class="sd">        ndarray of complex</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_a_t</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_a_t</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
     <span class="nd">@a_t</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">a_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a_t</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">a_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a_t</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="o">...</span><span class="p">:</span>
+            <span class="n">a_t</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a_t</span><span class="p">,</span> <span class="n">a_t</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_a_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">a_t</span><span class="p">)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_p_t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The power envelope arranged in standard fft order.</span>
+    <span class="nd">@ArrayProperty</span>
+    <span class="k">def</span> <span class="nf">_a_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The complex root-power envelope arranged in standard fft order.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        ndarray of float</span>
+<span class="sd">        ndarray of complex</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">_a_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a_t</span>
-        <span class="k">return</span> <span class="n">_a_t</span><span class="o">.</span><span class="n">real</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">_a_t</span><span class="o">.</span><span class="n">imag</span><span class="o">**</span><span class="mi">2</span>
-    <span class="nd">@_p_t</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">_p_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_p_t</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_a_t</span> <span class="o">=</span> <span class="n">_p_t</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_phi_t</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_a_v</span><span class="p">,</span> <span class="n">fsc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
+    <span class="nd">@_a_t</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">_a_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_a_t</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="o">...</span><span class="p">:</span>
+            <span class="n">_a_t</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_a_t</span><span class="p">,</span> <span class="n">_a_t</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_a_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">_a_t</span><span class="p">,</span> <span class="n">fsc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">p_t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="nd">@ArrayProperty</span>
+    <span class="k">def</span> <span class="nf">p_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The power envelope, with units of ``J/s``.</span>
 
 <span class="sd">        Returns</span>
@@ -738,29 +920,32 @@
 <span class="sd">        ndarray of float</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p_t</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p_t</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
     <span class="nd">@p_t</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">p_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_t</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">p_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_t</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="o">...</span><span class="p">:</span>
+            <span class="n">p_t</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_t</span><span class="p">,</span> <span class="n">p_t</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_p_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">p_t</span><span class="p">)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_phi_t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The phase of the power envelope arranged in standard fft order.</span>
+    <span class="nd">@ArrayProperty</span>
+    <span class="k">def</span> <span class="nf">_p_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The power envelope arranged in standard fft order.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ndarray of float</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_a_t</span><span class="p">)</span>
-    <span class="nd">@_phi_t</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">_phi_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_phi_t</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_a_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p_t</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">_phi_t</span><span class="p">)</span>
+        <span class="n">_a_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a_t</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">_a_t</span><span class="o">.</span><span class="n">real</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">_a_t</span><span class="o">.</span><span class="n">imag</span><span class="o">**</span><span class="mi">2</span>
+    <span class="nd">@_p_t</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">_p_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_p_t</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_a_t</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_p_t</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_phi_t</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">phi_t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="nd">@ArrayProperty</span>
+    <span class="k">def</span> <span class="nf">phi_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The phase of the power envelope, in radians.</span>
 
 <span class="sd">        Returns</span>
@@ -768,14 +953,31 @@
 <span class="sd">        ndarray of float</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_phi_t</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_phi_t</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
     <span class="nd">@phi_t</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">phi_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phi_t</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">phi_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phi_t</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="o">...</span><span class="p">:</span>
+            <span class="n">phi_t</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_t</span><span class="p">,</span> <span class="n">phi_t</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_phi_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">phi_t</span><span class="p">)</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">vg_t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="nd">@ArrayProperty</span>
+    <span class="k">def</span> <span class="nf">_phi_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The phase of the power envelope arranged in standard fft order.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ndarray of float</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_a_t</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+    <span class="nd">@_phi_t</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">_phi_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_phi_t</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_a_t</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p_t</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">_phi_t</span><span class="p">)</span>
+
+    <span class="nd">@ArrayProperty</span>
+    <span class="k">def</span> <span class="nf">vg_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The instantaneous frequency of the power envelope, with units of</span>
 <span class="sd">        ``Hz``.</span>
 
@@ -784,11 +986,24 @@
 <span class="sd">        ndarray of float</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_ref</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unwrap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_t</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">edge_order</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_ref</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unwrap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_t</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">edge_order</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_ra_t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="nd">@ArrayProperty</span>
+    <span class="k">def</span> <span class="nf">ra_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The real-valued instantaneous root-power, with units of</span>
+<span class="sd">        ``(J/s)**0.5``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ndarray of float</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ra_t</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="nd">@ArrayProperty</span>
+    <span class="k">def</span> <span class="nf">_ra_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The real-valued instantaneous root-power arranged in standard fft</span>
 <span class="sd">        order.</span>
 
@@ -800,36 +1015,11 @@
         <span class="n">ra_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rv_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
         <span class="n">ra_v</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rn_slice</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span>
         <span class="n">ra_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">irfft</span><span class="p">(</span><span class="n">ra_v</span><span class="p">,</span> <span class="n">fsc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rdt</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rn</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ra_t</span>
+        <span class="k">return</span> <span class="n">ra_t</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">ra_t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The real-valued instantaneous root-power, with units of</span>
-<span class="sd">        ``(J/s)**0.5``.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        ndarray of float</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ra_t</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">_rp_t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The instantaneous power arranged in standard fft order.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        ndarray of float</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ra_t</span><span class="o">**</span><span class="mi">2</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rp_t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="nd">@ArrayProperty</span>
+    <span class="k">def</span> <span class="nf">rp_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The instantaneous power, with units of ``J/s``.</span>
 
 <span class="sd">        Returns</span>
@@ -837,10 +1027,22 @@
 <span class="sd">        ndarray of float</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rp_t</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rp_t</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="nd">@ArrayProperty</span>
+    <span class="k">def</span> <span class="nf">_rp_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The instantaneous power arranged in standard fft order.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ndarray of float</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ra_t</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
 
 <div class="viewcode-block" id="Pulse.t_width"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.t_width.html#pynlo.light.Pulse.t_width">[docs]</a>    <span class="k">def</span> <span class="nf">t_width</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the temporal width of the power envelope.</span>
 
 <span class="sd">        Set `n` to optionally resample the number of points and change the</span>
@@ -898,7 +1100,7 @@
     <span class="c1">#---- Energy Properties</span>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">e_p</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The pulse energy, with units of ``J``.</span>
 
 <span class="sd">        Returns</span>
@@ -914,7 +1116,7 @@
 
     <span class="c1">#---- Indirect Measures</span>
 <div class="viewcode-block" id="Pulse.autocorrelation"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.autocorrelation.html#pynlo.light.Pulse.autocorrelation">[docs]</a>    <span class="k">def</span> <span class="nf">autocorrelation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the intensity autocorrelation and related diagnostic</span>
 <span class="sd">        information.</span>
 
@@ -943,8 +1145,8 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#---- Intensity Autocorrelation</span>
-        <span class="n">ac_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p_t</span><span class="p">,</span> <span class="n">fsc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span>
-        <span class="n">ac_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">ac_v</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="n">overwrite_x</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>
+        <span class="n">ac_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p_t</span><span class="p">,</span> <span class="n">fsc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">)))</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">ac_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">ac_v</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="n">overwrite_x</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
 
         <span class="c1">#---- Resample</span>
         <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -978,7 +1180,7 @@
         <span class="k">return</span> <span class="n">ac</span></div>
 
 <div class="viewcode-block" id="Pulse.spectrogram"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.spectrogram.html#pynlo.light.Pulse.spectrogram">[docs]</a>    <span class="k">def</span> <span class="nf">spectrogram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">v_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_t</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the power spectrogram of the pulse through convolution with a</span>
 <span class="sd">        gaussian window.</span>
 
@@ -1002,7 +1204,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        v_grid : ndarray of float</span>
-<span class="sd">            The frequency grid</span>
+<span class="sd">            The frequency grid.</span>
 <span class="sd">        t_grid : ndarray of float</span>
 <span class="sd">            The time grid.</span>
 <span class="sd">        spg : ndarray of float</span>
@@ -1087,12 +1289,12 @@
         <span class="n">gate_pulses_v</span> <span class="o">=</span> <span class="p">(</span><span class="n">g_v</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
                          <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">delay_t_grid</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span><span class="o">*</span><span class="n">v_grid</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]))</span>
         <span class="n">gate_pulses_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span>
-            <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">gate_pulses_v</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">overwrite_x</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">axes</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">gate_pulses_v</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">overwrite_x</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c1">#---- Spectrogram</span>
         <span class="n">spg_t</span> <span class="o">=</span> <span class="n">a_t</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">gate_pulses_t</span>
         <span class="n">spg_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span>
-            <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">spg_t</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">overwrite_x</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">axes</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">spg_t</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">overwrite_x</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">p_spg</span> <span class="o">=</span> <span class="n">spg_v</span><span class="o">.</span><span class="n">real</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">spg_v</span><span class="o">.</span><span class="n">imag</span><span class="o">**</span><span class="mi">2</span>
 
         <span class="c1">#---- Extent</span>
@@ -1104,37 +1306,74 @@
         <span class="k">return</span> <span class="n">spg</span></div></div>
 </pre></div>
 
-              </div>
+                </article>
               
               
-              <!-- Previous / next buttons -->
-<div class='prev-next-area'>
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
 </div>
-              
-          </main>
-          
 
-      </div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
     </div>
+  </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
-<footer class="footer mt-5 mt-md-0">
-  <div class="container">
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
     
-    <div class="footer-item">
-      <p class="copyright">
-    &copy; Copyright 2022, PyNLO authors.<br>
-</p>
+      © Copyright 2023, PyNLO authors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    <br/>
+  </p>
+</div>
+      
     </div>
-    
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.5.0.<br>
-</p>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
     </div>
-    
-  </div>
-</footer>
+  
+</div>
+
+  </footer>
   </body>
 </html>

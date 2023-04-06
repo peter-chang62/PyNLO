@@ -16,7 +16,7 @@ from scipy.constants import pi, c, epsilon_0 as e0
 
 # %% Converters
 
-#---- 2rd Order Nonlinear Susceptibilities chi2 and d
+#---- 2nd Order Nonlinear Susceptibilities chi2 and d
 def d_to_chi2(d):
     return d * 2
 
@@ -33,7 +33,7 @@ def period_to_dk(period):
 
 # %% Nonlinearity
 
-#TODO: setup media, solver to use splip g's
+#TODO: setup media, solver to use split g's
 
 def g2_shg(v0, v_grid, n_eff, a_eff, chi2_eff):
     """

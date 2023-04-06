@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Time and frequency grid utilites and and other miscellaneous helper functions.
+Time and frequency grid utilities and other miscellaneous helper functions.
 
 The submodules contain calculator type functions for converting between
 physically relevant parameters related to the linear and nonlinear
-susceptibilities as well as an efficient interface to fast fourier transforms.
+susceptibilities as well as an efficient interface to fast Fourier transforms.
 
 """
 
@@ -23,6 +23,7 @@ import numpy as np
 from scipy.constants import pi, h
 
 from pynlo.utility import chi1, chi2, chi3, fft
+from pynlo.utility.misc import ArrayProperty
 
 
 # %% Collections
@@ -455,27 +456,28 @@ def resample_t(t_grid, f_t, n):
 
 class TFGrid():
     """
-    Complementary grids defined over both time and frequency domains for the
-    representation of analytic functions with complex-valued envelopes.
+    Complementary grids defined over both the time and frequency domains for
+    the representation of analytic functions with complex-valued envelopes.
 
     The frequency grid is shifted and scaled such that the grid is aligned with
     the origin and contains only positive frequencies. The values given to the
     initializers are only targets and may be adjusted slightly. If necessary,
-    the frequency step size will be decreased so that the grid is formed
-    without any negative frequencies, fitting the desired number of points
-    between (0, `v_max`].
+    the reference frequency will be increased so that the grid is formed
+    without any negative frequencies.
 
     Parameters
     ----------
     n_points : int
         The number of grid points.
-    v_max : float
-        The target maximum frequency.
     dv : float
-        The target frequency grid step size.
-    v0 : float, optional
-        The comoving frame reference frequency. The default selects the
-        central frequency of the resulting grid.
+        The frequency step size. This is equal to the reciprocal of the time
+        window.
+    v_ref : float
+        The target central frequency of the grid.
+    alias : int, optional
+        The number of harmonics supported by the real-valued time grid without
+        aliasing. The default is 1, the fundamental harmonic. A higher number
+        may be useful when simulating nonlinear interactions.
 
     Notes
     -----
@@ -496,7 +498,7 @@ class TFGrid():
 
     The comoving frame reference frequency `v0` does not affect the definition
     of the grids but defines the frequency at which the comoving frame is
-    referenced.
+    referenced during propagation simulations.
 
     By definition of the DFT, the time and frequency grids must range
     symmetrically about the origin, with the time grid incrementing in unit
@@ -510,65 +512,70 @@ class TFGrid():
 
     """
 
-    def __init__(self, n_points, v_max, dv, v0=None):
+    def __init__(self, n_points, dv, v_ref, alias=1):
         """
-        Initialize a time and frequency grid given a target maximum frequency,
-        a target frequency step size, and the total number of grid points.
+        Initialize a set of time and frequency grids given the total number of
+        points, the frequency step size (reciprocal of the time window), and
+        the target central frequency.
+
+        If necessary, the reference frequency will be increased so that the
+        grid is formed without any negative frequencies.
 
         Parameters
         ----------
         n_points : int
             The number of grid points.
-        v_max : float
-            The target maximum frequency.
         dv : float
-            The target frequency step size.
-        v0 : float, optional
-            The comoving frame reference frequency. The default selects the
-            central frequency of the resulting grid.
+            The frequency step size. This is equal to the reciprocal of the
+            time window.
+        v_ref : float
+            The target central frequency of the grid.
+        alias : int, optional
+            The number of harmonics supported by the real-valued time grid
+            without aliasing. The default is 1, the fundamental harmonic. A
+            higher number may be useful when simulating nonlinear interactions.
 
         """
         assert isinstance(n_points, (int, np.integer)), "The number of points must be an integer."
         assert (n_points > 1),  "The number of points must be greater than 1."
         assert (dv > 0), "The frequency grid step size must be greater than 0."
-        assert (v_max > 0), "The target maximum frequency must be greater than 0."
+        assert (v_ref > 0), "The target central frequency must be greater than 0."
+
+        self._n = n_points
+        self._dv = dv
 
         #---- Align Frequency Grid
-        v_max_index = int(round(np.modf(v_max / dv)[1]))
-        v_min_index = v_max_index - (n_points-1)
-        if v_min_index < 1:
-            v_max_index = n_points
-            v_min_index = 1
-            dv = v_max/v_max_index
-        self._rn_range = np.array([v_min_index, v_max_index])
-        self._rn_slice = slice(self.rn_range.min(), self.rn_range.max()+1)
-        self._n = n_points
+        ref_idx = round(v_ref/self.dv)
+        if ref_idx < self.n//2 + 1:
+            ref_idx = self.n//2 + 1
+        self._v_ref = ref_idx * dv
+
+        min_idx = ref_idx - self.n//2
+        max_idx = ref_idx + ((self.n-1) - self.n//2)
+        self._rn_range = np.array([min_idx, max_idx])
+        self._rn_slice = slice(self.rn_range.min(), self.rn_range.max() + 1)
 
         #---- Define Frequency Grid
-        self._dv = dv
-        self._v_grid = fft.ifftshift(self.dv*(np.arange(self.n) + v_min_index))
-        self._v_ref = self._v_grid[0]
+        self.__v_grid = self.dv*(np.arange(self.n) - self.n//2) + self.v_ref
+        self._v_ref = self.v_grid[self.n//2]
         self._v_window = self.n*self.dv
-        if v0 is None:
-            self.v0 = self.v_grid[self.n//2] # same as v_ref
-        else:
-            self.v0 = v0
+        self.v0 = self.v_grid[self.n//2] # same as v_ref
 
         #---- Define Complex Time Grid
         self._dt = 1/(self.n*self.dv)
-        self._t_grid = fft.ifftshift(self.dt*(np.arange(n_points) - (self.n//2)))
-        self._t_ref = self._t_grid[0]
+        self.__t_grid = self.dt*(np.arange(self.n) - self.n//2)
+        self._t_ref = self.t_grid[self.n//2]
         self._t_window = self.n*self.dt
 
-        #---- Define Real Time and Frequency Grids
-        self.rtf_grids(n_harmonic=1, update=True)
+        #---- Define Real-Valued Time and Frequency Grids
+        self.rtf_grids(alias=alias, update=True)
 
     #---- Class Methods
     @classmethod
-    def FromFreqRange(cls, n_points, v_min, v_max, v0=None):
+    def FromFreqRange(cls, n_points, v_min, v_max, v0=None, **kwargs):
         """
-        Initialize a time and frequency grid given a target minimum and maximum
-        frequency and the total number of grid points.
+        Initialize a set of time and frequency grids given the total number of
+        grid points and a target minimum and maximum frequency.
 
         Parameters
         ----------
@@ -579,52 +586,22 @@ class TFGrid():
         v_max : float
             The target maximum frequency.
         v0 : float, optional
-            The comoving frame reference frequency. The default selects the
-            central frequency of the resulting grid.
+            The comoving frame reference frequency. The default selection is
+            the center frequency of the resulting grid.
 
         """
         assert (v_max > v_min), ("The target maximum frequency must be greater"
                                  " than the target minimum frequency.")
         dv = (v_max - v_min)/(n_points-1)
-        return cls(n_points, v_max, dv, v0=v0)
-
-    @classmethod
-    def FromTimeWindowAndFreq(cls, n_points, t_window, v0):
-        """
-        Initialize a time and frequency grid given a target time window, a
-        target center frequency, and the total number of grid points.
-
-        If there are too many points to place `v0` at the center of the grid
-        the excess number is added at higher frequencies.
-
-        Parameters
-        ----------
-        n_points : int
-            The number of grid points.
-        t_window : float
-            The target time window.
-        v0 : float
-            The target center frequency, which is also taken as the comoving
-            frame reference frequency.
-
-        """
-        assert (t_window > 0), "The target time window must be greater than 0."
-        assert (v0 > 0), "The target center frequency must be greater than 0."
-
-        dt = t_window/n_points
-        dv = 1/(n_points*dt)
-
-        v_min = v0 - (n_points//2) * dv
-        v_min_index = int(round(np.modf(v_min / dv)[1]))
-        if v_min_index < 1:
-            v_max_index = n_points
-        else:
-            v_max_index = v_min_index + (n_points-1)
-        v_max = dv * v_max_index
-        return cls(n_points, v_max, dv, v0=v0)
+        v_ref = 0.5*(v_min + v_max)
+        self = cls(n_points, dv, v_ref, **kwargs)
+        # Set comoving reference
+        if v0 is not None:
+            self.v0 = v0
+        return self
 
     def copy(self):
-        """An idependent copy of the object."""
+        """A copy of the object."""
         return copy.deepcopy(self)
 
     #---- General Properties
@@ -655,8 +632,8 @@ class TFGrid():
         """
         return self._rn
 
-    @property
-    def rn_range(self):
+    @ArrayProperty
+    def rn_range(self, key=...):
         """
         The minimum and maximum indices of the origin contiguous frequency
         grid associated with the real-valued time domain representation that
@@ -671,7 +648,7 @@ class TFGrid():
         ndarray of float
 
         """
-        return self._rn_range
+        return self._rn_range[key]
 
     @property
     def rn_slice(self):
@@ -722,8 +699,8 @@ class TFGrid():
         return self._v0_idx
 
     #---- Frequency Grid Properties
-    @property
-    def v_grid(self):
+    @ArrayProperty
+    def v_grid(self, key=...):
         """
         The frequency grid in the complex envelope representation, with units
         of ``Hz``.
@@ -736,7 +713,20 @@ class TFGrid():
         ndarray of float
 
         """
-        return fft.fftshift(self._v_grid)
+        return self.__v_grid[key]
+
+    @ArrayProperty
+    def _v_grid(self, key=...):
+        """
+        The frequency grid in the complex envelope representation, arranged in
+        standard fft order.
+
+        Returns
+        -------
+        ndarray of float
+
+        """
+        return fft.ifftshift(self.v_grid)[key]
 
     @property
     def v_ref(self):
@@ -781,8 +771,8 @@ class TFGrid():
         return self._v_window
 
     #---- Time Grid Properties
-    @property
-    def t_grid(self):
+    @ArrayProperty
+    def t_grid(self, key=...):
         """
         The time grid in the complex envelope representation, with units of
         ``s``.
@@ -794,7 +784,20 @@ class TFGrid():
         ndarray of float
 
         """
-        return fft.fftshift(self._t_grid)
+        return self.__t_grid[key]
+
+    @ArrayProperty
+    def _t_grid(self, key=...):
+        """
+        The time grid in the complex envelope representation, arranged in
+        standard fft order.
+
+        Returns
+        -------
+        ndarray of float
+
+        """
+        return fft.ifftshift(self.t_grid)[key]
 
     @property
     def t_ref(self):
@@ -846,8 +849,8 @@ class TFGrid():
         return self._t_window
 
     #---- Real Time/Frequency Grid Properties
-    @property
-    def rv_grid(self):
+    @ArrayProperty
+    def rv_grid(self, key=...):
         """
         The origin contiguous frequency grid for the real-valued time domain
         representation, with units of ``Hz``.
@@ -857,7 +860,7 @@ class TFGrid():
         ndarray of float
 
         """
-        return self._rv_grid
+        return self.__rv_grid[key]
 
     @property
     def rv_ref(self):
@@ -901,8 +904,8 @@ class TFGrid():
         """
         return self._rv_window
 
-    @property
-    def rt_grid(self):
+    @ArrayProperty
+    def rt_grid(self, key=...):
         """
         The time grid in the real-valued time domain representation, with
         units of ``s``.
@@ -912,7 +915,20 @@ class TFGrid():
         ndarray of float
 
         """
-        return fft.fftshift(self._rt_grid)
+        return self.__rt_grid[key]
+
+    @ArrayProperty
+    def _rt_grid(self, key=...):
+        """
+        The time grid in the real-valued time domain representation, arranged
+        in standard fft order.
+
+        Returns
+        -------
+        ndarray of float
+
+        """
+        return fft.ifftshift(self.rt_grid)[key]
 
     @property
     def rt_ref(self):
@@ -951,21 +967,21 @@ class TFGrid():
         """
         return self._rt_window
 
-    def rtf_grids(self, n_harmonic=1, fast_n=True, update=True):
+    def rtf_grids(self, alias=1, fast_n=True, update=True):
         """
         Complementary grids defined over both time and frequency domains for
         the representation of analytic functions with real-valued amplitudes.
 
         The frequency grid contains the origin and positive frequencies. The
-        `n_harmonic` parameter determines the number of harmonics the
+        `alias` parameter determines the number of harmonics the
         resulting time grid supports without aliasing. In order to maintain
-        efficient DFT behavior, the number of points can be extended further based
-        on the output of `scipy.fft.next_fast_len`. These grids are suitable
-        for use with real DFTs, see `fft.rfft` and `fft.irfft`.
+        efficient DFT behavior, the number of points can be extended further
+        based on the output of `scipy.fft.next_fast_len`. These grids are
+        suitable for use with real DFTs, see `fft.rfft` and `fft.irfft`.
 
         Parameters
         ----------
-        n_harmonic : int, optional
+        alias : int, optional
             The harmonic support of the generated grids. The default is 1, the
             fundamental harmonic.
         fast_n : bool, optional
@@ -973,9 +989,9 @@ class TFGrid():
             array is extended up to the next fast fft length. The default is
             to extend.
         update : bool, optional
-            A parameter that determines whether to update the real time
-            and frequency grids of the parent object with the results of this method.
-            The default is to update.
+            A parameter that determines whether to update the real-valued time
+            and frequency grids of the parent object with the results of this
+            method. The default is to update.
 
         Returns
         -------
@@ -1011,13 +1027,14 @@ class TFGrid():
 
         To avoid dealing with case-specific amplitude scale factors when
         transforming between complex envelope and real-valued representations
-        the frequency grid for complex-valued function must not contain the
+        the frequency grid for complex-valued functions must not contain the
         origin and there must be enough points in the real-valued
         representation to avoid aliasing the Nyquist frequency of the complex
-        envelope representation. The initializer of this class enforces the
-        first condition, the frequency grid starts at minimum one step size
+        envelope representation. The initializer of the `TFGrid` class enforces
+        the first condition, the frequency grid starts at minimum one step size
         away from the origin, and this method enforces the second by making
-        the minimum number of points odd if at the first harmonic.
+        the minimum number of points odd if the real grid only extends to the
+        first harmonic.
 
         The transformation between representations is performed as in the
         following example, with `tf` an instance of the `TFGrid` class, `rtf`
@@ -1035,18 +1052,16 @@ class TFGrid():
             np.sum(ra_t**2 * rtf.dt) == np.sum(np.abs(a_v)**2 * tf.dv)
 
         """
-        assert (n_harmonic >= 1), "The harmonic support must be atleast 1."
+        assert (alias >= 1), "The harmonic support must be atleast 1."
         #---- Number of Points
-        target_n_v = self.rn_range.max()*n_harmonic
-        if n_harmonic == 1:
-            target_n_t = 2*target_n_v - 1 # odd
+        target_n_v = self.rn_range.max()*alias
+        if alias == 1:
+            n = 2*target_n_v - 1 # odd
         else:
-            target_n_t = 2*(target_n_v - 1) # even
+            n = 2*(target_n_v - 1) # even
         if fast_n:
-            n = fft.next_fast_len(round(target_n_t))
-        else:
-            n = target_n_t
-        n_v = n//2 + 1
+            n = fft.next_fast_len(n)
+        n_v = n//2 + 1 # points in the frequency grid
 
         #---- Define Frequency Grid
         v_grid = self.dv*np.arange(n_v)
@@ -1054,8 +1069,8 @@ class TFGrid():
 
         #---- Define Time Grid
         dt = 1/(n*self.dv)
-        t_grid = dt*(np.arange(n) - (n//2))
-        t_ref = t_grid[n//2]
+        t_grid = dt*(np.arange(n) - n//2)
+        t_ref = t_grid[n//2] # always 0
 
         #---- Construct RTFGrid
         rtf_grids = _RTFGrid(
@@ -1067,12 +1082,12 @@ class TFGrid():
             self._rn = rtf_grids.n
 
             # Frequency Grid
-            self._rv_grid = rtf_grids.v_grid
+            self.__rv_grid = rtf_grids.v_grid
             self._rv_ref = rtf_grids.v_ref
             self._rv_window = rtf_grids.v_window
 
             # Time Grid
-            self._rt_grid = fft.ifftshift(rtf_grids.t_grid)
+            self.__rt_grid = rtf_grids.t_grid
             self._rt_ref = rtf_grids.t_ref
             self._rdt = rtf_grids.dt
             self._rt_window = rtf_grids.t_window

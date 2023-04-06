@@ -11,7 +11,6 @@ Methods
 
    ~TFGrid.__init__
    ~TFGrid.FromFreqRange
-   ~TFGrid.FromTimeWindowAndFreq
    ~TFGrid.copy
    ~TFGrid.rtf_grids
 

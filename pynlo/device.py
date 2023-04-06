@@ -13,9 +13,9 @@ __all__ = []
 
 # class methods to explore attributes, call class with pulse to apply
 
-#TODO: pulse shaper (arbitrary phase, or gdd, tod, etc)
+#TODO: pulse shaper (arbitrary phase, or gdd, tod, etc.)
 
-#TODO: gratting compressor
+#TODO: grating compressor
 
 #TODO: prism compressor
 

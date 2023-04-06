@@ -1,6 +1,6 @@
 Silica PCF: Supercontinuum
 ==========================
-This example demonstrates supercontinuum generation due to self-phase modulation and soliton effects in a silica-based photonic crystal fiber. The simulation is similar to that reported in Fig.3 of Dudley et al. :title-reference:`Supercontinuum generation in photonic crystal fiber` [1]_.
+This example demonstrates supercontinuum generation due to self-phase modulation and soliton effects in a silica-based photonic crystal fiber. The simulation is based on the parameters given in part V-A of Dudley et al. :title-reference:`Supercontinuum generation in photonic crystal fiber` [1]_.
 
 Code
 ----

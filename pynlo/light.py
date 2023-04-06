@@ -22,6 +22,7 @@ import numpy as np
 from scipy.constants import pi
 
 from pynlo.utility import TFGrid, fft, resample_v, resample_t
+from pynlo.utility.misc import ArrayProperty, replace
 
 
 # %% Collections
@@ -42,24 +43,28 @@ class Pulse(TFGrid):
     An optical pulse, defined over complementary time and frequency grids.
 
     The default initializer creates an empty `Pulse` object. Set one of four
-    attributes (`a_v`, `p_v`, `a_t`, or `p_t`) to populate the pulse spectrum
-    or envelope.
+    attributes, `a_v`, `p_v`, `a_t`, or `p_t`, to populate the pulse spectrum
+    or temporal envelope.
 
     Parameters
     ----------
     n_points : int
         The number of grid points.
-    v_max : float
-        The target maximum frequency.
     dv : float
-        The target frequency grid step size.
-    v0 : float, optional
-        The comoving frame reference frequency. The default is the center of
-        the resulting frequency grid.
+        The frequency step size. This is equal to the reciprocal of the time
+        window.
+    v_ref : float
+        The target central frequency of the grid.
+    a_v : array_like of complex, optional
+        The root-power spectrum. The default selection is an empty spectrum.
+    alias : int, optional
+        The number of harmonics supported by the real-valued time grid without
+        aliasing. The default is 1, the fundamental harmonic. A higher number
+        may be useful when simulating nonlinear interactions.
 
     Notes
     -----
-    See `TFGrid` for other attributes.
+    See :py:class:`~pynlo.utility.TFGrid` for other attributes.
 
     The power spectrum and power envelope are normalized to the pulse energy
     `e_p`::
@@ -77,36 +82,39 @@ class Pulse(TFGrid):
 
     """
 
-    def __init__(self, n_points, v_max, dv, v0=None, a_v=None):
+    def __init__(self, n_points, dv, v_ref, a_v=None, alias=1):
         """
-        Initialize a time and frequency grid given a target maximum frequency,
-        a target frequency step size, and the total number of grid points, and
-        populate with a zero-amplitude power spectrum.
+        Initialize a pulse given the total number of points, the frequency step
+        size (reciprocal of the time window), and a target central frequency.
 
-        Set one of six attributes `a_v`, `p_v`, `phi_v`, `a_t`, `p_t`, or
-        `phi_t` to populate the pulse spectrum or envelope.
+        If necessary, the reference frequency will be increased so that the
+        grid is formed without any negative frequencies.
 
         Parameters
         ----------
         n_points : int
             The number of grid points.
-        v_max : float
-            The target maximum frequency.
         dv : float
-            The target frequency grid step size.
-        v0 : float, optional
-            The comoving frame reference frequency. The default is the center
-            of the resulting frequency grid.
+            The frequency step size. This is equal to the reciprocal of the
+            time window.
+        v_ref : float
+            The target central frequency of the grid.
         a_v : array_like of complex, optional
-            The root-power spectrum. The default populates an empty spectrum.
+            The root-power spectrum. The default selection is an empty
+            spectrum.
+        alias : int, optional
+            The number of harmonics supported by the real-valued time grid
+            without aliasing. The default is 1, the fundamental harmonic. A
+            higher number may be useful when simulating nonlinear interactions.
 
         """
-        #---- Construct TF Grids
-        super().__init__(n_points, v_max, dv, v0=v0)
+        #---- Initialize Grids
+        super().__init__(n_points, dv, v_ref, alias=alias)
+        self.__a_v = np.empty_like(self.v_grid, dtype=complex)
 
         #---- Set Spectrum
         if a_v is None:
-            self.a_v = np.zeros_like(self.v_grid, dtype=complex)
+            self.a_v = 0
         else:
             assert (len(a_v)==len(self.v_grid)), "The length of a_v must match v_grid."
             self.a_v = np.asarray(a_v, dtype=complex)
@@ -130,20 +138,21 @@ class Pulse(TFGrid):
         """
         assert isinstance(tfgrid, TFGrid), "The input must be an instance of the TFGrid class."
 
-        #---- Copy TFGrid
+        #---- Initialize Grids
         self = super().__new__(cls)
-        self.__dict__.update(tfgrid.__dict__)
+        self.__dict__.update(tfgrid.__dict__) # copy TFGrid
+        self.__a_v = np.empty_like(self.v_grid, dtype=complex)
 
         #---- Set Spectrum
         if a_v is None:
-            self.a_v = np.zeros_like(self.v_grid, dtype=complex)
+            self.a_v = 0
         else:
             assert (len(a_v)==len(self.v_grid)), "The length of a_v must match v_grid."
             self.a_v = a_v
         return self
 
     @classmethod
-    def FromPowerSpectrum(cls, p_v, n_points, v_min, v_max, v0=None, e_p=None, phi_v=None):
+    def FromPowerSpectrum(cls, p_v, n_points, v_min, v_max, v0=None, e_p=None, phi_v=None, **kwargs):
         """
         Initialize a pulse using existing spectral data.
 
@@ -159,8 +168,8 @@ class Pulse(TFGrid):
         v_max : float, optional
             The target maximum frequency.
         v0 : float, optional
-            The comoving frame reference frequency. The default is the center
-            of the resulting frequency grid.
+            The comoving frame reference frequency. The default selection is
+            the center of the resulting frequency grid.
         e_p : float, optional
             The pulse energy. The default inherits the pulse energy of the
             input spectrum.
@@ -170,8 +179,9 @@ class Pulse(TFGrid):
         """
         assert callable(p_v), "The power spectrum must be a callable function."
 
-        #---- Construct TF Grids
-        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0)
+        #---- Initialize Grids
+        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0, **kwargs)
+        self.__a_v = np.empty_like(self.v_grid, dtype=complex)
 
         #---- Evaluate Input
         p_v = np.asarray(p_v(self.v_grid), dtype=float)
@@ -192,7 +202,7 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def Gaussian(cls, n_points, v_min, v_max, v0, e_p, t_fwhm, m=1):
+    def Gaussian(cls, n_points, v_min, v_max, v0, e_p, t_fwhm, m=1, **kwargs):
         """
         Initialize a gaussian or super-gaussian pulse.
 
@@ -205,8 +215,8 @@ class Pulse(TFGrid):
         v_max : float
             The target maximum frequency.
         v0 : float
-            The pulse's center frequency. Also taken as the comoving frame
-            reference frequency.
+            The pulse's center frequency. Also taken as the reference frequency
+            for the comoving frame.
         e_p : float
             The pulse energy.
         t_fwhm : float
@@ -217,8 +227,9 @@ class Pulse(TFGrid):
         """
         assert (t_fwhm > 0), "The pulse width must be greater than 0."
 
-        #---- Construct TF Grids
-        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0)
+        #---- Initialize Grids
+        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0, **kwargs)
+        self.__a_v = np.empty_like(self.v_grid, dtype=complex)
 
         #---- Set Spectrum
         p_t = 2**(-((2*self.t_grid/t_fwhm)**2)**m)
@@ -230,7 +241,7 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def Sech(cls, n_points, v_min, v_max, v0, e_p, t_fwhm):
+    def Sech(cls, n_points, v_min, v_max, v0, e_p, t_fwhm, **kwargs):
         """
         Initialize a squared hyperbolic secant pulse.
 
@@ -243,8 +254,8 @@ class Pulse(TFGrid):
         v_max : float
             The target maximum frequency.
         v0 : float
-            The pulse's center frequency. Also taken as the comoving frame
-            reference frequency.
+            The pulse's center frequency. Also taken as the reference frequency
+            for the comoving frame.
         e_p : float
             The pulse energy.
         t_fwhm : float
@@ -253,8 +264,9 @@ class Pulse(TFGrid):
         """
         assert (t_fwhm > 0), "The pulse width must be greater than 0."
 
-        #---- Construct TF Grids
-        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0)
+        #---- Initialize Grids
+        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0, **kwargs)
+        self.__a_v = np.empty_like(self.v_grid, dtype=complex)
 
         #---- Set Spectrum
         t0 = t_fwhm / (2 * np.arccosh(2**0.5))
@@ -267,7 +279,7 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def Parabolic(cls, n_points, v_min, v_max, v0, e_p, t_fwhm):
+    def Parabolic(cls, n_points, v_min, v_max, v0, e_p, t_fwhm, **kwargs):
         """
         Initialize a parabolic pulse.
 
@@ -280,8 +292,8 @@ class Pulse(TFGrid):
         v_max : float
             The target maximum frequency.
         v0 : float
-            The pulse's center frequency. Also taken as the comoving frame
-            reference frequency.
+            The pulse's center frequency. Also taken as the reference frequency
+            for the comoving frame.
         e_p : float
             The pulse energy.
         t_fwhm : float
@@ -290,8 +302,9 @@ class Pulse(TFGrid):
         """
         assert (t_fwhm > 0), "The pulse width must be greater than 0."
 
-        #---- Construct TF Grids
-        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0)
+        #---- Initialize Grids
+        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0, **kwargs)
+        self.__a_v = np.empty_like(self.v_grid, dtype=complex)
 
         #---- Set Spectrum
         p_t = 1-2*(self.t_grid/t_fwhm)**2
@@ -304,9 +317,9 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def Lorentzian(cls, n_points, v_min, v_max, v0, e_p, t_fwhm):
+    def Lorentzian(cls, n_points, v_min, v_max, v0, e_p, t_fwhm, **kwargs):
         """
-        Initialize a squared lorentzian pulse.
+        Initialize a squared Lorentzian pulse.
 
         Parameters
         ----------
@@ -317,8 +330,8 @@ class Pulse(TFGrid):
         v_max : float
             The target maximum frequency.
         v0 : float
-            The pulse's center frequency. Also taken as the comoving frame
-            reference frequency.
+            The pulse's center frequency. Also taken as the reference frequency
+            for the comoving frame.
         e_p : float
             The pulse energy.
         t_fwhm : float
@@ -327,8 +340,9 @@ class Pulse(TFGrid):
         """
         assert (t_fwhm > 0), "The pulse width must be greater than 0."
 
-        #---- Construct TF Grids
-        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0)
+        #---- Initialize Grids
+        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0, **kwargs)
+        self.__a_v = np.empty_like(self.v_grid, dtype=complex)
 
         #---- Set Spectrum
         p_t = 1/(1+4*(2**0.5-1)*(self.t_grid/t_fwhm)**2)**2
@@ -340,13 +354,12 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def CW(cls, n_points, v_min, v_max, v0, p_avg):
+    def CW(cls, n_points, v_min, v_max, v0, p_avg, **kwargs):
         """
         Initialize an optical spectrum with a single target frequency.
 
         The target frequency will be offset so that it directly aligns with one
-        of the `v_grid` coordinates. The resulting frequency is taken as the
-        comoving frame reference frequency.
+        of the `v_grid` coordinates.
 
         Parameters
         ----------
@@ -357,20 +370,19 @@ class Pulse(TFGrid):
         v_max : float
             The target maximum frequency.
         v0 : float
-            The target continuous wave frequency.
+            The target continuous wave frequency. Also taken as the reference
+            frequency for the comoving frame.
         p_avg : float
             The average power of the CW light.
 
         """
-        #---- Construct TF Grids
-        self = super().FromFreqRange(n_points, v_min, v_max)
-        v0_selector = np.argmin(np.abs(self.v_grid - v0))
-        v0 = self.v_grid[v0_selector]
-        self.v0 = v0
+        #---- Initialize Grids
+        self = super().FromFreqRange(n_points, v_min, v_max, v0=v0, **kwargs)
+        self.__a_v = np.empty_like(self.v_grid, dtype=complex)
 
         #---- Set Spectrum
         p_t = np.ones_like(self.t_grid)
-        phi_t = 2*pi*(v0-self.v_ref)*self.t_grid
+        phi_t = 2*pi*(self.v0-self.v_ref)*self.t_grid
         self.a_t = p_t**0.5 * np.exp(1j*phi_t)
 
         #---- Set Pulse Energy
@@ -379,21 +391,6 @@ class Pulse(TFGrid):
         return self
 
     #---- Frequency Domain Properties
-    @property
-    def _a_v(self):
-        """
-        The root-power spectrum arranged in standard fft order.
-
-        Returns
-        -------
-        ndarray of complex
-
-        """
-        return fft.ifftshift(self.a_v)
-    @_a_v.setter
-    def _a_v(self, _a_v):
-        self.a_v = fft.fftshift(_a_v)
-
     @property
     def a_v(self):
         """
@@ -407,26 +404,27 @@ class Pulse(TFGrid):
         return self.__a_v
     @a_v.setter
     def a_v(self, a_v):
-        assert (len(a_v) == len(self.v_grid)), "The length of a_v must match v_grid."
-        self.__a_v = np.asarray(a_v, dtype=complex)
+        self.__a_v[...] = a_v
 
-    @property
-    def _p_v(self):
+    @ArrayProperty
+    def _a_v(self, key=...):
         """
-        The power spectrum arranged in standard fft order.
+        The root-power spectrum arranged in standard fft order.
 
         Returns
         -------
-        ndarray of float
+        ndarray of complex
 
         """
-        return fft.ifftshift(self.p_v)
-    @_p_v.setter
-    def _p_v(self, _p_v):
-        self.p_v = fft.fftshift(_p_v)
+        return fft.ifftshift(self.a_v)[key]
+    @_a_v.setter
+    def _a_v(self, _a_v, key=...):
+        if key is not ...:
+            _a_v = replace(self._a_v, _a_v, key)
+        self.a_v = fft.fftshift(_a_v)
 
-    @property
-    def p_v(self):
+    @ArrayProperty
+    def p_v(self, key=...):
         """
         The power spectrum, with units of ``J/Hz``.
 
@@ -435,28 +433,30 @@ class Pulse(TFGrid):
         ndarray of float
 
         """
-        return self.a_v.real**2 + self.a_v.imag**2
+        return self.a_v[key].real**2 + self.a_v[key].imag**2
     @p_v.setter
-    def p_v(self, p_v):
-        self.a_v = p_v**0.5 * np.exp(1j*self.phi_v)
+    def p_v(self, p_v, key=...):
+        self.a_v[key] = p_v**0.5 * np.exp(1j*self.phi_v[key])
 
-    @property
-    def _phi_v(self):
+    @ArrayProperty
+    def _p_v(self, key=...):
         """
-        The phase of the power spectrum arranged in standard fft order.
+        The power spectrum arranged in standard fft order.
 
         Returns
         -------
         ndarray of float
 
         """
-        return fft.ifftshift(self.phi_v)
-    @_phi_v.setter
-    def _phi_v(self, _phi_v):
-        self.phi_v = fft.fftshift(_phi_v)
+        return fft.ifftshift(self.p_v)[key]
+    @_p_v.setter
+    def _p_v(self, _p_v, key=...):
+        if key is not ...:
+            _p_v = replace(self._p_v, _p_v, key)
+        self.p_v = fft.fftshift(_p_v)
 
-    @property
-    def phi_v(self):
+    @ArrayProperty
+    def phi_v(self, key=...):
         """
         The phase of the power spectrum, in radians.
 
@@ -465,13 +465,30 @@ class Pulse(TFGrid):
         ndarray of float
 
         """
-        return np.angle(self.a_v)
+        return np.angle(self.a_v[key])
     @phi_v.setter
-    def phi_v(self, phi_v):
-        self.a_v = self.p_v**0.5 * np.exp(1j*phi_v)
+    def phi_v(self, phi_v, key=...):
+        self.a_v[key] = self.p_v[key]**0.5 * np.exp(1j*phi_v)
 
-    @property
-    def tg_v(self):
+    @ArrayProperty
+    def _phi_v(self, key=...):
+        """
+        The phase of the power spectrum arranged in standard fft order.
+
+        Returns
+        -------
+        ndarray of float
+
+        """
+        return fft.ifftshift(self.phi_v)[key]
+    @_phi_v.setter
+    def _phi_v(self, _phi_v, key=...):
+        if key is not ...:
+            _phi_v = replace(self._phi_v, _phi_v, key)
+        self.phi_v = fft.fftshift(_phi_v)
+
+    @ArrayProperty
+    def tg_v(self, key=...):
         """
         The group delay of the power spectrum, with units of ``s``.
 
@@ -480,7 +497,7 @@ class Pulse(TFGrid):
         ndarray of float
 
         """
-        return self.t_ref - np.gradient(np.unwrap(self.phi_v)/(2*pi), self.v_grid, edge_order=2)
+        return self.t_ref - np.gradient(np.unwrap(self.phi_v)/(2*pi), self.v_grid, edge_order=2)[key]
 
     def v_width(self, n=None):
         """
@@ -539,24 +556,8 @@ class Pulse(TFGrid):
         return v_widths
 
     #---- Time Domain Properties
-    @property
-    def _a_t(self):
-        """
-        The complex root-power envelope arranged in standard fft order.
-
-        Returns
-        -------
-        ndarray of complex
-
-        """
-        return fft.ifft(self._a_v, fsc=self.dt)
-    @_a_t.setter
-    def _a_t(self, _a_t):
-        assert (len(_a_t) == len(self.t_grid)), "The length of a_t must match t_grid."
-        self._a_v = fft.fft(_a_t, fsc=self.dt)
-
-    @property
-    def a_t(self):
+    @ArrayProperty
+    def a_t(self, key=...):
         """
         The complex root-power envelope, with units of ``(J/s)**0.5``.
 
@@ -565,29 +566,32 @@ class Pulse(TFGrid):
         ndarray of complex
 
         """
-        return fft.fftshift(self._a_t)
+        return fft.fftshift(self._a_t)[key]
     @a_t.setter
-    def a_t(self, a_t):
+    def a_t(self, a_t, key=...):
+        if key is not ...:
+            a_t = replace(self.a_t, a_t, key)
         self._a_t = fft.ifftshift(a_t)
 
-    @property
-    def _p_t(self):
+    @ArrayProperty
+    def _a_t(self, key=...):
         """
-        The power envelope arranged in standard fft order.
+        The complex root-power envelope arranged in standard fft order.
 
         Returns
         -------
-        ndarray of float
+        ndarray of complex
 
         """
-        _a_t = self._a_t
-        return _a_t.real**2 + _a_t.imag**2
-    @_p_t.setter
-    def _p_t(self, _p_t):
-        self._a_t = _p_t**0.5 * np.exp(1j*self._phi_t)
+        return fft.ifft(self._a_v, fsc=self.dt)[key]
+    @_a_t.setter
+    def _a_t(self, _a_t, key=...):
+        if key is not ...:
+            _a_t = replace(self._a_t, _a_t, key)
+        self._a_v = fft.fft(_a_t, fsc=self.dt)
 
-    @property
-    def p_t(self):
+    @ArrayProperty
+    def p_t(self, key=...):
         """
         The power envelope, with units of ``J/s``.
 
@@ -596,28 +600,31 @@ class Pulse(TFGrid):
         ndarray of float
 
         """
-        return fft.fftshift(self._p_t)
+        return fft.fftshift(self._p_t)[key]
     @p_t.setter
-    def p_t(self, p_t):
+    def p_t(self, p_t, key=...):
+        if key is not ...:
+            p_t = replace(self.p_t, p_t, key)
         self._p_t = fft.ifftshift(p_t)
 
-    @property
-    def _phi_t(self):
+    @ArrayProperty
+    def _p_t(self, key=...):
         """
-        The phase of the power envelope arranged in standard fft order.
+        The power envelope arranged in standard fft order.
 
         Returns
         -------
         ndarray of float
 
         """
-        return np.angle(self._a_t)
-    @_phi_t.setter
-    def _phi_t(self, _phi_t):
-        self._a_t = self._p_t**0.5 * np.exp(1j*_phi_t)
+        _a_t = self._a_t[key]
+        return _a_t.real**2 + _a_t.imag**2
+    @_p_t.setter
+    def _p_t(self, _p_t, key=...):
+        self._a_t[key] = _p_t**0.5 * np.exp(1j*self._phi_t[key])
 
-    @property
-    def phi_t(self):
+    @ArrayProperty
+    def phi_t(self, key=...):
         """
         The phase of the power envelope, in radians.
 
@@ -626,13 +633,30 @@ class Pulse(TFGrid):
         ndarray of float
 
         """
-        return fft.fftshift(self._phi_t)
+        return fft.fftshift(self._phi_t)[key]
     @phi_t.setter
-    def phi_t(self, phi_t):
+    def phi_t(self, phi_t, key=...):
+        if key is not ...:
+            phi_t = replace(self.phi_t, phi_t, key)
         self._phi_t = fft.ifftshift(phi_t)
 
-    @property
-    def vg_t(self):
+    @ArrayProperty
+    def _phi_t(self, key=...):
+        """
+        The phase of the power envelope arranged in standard fft order.
+
+        Returns
+        -------
+        ndarray of float
+
+        """
+        return np.angle(self._a_t[key])
+    @_phi_t.setter
+    def _phi_t(self, _phi_t, key=...):
+        self._a_t[key] = self._p_t[key]**0.5 * np.exp(1j*_phi_t)
+
+    @ArrayProperty
+    def vg_t(self, key=...):
         """
         The instantaneous frequency of the power envelope, with units of
         ``Hz``.
@@ -642,10 +666,23 @@ class Pulse(TFGrid):
         ndarray of float
 
         """
-        return self.v_ref + np.gradient(np.unwrap(self.phi_t)/(2*pi), self.t_grid, edge_order=2)
+        return self.v_ref + np.gradient(np.unwrap(self.phi_t)/(2*pi), self.t_grid, edge_order=2)[key]
 
-    @property
-    def _ra_t(self):
+    @ArrayProperty
+    def ra_t(self, key=...):
+        """
+        The real-valued instantaneous root-power, with units of
+        ``(J/s)**0.5``.
+
+        Returns
+        -------
+        ndarray of float
+
+        """
+        return fft.fftshift(self._ra_t)[key]
+
+    @ArrayProperty
+    def _ra_t(self, key=...):
         """
         The real-valued instantaneous root-power arranged in standard fft
         order.
@@ -658,35 +695,10 @@ class Pulse(TFGrid):
         ra_v = np.zeros_like(self.rv_grid, dtype=complex)
         ra_v[self.rn_slice] = 2**-0.5 * self.a_v
         ra_t = fft.irfft(ra_v, fsc=self.rdt, n=self.rn)
-        return ra_t
+        return ra_t[key]
 
-    @property
-    def ra_t(self):
-        """
-        The real-valued instantaneous root-power, with units of
-        ``(J/s)**0.5``.
-
-        Returns
-        -------
-        ndarray of float
-
-        """
-        return fft.fftshift(self._ra_t)
-
-    @property
-    def _rp_t(self):
-        """
-        The instantaneous power arranged in standard fft order.
-
-        Returns
-        -------
-        ndarray of float
-
-        """
-        return self._ra_t**2
-
-    @property
-    def rp_t(self):
+    @ArrayProperty
+    def rp_t(self, key=...):
         """
         The instantaneous power, with units of ``J/s``.
 
@@ -695,7 +707,19 @@ class Pulse(TFGrid):
         ndarray of float
 
         """
-        return fft.fftshift(self._rp_t)
+        return fft.fftshift(self._rp_t)[key]
+
+    @ArrayProperty
+    def _rp_t(self, key=...):
+        """
+        The instantaneous power arranged in standard fft order.
+
+        Returns
+        -------
+        ndarray of float
+
+        """
+        return self._ra_t[key]**2
 
     def t_width(self, n=None):
         """
@@ -860,7 +884,7 @@ class Pulse(TFGrid):
         Returns
         -------
         v_grid : ndarray of float
-            The frequency grid
+            The frequency grid.
         t_grid : ndarray of float
             The time grid.
         spg : ndarray of float
@@ -945,12 +969,12 @@ class Pulse(TFGrid):
         gate_pulses_v = (g_v[:, np.newaxis]
                          * np.exp(-1j*2*pi*delay_t_grid[np.newaxis, :]*v_grid[:, np.newaxis]))
         gate_pulses_t = fft.fftshift(fft.ifft(
-            fft.ifftshift(gate_pulses_v, axes=0), fsc=dt, axis=0, overwrite_x=True), axes=0)
+            fft.ifftshift(gate_pulses_v, axis=0), fsc=dt, axis=0, overwrite_x=True), axis=0)
 
         #---- Spectrogram
         spg_t = a_t[:, np.newaxis] * gate_pulses_t
         spg_v = fft.fftshift(fft.fft(
-            fft.ifftshift(spg_t, axes=0), fsc=dt, axis=0, overwrite_x=True), axes=0)
+            fft.ifftshift(spg_t, axis=0), fsc=dt, axis=0, overwrite_x=True), axis=0)
         p_spg = spg_v.real**2 + spg_v.imag**2
 
         #---- Extent

@@ -26,7 +26,7 @@ Anti-Aliasing
 ^^^^^^^^^^^^^
 Multiplications of functions in the time domain (operations intrinsic to nonlinear optics) are equivalent to convolutions in the frequency domain and vice versa. The support of a convolution is the sum of the support of its parts. Thus, 2nd and 3rd order processes in the time domain need 2x and 3x number of points in the frequency domain to avoid aliasing.
 
-:py:class:`~pynlo.light.Pulse` objects only initialize the minimum number of points necessary to represent the real-valued time domain pulse (i.e. 1x). While this minimizes the numerical complexity of individual nonlinear operations, aliasing introduces systematic error and can even increase the total simulation time by forcing shorter step sizes. More points can be generated for a specific :py:class:`~pynlo.light.Pulse` object by running its :py:meth:`~pynlo.utility.TFGrid.rtf_grids` method with `update` set to ``True`` and with a `n_harmonic` parameter greater than 1. Anti-aliasing is not always necessary as phase matching can suppress the aliased interactions, but it is best practice to verify that behavior on a case-by-case basis.
+:py:class:`~pynlo.light.Pulse` objects only initialize the minimum number of points necessary to represent the real-valued time domain pulse (i.e. 1x). While this minimizes the numerical complexity of individual nonlinear operations, aliasing introduces systematic error and can even increase the total simulation time by forcing shorter step sizes. More points can be generated for a specific :py:class:`~pynlo.light.Pulse` object by setting an `alias` parameter greater than 1 during its initialization or through its :py:meth:`~pynlo.utility.TFGrid.rtf_grids` method. Anti-aliasing is not always necessary as phase matching can suppress the aliased interactions, but it is best practice to verify that behavior on a case-by-case basis.
 
 
 Utilities
@@ -40,6 +40,6 @@ Example Code
    :maxdepth: 2
    :titlesonly:
    :caption: Examples
-   
+
    examples/silica-pcf_anomalous
    examples/ppln_mismatched-shg

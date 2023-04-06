@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 This example demonstrates supercontinuum generation due to self-phase
-modulation and soliton effects in a silica-based photonic crystal fiber.
+modulation and soliton effects in a silica-based photonic crystal fiber. The
+simulation is based on the parameters given in part V-A of Dudley et al.
+https://doi.org/10.1103/RevModPhys.78.1135
 
 """
 
@@ -24,8 +26,7 @@ v0 = c/835e-9       # c / 835 nm
 e_p = 550e-12       # 550 pJ
 t_fwhm = 50e-15     # 50 fs
 
-pulse = pynlo.light.Pulse.Sech(n_points, v_min, v_max, v0, e_p, t_fwhm)
-pulse.rtf_grids(n_harmonic=2, update=True) # anti-aliasing
+pulse = pynlo.light.Pulse.Sech(n_points, v_min, v_max, v0, e_p, t_fwhm, alias=2) # anti-aliasing
 
 v_grid = pulse.v_grid
 t_grid = pulse.t_grid
@@ -62,7 +63,7 @@ r_weights = [0.245*(1-0.21), 12.2e-15, 32e-15]
 b_weights = [0.245*0.21, 96e-15]
 raman = utils.chi3.nl_response_v(rt_grid, rdt, r_weights, b_weights)
 
-mode = pynlo.media.Mode(v_grid, beta, g3_v=g3, rv_grid=rv_grid, r3_v=raman, z=0.0)
+mode = pynlo.media.Mode(v_grid, beta, g3_v=g3, rv_grid=rv_grid, r3_v=raman)
 
 
 # %% Model

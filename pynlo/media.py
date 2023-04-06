@@ -242,7 +242,7 @@ class Mode():
         The angular wavenumber, with units of ``1/m``, or its derivatives with
         respect to angular frequency.
 
-        This method is recursive and succesively calculates higher order
+        This method is recursive and successively calculates higher order
         derivatives from the lower orders. This method returns the refractive
         index unchanged when `m` is less than or equal to 0.
 

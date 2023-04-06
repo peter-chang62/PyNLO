@@ -1,6 +1,6 @@
 PPLN: Mismatched SHG
 ====================
-This example demonstrates supercontinuum generation due to highly phase-mismatched second harmonic generation in periodically polled lithium niobate. The simulation is similar to that reported in Fig.2 of  Conforti et al. :title-reference:`Nonlinear envelope equation for broadband optical pulses in quadratic media` [1]_.
+This example demonstrates supercontinuum generation due to highly phase-mismatched second harmonic generation in periodically polled lithium niobate. The simulation is based on the parameters given for the second example in part III of Conforti et al. :title-reference:`Nonlinear envelope equation for broadband optical pulses in quadratic media` [1]_.
 
 Code
 ----
