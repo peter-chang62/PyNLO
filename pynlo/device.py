@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-TODO:
+TODO: pulse shaper, grating compressor, prism compressor
 
 """
 

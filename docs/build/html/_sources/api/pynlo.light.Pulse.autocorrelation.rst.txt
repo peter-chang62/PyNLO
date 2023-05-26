@@ -1,5 +1,5 @@
-pynlo.light.Pulse.autocorrelation
-=================================
+Pulse.autocorrelation
+=====================
 
 .. currentmodule:: pynlo.light
 

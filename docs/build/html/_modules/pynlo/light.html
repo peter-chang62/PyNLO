@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pynlo.light &#8212; PyNLO dev documentation</title>
+    <title>pynlo.light &#8212; PyNLO 1.dev documentation</title>
   
   
   
@@ -320,14 +320,14 @@ document.write(`
   <h1>Source code for pynlo.light</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Optical pulses in the time and frequency domains.</span>
+<span class="sd">Representing light in the time and frequency domains.</span>
 
 <span class="sd">Notes</span>
 <span class="sd">-----</span>
-<span class="sd">The public facing routines and properties of the defined classes have inputs</span>
-<span class="sd">and outputs that are arranged such that the coordinate arrays are monotonically</span>
-<span class="sd">ordered. Many of the associated private methods and properties are arranged in</span>
-<span class="sd">the standard fft order.</span>
+<span class="sd">The public facing routines and properties of the defined class have inputs and</span>
+<span class="sd">outputs that are arranged such that the coordinate arrays are monotonically</span>
+<span class="sd">ordered. Many of the associated private methods and properties, those prefixed</span>
+<span class="sd">by ``_``, are arranged in standard fft order (using `ifftshift`).</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -342,154 +342,107 @@ document.write(`
 <span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="kn">import</span> <span class="n">pi</span>
 
 <span class="kn">from</span> <span class="nn">pynlo.utility</span> <span class="kn">import</span> <span class="n">TFGrid</span><span class="p">,</span> <span class="n">fft</span><span class="p">,</span> <span class="n">resample_v</span><span class="p">,</span> <span class="n">resample_t</span>
-<span class="kn">from</span> <span class="nn">pynlo.utility.misc</span> <span class="kn">import</span> <span class="n">ArrayProperty</span><span class="p">,</span> <span class="n">replace</span>
+<span class="kn">from</span> <span class="nn">pynlo.utility.misc</span> <span class="kn">import</span> <span class="n">SettableArrayProperty</span><span class="p">,</span> <span class="n">replace</span>
 
 
 <span class="c1"># %% Collections</span>
 
-<span class="n">PowerSpectralWidths</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;PowerSpectralWidths&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;fwhm&quot;</span><span class="p">,</span> <span class="s2">&quot;rms&quot;</span><span class="p">,</span> <span class="s2">&quot;eff&quot;</span><span class="p">])</span>
+<span class="n">PowerSpectralWidth</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;PowerSpectralWidth&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;fwhm&quot;</span><span class="p">,</span> <span class="s2">&quot;rms&quot;</span><span class="p">,</span> <span class="s2">&quot;eqv&quot;</span><span class="p">])</span>
 
-<span class="n">PowerEnvelopeWidths</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;PowerEnvelopeWidths&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;fwhm&quot;</span><span class="p">,</span> <span class="s2">&quot;rms&quot;</span><span class="p">,</span> <span class="s2">&quot;eff&quot;</span><span class="p">])</span>
+<span class="n">PowerEnvelopeWidth</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;PowerEnvelopeWidth&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;fwhm&quot;</span><span class="p">,</span> <span class="s2">&quot;rms&quot;</span><span class="p">,</span> <span class="s2">&quot;eqv&quot;</span><span class="p">])</span>
 
-<span class="n">Autocorrelation</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Autocorrelation&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;t_grid&quot;</span><span class="p">,</span> <span class="s2">&quot;ac_t&quot;</span><span class="p">,</span> <span class="s2">&quot;fwhm&quot;</span><span class="p">,</span> <span class="s2">&quot;rms&quot;</span><span class="p">,</span> <span class="s2">&quot;eff&quot;</span><span class="p">])</span>
+<span class="n">Autocorrelation</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Autocorrelation&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;t_grid&quot;</span><span class="p">,</span> <span class="s2">&quot;ac_t&quot;</span><span class="p">,</span> <span class="s2">&quot;fwhm&quot;</span><span class="p">,</span> <span class="s2">&quot;rms&quot;</span><span class="p">,</span> <span class="s2">&quot;eqv&quot;</span><span class="p">])</span>
 
 <span class="n">Spectrogram</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Spectrogram&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;v_grid&quot;</span><span class="p">,</span> <span class="s2">&quot;t_grid&quot;</span><span class="p">,</span> <span class="s2">&quot;spg&quot;</span><span class="p">,</span> <span class="s2">&quot;extent&quot;</span><span class="p">])</span>
 
 
-<span class="c1"># %% Classes</span>
+<span class="c1"># %% Pulse</span>
 
 <div class="viewcode-block" id="Pulse"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.html#pynlo.light.Pulse">[docs]</a><span class="k">class</span> <span class="nc">Pulse</span><span class="p">(</span><span class="n">TFGrid</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An optical pulse, defined over complementary time and frequency grids.</span>
 
-<span class="sd">    The default initializer creates an empty `Pulse` object. Set one of four</span>
-<span class="sd">    attributes, `a_v`, `p_v`, `a_t`, or `p_t`, to populate the pulse spectrum</span>
-<span class="sd">    or temporal envelope.</span>
-
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    n_points : int</span>
+<span class="sd">    n : int</span>
 <span class="sd">        The number of grid points.</span>
+<span class="sd">    v_ref : float</span>
+<span class="sd">        The target central frequency of the grid.</span>
 <span class="sd">    dv : float</span>
 <span class="sd">        The frequency step size. This is equal to the reciprocal of the time</span>
 <span class="sd">        window.</span>
-<span class="sd">    v_ref : float</span>
-<span class="sd">        The target central frequency of the grid.</span>
+<span class="sd">    v0 : float, optional</span>
+<span class="sd">        The comoving-frame reference frequency. The default value is the center</span>
+<span class="sd">        frequency of the resulting grid.</span>
 <span class="sd">    a_v : array_like of complex, optional</span>
-<span class="sd">        The root-power spectrum. The default selection is an empty spectrum.</span>
-<span class="sd">    alias : int, optional</span>
-<span class="sd">        The number of harmonics supported by the real-valued time grid without</span>
-<span class="sd">        aliasing. The default is 1, the fundamental harmonic. A higher number</span>
-<span class="sd">        may be useful when simulating nonlinear interactions.</span>
+<span class="sd">        The root-power spectrum. The default value is an empty spectrum.</span>
+<span class="sd">    alias : float, optional</span>
+<span class="sd">        The number of harmonics supported by the real-valued time domain grid</span>
+<span class="sd">        without aliasing. The default is 1, which only generates enough points</span>
+<span class="sd">        for one alias-free Nyquist zone. A higher number may be useful when</span>
+<span class="sd">        simulating nonlinear interactions.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    pynlo.utility.TFGrid :</span>
+<span class="sd">        Documentation of the methods and attributes related to this class&#39;s</span>
+<span class="sd">        time and frequency grids.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    See :py:class:`~pynlo.utility.TFGrid` for other attributes.</span>
-
-<span class="sd">    The power spectrum and power envelope are normalized to the pulse energy</span>
+<span class="sd">    The power spectrum and temporal envelope are normalized to the pulse energy</span>
 <span class="sd">    `e_p`::</span>
 
 <span class="sd">        e_p == np.sum(p_v*dv) == np.sum(p_t*dt) == np.sum(rp_t*rdt)</span>
 
-<span class="sd">    The amplitude of the root-power spectrum of the complex envelope is a</span>
-<span class="sd">    factor of ``2**0.5`` larger than the root-power spectrum of the</span>
-<span class="sd">    real-valued representation. This difference is due to the real DFT being</span>
-<span class="sd">    only the positive side of a double-sided spectrum. When transforming</span>
-<span class="sd">    between the two representations use the following normalization::</span>
+<span class="sd">    The amplitude of the analytic root-power spectrum is a factor of ``2**0.5``</span>
+<span class="sd">    larger than the double-sided root-power spectrum of the real-valued time</span>
+<span class="sd">    domain. When transforming between the two representations use the following</span>
+<span class="sd">    normalization::</span>
 
 <span class="sd">        a_v = 2**0.5 * ra_v[rn_slice]</span>
 <span class="sd">        ra_v[rn_slice] = 2**-0.5 * a_v</span>
 
+<span class="sd">    The comoving-frame reference frequency `v0` is used to adjust the group</span>
+<span class="sd">    delay of the time window during pulse propagation simulations.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="Pulse.__init__"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.__init__.html#pynlo.light.Pulse.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">v_ref</span><span class="p">,</span> <span class="n">a_v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a pulse given the total number of points, the frequency step</span>
-<span class="sd">        size (reciprocal of the time window), and a target central frequency.</span>
-
-<span class="sd">        If necessary, the reference frequency will be increased so that the</span>
-<span class="sd">        grid is formed without any negative frequencies.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        n_points : int</span>
-<span class="sd">            The number of grid points.</span>
-<span class="sd">        dv : float</span>
-<span class="sd">            The frequency step size. This is equal to the reciprocal of the</span>
-<span class="sd">            time window.</span>
-<span class="sd">        v_ref : float</span>
-<span class="sd">            The target central frequency of the grid.</span>
-<span class="sd">        a_v : array_like of complex, optional</span>
-<span class="sd">            The root-power spectrum. The default selection is an empty</span>
-<span class="sd">            spectrum.</span>
-<span class="sd">        alias : int, optional</span>
-<span class="sd">            The number of harmonics supported by the real-valued time grid</span>
-<span class="sd">            without aliasing. The default is 1, the fundamental harmonic. A</span>
-<span class="sd">            higher number may be useful when simulating nonlinear interactions.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v_ref</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">a_v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="c1">#---- Initialize Grids</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">v_ref</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="n">alias</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">v_ref</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="n">alias</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">v0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># same as v_ref</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">v0</span> <span class="o">=</span> <span class="n">v0</span>
 
         <span class="c1">#---- Set Spectrum</span>
-        <span class="k">if</span> <span class="n">a_v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a_v</span><span class="p">)</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">)),</span> <span class="s2">&quot;The length of a_v must match v_grid.&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a_v</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">a_v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a_v</span><span class="p">,</span> <span class="n">astype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">a_v</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a_v</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span><span class="p">),</span> <span class="p">(</span>
+                    <span class="s2">&quot;The length of `a_v` must match the number of grid points.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">=</span> <span class="n">a_v</span>
 
     <span class="c1">#---- Class Methods</span>
-<div class="viewcode-block" id="Pulse.FromTFGrid"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.FromTFGrid.html#pynlo.light.Pulse.FromTFGrid">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">FromTFGrid</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tfgrid</span><span class="p">,</span> <span class="n">a_v</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a pulse given a `TFGrid` instance.</span>
-
-<span class="sd">        Use this method to create `Pulse` objects from an existing set of</span>
-<span class="sd">        coordinate grids.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        tfgrid : pynlo.utility.TFGrid</span>
-<span class="sd">            An instance of a `TFGrid` object.</span>
-<span class="sd">        a_v : array_like of complex, optional</span>
-<span class="sd">            The root-power spectrum. The default populates an empty spectrum.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tfgrid</span><span class="p">,</span> <span class="n">TFGrid</span><span class="p">),</span> <span class="s2">&quot;The input must be an instance of the TFGrid class.&quot;</span>
-
-        <span class="c1">#---- Initialize Grids</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tfgrid</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span> <span class="c1"># copy TFGrid</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
-
-        <span class="c1">#---- Set Spectrum</span>
-        <span class="k">if</span> <span class="n">a_v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a_v</span><span class="p">)</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">)),</span> <span class="s2">&quot;The length of a_v must match v_grid.&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">=</span> <span class="n">a_v</span>
-        <span class="k">return</span> <span class="bp">self</span></div>
-
 <div class="viewcode-block" id="Pulse.FromPowerSpectrum"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.FromPowerSpectrum.html#pynlo.light.Pulse.FromPowerSpectrum">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">FromPowerSpectrum</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">p_v</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">e_p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phi_v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">FromPowerSpectrum</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">p_v</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">e_p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phi_v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a pulse using existing spectral data.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        p_v : callable -&gt; array_like of float</span>
-<span class="sd">            The power spectrum to be evaluated along the resulting frequency</span>
-<span class="sd">            grid.</span>
-<span class="sd">        n_points : int, optional</span>
+<span class="sd">            The power spectrum.</span>
+<span class="sd">        n : int, optional</span>
 <span class="sd">            The number of grid points.</span>
 <span class="sd">        v_min : float, optional</span>
 <span class="sd">            The target minimum frequency.</span>
 <span class="sd">        v_max : float, optional</span>
 <span class="sd">            The target maximum frequency.</span>
 <span class="sd">        v0 : float, optional</span>
-<span class="sd">            The comoving frame reference frequency. The default selection is</span>
-<span class="sd">            the center of the resulting frequency grid.</span>
+<span class="sd">            The comoving-frame reference frequency. The default value is the</span>
+<span class="sd">            center of the resulting frequency grid.</span>
 <span class="sd">        e_p : float, optional</span>
 <span class="sd">            The pulse energy. The default inherits the pulse energy of the</span>
 <span class="sd">            input spectrum.</span>
@@ -500,8 +453,12 @@ document.write(`
         <span class="k">assert</span> <span class="n">callable</span><span class="p">(</span><span class="n">p_v</span><span class="p">),</span> <span class="s2">&quot;The power spectrum must be a callable function.&quot;</span>
 
         <span class="c1">#---- Initialize Grids</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">v0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># same as v_ref</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">v0</span> <span class="o">=</span> <span class="n">v0</span>
 
         <span class="c1">#---- Evaluate Input</span>
         <span class="n">p_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">p_v</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
@@ -522,13 +479,13 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="Pulse.Gaussian"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.Gaussian.html#pynlo.light.Pulse.Gaussian">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">Gaussian</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">e_p</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">Gaussian</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">e_p</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a gaussian or super-gaussian pulse.</span>
+<span class="sd">        Initialize a Gaussian or super-Gaussian pulse.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        n_points : int</span>
+<span class="sd">        n : int</span>
 <span class="sd">            The number of grid points.</span>
 <span class="sd">        v_min : float</span>
 <span class="sd">            The target minimum frequency.</span>
@@ -542,14 +499,15 @@ document.write(`
 <span class="sd">        t_fwhm : float</span>
 <span class="sd">            The full width at half maximum of the pulse&#39;s power envelope.</span>
 <span class="sd">        m : float, optional</span>
-<span class="sd">            The super-gaussian order. Default is 1.</span>
+<span class="sd">            The super-Gaussian order. Default is 1.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="p">(</span><span class="n">t_fwhm</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The pulse width must be greater than 0.&quot;</span>
 
         <span class="c1">#---- Initialize Grids</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v0</span> <span class="o">=</span> <span class="n">v0</span>
 
         <span class="c1">#---- Set Spectrum</span>
         <span class="n">p_t</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span><span class="o">/</span><span class="n">t_fwhm</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="n">m</span><span class="p">)</span>
@@ -561,13 +519,13 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="Pulse.Sech"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.Sech.html#pynlo.light.Pulse.Sech">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">Sech</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">e_p</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">Sech</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">e_p</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a squared hyperbolic secant pulse.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        n_points : int</span>
+<span class="sd">        n : int</span>
 <span class="sd">            The number of grid points.</span>
 <span class="sd">        v_min : float</span>
 <span class="sd">            The target minimum frequency.</span>
@@ -585,8 +543,9 @@ document.write(`
         <span class="k">assert</span> <span class="p">(</span><span class="n">t_fwhm</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The pulse width must be greater than 0.&quot;</span>
 
         <span class="c1">#---- Initialize Grids</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v0</span> <span class="o">=</span> <span class="n">v0</span>
 
         <span class="c1">#---- Set Spectrum</span>
         <span class="n">t0</span> <span class="o">=</span> <span class="n">t_fwhm</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arccosh</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mf">0.5</span><span class="p">))</span>
@@ -599,13 +558,13 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="Pulse.Parabolic"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.Parabolic.html#pynlo.light.Pulse.Parabolic">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">Parabolic</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">e_p</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">Parabolic</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">e_p</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a parabolic pulse.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        n_points : int</span>
+<span class="sd">        n : int</span>
 <span class="sd">            The number of grid points.</span>
 <span class="sd">        v_min : float</span>
 <span class="sd">            The target minimum frequency.</span>
@@ -623,8 +582,9 @@ document.write(`
         <span class="k">assert</span> <span class="p">(</span><span class="n">t_fwhm</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The pulse width must be greater than 0.&quot;</span>
 
         <span class="c1">#---- Initialize Grids</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v0</span> <span class="o">=</span> <span class="n">v0</span>
 
         <span class="c1">#---- Set Spectrum</span>
         <span class="n">p_t</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span><span class="o">/</span><span class="n">t_fwhm</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
@@ -637,13 +597,13 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="Pulse.Lorentzian"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.Lorentzian.html#pynlo.light.Pulse.Lorentzian">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">Lorentzian</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">e_p</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">Lorentzian</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">e_p</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a squared Lorentzian pulse.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        n_points : int</span>
+<span class="sd">        n : int</span>
 <span class="sd">            The number of grid points.</span>
 <span class="sd">        v_min : float</span>
 <span class="sd">            The target minimum frequency.</span>
@@ -661,8 +621,9 @@ document.write(`
         <span class="k">assert</span> <span class="p">(</span><span class="n">t_fwhm</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The pulse width must be greater than 0.&quot;</span>
 
         <span class="c1">#---- Initialize Grids</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v0</span> <span class="o">=</span> <span class="n">v0</span>
 
         <span class="c1">#---- Set Spectrum</span>
         <span class="n">p_t</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mf">0.5</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span><span class="o">/</span><span class="n">t_fwhm</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
@@ -674,31 +635,32 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="Pulse.CW"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.CW.html#pynlo.light.Pulse.CW">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">CW</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">p_avg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">CW</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">p_avg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize an optical spectrum with a single target frequency.</span>
+<span class="sd">        Initialize a continuous wave.</span>
 
 <span class="sd">        The target frequency will be offset so that it directly aligns with one</span>
 <span class="sd">        of the `v_grid` coordinates.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        n_points : int</span>
+<span class="sd">        n : int</span>
 <span class="sd">            The number of grid points.</span>
 <span class="sd">        v_min : float</span>
 <span class="sd">            The target minimum frequency.</span>
 <span class="sd">        v_max : float</span>
 <span class="sd">            The target maximum frequency.</span>
 <span class="sd">        v0 : float</span>
-<span class="sd">            The target continuous wave frequency. Also taken as the reference</span>
-<span class="sd">            frequency for the comoving frame.</span>
+<span class="sd">            The target CW frequency. Also taken as the reference frequency for</span>
+<span class="sd">            the comoving frame.</span>
 <span class="sd">        p_avg : float</span>
 <span class="sd">            The average power of the CW light.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#---- Initialize Grids</span>
-        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">FromFreqRange</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v0</span> <span class="o">=</span> <span class="n">v0</span>
 
         <span class="c1">#---- Set Spectrum</span>
         <span class="n">p_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span><span class="p">)</span>
@@ -726,7 +688,7 @@ document.write(`
     <span class="k">def</span> <span class="nf">a_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a_v</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__a_v</span><span class="p">[</span><span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="n">a_v</span>
 
-    <span class="nd">@ArrayProperty</span>
+    <span class="nd">@SettableArrayProperty</span>
     <span class="k">def</span> <span class="nf">_a_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The root-power spectrum arranged in standard fft order.</span>
@@ -743,7 +705,7 @@ document.write(`
             <span class="n">_a_v</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_a_v</span><span class="p">,</span> <span class="n">_a_v</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">_a_v</span><span class="p">)</span>
 
-    <span class="nd">@ArrayProperty</span>
+    <span class="nd">@SettableArrayProperty</span>
     <span class="k">def</span> <span class="nf">p_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The power spectrum, with units of ``J/Hz``.</span>
@@ -758,7 +720,7 @@ document.write(`
     <span class="k">def</span> <span class="nf">p_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p_v</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">p_v</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_v</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
 
-    <span class="nd">@ArrayProperty</span>
+    <span class="nd">@SettableArrayProperty</span>
     <span class="k">def</span> <span class="nf">_p_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The power spectrum arranged in standard fft order.</span>
@@ -775,10 +737,10 @@ document.write(`
             <span class="n">_p_v</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p_v</span><span class="p">,</span> <span class="n">_p_v</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">_p_v</span><span class="p">)</span>
 
-    <span class="nd">@ArrayProperty</span>
+    <span class="nd">@SettableArrayProperty</span>
     <span class="k">def</span> <span class="nf">phi_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The phase of the power spectrum, in radians.</span>
+<span class="sd">        The phase of the power spectrum, in ``rad``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -790,7 +752,7 @@ document.write(`
     <span class="k">def</span> <span class="nf">phi_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phi_v</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_v</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">phi_v</span><span class="p">)</span>
 
-    <span class="nd">@ArrayProperty</span>
+    <span class="nd">@SettableArrayProperty</span>
     <span class="k">def</span> <span class="nf">_phi_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The phase of the power spectrum arranged in standard fft order.</span>
@@ -807,8 +769,8 @@ document.write(`
             <span class="n">_phi_v</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_phi_v</span><span class="p">,</span> <span class="n">_phi_v</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phi_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">_phi_v</span><span class="p">)</span>
 
-    <span class="nd">@ArrayProperty</span>
-    <span class="k">def</span> <span class="nf">tg_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tg_v</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The group delay of the power spectrum, with units of ``s``.</span>
 
@@ -817,41 +779,42 @@ document.write(`
 <span class="sd">        ndarray of float</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_ref</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unwrap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_v</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">edge_order</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_ref</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unwrap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_v</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">edge_order</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Pulse.v_width"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.v_width.html#pynlo.light.Pulse.v_width">[docs]</a>    <span class="k">def</span> <span class="nf">v_width</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Pulse.v_width"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.v_width.html#pynlo.light.Pulse.v_width">[docs]</a>    <span class="k">def</span> <span class="nf">v_width</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the spectral width of the power spectrum.</span>
+<span class="sd">        Calculate the width of the pulse in the frequency domain.</span>
 
-<span class="sd">        Set `n` to optionally resample the number of points and change the</span>
+<span class="sd">        Set `m` to optionally resample the number of points and change the</span>
 <span class="sd">        frequency resolution.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        n : int, optional</span>
-<span class="sd">            The number of points at which to resample the power spectrum. The</span>
-<span class="sd">            default is to not resample.</span>
+<span class="sd">        m : float, optional</span>
+<span class="sd">            The multiplicative number of points at which to resample the power</span>
+<span class="sd">            spectrum. The default is to not resample.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        fwhm : float</span>
 <span class="sd">            The full width at half maximum of the power spectrum.</span>
 <span class="sd">        rms : float</span>
-<span class="sd">            The root mean square width of the power spectrum.</span>
-<span class="sd">        eff : float</span>
-<span class="sd">            The effective width of the power spectrum.</span>
+<span class="sd">            The full root-mean-square width of the power spectrum.</span>
+<span class="sd">        eqv : float</span>
+<span class="sd">            The equivalent width of the power spectrum.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#---- Power</span>
         <span class="n">p_v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_v</span>
 
         <span class="c1">#---- Resample</span>
-        <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
             <span class="n">v_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span>
             <span class="n">dv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dv</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)),</span> <span class="s2">&quot;The number of points must be an integer.&quot;</span>
+            <span class="k">assert</span> <span class="n">m</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;The point multiplier must be greater than 0.&quot;</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
             <span class="n">resampled</span> <span class="o">=</span> <span class="n">resample_v</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">p_v</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
             <span class="n">p_v</span> <span class="o">=</span> <span class="n">resampled</span><span class="o">.</span><span class="n">f_v</span>
             <span class="n">v_grid</span> <span class="o">=</span> <span class="n">resampled</span><span class="o">.</span><span class="n">v_grid</span>
@@ -866,20 +829,20 @@ document.write(`
         <span class="n">p_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p_v</span><span class="o">*</span><span class="n">dv</span><span class="p">)</span>
         <span class="n">v_avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v_grid</span><span class="o">*</span><span class="n">p_v</span><span class="o">*</span><span class="n">dv</span><span class="p">)</span><span class="o">/</span><span class="n">p_norm</span>
         <span class="n">v_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">v_grid</span> <span class="o">-</span> <span class="n">v_avg</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">p_v</span><span class="o">*</span><span class="n">dv</span><span class="p">)</span><span class="o">/</span><span class="n">p_norm</span>
-        <span class="n">v_rms</span> <span class="o">=</span> <span class="n">v_var</span><span class="o">**</span><span class="mf">0.5</span>
+        <span class="n">v_rms</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">v_var</span><span class="o">**</span><span class="mf">0.5</span>
 
-        <span class="c1">#---- Effective</span>
-        <span class="n">v_eff</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">p_v</span><span class="o">/</span><span class="n">p_norm</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">dv</span><span class="p">)</span>
+        <span class="c1">#---- Equivalent</span>
+        <span class="n">v_eqv</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">p_v</span><span class="o">/</span><span class="n">p_norm</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">dv</span><span class="p">)</span>
 
-        <span class="c1">#---- Construct PowerSpectralWidths</span>
-        <span class="n">v_widths</span> <span class="o">=</span> <span class="n">PowerSpectralWidths</span><span class="p">(</span><span class="n">fwhm</span><span class="o">=</span><span class="n">v_fwhm</span><span class="p">,</span> <span class="n">rms</span><span class="o">=</span><span class="n">v_rms</span><span class="p">,</span> <span class="n">eff</span><span class="o">=</span><span class="n">v_eff</span><span class="p">)</span>
+        <span class="c1">#---- Construct PowerSpectralWidth</span>
+        <span class="n">v_widths</span> <span class="o">=</span> <span class="n">PowerSpectralWidth</span><span class="p">(</span><span class="n">fwhm</span><span class="o">=</span><span class="n">v_fwhm</span><span class="p">,</span> <span class="n">rms</span><span class="o">=</span><span class="n">v_rms</span><span class="p">,</span> <span class="n">eqv</span><span class="o">=</span><span class="n">v_eqv</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v_widths</span></div>
 
     <span class="c1">#---- Time Domain Properties</span>
-    <span class="nd">@ArrayProperty</span>
+    <span class="nd">@SettableArrayProperty</span>
     <span class="k">def</span> <span class="nf">a_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The complex root-power envelope, with units of ``(J/s)**0.5``.</span>
+<span class="sd">        The root-power complex envelope, with units of ``(J/s)**0.5``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -893,10 +856,10 @@ document.write(`
             <span class="n">a_t</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a_t</span><span class="p">,</span> <span class="n">a_t</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_a_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">a_t</span><span class="p">)</span>
 
-    <span class="nd">@ArrayProperty</span>
+    <span class="nd">@SettableArrayProperty</span>
     <span class="k">def</span> <span class="nf">_a_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The complex root-power envelope arranged in standard fft order.</span>
+<span class="sd">        The root-power complex envelope arranged in standard fft order.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -910,14 +873,21 @@ document.write(`
             <span class="n">_a_t</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_a_t</span><span class="p">,</span> <span class="n">_a_t</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_a_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">_a_t</span><span class="p">,</span> <span class="n">fsc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span>
 
-    <span class="nd">@ArrayProperty</span>
+    <span class="nd">@SettableArrayProperty</span>
     <span class="k">def</span> <span class="nf">p_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The power envelope, with units of ``J/s``.</span>
+<span class="sd">        The average power envelope, with units of ``J/s``.</span>
+
+<span class="sd">        The envelope of the instantaneous power, the peak power of each optical</span>
+<span class="sd">        cycle, is a factor of 2 larger.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        ndarray of float</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        rp_t : The instantaneous power.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_p_t</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
@@ -927,10 +897,10 @@ document.write(`
             <span class="n">p_t</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_t</span><span class="p">,</span> <span class="n">p_t</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_p_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">p_t</span><span class="p">)</span>
 
-    <span class="nd">@ArrayProperty</span>
+    <span class="nd">@SettableArrayProperty</span>
     <span class="k">def</span> <span class="nf">_p_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The power envelope arranged in standard fft order.</span>
+<span class="sd">        The average power envelope arranged in standard fft order.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -943,10 +913,10 @@ document.write(`
     <span class="k">def</span> <span class="nf">_p_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_p_t</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_a_t</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_p_t</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_phi_t</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
 
-    <span class="nd">@ArrayProperty</span>
+    <span class="nd">@SettableArrayProperty</span>
     <span class="k">def</span> <span class="nf">phi_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The phase of the power envelope, in radians.</span>
+<span class="sd">        The phase of the complex envelope, in ``rad``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -960,10 +930,10 @@ document.write(`
             <span class="n">phi_t</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_t</span><span class="p">,</span> <span class="n">phi_t</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_phi_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">phi_t</span><span class="p">)</span>
 
-    <span class="nd">@ArrayProperty</span>
+    <span class="nd">@SettableArrayProperty</span>
     <span class="k">def</span> <span class="nf">_phi_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The phase of the power envelope arranged in standard fft order.</span>
+<span class="sd">        The phase of the complex envelope arranged in standard fft order.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -975,10 +945,10 @@ document.write(`
     <span class="k">def</span> <span class="nf">_phi_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_phi_t</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_a_t</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p_t</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">_phi_t</span><span class="p">)</span>
 
-    <span class="nd">@ArrayProperty</span>
-    <span class="k">def</span> <span class="nf">vg_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vg_t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The instantaneous frequency of the power envelope, with units of</span>
+<span class="sd">        The instantaneous frequency of the complex envelope, with units of</span>
 <span class="sd">        ``Hz``.</span>
 
 <span class="sd">        Returns</span>
@@ -986,12 +956,12 @@ document.write(`
 <span class="sd">        ndarray of float</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_ref</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unwrap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_t</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">edge_order</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_ref</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unwrap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_t</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">edge_order</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-    <span class="nd">@ArrayProperty</span>
+    <span class="nd">@SettableArrayProperty</span>
     <span class="k">def</span> <span class="nf">ra_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The real-valued instantaneous root-power, with units of</span>
+<span class="sd">        The real-valued instantaneous root-power amplitude, with units of</span>
 <span class="sd">        ``(J/s)**0.5``.</span>
 
 <span class="sd">        Returns</span>
@@ -1000,12 +970,17 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ra_t</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
+    <span class="nd">@ra_t</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">ra_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra_t</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="o">...</span><span class="p">:</span>
+            <span class="n">ra_t</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ra_t</span><span class="p">,</span> <span class="n">ra_t</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ra_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">ra_t</span><span class="p">)</span>
 
-    <span class="nd">@ArrayProperty</span>
+    <span class="nd">@SettableArrayProperty</span>
     <span class="k">def</span> <span class="nf">_ra_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The real-valued instantaneous root-power arranged in standard fft</span>
-<span class="sd">        order.</span>
+<span class="sd">        The real-valued instantaneous root-power amplitude arranged in standard</span>
+<span class="sd">        fft order.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1016,9 +991,15 @@ document.write(`
         <span class="n">ra_v</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rn_slice</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span>
         <span class="n">ra_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">irfft</span><span class="p">(</span><span class="n">ra_v</span><span class="p">,</span> <span class="n">fsc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rdt</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rn</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ra_t</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="nd">@_ra_t</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">_ra_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_ra_t</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="o">...</span><span class="p">:</span>
+            <span class="n">_ra_t</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ra_t</span><span class="p">,</span> <span class="n">_ra_t</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+        <span class="n">ra_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">_ra_t</span><span class="p">,</span> <span class="n">fsc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rdt</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">ra_v</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rn_slice</span><span class="p">]</span>
 
-    <span class="nd">@ArrayProperty</span>
-    <span class="k">def</span> <span class="nf">rp_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">rp_t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The instantaneous power, with units of ``J/s``.</span>
 
@@ -1027,10 +1008,10 @@ document.write(`
 <span class="sd">        ndarray of float</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rp_t</span><span class="p">)[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rp_t</span><span class="p">)</span>
 
-    <span class="nd">@ArrayProperty</span>
-    <span class="k">def</span> <span class="nf">_rp_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_rp_t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The instantaneous power arranged in standard fft order.</span>
 
@@ -1039,41 +1020,42 @@ document.write(`
 <span class="sd">        ndarray of float</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ra_t</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ra_t</span><span class="o">**</span><span class="mi">2</span>
 
-<div class="viewcode-block" id="Pulse.t_width"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.t_width.html#pynlo.light.Pulse.t_width">[docs]</a>    <span class="k">def</span> <span class="nf">t_width</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Pulse.t_width"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.t_width.html#pynlo.light.Pulse.t_width">[docs]</a>    <span class="k">def</span> <span class="nf">t_width</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the temporal width of the power envelope.</span>
+<span class="sd">        Calculate the width of the pulse in the time domain.</span>
 
-<span class="sd">        Set `n` to optionally resample the number of points and change the</span>
+<span class="sd">        Set `m` to optionally resample the number of points and change the</span>
 <span class="sd">        time resolution.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        n : int, optional</span>
-<span class="sd">            The number of points at which to resample the power envelope. The</span>
-<span class="sd">            default is to not resample.</span>
+<span class="sd">        m : float, optional</span>
+<span class="sd">            The multiplicative number of points at which to resample the power</span>
+<span class="sd">            envelope. The default is to not resample.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        fwhm : float</span>
 <span class="sd">            The full width at half maximum of the power envelope.</span>
 <span class="sd">        rms : float</span>
-<span class="sd">            The root mean square width of the power envelope.</span>
-<span class="sd">        eff : float</span>
-<span class="sd">            The effective width of the power envelope.</span>
+<span class="sd">            The full root-mean-square width of the power envelope.</span>
+<span class="sd">        eqv : float</span>
+<span class="sd">            The equivalent width of the power envelope.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#---- Power</span>
         <span class="n">p_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p_t</span>
 
         <span class="c1">#---- Resample</span>
-        <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
             <span class="n">t_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span>
             <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)),</span> <span class="s2">&quot;The number of points must be an integer.&quot;</span>
+            <span class="k">assert</span> <span class="n">m</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;The point multiplier must be greater than 0.&quot;</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
             <span class="n">resampled</span> <span class="o">=</span> <span class="n">resample_t</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">p_t</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
             <span class="n">p_t</span> <span class="o">=</span> <span class="n">resampled</span><span class="o">.</span><span class="n">f_t</span>
             <span class="n">t_grid</span> <span class="o">=</span> <span class="n">resampled</span><span class="o">.</span><span class="n">t_grid</span>
@@ -1088,13 +1070,13 @@ document.write(`
         <span class="n">p_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p_t</span><span class="o">*</span><span class="n">dt</span><span class="p">)</span>
         <span class="n">t_avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">t_grid</span><span class="o">*</span><span class="n">p_t</span><span class="o">*</span><span class="n">dt</span><span class="p">)</span><span class="o">/</span><span class="n">p_norm</span>
         <span class="n">t_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">t_grid</span> <span class="o">-</span> <span class="n">t_avg</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">p_t</span><span class="o">*</span><span class="n">dt</span><span class="p">)</span><span class="o">/</span><span class="n">p_norm</span>
-        <span class="n">t_rms</span> <span class="o">=</span> <span class="n">t_var</span><span class="o">**</span><span class="mf">0.5</span>
+        <span class="n">t_rms</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t_var</span><span class="o">**</span><span class="mf">0.5</span>
 
-        <span class="c1">#---- Effective</span>
-        <span class="n">t_eff</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">p_t</span><span class="o">/</span><span class="n">p_norm</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span>
+        <span class="c1">#---- Equivalent</span>
+        <span class="n">t_eqv</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">p_t</span><span class="o">/</span><span class="n">p_norm</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span>
 
-        <span class="c1">#---- Construct PowerEnvelopeWidths</span>
-        <span class="n">t_widths</span> <span class="o">=</span> <span class="n">PowerEnvelopeWidths</span><span class="p">(</span><span class="n">fwhm</span><span class="o">=</span><span class="n">t_fwhm</span><span class="p">,</span> <span class="n">rms</span><span class="o">=</span><span class="n">t_rms</span><span class="p">,</span> <span class="n">eff</span><span class="o">=</span><span class="n">t_eff</span><span class="p">)</span>
+        <span class="c1">#---- Construct PowerEnvelopeWidth</span>
+        <span class="n">t_widths</span> <span class="o">=</span> <span class="n">PowerEnvelopeWidth</span><span class="p">(</span><span class="n">fwhm</span><span class="o">=</span><span class="n">t_fwhm</span><span class="p">,</span> <span class="n">rms</span><span class="o">=</span><span class="n">t_rms</span><span class="p">,</span> <span class="n">eqv</span><span class="o">=</span><span class="n">t_eqv</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">t_widths</span></div>
 
     <span class="c1">#---- Energy Properties</span>
@@ -1114,21 +1096,51 @@ document.write(`
         <span class="k">assert</span> <span class="p">(</span><span class="n">e_p</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The pulse energy must be greater than 0.&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">a_v</span> <span class="o">*=</span> <span class="p">(</span><span class="n">e_p</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">e_p</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
 
+    <span class="c1">#---- Grid Properties</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">v0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The comoving-frame reference frequency, with units of ``Hz``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span>
+    <span class="nd">@v0</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">v0</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v0</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">v0</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The comoving-frame reference frequency must be greater than 0.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_v0_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span> <span class="o">-</span> <span class="n">v0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">v0_idx</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">v0_idx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The array index of the comoving frame’s reference frequency.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v0_idx</span>
+
     <span class="c1">#---- Indirect Measures</span>
-<div class="viewcode-block" id="Pulse.autocorrelation"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.autocorrelation.html#pynlo.light.Pulse.autocorrelation">[docs]</a>    <span class="k">def</span> <span class="nf">autocorrelation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Pulse.autocorrelation"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.autocorrelation.html#pynlo.light.Pulse.autocorrelation">[docs]</a>    <span class="k">def</span> <span class="nf">autocorrelation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the intensity autocorrelation and related diagnostic</span>
 <span class="sd">        information.</span>
 
-<span class="sd">        Set `n` to optionally resample the number of points and change the</span>
-<span class="sd">        time resolution. The intensity autocorrelation is normalized with a</span>
-<span class="sd">        max amplitude of 1.</span>
+<span class="sd">        Set `m` to optionally resample the number of points and change the</span>
+<span class="sd">        time resolution. The intensity autocorrelation is normalized to a max</span>
+<span class="sd">        amplitude of 1.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        n : int, optional</span>
-<span class="sd">            The number of points at which to resample the intensity</span>
-<span class="sd">            autocorrelation. The default is to not resample.</span>
+<span class="sd">        m : int, optional</span>
+<span class="sd">            The multiplicative number of points at which to resample the</span>
+<span class="sd">            intensity autocorrelation. The default is to not resample.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1139,9 +1151,9 @@ document.write(`
 <span class="sd">        fwhm : float</span>
 <span class="sd">            The full width at half maximum of the intensity autocorrelation.</span>
 <span class="sd">        rms : float</span>
-<span class="sd">            The root mean square width of the intensity autocorrelation.</span>
-<span class="sd">        eff : float</span>
-<span class="sd">            The effective width of the intensity autocorrelation.</span>
+<span class="sd">            The full root-mean-square width of the intensity autocorrelation.</span>
+<span class="sd">        eqv : float</span>
+<span class="sd">            The equivalent width of the intensity autocorrelation.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#---- Intensity Autocorrelation</span>
@@ -1149,12 +1161,13 @@ document.write(`
         <span class="n">ac_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">ac_v</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="n">overwrite_x</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="p">)</span>
 
         <span class="c1">#---- Resample</span>
-        <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
             <span class="n">t_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span>
             <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)),</span> <span class="s2">&quot;The number of points must be an integer.&quot;</span>
+            <span class="k">assert</span> <span class="n">m</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;The point multiplier must be greater than 0.&quot;</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
             <span class="n">resampled</span> <span class="o">=</span> <span class="n">resample_t</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">ac_t</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
             <span class="n">ac_t</span> <span class="o">=</span> <span class="n">resampled</span><span class="o">.</span><span class="n">f_t</span>
             <span class="n">t_grid</span> <span class="o">=</span> <span class="n">resampled</span><span class="o">.</span><span class="n">t_grid</span>
@@ -1170,36 +1183,35 @@ document.write(`
         <span class="n">ac_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ac_t</span><span class="o">*</span><span class="n">dt</span><span class="p">)</span>
         <span class="n">t_avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">t_grid</span><span class="o">*</span><span class="n">ac_t</span><span class="o">*</span><span class="n">dt</span><span class="p">)</span><span class="o">/</span><span class="n">ac_norm</span>
         <span class="n">t_var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">t_grid</span> <span class="o">-</span> <span class="n">t_avg</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">ac_t</span><span class="o">*</span><span class="n">dt</span><span class="p">)</span><span class="o">/</span><span class="n">ac_norm</span>
-        <span class="n">t_rms</span> <span class="o">=</span> <span class="n">t_var</span><span class="o">**</span><span class="mf">0.5</span>
+        <span class="n">t_rms</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">t_var</span><span class="o">**</span><span class="mf">0.5</span>
 
-        <span class="c1">#---- Effective</span>
-        <span class="n">t_eff</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">ac_t</span><span class="o">/</span><span class="n">ac_norm</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span>
+        <span class="c1">#---- Equivalent</span>
+        <span class="n">t_eqv</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">ac_t</span><span class="o">/</span><span class="n">ac_norm</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span>
 
         <span class="c1">#---- Construct Autocorrelation</span>
-        <span class="n">ac</span> <span class="o">=</span> <span class="n">Autocorrelation</span><span class="p">(</span><span class="n">t_grid</span><span class="o">=</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">ac_t</span><span class="o">=</span><span class="n">ac_t</span><span class="p">,</span> <span class="n">fwhm</span><span class="o">=</span><span class="n">t_fwhm</span><span class="p">,</span> <span class="n">rms</span><span class="o">=</span><span class="n">t_rms</span><span class="p">,</span> <span class="n">eff</span><span class="o">=</span><span class="n">t_eff</span><span class="p">)</span>
+        <span class="n">ac</span> <span class="o">=</span> <span class="n">Autocorrelation</span><span class="p">(</span><span class="n">t_grid</span><span class="o">=</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">ac_t</span><span class="o">=</span><span class="n">ac_t</span><span class="p">,</span> <span class="n">fwhm</span><span class="o">=</span><span class="n">t_fwhm</span><span class="p">,</span> <span class="n">rms</span><span class="o">=</span><span class="n">t_rms</span><span class="p">,</span> <span class="n">eqv</span><span class="o">=</span><span class="n">t_eqv</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ac</span></div>
 
 <div class="viewcode-block" id="Pulse.spectrogram"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.spectrogram.html#pynlo.light.Pulse.spectrogram">[docs]</a>    <span class="k">def</span> <span class="nf">spectrogram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_fwhm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">v_range</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_t</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t_range</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the power spectrogram of the pulse through convolution with a</span>
-<span class="sd">        gaussian window.</span>
+<span class="sd">        Calculate the spectrogram of the pulse through convolution with a</span>
+<span class="sd">        Gaussian window.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        t_fwhm : float, optional</span>
-<span class="sd">            The full width at half maximum of the gaussian window. The default</span>
+<span class="sd">            The full width at half maximum of the Gaussian window. The default</span>
 <span class="sd">            derives a fwhm from the bandwidth of the power spectrum.</span>
 <span class="sd">        v_range : array_like of float, optional</span>
 <span class="sd">            The target range of frequencies to sample. This should be given as</span>
 <span class="sd">            (min, max) values. The default takes the full range of `v_grid`.</span>
 <span class="sd">        n_t : int or str, optional</span>
-<span class="sd">            The number of delays to sample. Setting to &quot;equal&quot; gives the same</span>
-<span class="sd">            number of delays as points in the resulting `v_grid`. The default</span>
-<span class="sd">            samples 4 points per fwhm of the gaussian window.</span>
+<span class="sd">            The number of sampled delays. Setting to &quot;equal&quot; gives the same</span>
+<span class="sd">            number of delays as points in `v_grid`. The default samples 4</span>
+<span class="sd">            points per fwhm of the Gaussian window.</span>
 <span class="sd">        t_range : array_like of float, optional</span>
 <span class="sd">            The range of delays to sample. This should be given as (min, max)</span>
-<span class="sd">            values. The default takes the full range of the resulting</span>
-<span class="sd">            `t_grid`.</span>
+<span class="sd">            values. The default takes the full range of the `t_grid`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1218,11 +1230,11 @@ document.write(`
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        The resolution in both domains is limited by the time-bandwidth product</span>
-<span class="sd">        of the gaussian window. The full width at half maximum of the gaussian</span>
-<span class="sd">        window should be similar to the full width at half maximum of the pulse</span>
-<span class="sd">        in order to evenly distribute resolution bandwidth between the time and</span>
-<span class="sd">        frequency domains.</span>
+<span class="sd">        The resolution in both the time and frequency domains is limited by the</span>
+<span class="sd">        time-bandwidth product of the Gaussian window. The full width at half</span>
+<span class="sd">        maximum of the Gaussian window should be similar to the full width at</span>
+<span class="sd">        half maximum of the pulse in order to evenly distribute resolution</span>
+<span class="sd">        bandwidth between the time and frequency domains.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1">#---- Resample</span>
@@ -1235,11 +1247,9 @@ document.write(`
         <span class="k">else</span><span class="p">:</span>
             <span class="n">v_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v_range</span><span class="p">)</span>
             <span class="k">assert</span> <span class="p">(</span><span class="n">v_range</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="o">.</span><span class="n">min</span><span class="p">()),</span> <span class="p">(</span>
-                <span class="s2">&quot;The requested minimum frequency cannot be less than the&quot;</span>
-                <span class="s2">&quot; minimum possible frequency.&quot;</span><span class="p">)</span>
+                <span class="s2">&quot;The minimum frequency cannot be less than the minimum possible frequency.&quot;</span><span class="p">)</span>
             <span class="k">assert</span> <span class="p">(</span><span class="n">v_range</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="p">(</span>
-                <span class="s2">&quot;The requested maximum frequency cannot be greater than the&quot;</span>
-                <span class="s2">&quot; maximum possible frequency.&quot;</span><span class="p">)</span>
+                <span class="s2">&quot;The maximum frequency cannot be greater than the maximum possible frequency.&quot;</span><span class="p">)</span>
 
             <span class="n">v_min_selector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span> <span class="o">-</span> <span class="n">v_range</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span>
             <span class="n">v_max_selector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span> <span class="o">-</span> <span class="n">v_range</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
@@ -1253,8 +1263,8 @@ document.write(`
 
         <span class="c1">#---- Set Gate</span>
         <span class="k">if</span> <span class="n">t_fwhm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">v_rms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_width</span><span class="p">()</span><span class="o">.</span><span class="n">rms</span>
-            <span class="n">t_fwhm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">v_rms</span><span class="p">)</span>
+            <span class="n">v_sigma</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_width</span><span class="p">()</span><span class="o">.</span><span class="n">rms</span>
+            <span class="n">t_fwhm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">v_sigma</span><span class="p">)</span>
 
         <span class="n">g_t</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">t_grid</span><span class="o">/</span><span class="n">t_fwhm</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">**</span><span class="mf">0.5</span>
 
@@ -1267,18 +1277,16 @@ document.write(`
         <span class="k">else</span><span class="p">:</span>
             <span class="n">t_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">t_range</span><span class="p">)</span>
             <span class="k">assert</span> <span class="p">(</span><span class="n">t_range</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">t_grid</span><span class="o">.</span><span class="n">min</span><span class="p">()),</span> <span class="p">(</span>
-                <span class="s2">&quot;The requested minimum delay cannot be less than the minimum&quot;</span>
-                <span class="s2">&quot; possible delay </span><span class="si">{:.2f}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t_grid</span><span class="o">.</span><span class="n">min</span><span class="p">()))</span>
+                <span class="s2">&quot;The minimum delay cannot be less than the minimum possible delay.&quot;</span><span class="p">)</span>
             <span class="k">assert</span> <span class="p">(</span><span class="n">t_range</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">t_grid</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="p">(</span>
-                <span class="s2">&quot;The requested maximum delay cannot be greater than the&quot;</span>
-                <span class="s2">&quot; maximum possible delay </span><span class="si">{:.2f}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t_grid</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
+                <span class="s2">&quot;The maximum delay cannot be greater than the maximum possible delay.&quot;</span><span class="p">)</span>
             <span class="n">t_min</span><span class="p">,</span> <span class="n">t_max</span> <span class="o">=</span> <span class="n">t_range</span>
 
         <span class="k">if</span> <span class="n">n_t</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">n_t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="nb">round</span><span class="p">((</span><span class="n">t_max</span> <span class="o">-</span> <span class="n">t_min</span><span class="p">)</span><span class="o">/</span><span class="n">t_fwhm</span><span class="p">))</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_t</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">assert</span> <span class="p">(</span><span class="n">n_t</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;equal&quot;</span><span class="p">]),</span> <span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{:}</span><span class="s2">&#39; is not part of the valid string&quot;</span>
-                                        <span class="s2">&quot; arguments for n_t&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_t</span><span class="p">))</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">n_t</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;equal&quot;</span><span class="p">]),</span> <span class="p">(</span>
+                <span class="s2">&quot;&#39;</span><span class="si">{:}</span><span class="s2">&#39; is not a valid string arguments for n_t&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_t</span><span class="p">))</span>
             <span class="n">n_t</span> <span class="o">=</span> <span class="n">n</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_t</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)),</span> <span class="s2">&quot;The number of points must be an integer.&quot;</span>

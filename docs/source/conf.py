@@ -20,7 +20,8 @@ import sys
 sys.path.insert(0, os.path.abspath('../..'))
 sys.path.insert(1, os.path.abspath('..'))
 
-#!!!: modified to use bysource ordering (__dict__ instead of dir, check git diff after updates)
+#!!!: modified to use by-source ordering (__dict__ instead of dir)
+#!!!: check git diff after updating sphinx
 import autosummary as new_autosummary
 from sphinx.ext import autosummary
 autosummary.__dict__.update(new_autosummary.__dict__)
@@ -32,7 +33,8 @@ copyright = '{:}, PyNLO authors'.format(datetime.date.today().year)
 author = 'PyNLO authors'
 
 # The full version, including alpha/beta/rc tags
-release = 'dev'
+from pynlo import __version__
+release = __version__
 
 
 #--- General configuration ---------------------------------------------------
@@ -87,7 +89,7 @@ html_theme = 'pydata_sphinx_theme'
 
 html_logo = "_static/pynlo.svg"
 html_theme_options = {
-    "show_toc_level": 2,
+    "show_toc_level": 3,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

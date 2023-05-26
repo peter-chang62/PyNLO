@@ -1,16 +1,18 @@
 .. include:: ../../README.rst
+   :end-line: 5
 
-Documentation
+
+Contents
 =============
 .. toctree::
    :includehidden:
    :titlesonly:
    :maxdepth: 2
-   :caption: Contents
 
-   guides
+   User Guide <guides>
    notes
    API Reference <api>
+
 
 Indices and tables
 ------------------

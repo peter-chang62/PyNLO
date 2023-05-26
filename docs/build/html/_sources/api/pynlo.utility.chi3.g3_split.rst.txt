@@ -1,5 +1,5 @@
-pynlo.utility.chi3.g3\_split
-============================
+g3\_split
+=========
 
 .. currentmodule:: pynlo.utility.chi3
 

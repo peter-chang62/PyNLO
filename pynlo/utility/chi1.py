@@ -10,7 +10,6 @@ __all__ = ["n_to_beta", "beta_to_n", "D_to_beta2", "beta2_to_D"]
 
 # %% Imports
 
-import numpy as np
 from scipy.constants import pi, c
 
 
@@ -18,7 +17,7 @@ from scipy.constants import pi, c
 
 # TODO: forward and backward transformations, test with equivalents from media.Mode
 
-#---- Propagation Constant and Linear Susceptibility chi1
+#---- Wavenumber and Linear Susceptibility chi1
 def chi1_to_k(v_grid, chi1):
     k = 2*pi*v_grid/c * (1 + chi1)**0.5
     alpha = 2*k.imag
@@ -32,10 +31,10 @@ def k_to_chi1(v_grid, beta, alpha=None):
         k = beta + 1j/2 * alpha
     return (c/(2*pi*v_grid) * k)**2 - 1
 
-#---- Wavenumber and Refractive Index
+#---- Phase Coefficient and Refractive Index
 def n_to_beta(v_grid, n):
     """
-    Refractive index to angular wavenumber.
+    Refractive index to phase coefficient.
 
     Parameters
     ----------
@@ -53,7 +52,7 @@ def n_to_beta(v_grid, n):
 
 def beta_to_n(v_grid, beta):
     """
-    Angular wavenumber to refractive index
+    Phase coefficient to refractive index
 
     Parameters
     ----------
@@ -72,7 +71,7 @@ def beta_to_n(v_grid, beta):
 #---- GVD and Dispersion Parameter D
 def D_to_beta2(v_grid, D):
     """
-    Dispersion parameter D to group velocity dispersion (GVD) parameter beta2.
+    Dispersion parameter D to group velocity dispersion beta_2 (GVD).
 
     Parameters
     ----------
@@ -83,15 +82,14 @@ def D_to_beta2(v_grid, D):
 
     Returns
     -------
-    beta2
-        The GVD, in units of ``s**2/m``.
+    The GVD, in units of ``s**2/m``.
 
     """
     return D / (-2*pi * v_grid**2/c)
 
 def beta2_to_D(v_grid, beta2):
     """
-    Group velocity dispersion (GVD) parameter beta2 to dispersion parameter D.
+    Group velocity dispersion beta_2 (GVD) to dispersion parameter D.
 
     Parameters
     ----------
@@ -102,14 +100,13 @@ def beta2_to_D(v_grid, beta2):
 
     Returns
     -------
-    D
-        The dispersion parameter, in units of ``s/m**2``.
+    The dispersion parameter, in units of ``s/m**2``.
 
     """
     return beta2 * (-2*pi * v_grid**2/c)
 
 
-# %% Helper Functions
+# %% Calculator Functions
 
 def linear_length():
     pass #TODO

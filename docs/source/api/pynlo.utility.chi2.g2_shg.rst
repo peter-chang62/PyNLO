@@ -1,5 +1,5 @@
-pynlo.utility.chi2.g2\_shg
-==========================
+g2\_shg
+=======
 
 .. currentmodule:: pynlo.utility.chi2
 

@@ -1,38 +1,43 @@
-pynlo.media.Mode
-================
+Mode
+====
 .. currentmodule:: pynlo.media
 .. autoclass:: Mode
 
 Methods
 -------
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Methods
 
-   ~Mode.__init__
-   ~Mode.beta
-   ~Mode.n
-   ~Mode.alpha
-   ~Mode.n_g
-   ~Mode.v_g
    ~Mode.d_12
-   ~Mode.GVD
-   ~Mode.D
    ~Mode.linear_operator
-   ~Mode.g2
-   ~Mode.g2_inv
-   ~Mode.g3
-   ~Mode.gamma
-   ~Mode.r3
+   ~Mode.copy
 
 Attributes
 ----------
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Attributes
 
    ~Mode.z
    ~Mode.v_grid
    ~Mode.rv_grid
-   ~Mode.z_dep_linearity
-   ~Mode.z_dep_nonlinearity
+   ~Mode.z_mode
+   ~Mode.z_linear
+   ~Mode.z_nonlinear
+   ~Mode.alpha
+   ~Mode.beta
+   ~Mode.n
+   ~Mode.beta1
+   ~Mode.n_g
+   ~Mode.v_g
+   ~Mode.beta2
+   ~Mode.D
+   ~Mode.g2
+   ~Mode.g2_inv
+   ~Mode.g2_pol
+   ~Mode.g3
+   ~Mode.gamma
+   ~Mode.r3

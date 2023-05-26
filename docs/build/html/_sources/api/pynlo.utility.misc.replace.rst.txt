@@ -1,5 +1,5 @@
-pynlo.utility.misc.replace
-==========================
+replace
+=======
 
 .. currentmodule:: pynlo.utility.misc
 

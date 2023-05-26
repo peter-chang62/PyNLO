@@ -1,16 +1,15 @@
-pynlo.light.Pulse
-=================
+Pulse
+=====
 .. currentmodule:: pynlo.light
 .. autoclass:: Pulse
 
 Methods
 -------
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Methods
 
-   ~Pulse.__init__
-   ~Pulse.FromTFGrid
    ~Pulse.FromPowerSpectrum
    ~Pulse.Gaussian
    ~Pulse.Sech
@@ -25,6 +24,7 @@ Methods
 Attributes
 ----------
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Attributes
 
@@ -39,3 +39,5 @@ Attributes
    ~Pulse.ra_t
    ~Pulse.rp_t
    ~Pulse.e_p
+   ~Pulse.v0
+   ~Pulse.v0_idx

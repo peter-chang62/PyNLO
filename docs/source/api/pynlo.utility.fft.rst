@@ -5,6 +5,7 @@ pynlo.utility.fft
 Functions
 ---------
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Functions
 

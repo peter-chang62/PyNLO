@@ -1,5 +1,5 @@
-pynlo.utility.TFGrid.FromFreqRange
-==================================
+TFGrid.FromFreqRange
+====================
 
 .. currentmodule:: pynlo.utility
 

@@ -1,6 +1,6 @@
-pynlo.media.Mode.alpha
-======================
+Mode.alpha
+==========
 
 .. currentmodule:: pynlo.media
 
-.. automethod:: Mode.alpha
+.. autoproperty:: Mode.alpha

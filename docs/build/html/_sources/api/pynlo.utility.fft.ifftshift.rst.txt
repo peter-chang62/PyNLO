@@ -1,5 +1,5 @@
-pynlo.utility.fft.ifftshift
-===========================
+ifftshift
+=========
 
 .. currentmodule:: pynlo.utility.fft
 

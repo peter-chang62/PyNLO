@@ -1,5 +1,5 @@
-pynlo.light.Pulse.phi\_v
-========================
+Pulse.phi\_v
+============
 
 .. currentmodule:: pynlo.light
 

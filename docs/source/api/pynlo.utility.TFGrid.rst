@@ -1,22 +1,23 @@
-pynlo.utility.TFGrid
-====================
+TFGrid
+======
 .. currentmodule:: pynlo.utility
 .. autoclass:: TFGrid
 
 Methods
 -------
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Methods
 
-   ~TFGrid.__init__
-   ~TFGrid.FromFreqRange
    ~TFGrid.copy
+   ~TFGrid.FromFreqRange
    ~TFGrid.rtf_grids
 
 Attributes
 ----------
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Attributes
 
@@ -24,8 +25,6 @@ Attributes
    ~TFGrid.rn
    ~TFGrid.rn_range
    ~TFGrid.rn_slice
-   ~TFGrid.v0
-   ~TFGrid.v0_idx
    ~TFGrid.v_grid
    ~TFGrid.v_ref
    ~TFGrid.dv

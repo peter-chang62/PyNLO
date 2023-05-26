@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-Conversion functions and other calculators relevant to the 2nd order nonlinear
+Conversion functions and other calculators relevant to the 2nd-order nonlinear
 susceptibility.
 
 """
 
-__all__ = ["g2_shg", "g2_split", "polling_sign"]
+__all__ = ["g2_split", "g2_shg", "domain_inversions"]
 
 
 # %% Imports
@@ -16,14 +16,14 @@ from scipy.constants import pi, c, epsilon_0 as e0
 
 # %% Converters
 
-#---- 2nd Order Nonlinear Susceptibilities chi2 and d
+#---- 2nd-Order Nonlinear Susceptibilities chi2 and d
 def d_to_chi2(d):
     return d * 2
 
 def chi2_to_d(chi2):
     return chi2 / 2
 
-#---- Polling Period and Wavenumber Mismatch
+#---- Poling Period and Wavenumber Mismatch
 def dk_to_period(dk):
     return 2*pi/dk
 
@@ -33,11 +33,73 @@ def period_to_dk(period):
 
 # %% Nonlinearity
 
-#TODO: setup media, solver to use split g's
+def g2_split(n_eff, a_eff, chi2_eff):
+    """
+    The 2nd-order nonlinear parameter weighted by unit decomposition.
+
+    Parameters
+    ----------
+    n_eff : array_like of float
+        The refractive indices.
+    a_eff : array_like of float
+        The effective areas.
+    chi2_eff : array_like
+        The effective 2nd-order susceptibilities.
+
+    Returns
+    -------
+    ndarray (2, n)
+        The unit decomposition of the 2nd-order nonlinear parameter. The first
+        index contains the output factors while the second index contains the
+        input factors.
+
+    """
+    return np.array([1/2 * ((e0*a_eff)/(c*n_eff))**0.5 * chi2_eff,
+                     1/(e0*c*n_eff*a_eff)**0.5])
+
+def g2_path(n_eff, a_eff, chi2_eff, paths):
+    """
+    The 2nd-order nonlinear parameter weighted for the given nonlinear
+    pathways.
+
+    Parameters
+    ----------
+    n_eff : array_like of float
+        The effective refractive indices.
+    a_eff : array_like of float
+        The effective areas.
+    chi2_eff : array_like
+        The effective 2nd-order susceptibilities.
+    paths : list
+        Pairs of indices for each output frequency that correspond to the
+        input frequencies of the input paths. If no valid path exists for a
+        particular output frequency its input indices should be given as
+        ``[None, None]``.
+
+    Returns
+    -------
+    g2 : ndarray
+
+    See Also
+    --------
+    dominant_paths : Determine the dominant paths based on phase mismatch.
+
+    """
+    g2s = g2_split(n_eff, a_eff, chi2_eff)
+    assert g2s.size != len(paths), "The number of paths must equal the number of frequencies."
+
+    g2_p = []
+    for idx, path in enumerate(paths):
+        if None in path:
+            g2_p.append(0.0)
+        else:
+            g2 = np.mean([g2s[0, idx] * g2s[1, cpl[0]]*g2s[1, cpl[0]] for cpl in path])
+            g2_p.append(g2)
+    return np.arary(g2_p)
 
 def g2_shg(v0, v_grid, n_eff, a_eff, chi2_eff):
     """
-    The 2nd order nonlinear parameter weighted for second harmonic generation
+    The 2nd-order nonlinear parameter weighted for second harmonic generation
     centered around the given input frequency.
 
     Parameters
@@ -51,7 +113,7 @@ def g2_shg(v0, v_grid, n_eff, a_eff, chi2_eff):
     a_eff : array_like of float
         The effective areas.
     chi2_eff : array_like
-        The effective 2nd order susceptibilities.
+        The effective 2nd-order susceptibilities.
 
     Returns
     -------
@@ -81,7 +143,7 @@ def g2_shg(v0, v_grid, n_eff, a_eff, chi2_eff):
 
 def g2_sfg(v0, v_grid, n_eff, a_eff, chi2_eff):
     """
-    The 2nd order nonlinear parameter weighted for sum frequency generation
+    The 2nd-order nonlinear parameter weighted for sum frequency generation
     driven by the given input frequency.
 
     Parameters
@@ -95,7 +157,7 @@ def g2_sfg(v0, v_grid, n_eff, a_eff, chi2_eff):
     a_eff : array_like of float
         The effective areas.
     chi2_eff : array_like
-        The effective 2nd order susceptibilities.
+        The effective 2nd-order susceptibilities.
 
     Returns
     -------
@@ -122,86 +184,81 @@ def g2_sfg(v0, v_grid, n_eff, a_eff, chi2_eff):
     g2[vc_idx:] = g2_sf[vc_idx:]
     return g2
 
-def g2_split(n_eff, a_eff, chi2_eff):
-    """
-    The unit decomposition of the 2nd order nonlinear parameter.
-
-    Parameters
-    ----------
-    n_eff : array_like of float
-        The refractive indices.
-    a_eff : array_like of float
-        The effective areas.
-    chi2_eff : array_like
-        The effective 2nd order susceptibilities.
-
-    Returns
-    -------
-    ndarray (2, n)
-        The decomposition of the 2nd order nonlinear parameter. The first
-        index contains the output factors while the second index contains the
-        input factors.
-
-    """
-    return np.array([1/2 * ((e0*a_eff)/(c*n_eff))**0.5 * chi2_eff,
-                     1/(e0*c*n_eff*a_eff)**0.5])
-
-def g2_least_phase(n_eff, a_eff, chi2_eff, paths):
-    g2s = g2_split(n_eff, a_eff, chi2_eff)
-    assert g2s.size != len(paths), "The number of paths must equal the number of frequencies."
-
-    g2_p = []
-    for idx, path in enumerate(paths):
-        if None in path:
-            g2_p.append(0.0)
-        else:
-            g2 = np.mean([g2s[0, idx] * g2s[1, cpl[0]]*g2s[1, cpl[0]] for cpl in path])
-            g2_p.append(g2)
-    return np.arary(g2_p)
-
-def effective_chi3():
-    pass #TODO: effective 3rd order from cascaded 2nd
-
 
 # %% Phase Matching
 
-def polling_sign(n_periods): #TODO: make faster
-    r"""
-    A wrapper for calculating the sign of a discrete quasi-phase matching
-    (QPM) structure given the instantaneous period number.
+def domain_inversions(z, dk, intp_order=1):
+    """
+    Find the location of the domain inversion boundaries that quasi-phase match
+    (QPM) the given wavenumber mismatch.
 
     Parameters
     ----------
-    n_periods : callable
-        The instantaneous number of accumulated periods, callable at every
-        point along the waveguide.
+    z : float or array_like of float
+        The propagation distance.
+    dk : float or array_like of float
+        The wavenumber mismatch, or ``2*pi/polling period``.
+    intp_order : int, optional
+        The interpolation order used to calculate the inversion points.
 
     Returns
     -------
-    callable
-        The polling sign as a function of the position along the waveguide.
+    z_invs : ndarray of float
+        The location of all domain inversion boundaries.
+    domains : ndarray of float
+        The length of each domain.
+    poled : ndarray of int
+        The poling status of each domain. A value of 1 indicates an inverted
+        domain. A value of 0 indicates an unpoled region.
 
     Notes
     -----
-    For continuous QPM profiles, the inversion locations can
-    be calculated by inverting the integral equation that gives the
-    instantaneous total number of periods:
+    For continuous QPM profiles, the domain boundaries can be calculated by
+    inverting the integral equation that gives the accumulated phase mismatch:
 
     .. math::
-        N[z] &= \int_{z_0}^z \frac{\Delta k[z^\prime]}{2 \pi} dz^\prime
-                          = \int_{z_0}^z \frac{dz^\prime}{\Lambda[z^\prime]} \\
-        \text{z}_{inv}[n] &= N^{-1}[n/2]
+        2 \\pi N[z] &= \\int_{z_0}^z \\Delta k[z^\\prime] dz^\\prime
+        = \\int_{z_0}^z \\frac{2 \\pi}{\\Lambda[z^\\prime]} dz^\\prime \\\\
+        \\text{z}_{inv}[n] &= N^{-1}[n/2]
 
-    where :math:`\Delta k` is the wavenumber mismatch compensated by polling
-    period :math:`\Lambda`, and :math:`n` is an integer.
+    where :math:`\Delta k` is the wavenumber mismatch compensated by poling
+    period :math:`\Lambda`, :math:`N` is the accumulated number of phase
+    cycles, and :math:`n` is an integer.
 
     """
-    assert callable(n_periods), "The instantaneous number of periods must be callable."
-    def polling_sign(z):
-        return 1 - 2*(int(2*n_periods(z)) % 2)
-    return polling_sign
+    from scipy.interpolate import InterpolatedUnivariateSpline
 
-def dominant_paths(v_grid, beta, beta_qpm=None, full=False): #TODO: add extent (imshow)
+    #---- Process Input
+    z = np.asarray(z)
+    dk = np.asarray(dk)
+    if dk.size > 1:
+        assert dk.size == z.size, "If `dk` is given as an array it must have the same number of points as `z`."
+    if z.size==1:
+        z = np.linspace(0, z, intp_order+1)
+    if dk.size == 1:
+        dk = np.ones_like(z) * dk
+
+    #---- Inversion Points
+    n_cycles = InterpolatedUnivariateSpline(z, dk/(2*pi), k=intp_order).antiderivative()
+    z_n = InterpolatedUnivariateSpline(2*n_cycles(z), z, k=intp_order)
+
+    n_invs = int(2*n_cycles(z[-1])) # round down
+    n_grid = np.arange(n_invs + 1)
+    z_invs = z_n(n_grid) # all inversion points
+
+    #---- Domains
+    poled = n_grid % 2
+    domains = np.diff(z_invs)
+    if np.isclose(z_invs.max(), z.max(), rtol=0, atol=10e-9):
+        # Ignore final inversion if at the end
+        poled = poled[:-1]
+        z_invs = z_invs[:-1]
+    else:
+        # Include final domain
+        domains = np.append(domains, z.max() - z_invs.max())
+    return z_invs[1:], domains, poled
+
+def dominant_paths(v_grid, beta, beta_qpm=None, full=False): #TODO: add extent (for imshow)
     """
     For each output frequency, find the input frequencies that are coupled
     with the least phase mismatch.
@@ -217,10 +274,10 @@ def dominant_paths(v_grid, beta, beta_qpm=None, full=False): #TODO: add extent (
         The wavenumber of each input frequency.
     beta_qpm : float, optional
         The effective wavenumber of an applied quasi-phase matching (QPM)
-        structure. The default output is calculated without a QPM structure.
+        structure. If ``None``, the dominant path is calculated without poling.
     full : bool, optional
-        Switch determining nature of the return value. When it is ``False``
-        (the default) just the path indices are returned, when ``True`` the
+        A flag determining nature of the return value. When ``False`` (the
+        default) just the path indices are returned, when ``True`` the
         calculated wavenumber mismatch arrays are also returned.
 
     Returns
@@ -336,3 +393,9 @@ def dominant_paths(v_grid, beta, beta_qpm=None, full=False): #TODO: add extent (
         return paths, (dk, v_sfg, dk_sfg, v_dfg, dk_dfg)
     else:
         return paths
+
+
+# %% Calculator Functions
+
+def effective_chi3():
+    pass #TODO: effective 3rd-order from cascaded 2nd

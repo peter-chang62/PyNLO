@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Nonlinear Optics &#8212; PyNLO dev documentation</title>
+    <title>Nonlinear Optics &#8212; PyNLO 1.dev documentation</title>
   
   
   
@@ -278,8 +278,7 @@ document.write(`
         <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Topics</span></p>
-<ul class="current nav bd-sidenav">
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="fourier_transforms.html">Fourier Transforms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="linear_optics.html">Linear Optics</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Nonlinear Optics</a></li>
@@ -570,7 +569,7 @@ nonlinear term is similar but is modified by <span class="math notranslate nohig
 \[\begin{gather}
 \mathbf{P}_\text{NL} = \mathbf{P}^{\left(2\right)}_\text{NL} + \mathbf{P}^{\left(3\right)}_\text{NL}
 \end{gather}\]</div>
-<p>Individually, these terms are convolutions of the time domain electric field and the nonlinear optical susceptibilities <span class="math notranslate nohighlight">\((\chi^{\left(2\right)}, \chi^{\left(3\right)})\)</span>. In the frequency domain this corresponds to the sum of all possible interactions that end at a particular output frequency. In terms of the modal expansion, the nonlinear terms are represented as the sum of all possible terms given by the product of the sum of modes. See <a class="reference external" href="https://doi.org/10.1016/C2015-0-05510-1">Nonlinear Optics (Boyd
+<p>Individually, these terms are convolutions of the time-domain electric field and the nonlinear optical susceptibilities <span class="math notranslate nohighlight">\((\chi^{\left(2\right)}, \chi^{\left(3\right)})\)</span>. In the frequency domain this corresponds to the sum of all possible interactions that end at a particular output frequency. In terms of the modal expansion, the nonlinear terms are represented as the sum of all possible terms given by the product of the sum of modes. See <a class="reference external" href="https://doi.org/10.1016/C2015-0-05510-1">Nonlinear Optics (Boyd
 2020)</a> for an exhaustive discussion of the important properties and symmetries associated with the nonlinear susceptibilities.</p>
 <section id="Second-Order-Nonlinearity">
 <h4>Second Order Nonlinearity<a class="headerlink" href="#Second-Order-Nonlinearity" title="Permalink to this heading">#</a></h4>
@@ -588,7 +587,7 @@ contributions from all possible frequency pathways:</p>
 \\
 {\mathbf{P}_\text{NL}^{\left(2\right)}}_{i}\!\left[\nu\right] &amp;= \epsilon_0 \iint_{-\infty}^{\infty} \chi^{\left(2\right)}_{i j k}\!\left[\nu_1, \nu_2\right] \mathbf{E}_j\!\left[\nu_1\right] \mathbf{E}_k\!\left[\nu_2\right] \delta\!\left[\nu - \left(\nu_1 + \nu_2\right)\right] d\nu_1 \, d\nu_2
 \end{align}\end{split}\]</div>
-<p>Expanding the electric field in terms of the modes and substituting the equation for the frequency domain nonlinearity into the nonlinear term from the propagation equation yields the following:</p>
+<p>Expanding the electric field in terms of the modes and substituting the equation for the frequency-domain nonlinearity into the nonlinear term from the propagation equation yields the following:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 -i \ \omega \iint_{A_\infty} \frac{1}{2} {\hat{\mathbf{e}}^*_n}_t \cdot {\mathbf{P}_\text{NL}^{\left(2\right)}}_t \ dA
@@ -629,7 +628,7 @@ interpreted as summing the contributions from all possible frequency pathways:</
 {\mathbf{P}_\text{NL}^{\left(3\right)}}_{i}\!\left[\nu\right] &amp;=
 \epsilon_0 \iiint_{-\infty}^{\infty} \chi^{\left(3\right)}_{i j k l}\!\left[\nu_1, \nu_2, \nu_3\right] \mathbf{E}_j\!\left[\nu_1\right] \mathbf{E}_k\!\left[\nu_2\right] \mathbf{E}_l\!\left[\nu_3\right] \delta\!\left[\nu - \left(\nu_1 + \nu_2 + \nu_3\right)\right] d\nu_1 \, d\nu_2 \, d\nu_3
 \end{align}\end{split}\]</div>
-<p>Expanding the electric field in terms of the modes and substituting the equation for the frequency domain nonlinearity into the nonlinear term from the propagation equation yields the following:</p>
+<p>Expanding the electric field in terms of the modes and substituting the equation for the frequency-domain nonlinearity into the nonlinear term from the propagation equation yields the following:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 -i \, \omega \iint_{A_\infty} \frac{1}{2} {\hat{\mathbf{e}}^*_n}_t \cdot {\mathbf{P}_\text{NL}^{\left(3\right)}}_t \, dA
@@ -656,7 +655,7 @@ g_{n q r s}^{\left(3\right)} = \frac{1}{2} \sqrt{\frac{{A_\text{eff}}_n}{{A_\tex
 </section>
 </section>
 <section id="Single-Mode-UPE">
-<h2>Single Mode UPE<a class="headerlink" href="#Single-Mode-UPE" title="Permalink to this heading">#</a></h2>
+<h2>Single-Mode UPE<a class="headerlink" href="#Single-Mode-UPE" title="Permalink to this heading">#</a></h2>
 <p>The propagation equation simplifies when considering only a single, forward propagating waveguide mode. Due to the phase mismatch between different modes this is typically a good approximation:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -743,7 +742,7 @@ g_\text{spm}^{\left(3\right)}\!\left[\nu\right] = \frac{1}{2} \frac{\chi^{\left(
 <p>where the factor of <span class="math notranslate nohighlight">\(3\)</span> is due to the degeneracy of the self-phase modulation term <span class="math notranslate nohighlight">\(\left(\omega = \omega_1 + \omega_2 - \omega_3\right)\)</span> in the triple product of the carrier-resolved amplitude <span class="math notranslate nohighlight">\((a\left[t\right]^3)\)</span>, and the factor of <span class="math notranslate nohighlight">\(1/2\)</span> is due to the <span class="math notranslate nohighlight">\(\gamma\)</span> parameter being defined against the <a class="reference external" href="#Analytic-Representation">analytic</a>, root-mean-square amplitude <span class="math notranslate nohighlight">\(\left(a'\right)\)</span>, where <span class="math notranslate nohighlight">\(a'\!\left[\nu\right] = \sqrt{2} \, a\!\left[\nu\right]\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
-\frac{\partial}{\partial z} a'\!\left[\nu\right] \approx \ldots -i \, \gamma \, \mathscr{F}\!\left[\left|a'\right|^2 \ a'\right]
+\frac{\partial}{\partial z} a'\!\left[\nu\right] \approx \ldots -i \, \gamma \, \mathscr{F}\!\left[a' \, \left|a'\right|^2\right]
 \end{gather}\]</div>
 <p>The expected nonlinear phase shift has a simple, proportional relationship to the instantaneous power:</p>
 <div class="math notranslate nohighlight">
@@ -812,7 +811,7 @@ R\!\left[t\right] = f_R \, h_R\!\left[t\right] + \left(1 - f_R\right) \delta\!\l
 1 = \int_{0}^{\infty} R\!\left[t\right] dt = \int_{0}^{\infty} h_R\!\left[t\right] dt
 \end{gather}\end{split}\]</div>
 <p>Where the Raman fraction <span class="math notranslate nohighlight">\((f_R)\)</span> sets the relative strength of the instantaneous and delayed responses. The Raman term <span class="math notranslate nohighlight">\((h_R)\)</span> primarily acts on the difference frequencies of the two inputs. In silica it is strongest at offsets between 10 to 15 THz.</p>
-<p>In the time domain, the nonlinear response parameter acts through convolution with the square of the time domain amplitude:</p>
+<p>In the time domain, the nonlinear response parameter acts through convolution with the square of the time-domain amplitude:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 \frac{\partial}{\partial z} a\!\left[\nu\right] = \ldots - i \, \omega \, g^{(3)}_\text{eff}\!\left[\nu\right] \, \mathscr{F}\!\left[a\!\left[t\right] \int^{\infty}_{0} R\!\left[\tau\right] a\left[t - \tau\right]^2 d\tau\right]
@@ -845,37 +844,36 @@ phase-mismatched second harmonic generation. This produces an effective nonlinea
 <section id="Numerical-Implementation">
 <h2>Numerical Implementation<a class="headerlink" href="#Numerical-Implementation" title="Permalink to this heading">#</a></h2>
 <p>The numerical complexity of the convolutions necessary to calculate the second and third order nonlinear terms go as <span class="math notranslate nohighlight">\(N^2\)</span> and <span class="math notranslate nohighlight">\(N^3\)</span> respectively. However, if the terms in the convolution can be put in separable form, where the convolution is represented by the product of single variable functions, then the convolution can be recast as a product of those functions’ Fourier transforms. Using the fast Fourier transform the complexity of the convolutions then scale as
-<span class="math notranslate nohighlight">\(N \log\left[N\right]\)</span>. For the number of points typically used in nonlinear simulations, that difference can mean multiple orders of magnitude improvement to the run time. The goal of a fast and accurate numerical implementation is to cast the equations into a form that minimizes both the numerical complexity and the degree of approximation.</p>
-<p>The most general procedure involves numerically calculating all terms in the <span class="math notranslate nohighlight">\(g\)</span> parameters and then using techniques such as eigenvalue or singular value decomposition to represent the inseparable nonlinear parameters as the sum of the products of separable functions. In general, the <span class="math notranslate nohighlight">\(g\)</span> parameters may be written as the product of a function <span class="math notranslate nohighlight">\((\eta)\)</span> dependent only on the sum of the input frequencies with the sum of functions <span class="math notranslate nohighlight">\((h)\)</span> dependent only on the input frequencies
-individually:</p>
+<span class="math notranslate nohighlight">\(N \log\left[N\right]\)</span>. For the number of points typically used in nonlinear simulations, that difference can mean multiple orders of magnitude improvement to the run time. The goal of a fast and accurate numerical implementation is to cast the equations into a form that minimizes both the numerical complexity and the degree of approximation. Besides just reducing the numerical complexity of individual terms, it is also important to use an accurate and efficient numerical differential
+equation solver. For this purpose, the embedded 4th-order Runge-Kutta method of <a class="reference external" href="https://doi.org/10.1016/j.cpc.2012.12.020">Balac and Mahé (2013)</a> is quite optimal.</p>
+<p>The most general approximation procedure involves numerically calculating all terms in the 2nd- and 3rd-rank <span class="math notranslate nohighlight">\(g\)</span> parameters and then using techniques such as eigenvalue or singular value decomposition to represent the inseparable nonlinear parameters as the sum of the products of separable functions. In general, the <span class="math notranslate nohighlight">\(g\)</span> parameters may be written as the product of a function <span class="math notranslate nohighlight">\(h\)</span>, dependent on the output frequency <span class="math notranslate nohighlight">\(\nu\)</span>, and the sum of products of functions <span class="math notranslate nohighlight">\(\eta\)</span>,
+dependent on the input frequencies <span class="math notranslate nohighlight">\(\nu_i\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-g^{\left(2\right)}\!\left[\nu_1, \nu_2\right] &amp;= \eta^{\left(2\right)}\!\left[\nu\right] \sum_n h_n^{\left(2\right)}\!\left[\nu_1\right] h_n^{\left(2\right)}\!\left[\nu_2\right]
+g^{\left(2\right)}\!\left[\nu_1, \nu_2\right] &amp;= h^{\left(2\right)}\!\left[\nu\right] \sum_n \eta_n^{\left(2\right)}\!\left[\nu_1\right] \eta_n^{\left(2\right)}\!\left[\nu_2\right]
 \\
-g^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] &amp;= \eta^{\left(3\right)}\!\left[\nu\right] \sum_n h_n^{\left(3\right)}\!\left[\nu_1\right] h_n^{\left(3\right)}\!\left[\nu_2\right] h_n^{\left(3\right)}\!\left[\nu_3\right]
+g^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] &amp;= h^{\left(3\right)}\!\left[\nu\right] \sum_n \eta_n^{\left(3\right)}\!\left[\nu_1\right] \eta_n^{\left(3\right)}\!\left[\nu_2\right] \eta_n^{\left(3\right)}\!\left[\nu_3\right]
 \end{align}\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\nu\)</span> is the sum of the inputs to the <span class="math notranslate nohighlight">\(g\)</span> parameters. Each function in the sum <span class="math notranslate nohighlight">\((h)\)</span> is then used to weight the spectral amplitudes <span class="math notranslate nohighlight">\((a)\)</span> before taking the Fourier transform:</p>
+<p>Each function in the sum <span class="math notranslate nohighlight">\((\eta)\)</span> may be used to weight the spectral amplitudes <span class="math notranslate nohighlight">\((a)\)</span> before taking the Fourier transform:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
-b\!\left[\nu\right] = a \, h
+b\!\left[\nu\right] = a \, \eta
 \end{gather}\]</div>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\frac{\partial}{\partial z} a\!\left[\nu\right] = ... &amp; - i \, \omega \, \eta^{\left(2\right)}\!\left[\nu\right] \, \mathscr{F}\!\left[\sum_n b_n\left[t\right]^2 \right]
+\frac{\partial}{\partial z} a\!\left[\nu\right] = ... &amp; - i \, \omega \, h^{\left(2\right)}\!\left[\nu\right] \, \mathscr{F}\!\left[\sum_n b_n\left[t\right]^2 \right]
 \\
-&amp; - i \, \omega \, \eta^{\left(3\right)}\!\left[\nu\right] \, \mathscr{F}\!\left[\sum_n b_n\left[t\right]^3 \right]
+&amp; - i \, \omega \, h^{\left(3\right)}\!\left[\nu\right] \, \mathscr{F}\!\left[\sum_n b_n\left[t\right]^3 \right]
 \end{align}\end{split}\]</div>
-<p>Implementing this efficiently would require expanding in functions that require the fewest terms in order to accurately approximate <span class="math notranslate nohighlight">\(g^{\left(2\right)}\)</span> or <span class="math notranslate nohighlight">\(g^{\left(3\right)}\)</span>.</p>
-<p>If the nonlinear susceptibility is instantaneous and effects due to mode overlap can be ignored, separability occurs naturally. In this case, the summation collapses to a single <span class="math notranslate nohighlight">\(\eta\)</span> and <span class="math notranslate nohighlight">\(h\)</span> term dependent on the effective refractive index, area, and nonlinear susceptibilities. The decomposition below is based on unit analysis of the effective nonlinear parameters (see <a class="reference internal" href="supplemental.html#Unit-Analysis-of-the-Effective-Nonlinear-Parameters"><span class="std std-ref">supplemental</span></a>):</p>
+<p>If the nonlinear susceptibility is instantaneous and effects due to mode overlap can be ignored, separability occurs naturally. In this case, the summation collapses to a single <span class="math notranslate nohighlight">\(h\)</span> and <span class="math notranslate nohighlight">\(\eta\)</span> term dependent on the effective refractive index, area, and nonlinear susceptibilities. The decomposition below is based on unit analysis of the effective nonlinear parameters (see <a class="reference internal" href="supplemental.html#Unit-Analysis-of-the-Effective-Nonlinear-Parameters"><span class="std std-ref">supplemental</span></a>):</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
-\eta\!\left[\nu\right] \approx \frac{1}{2} \sqrt{\frac{\epsilon_0 \, A_\text{eff}}{c \, n_\text{eff}}} \, \chi_\text{eff}
+h\!\left[\nu\right] \approx \frac{1}{2} \sqrt{\frac{\epsilon_0 \, A_\text{eff}}{c \, n_\text{eff}}} \, \chi_\text{eff}
 \\
-h\!\left[\nu\right] \approx \frac{1}{\sqrt{\epsilon_0 \, c \, n_\text{eff} \, A_\text{eff}}}
+\eta\!\left[\nu\right] \approx \frac{1}{\sqrt{\epsilon_0 \, c \, n_\text{eff} \, A_\text{eff}}}
 \end{gather}\end{split}\]</div>
-<p>Alternatively, the effective susceptibilities could be evenly split between the internal <span class="math notranslate nohighlight">\(h\!\left[\nu\right]\)</span> factors.</p>
-<p>The last approximation takes advantage of the selective nature of phase matching. Phase matched frequency combinations dominate over all other nonlinear interactions. For a particular output frequency <span class="math notranslate nohighlight">\(\left(\nu\right)\)</span>, the <span class="math notranslate nohighlight">\(g\)</span> parameters that correspond to these interactions can be pulled out of the integral and the unweighted spectral amplitudes can be Fourier transformed. The unweighted terms still contain a multitude of nonlinear pathways, but only the phase matched pathway
-needs to have an accurate coupling term as phase mismatch suppresses all other contributions to the final result.</p>
+<p>The simplest approximation takes advantage of the selective nature of phase matching. Phase matched frequency combinations dominate over all other nonlinear interactions. For a particular output frequency, the <span class="math notranslate nohighlight">\(g\)</span> parameters that correspond to these interactions can be pulled out of the integral and the unweighted spectral amplitudes can be Fourier transformed. The unweighted terms still contain a multitude of nonlinear pathways, but only the phase matched pathway needs to have an accurate
+coupling term as phase mismatch suppresses all other contributions to the final result.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 g^{\left(2\right)}\!\left[\nu_1, \nu_2\right] &amp;\approx g^{\left(2\right)}_\text{eff}\!\left[\nu\right]
@@ -888,7 +886,6 @@ g^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] &amp;\approx g^{\left(3\rig
 \\
 &amp; - i \, \omega \, g^{\left(3\right)}_\text{eff}\!\left[\nu\right] \, \mathscr{F}\!\left[a\left[t\right]^3 \right]
 \end{align}\end{split}\]</div>
-<p>Besides just reducing the numerical complexity of individual terms, it is important to use an accurate and efficient numerical differential equation solver. For this purpose, the embedded 4th order Runge-Kutta method of <a class="reference external" href="https://doi.org/10.1016/j.cpc.2012.12.020">Balac and Mahé (2013)</a> is quite optimal.</p>
 <section id="Analytic-Representation">
 <h3>Analytic Representation<a class="headerlink" href="#Analytic-Representation" title="Permalink to this heading">#</a></h3>
 <p>The analytic representation is an important concept for the theoretical and numerical manipulation of optical pulses. Since the physical <span class="math notranslate nohighlight">\(\mathbf{E}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> fields are real, as mentioned in <a class="reference internal" href="fourier_transforms.html#Real-Functions-and-the-Analytic-Representation"><span class="std std-ref">Fourier Transforms</span></a>, it is possible to represent them in analytical form using only the amplitudes from the positive frequency side of the spectrum. This is straightforward when only linear interactions are
@@ -964,11 +961,11 @@ considered but becomes more difficult when nonlinear terms are involved. Nonline
 </table>
 <p>where <span class="math notranslate nohighlight">\(\nu_c\)</span> is the central or average frequency of the pulse.</p>
 <p>Negative frequency components at the input to the nonlinear interaction can always be replaced by conjugated positive frequency components, the difficultly arises when restricting the range of the output frequencies to only positive values. To reduce the numerical complexity, nonlinear terms are best calculated as products in the time domain. With <span class="math notranslate nohighlight">\(N\)</span> being the number of points involved, the complexity of the fast Fourier transform needed to go from the frequency domain to the time domain
-scales as <span class="math notranslate nohighlight">\(N \log\left[N\right]\)</span>, while the complexity of the nonlinear terms’ convolutions in the frequency domain scale as <span class="math notranslate nohighlight">\(N^2\)</span> or <span class="math notranslate nohighlight">\(N^3\)</span>. However, in general each discrete interaction spans both positive and negative frequencies so most of the potential time domain products are not strictly analytic. If one were to perform these products in the time domain with analytic grids, that only support the positive half of the spectrum, the negative frequency components would alias
+scales as <span class="math notranslate nohighlight">\(N \log\left[N\right]\)</span>, while the complexity of the nonlinear terms’ convolutions in the frequency domain scale as <span class="math notranslate nohighlight">\(N^2\)</span> or <span class="math notranslate nohighlight">\(N^3\)</span>. However, in general each discrete interaction spans both positive and negative frequencies so most of the potential time-domain products are not strictly analytic. If one were to perform these products in the time domain with analytic grids, that only support the positive half of the spectrum, the negative frequency components would alias
 into positive frequencies. This could potentially lead to erroneous results, especially if an aliased term inadvertently phase matched.</p>
-<p>The simplest way around this is to cheat the analyticity and perform the frequency to time domain Fourier transform with enough extra points to allow the negative frequency components to alias outside of the frequency range of interest. The “analytic” nonlinear terms are then all entries in the above tables that have the potential to contain positive output frequencies. After Fourier transforming back to the frequency domain the extra points are dropped, leaving only the analytic results. If the
+<p>The simplest way around this is to cheat the analyticity and perform the frequency-to-time-domain Fourier transform with enough extra points to allow the negative frequency components to alias outside of the frequency range of interest. The “analytic” nonlinear terms are then all entries in the above tables that have the potential to contain positive output frequencies. After Fourier transforming back to the frequency domain the extra points are dropped, leaving only the analytic results. If the
 analytic grid has a support from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(\nu_\text{max}\)</span>, then the second order nonlinearity would need a grid that supports at least another <span class="math notranslate nohighlight">\(\nu_\text{max}\)</span> worth of points, while the third order nonlinearity would need an extra <span class="math notranslate nohighlight">\(2 \, \nu_\text{max}\)</span>.</p>
-<p>Mathematically, the waveforms of analytic, complex envelopes are downshifted to baseband by removing a center frequency <span class="math notranslate nohighlight">\(\left(\nu_c\right)\)</span>. All time domain products of a waveform with a frequency range centered about the origin result in waveforms with frequency ranges centered about the origin. However, the nonlinear interactions generally have center frequencies that are different than the center frequency of the original waveform. In order to calculate the correct terms each
+<p>Mathematically, the waveforms of analytic, complex envelopes are downshifted to baseband by removing a center frequency <span class="math notranslate nohighlight">\(\left(\nu_c\right)\)</span>. All time-domain products of a waveform with a frequency range centered about the origin result in waveforms with frequency ranges centered about the origin. However, the nonlinear interactions generally have center frequencies that are different than the center frequency of the original waveform. In order to calculate the correct terms each
 interaction must be frequency shifted by the difference between the initial center frequency and the respective output center frequency before Fourier transforming back to the frequency domain.</p>
 <p>In the limit of constant mode area and instantaneous nonlinear susceptibility, the analytic nonlinear terms have the following form:</p>
 <div class="math notranslate nohighlight">
@@ -984,8 +981,8 @@ g^{\left(2\right)}_\text{eff} = \frac{1}{2} \frac{\chi^{\left(2\right)}_\text{ef
 g^{\left(3\right)}_\text{eff} = \frac{1}{2} \frac{\chi^{\left(3\right)}_\text{eff}}{\epsilon_0 \, c^2 \, n_\text{eff}^2 \, A_\text{eff}}
 \end{gather}\end{split}\]</div>
 <p>where the amplitudes <span class="math notranslate nohighlight">\(\left(a\right)\)</span> are defined over only the positive half of the spectrum.</p>
-<section id="Analytic-Normalizations">
-<h4>Analytic Normalizations<a class="headerlink" href="#Analytic-Normalizations" title="Permalink to this heading">#</a></h4>
+<section id="Normalization">
+<h4>Normalization<a class="headerlink" href="#Normalization" title="Permalink to this heading">#</a></h4>
 <p>It is important to consider the normalization of the analytic amplitudes when comparing against other formulas in the literature. There are two common alternatives to, as above, simply using the amplitudes as given by the positive half of the double-sided spectrum. The first rescales the analytic representation such that the integral of the absolute amplitude squared over positive frequencies is equal to the total energy <span class="math notranslate nohighlight">\(\left(E\right)\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
@@ -1056,22 +1053,22 @@ a''\!\left[t\right] = a + i \, \mathcal{H}\!\left[a\right]
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Unidirectional-Propagation-Equations">Unidirectional Propagation Equations</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Forward-Propagation-Equation">Forward Propagation Equation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Backward-Propagation-Equation">Backward Propagation Equation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Linear-Dispersion">Linear Dispersion</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Linear-Dispersion">Linear Dispersion</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Phase-Matching">Phase Matching</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Gain-and-Loss">Gain and Loss</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Changing-Mode-Profiles">Changing Mode Profiles</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Free-Sources-and-Nonlinearity">Free Sources and Nonlinearity</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Free-Sources-and-Nonlinearity">Free Sources and Nonlinearity</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Second-Order-Nonlinearity">Second Order Nonlinearity</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Third-Order-Nonlinearity">Third Order Nonlinearity</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Single-Mode-UPE">Single Mode UPE</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Single-Mode-UPE">Single-Mode UPE</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Gain and Loss</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Third Order Nonlinearity</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Third Order Nonlinearity</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Self-Phase-Modulation">Self-Phase Modulation</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Intensity-Dependent-Refractive-Index">Intensity Dependent Refractive Index</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Shock-Term">Shock Term</a></li>
@@ -1082,8 +1079,8 @@ a''\!\left[t\right] = a + i \, \mathcal{H}\!\left[a\right]
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Numerical-Implementation">Numerical Implementation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Analytic-Representation">Analytic Representation</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Analytic-Normalizations">Analytic Normalizations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Analytic-Representation">Analytic Representation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Normalization">Normalization</a></li>
 </ul>
 </li>
 </ul>

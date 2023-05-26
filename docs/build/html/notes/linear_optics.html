@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Linear Optics &#8212; PyNLO dev documentation</title>
+    <title>Linear Optics &#8212; PyNLO 1.dev documentation</title>
   
   
   
@@ -278,8 +278,7 @@ document.write(`
         <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Topics</span></p>
-<ul class="current nav bd-sidenav">
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="fourier_transforms.html">Fourier Transforms</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Linear Optics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nonlinear_optics.html">Nonlinear Optics</a></li>
@@ -481,11 +480,11 @@ F\!\left[\mathbf{\tilde{\nu}}\right] &amp;= \int_{-\infty}^{\infty} f\!\left[\ma
 \text{Angular Frequency} &amp;: \omega = 2 \pi \, \nu = 2 \pi / T \\
 \text{Angular Wavenumber} &amp;: \mathbf{k} = 2 \pi \, \mathbf{\tilde{\nu}} = 2 \pi / \lambda
 \end{align}\end{split}\]</div>
-<p>It should also be noted that as defined above, there is a sign difference between the exponent in the time domain transform and the spatial domain transform. This is to explicitly set positive <span class="math notranslate nohighlight">\(\omega\)</span> and positive <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> as forward traveling waves, and positive <span class="math notranslate nohighlight">\(\omega\)</span> and negative <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> as backward traveling waves.</p>
+<p>It should also be noted that as defined above, there is a sign difference between the exponent in the time-domain transform and the spatial-domain transform. This is to explicitly set positive <span class="math notranslate nohighlight">\(\omega\)</span> and positive <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> as forward traveling waves, and positive <span class="math notranslate nohighlight">\(\omega\)</span> and negative <span class="math notranslate nohighlight">\(\mathbf{k}\)</span> as backward traveling waves.</p>
 </section>
 <section id="Relative-Permittivity">
 <h3>Relative Permittivity<a class="headerlink" href="#Relative-Permittivity" title="Permalink to this heading">#</a></h3>
-<p>The relative permittivity <span class="math notranslate nohighlight">\(\left(\epsilon\right)\)</span> may be cast in terms of the frequency and wavenumber of the traveling wave. This quantity can further be broken apart into complementary real quantities representing the index of refraction <span class="math notranslate nohighlight">\(\left(n\right)\)</span> and the attenuation or gain coefficient <span class="math notranslate nohighlight">\(\left(\alpha\right)\)</span>:</p>
+<p>The relative permittivity <span class="math notranslate nohighlight">\(\left(\epsilon\right)\)</span> may be cast in terms of the frequency and wavenumber of the traveling wave. This quantity can further be broken apart into complementary real quantities representing the index of refraction <span class="math notranslate nohighlight">\(\left(n\right)\)</span> and the gain or attenuation coefficient <span class="math notranslate nohighlight">\(\left(\alpha\right)\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \epsilon &amp;= \mathbb{1} + \chi^{(1)}
@@ -496,7 +495,7 @@ F\!\left[\mathbf{\tilde{\nu}}\right] &amp;= \int_{-\infty}^{\infty} f\!\left[\ma
 \\
 &amp;= \left(n + i \frac{c}{\omega} \frac{\alpha}{2} \right)^{2}
 \end{align}\end{split}\]</div>
-<p>with complex propagation constant (<span class="math notranslate nohighlight">\(k\)</span>) and real wavenumber (<span class="math notranslate nohighlight">\(\beta\)</span>) defined as:</p>
+<p>with the wavenumber (<span class="math notranslate nohighlight">\(k\)</span>) and phase coefficient (<span class="math notranslate nohighlight">\(\beta\)</span>) defined as:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 k\ &amp;= \beta + i \frac{\alpha}{2}
@@ -505,7 +504,7 @@ k\ &amp;= \beta + i \frac{\alpha}{2}
 \end{align}\end{split}\]</div>
 <section id="Gain-and-Loss">
 <h4>Gain and Loss<a class="headerlink" href="#Gain-and-Loss" title="Permalink to this heading">#</a></h4>
-<p>Power rises or falls off at the exponential of the gain coefficient <span class="math notranslate nohighlight">\(\left(\exp\!{\left(\alpha \, z\right)}\right)\)</span>. Only one half of <span class="math notranslate nohighlight">\(\alpha\)</span> is included in the complex wavenumber since power is proportional to the square of the electric and magnetic fields:</p>
+<p>Power rises or falls off at the exponential of the gain coefficient <span class="math notranslate nohighlight">\(\left(\exp\!{\left(\alpha \, z\right)}\right)\)</span>. Since power is proportional to the square of the electric and magnetic fields only half of <span class="math notranslate nohighlight">\(\alpha\)</span> appears in the complex wavenumber:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \text{Gain} &amp;: \alpha &gt; 0
@@ -531,7 +530,7 @@ k\ &amp;= \beta + i \frac{\alpha}{2}
 \\
 \text{Anomalous} &amp;: \beta_2 \lt 0, \ D \gt 0
 \end{align}\end{split}\]</div>
-<p>Most materials are normal, in that higher frequency components travel at a slower rate than lower frequency components.</p>
+<p>In most cases, materials have normal dispersion and higher frequency components travel more slowly than lower frequency components. <span class="math notranslate nohighlight">\(\beta_{2}\)</span> and <span class="math notranslate nohighlight">\(D\)</span> are typically given in units of <span class="math notranslate nohighlight">\(\text{fs}^2/\text{mm}\)</span> and <span class="math notranslate nohighlight">\(\text{ps}/(\text{nm km})\)</span> respectively.</p>
 </section>
 </section>
 </section>
@@ -739,7 +738,7 @@ dropping the line integral:</p>
 \\
 &amp;= \left(-i \, \beta_r - i \, \beta_s\right) \int_{A_\infty} \left(-\mathbf{E}_r \times \mathbf{H}_{s}^\ast + \mathbf{E}_{s}^\ast \times \mathbf{H}_r\right) \cdot \hat{\mathbf{z}} \, dA
 \end{align}\end{split}\]</div>
-<p>Dividing out the propagation constants and then adding or subtracting the two relations gives the orthogonality condition:</p>
+<p>Dividing out the wavenumbers and then adding or subtracting the two relations gives the orthogonality condition:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
 \text{if $r \ne s$}
@@ -884,7 +883,7 @@ A_\text{eff} = \frac{\left(\int_{A_\infty} \mathbf{S}_n \cdot \hat{\mathbf{z}} \
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Maxwell's-Equations">Maxwell’s Equations</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Electric-and-Magnetic-Polarization">Electric and Magnetic Polarization</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Boundary-Conditions">Boundary Conditions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Boundary-Conditions">Boundary Conditions</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Normal-Components">Normal Components</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Tangential-Components">Tangential Components</a></li>
 </ul>
@@ -893,7 +892,7 @@ A_\text{eff} = \frac{\left(\int_{A_\infty} \mathbf{S}_n \cdot \hat{\mathbf{z}} \
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Traveling-Waves">Traveling Waves</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#A-Note-on-Fourier-Transforms-and-Units">A Note on Fourier Transforms and Units</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Relative-Permittivity">Relative Permittivity</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Relative-Permittivity">Relative Permittivity</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Gain-and-Loss">Gain and Loss</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Dispersion">Dispersion</a></li>
 </ul>
@@ -901,7 +900,7 @@ A_\text{eff} = \frac{\left(\int_{A_\infty} \mathbf{S}_n \cdot \hat{\mathbf{z}} \
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Waveguides">Waveguides</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Transverse-and-Longitudinal-Components">Transverse and Longitudinal Components</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Transverse-and-Longitudinal-Components">Transverse and Longitudinal Components</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Divergence-Equations">Divergence Equations</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Transverse-Curl-Equations">Transverse Curl Equations</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Longitudinal-Curl-Equations">Longitudinal Curl Equations</a></li>
@@ -913,7 +912,7 @@ A_\text{eff} = \frac{\left(\int_{A_\infty} \mathbf{S}_n \cdot \hat{\mathbf{z}} \
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Forward-and-Backward-Modes">Forward and Backward Modes</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Reciprocity-Theorem">Reciprocity Theorem</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Orthogonality">Orthogonality</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Orthonormal-Modes">Orthonormal Modes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Orthonormal-Modes">Orthonormal Modes</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Normalization">Normalization</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Units">Units</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Effective-Area">Effective Area</a></li>

@@ -1,6 +1,6 @@
-pynlo.media.Mode.gamma
-======================
+Mode.gamma
+==========
 
 .. currentmodule:: pynlo.media
 
-.. automethod:: Mode.gamma
+.. autoproperty:: Mode.gamma

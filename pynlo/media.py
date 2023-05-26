@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Optical modes in the frequency domain.
+Representing optical modes in waveguides and other media.
 
 """
 
@@ -9,7 +9,9 @@ __all__ = ["Mode"]
 
 # %% Imports
 
+import bisect
 import collections
+import copy
 
 import numpy as np
 from scipy.constants import c, pi
@@ -17,88 +19,58 @@ from scipy.constants import c, pi
 
 # %% Collections
 
-_LinearOperator = collections.namedtuple("LinearOperator", ["u", "phase", "gain", "phase_raw"])
+_LinearOperator = collections.namedtuple("LinearOperator", ["u", "gain", "phase", "phase_raw"])
+_LinearZ = collections.namedtuple("LinearZ", ["any", "alpha", "beta"])
+_NonlinearZ = collections.namedtuple("NonlinearZ", ["any", "g2", "pol", "g3", "r3"])
 
 
-# %% Base Classes
+# %% Single Mode
+
 class Mode():
     """
-    An optical mode, defined over a frequency grid.
+    The properties of a medium spatially integrated over the transverse plane
+    of an optical mode.
 
-    A given input parameter is interpreted as being z-dependent if it is
-    callable. All z-dependent parameters must have the position along the
-    waveguide (`z`) as their first argument.
+    If a parameters is z dependent, it must be input as a function who's first
+    argument is the propagation distance.
 
     Parameters
     ----------
     v_grid : array_like of float
         The frequency grid.
-    beta_v : array_like of float or callable
-        The angular wavenumber, or the real part of the propagation constant,
-        defined over the frequency grid.
-    alpha_v : array_like of float or callable, optional
-        The gain coefficient, or twice the imaginary part of the propagation
-        constant. The default is None.
-    g2_v : array_like of complex or callable, optional
-        The effective 2nd order nonlinearity. The default is None.
-    g2_inv : callable, optional
-        Discrete polling of the 2nd order nonlinearity. The default is None.
-    g3_v : array_like of complex or callable, optional
-        The effective 3rd order nonlinearity. The default is None.
+    beta : array_like of float or callable
+        The phase coefficient, the real part of the complex wavenumber.
+    alpha : array_like of float or callable, optional
+        The gain coefficient, twice the imaginary part of the complex
+        wavenumber.
+    g2 : array_like of complex or callable, optional
+        The effective 2nd-order nonlinearity.
+    g2_inv : array_like of float, optional
+        The location of all poled domain inversion boundaries.
+    g3 : array_like of complex or callable, optional
+        The effective 3rd-order nonlinearity.
     rv_grid : array_like of float, optional
-        An origin contiguous frequency grid associated with the 3rd order
-        nonlinear response function. The default is None.
-    r3_v : array_like of complex or callable, optional
-        The effective 3rd order nonlinear response function containing both
-        the instantaneous and Raman nonlinearities. The default is None.
+        An origin-contiguous frequency grid associated with the 3rd-order
+        nonlinear response function.
+    r3 : array_like of complex or callable, optional
+        The effective 3rd-order nonlinear response function containing both
+        the Raman and instantaneous nonlinearities.
     z : float, optional
-        The position along the waveguide. The default is 0.0.
+        The initial position within the mode. The default is 0.
 
     Notes
     -----
-    Modes are defined for traveling waves of the form assumed below:
+    Forward traveling waves of the mode are defined using the following
+    conventions:
 
     .. math:: E, H \\sim a \\, e^{i(\\omega t - \\kappa z)} + \\text{c.c} \\\\
               \\kappa = \\beta + i \\frac{\\alpha}{2}, \\quad
               \\beta = n \\frac{\\omega}{c}
 
     """
-
-    def __init__(self, v_grid, beta_v, alpha_v=None,
-                 g2_v=None, g2_inv=None, g3_v=None, rv_grid=None, r3_v=None,
+    def __init__(self, v_grid, beta, alpha=None,
+                 g2=None, g2_inv=None, g3=None, rv_grid=None, r3=None,
                  z=0.0):
-        """
-        Initialize a mode given a set of frequencies, wavenumbers, and other
-        parameters. If a given parameters is callable, its first argument must
-        be `z`, the position along the waveguide.
-
-        Parameters
-        ----------
-        v_grid : array_like of float
-            The frequency grid.
-        beta_v : array_like of float or callable
-            The angular wavenumber, or the real part of the propagation
-            constant, defined over the frequency grid.
-        alpha_v : array_like of float or callable, optional
-            The gain coefficient, or twice the imaginary part of the
-            propagation constant. The default is None.
-        g2_v : array_like of complex or callable, optional
-            The effective 2nd order nonlinearity. The default is None.
-        g2_inv : callable, optional
-            Discrete polling of the 2nd order nonlinearity. The default is
-            None.
-        g3_v : array_like of complex or callable, optional
-            The effective 3rd order nonlinearity. The default is None.
-            An origin contiguous frequency grid associated with the 3rd order
-            nonlinear response function. The default is None.
-        r3_v : array_like of complex or callable, optional
-            The effective 3rd order nonlinear response function containing
-            both the instantaneous and Raman nonlinearities. The default is
-            None.
-        z : float, optional
-            The position along the waveguide. The default is 0.
-
-        """
         #---- Position
         self._z = z
 
@@ -107,58 +79,73 @@ class Mode():
         self._w_grid = 2*pi*self._v_grid
 
         #---- Refractive Index
-        if callable(beta_v):
-            assert (len(beta_v(z)) == len(v_grid)), "The length of beta_v must match v_grid."
-            self._beta = beta_v
+        if callable(beta):
+            assert (len(beta(z)) == len(v_grid)), "The length of beta must match v_grid."
+            self._beta = beta
         else:
-            assert (len(beta_v) == len(v_grid)), "The length of beta_v must match v_grid."
-            self._beta = np.asarray(beta_v, dtype=float)
+            assert (len(beta) == len(v_grid)), "The length of beta must match v_grid."
+            self._beta = np.asarray(beta, dtype=float)
 
         #---- Gain
-        if (alpha_v is None) or callable(alpha_v):
-            self._alpha = alpha_v
+        if (alpha is None) or callable(alpha):
+            self._alpha = alpha
         else:
-            self._alpha = np.asarray(alpha_v, dtype=float)
+            self._alpha = np.asarray(alpha, dtype=float)
 
-        #---- 2nd Order Nonlinearity
-        if (g2_v is None) or callable(g2_v):
-            self._g2 = g2_v
+        #---- 2nd-Order Nonlinearity
+        if (g2 is None) or callable(g2):
+            self._g2 = g2
         else:
-            self._g2 = np.asarray(g2_v, dtype=complex)
+            self._g2 = np.asarray(g2, dtype=complex)
 
-        if (g2_inv is None) or callable(g2_inv):
-            self._g2_inv = g2_inv
+        if g2_inv is None:
+            self._g2_inv = None
+            self._g2_inv_sorted = []
         else:
-            assert callable(g2_inv), ("If defined, the discrete 2nd order"
-                                       "polling must be callable")
+            assert (g2 is not None) and (g2_inv is not None), (
+                "Poling can only be defined when g2 is defined")
+            self._g2_inv_sorted = sorted(g2_inv)
+            self._g2_inv = {z:(idx + 1) % 2 for idx, z in enumerate(self._g2_inv_sorted)}
 
-        #---- 3rd Order Nonlinearity
-        if (g3_v is None) or callable(g3_v):
-            self._g3 = g3_v
+
+        #---- 3rd-Order Nonlinearity
+        if (g3 is None) or callable(g3):
+            self._g3 = g3
         else:
-            self._g3 = np.asarray(g3_v, dtype=complex)
+            self._g3 = np.asarray(g3, dtype=complex)
 
-        if (rv_grid is not None) and (r3_v is not None):
+        # Nonlinear Response Function
+        if (rv_grid is not None) and (r3 is not None):
+            assert (g3 is not None) and (r3 is not None), (
+                "Raman nonlinearity can only be defined when g3 is defined")
             self._rv_grid = np.asarray(rv_grid, dtype=float)
 
-            #---- Nonlinear Response Function
-            if callable(r3_v):
-                assert (len(r3_v(z)) == len(rv_grid)), "The length of r3_v must match rv_grid."
-                self._r3 = r3_v
+            if callable(r3):
+                self._r3 = r3
             else:
-                assert (len(r3_v) == len(rv_grid)), "The length of r3_v must match rv_grid."
-                self._r3 = np.asarray(r3_v, dtype=complex)
+                assert (len(r3) == len(rv_grid)), "The length of r3 must match rv_grid."
+                self._r3 = np.asarray(r3, dtype=complex)
         else:
-            assert (rv_grid is not None)==(r3_v is not None), (
-                "Both rv_grid and r3_v must be defined at the same time.")
+            assert (rv_grid is None) and (r3 is None), (
+                "rv_grid and r3 must both be defined at the same time or not at all.")
             self._rv_grid = None
             self._r3 = None
+
+        #---- Z Dependence
+        self._z_linear = _LinearZ(
+            any=callable(alpha) or callable(beta),
+            alpha=callable(alpha), beta=callable(beta))
+        self._z_nonlinear = _NonlinearZ(
+            any=callable(g2) or callable(g3) or callable(r3),
+            g2=callable(g2), pol=g2_inv is not None,
+            g3=callable(g3), r3=callable(r3))
+        self._z_mode = self.z_linear.any or self.z_nonlinear.any or self.z_nonlinear.pol
 
     #---- General Properties
     @property
     def z(self):
         """
-        The position along the waveguide, with units of ``m``.
+        The position within the mode, with units of ``m``.
 
         Returns
         -------
@@ -185,7 +172,7 @@ class Mode():
     @property
     def rv_grid(self):
         """
-        The origin contiguous frequency grid associated with the Raman
+        The origin-contiguous frequency grid associated with the Raman
         response. Units are in ``Hz``.
 
         Returns
@@ -196,228 +183,183 @@ class Mode():
         return self._rv_grid
 
     @property
-    def z_dep_linearity(self):
+    def z_mode(self):
+        """
+        The z dependence of the mode.
+
+        Returns
+        -------
+        bool
+
+        """
+        return self._z_mode
+
+    @property
+    def z_linear(self):
         """
         The z dependence of the linear terms.
 
         Returns
         -------
-        z_alpha : bool
-            The z dependence of gain constant.
-        z_beta : bool
-            The z dependence of angular wavenumber.
+        any : bool
+            Whether there is any z dependence of the linearity.
+        alpha : bool
+            Z-dependent gain coefficient.
+        beta : bool
+            Z-dependent phase coefficient.
 
         """
-        z_alpha = callable(self._alpha)
-        z_beta = callable(self._beta)
-        return z_alpha, z_beta
+        return self._z_linear
 
     @property
-    def z_dep_nonlinearity(self):
+    def z_nonlinear(self):
         """
         The z dependence of the nonlinear terms.
 
         Returns
         -------
-        z_g2 : bool
-            The z dependence of the effective 2nd order nonlinear parameter.
-        z_g2_inv : bool
-            The z dependence of the polling of the effective 2nd order
-            nonlinear parameter.
-        z_g3 : bool
-            The z dependence of the effective 3rd order nonlinear parameter.
-        z_r3 : bool
-            The z dependence of the effective Raman response.
+        any : bool
+            Whether there is any z dependece of the nonlinearity (excluding
+            poling).
+        g2 : bool
+            Z-dependent 2nd-order nonlinear parameter.
+        pol : bool
+            Poled 2nd-order nonlinearity.
+        g3 : bool
+            Z-dependent 3rd-order nonlinear parameter.
+        r3 : bool
+            Z-dependent Raman response.
 
         """
-        z_g2 = callable(self._g2)
-        z_g2_inv = callable(self._g2_inv)
-        z_g3 = callable(self._g3)
-        z_r3 = callable(self._r3)
-        return z_g2, z_g2_inv, z_g3, z_r3
+        return self._z_nonlinear
 
-    #---- 1st Order Properties
-    def beta(self, m=0, z=None):
+    #---- 1st-Order Properties
+    @property
+    def alpha(self):
         """
-        The angular wavenumber, with units of ``1/m``, or its derivatives with
-        respect to angular frequency.
-
-        This method is recursive and successively calculates higher order
-        derivatives from the lower orders. This method returns the refractive
-        index unchanged when `m` is less than or equal to 0.
-
-        Parameters
-        ----------
-        m : int, optional
-            The derivative order of the propagation constant with respect to
-            angular frequency. The default returns the propagation constant
-            without taking a derivative.
-        z : float, optional
-            The position along the waveguide. The default uses the last known
-            value.
-
-        Returns
-        -------
-        ndarray of float
-
-        """
-        if z is not None:
-            self.z = z
-
-        if m<=0:
-            return self._beta(self.z) if callable(self._beta) else self._beta
-        else:
-            return np.gradient(self.beta(m=m-1), self._w_grid, edge_order=2)
-
-    def n(self, z=None):
-        """
-        The refractive index.
-
-        Parameters
-        ----------
-        z : float, optional
-            The position along the waveguide. The default uses the last known
-            value.
-
-        Returns
-        -------
-        ndarray of float
-
-        """
-        if z is not None:
-            self.z = z
-        return self.beta()*c/self._w_grid
-
-    def alpha(self, z=None):
-        """
-        The gain constant, with units of ``1/m``.
+        The gain coefficient, with units of ``1/m``.
 
         Positive values correspond to gain and negative values to loss.
-
-        Parameters
-        ----------
-        z : float, optional
-            The position along the waveguide. The default uses the last known
-            value.
 
         Returns
         -------
         None or ndarray of float
 
         """
-        if z is not None:
-            self.z = z
         return self._alpha(self.z) if callable(self._alpha) else self._alpha
 
-    def n_g(self, z=None):
+    @property
+    def beta(self):
         """
-        The group index.
-
-        Parameters
-        ----------
-        z : float, optional
-            The position along the waveguide. The default uses the last known
-            value.
+        The phase coefficient, or angular wavenumber, with units of ``1/m``.
 
         Returns
         -------
         ndarray of float
 
         """
-        if z is not None:
-            self.z = z
-        return c*self.beta(m=1)
 
-    def v_g(self, z=None):
+        return self._beta(self.z) if callable(self._beta) else self._beta
+
+    @property
+    def n(self):
         """
-        The group velocity, with units of ``m/s``.
-
-        Parameters
-        ----------
-        z : float, optional
-            The position along the waveguide. The default uses the last known
-            value.
+        The refractive index.
 
         Returns
         -------
         ndarray of float
 
         """
-        if z is not None:
-            self.z = z
-        return 1/self.beta(m=1)
+        return self.beta*c/self._w_grid
 
-    def d_12(self, v0=None, z=0):
+    @property
+    def beta1(self):
         """
-        The group velocity mismatch, or walk-off parameter, with units of
-        ``s/m``.
+        The group walk-off parameter, with units of ``s/m``.
+
+        Returns
+        -------
+        ndarray of float
+
+        """
+        return np.gradient(self.beta, self._w_grid, edge_order=2)
+
+    def d_12(self, v0=None):
+        """
+        The group velocity mismatch, with units of ``s/m``.
 
         Parameters
         ----------
         v0 : float, optional
-            The target reference frequency. The default selects the central
-            frequency.
-        z : float, optional
-            The position along the waveguide. The default uses the last known
-            value.
+            The target reference frequency. The central frequency is selected
+            by default.
 
         Returns
         -------
         ndarray of float
 
         """
-        if z is not None:
-            self.z = z
-
-        if v0 is None: # comoving frame
+        if v0 is None:
             v0 = self.v_grid[self.v_grid.size//2]
         v0_idx = np.argmin(np.abs(v0 - self.v_grid))
-        beta1 = self.beta(m=1)
+        beta1 = self.beta1
         return beta1[v0_idx] - beta1
 
-    def GVD(self, z=None):
+    @property
+    def n_g(self):
         """
-        The group velocity dispersion, with units of ``s**2/m``.
-
-        Parameters
-        ----------
-        z : float, optional
-            The position along the waveguide. The default uses the last known
-            value.
+        The group index.
 
         Returns
         -------
         ndarray of float
 
         """
-        if z is not None:
-            self.z = z
-        return self.beta(m=2)
+        return c*self.beta1
 
-    def D(self, z=None):
+    @property
+    def v_g(self):
+        """
+        The group velocity, with units of ``m/s``.
+
+        Returns
+        -------
+        ndarray of float
+
+        """
+        return 1/self.beta1
+
+    @property
+    def beta2(self):
+        """
+        The group velocity dispersion (GVD), with units of ``s**2/m``.
+
+        Returns
+        -------
+        ndarray of float
+
+        """
+        return np.gradient(self.beta1(), self._w_grid, edge_order=2)
+
+    @property
+    def D(self):
         """
         The dispersion parameter D, with units of ``s/m**2``.
 
-        Parameters
-        ----------
-        z : float, optional
-            The position along the waveguide. The default uses the last known
-            value.
-
         Returns
         -------
         ndarray of float
 
         """
-        if z is not None:
-            self.z = z
-        return -2*pi/c * self.v_grid**2 * self.beta(m=2)
+        return -2*pi/c * self.v_grid**2 * self.beta2 #TODO: test against chi1 helper functions
 
-    def linear_operator(self, dz, v0=None, z=None):
+    def linear_operator(self, dz, v0=None):
         """
-        The linear operator which advances the spectrum over a distance `dz`.
+        The linear operator which advances a pulse over a distance `dz`.
 
-        The linear operator acts on the spectrum through multiplication.
+        The linear operator acts on the analytic spectrum through
+        multiplication.
 
         Parameters
         ----------
@@ -426,38 +368,33 @@ class Mode():
         v0 : float, optional
             The target reference frequency of the comoving frame. The default
             selects the central frequency.
-        z : float, optional
-            The position along the waveguide. The default uses the last known
-            value.
 
         Returns
         -------
         u : ndarray of complex
             The forward evolution operator.
-        phase : ndarray of float
-            The accumulated phase in the comoving frame (additive).
         gain : float or ndarray
             The accumulated gain or loss (multiplicative).
+        phase : ndarray of float
+            The accumulated phase in the comoving frame (additive).
         phase_raw : ndarray of float
             The raw accumulated phase.
 
         """
-        if z is not None:
-            self.z = z
-
         #---- Gain
-        alpha = self.alpha()
+        alpha = self.alpha
         if alpha is None:
             alpha = 0.0
         gain = np.exp(alpha*dz)
 
         #---- Phase
-        beta_raw = self.beta()
+        beta_raw = self.beta
 
-        if v0 is None: # comoving frame
+        # Comoving frame
+        if v0 is None:
             v0 = self.v_grid[self.v_grid.size//2]
         v0_idx = np.argmin(np.abs(v0 - self.v_grid))
-        beta_cm = beta_raw - self.beta(m=1)[v0_idx]*self._w_grid
+        beta_cm = beta_raw - self.beta1[v0_idx]*self._w_grid
 
         #---- Propagation Constant
         kappa = beta_cm + 0.5j*alpha
@@ -466,112 +403,115 @@ class Mode():
         operator = np.exp(-1j*kappa*dz)
 
         lin_operator = _LinearOperator(
-            u=operator, phase=dz*beta_cm, gain=gain, phase_raw=dz*beta_raw)
+            u=operator, gain=gain, phase=dz*beta_cm, phase_raw=dz*beta_raw)
         return lin_operator
 
-    #---- 2nd Order Properties
-    def g2(self, z=None):
+    #---- 2nd-Order Properties
+    @property
+    def g2(self):
         """
-        The magnitude of the effective 2nd order nonlinear parameter, with
+        The magnitude of the effective 2nd-order nonlinear parameter, with
         units of ``1/(W**0.5*m*Hz)``.
-
-        Parameters
-        ----------
-        z : float, optional
-            The position along the waveguide. The default uses the last known
-            value.
 
         Returns
         -------
         None or ndarray of complex
 
         """
-        if z is not None:
-            self.z = z
         return self._g2(self.z) if callable(self._g2) else self._g2
 
-    def g2_inv(self, z=None):
+    @property
+    def g2_inv(self):
         """
-        The sign of the polled 2nd order nonlinearity.
+        The location of all 2nd-order domain inverion boundaries within the
+        mode.
 
-        Parameters
-        ----------
-        z : float, optional
-            The position along the waveguide. The default uses the last known
-            value.
+        A value of 1 indicates that the start of an inverted domain. A value of
+        0 indicates the start of an unpoled region.
+
+        Returns
+        -------
+        None or dict of int
+
+        """
+        return self._g2_inv
+
+    @property
+    def g2_pol(self):
+        """
+        The poling status at the current z position.
+
+        A value of 1 indicates that the current position is in a region with an
+        inverted domain. A value of 0 indicates an unpoled region.
 
         Returns
         -------
         int
 
         """
-        if z is not None:
-            self.z = z
-        return 1 if self._g2_inv is None else self._g2_inv(self.z)
+        poled = bisect.bisect_right(self._g2_inv_sorted, self.z) % 2
+        return poled
 
-    #---- 3rd Order Properties
-    def g3(self, z=None):
+    #---- 3rd-Order Properties
+    @property
+    def g3(self):
         """
-        The effective 3rd order nonlinear parameter, with units of
+        The effective 3rd-order nonlinear parameter, with units of
         ``1/(W*m*Hz)``.
-
-        Parameters
-        ----------
-        z : float, optional
-            The position along the waveguide. The default uses the last known
-            value.
 
         Returns
         -------
         None or ndarray of complex
 
         """
-        if z is not None:
-            self.z = z
         return self._g3(self.z) if callable(self._g3) else self._g3
 
-    def gamma(self, z=None):
+    @property
+    def gamma(self):
         """
         The nonlinear parameter :math:`\\gamma`, with units of ``1/(W*m)``.
 
-        Parameters
-        ----------
-        z : float, optional
-            The position along the waveguide. The default uses the last known
-            value.
-
         Returns
         -------
         None or ndarray of complex
         """
-        if z is not None:
-            self.z = z
-
-        g3 = self.g3()
+        g3 = self.g3
         if g3 is not None and len(g3.shape)>=2:
             g3 = g3[0] * np.sum(g3[1:]**3, axis=0)
-        return 3/2*self._w_grid*g3 if g3 is not None else None
+        return 3/2*self._w_grid*g3 if g3 is not None else None #TODO: test against chi3 helper functions
 
-
-    def r3(self, z=None):
+    @property
+    def r3(self):
         """
-        The effective 3rd order nonlinear response function containing both
-        the instantaneous and Raman nonlinearities.
-
-        Parameters
-        ----------
-        z : float, optional
-            The position along the waveguide. The default uses the last known
-            value.
+        The effective 3rd-order nonlinear response function containing both
+        the Raman and instantaneous nonlinearities.
 
         Returns
         -------
         None or ndarray of complex
         """
-        if z is not None:
-            self.z = z
         return self._r3(self.z) if callable(self._r3) else self._r3
 
+    #---- Misc
+    def copy(self):
+        """A copy of the mode."""
+        return copy.deepcopy(self)
+
+
+# class GaussianMode():
+#     """
+#     Fundamental Gaussian modes for simulating single-mode free-space
+#     propagation.
+#     - effective area based on distance to nominal waist location
+#     - could also include convenience functions for setting up the beam
+#       through focusing, propagation, etc.
+#     - check Boyd 2.10 "Nonlinear Optical Interactions with Focused Guassian
+#       Beams" for complicating factors.
+#
+#     """
+
+
+# %% Multimode
 
 # class Waveguide():
 #     """
@@ -580,14 +520,12 @@ class Mode():
 #     def __init__(self, modes, coupling):
 #         pass
 
-# class GaussianMode(Waveguide):
+# class FreeSpace(Waveguide):
 #     """
 #     Collection of Hermite–Gaussian or Laguerre–Gaussian modes for simulating
-#     free space propagation
+#     free space propagation of arbitrary distribution.
 #     - effective area based on distance to nominal waist location
 #     - could also include convenience functions for setting up the beam
 #       through focusing, propagation, etc.
 #
 #     """
-#     def __init__(self, modes, coupling):
-#         pass

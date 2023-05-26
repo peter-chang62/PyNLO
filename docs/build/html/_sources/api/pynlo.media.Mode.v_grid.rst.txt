@@ -1,5 +1,5 @@
-pynlo.media.Mode.v\_grid
-========================
+Mode.v\_grid
+============
 
 .. currentmodule:: pynlo.media
 

@@ -331,7 +331,7 @@ def generate_autosummary_content(name: str, obj: Any, parent: Any,
         ns['inherited_members'] = \
             set(dir(obj)) - set(obj.__dict__.keys())
         ns['methods'], ns['all_methods'] = \
-            get_members(obj, {'method'}, ['__init__'])
+            get_members(obj, {'method'})
         ns['attributes'], ns['all_attributes'] = \
             get_members(obj, {'attribute', 'property'})
 

@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pynlo.utility.chi1 &#8212; PyNLO dev documentation</title>
+    <title>pynlo.utility.chi1 &#8212; PyNLO 1.dev documentation</title>
   
   
   
@@ -333,7 +333,6 @@ document.write(`
 
 <span class="c1"># %% Imports</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">c</span>
 
 
@@ -341,7 +340,7 @@ document.write(`
 
 <span class="c1"># TODO: forward and backward transformations, test with equivalents from media.Mode</span>
 
-<span class="c1">#---- Propagation Constant and Linear Susceptibility chi1</span>
+<span class="c1">#---- Wavenumber and Linear Susceptibility chi1</span>
 <span class="k">def</span> <span class="nf">chi1_to_k</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">chi1</span><span class="p">):</span>
     <span class="n">k</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">v_grid</span><span class="o">/</span><span class="n">c</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">chi1</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
     <span class="n">alpha</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="o">.</span><span class="n">imag</span>
@@ -355,10 +354,10 @@ document.write(`
         <span class="n">k</span> <span class="o">=</span> <span class="n">beta</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">alpha</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">c</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">v_grid</span><span class="p">)</span> <span class="o">*</span> <span class="n">k</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
 
-<span class="c1">#---- Wavenumber and Refractive Index</span>
+<span class="c1">#---- Phase Coefficient and Refractive Index</span>
 <div class="viewcode-block" id="n_to_beta"><a class="viewcode-back" href="../../../api/pynlo.utility.chi1.n_to_beta.html#pynlo.utility.chi1.n_to_beta">[docs]</a><span class="k">def</span> <span class="nf">n_to_beta</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Refractive index to angular wavenumber.</span>
+<span class="sd">    Refractive index to phase coefficient.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -376,7 +375,7 @@ document.write(`
 
 <div class="viewcode-block" id="beta_to_n"><a class="viewcode-back" href="../../../api/pynlo.utility.chi1.beta_to_n.html#pynlo.utility.chi1.beta_to_n">[docs]</a><span class="k">def</span> <span class="nf">beta_to_n</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Angular wavenumber to refractive index</span>
+<span class="sd">    Phase coefficient to refractive index</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -395,7 +394,7 @@ document.write(`
 <span class="c1">#---- GVD and Dispersion Parameter D</span>
 <div class="viewcode-block" id="D_to_beta2"><a class="viewcode-back" href="../../../api/pynlo.utility.chi1.D_to_beta2.html#pynlo.utility.chi1.D_to_beta2">[docs]</a><span class="k">def</span> <span class="nf">D_to_beta2</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Dispersion parameter D to group velocity dispersion (GVD) parameter beta2.</span>
+<span class="sd">    Dispersion parameter D to group velocity dispersion beta_2 (GVD).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -406,15 +405,14 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    beta2</span>
-<span class="sd">        The GVD, in units of ``s**2/m``.</span>
+<span class="sd">    The GVD, in units of ``s**2/m``.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">D</span> <span class="o">/</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span> <span class="o">*</span> <span class="n">v_grid</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">c</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="beta2_to_D"><a class="viewcode-back" href="../../../api/pynlo.utility.chi1.beta2_to_D.html#pynlo.utility.chi1.beta2_to_D">[docs]</a><span class="k">def</span> <span class="nf">beta2_to_D</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">beta2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Group velocity dispersion (GVD) parameter beta2 to dispersion parameter D.</span>
+<span class="sd">    Group velocity dispersion beta_2 (GVD) to dispersion parameter D.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -425,14 +423,13 @@ document.write(`
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    D</span>
-<span class="sd">        The dispersion parameter, in units of ``s/m**2``.</span>
+<span class="sd">    The dispersion parameter, in units of ``s/m**2``.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">beta2</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span> <span class="o">*</span> <span class="n">v_grid</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">c</span><span class="p">)</span></div>
 
 
-<span class="c1"># %% Helper Functions</span>
+<span class="c1"># %% Calculator Functions</span>
 
 <span class="k">def</span> <span class="nf">linear_length</span><span class="p">():</span>
     <span class="k">pass</span> <span class="c1">#TODO</span>

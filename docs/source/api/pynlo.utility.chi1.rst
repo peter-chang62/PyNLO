@@ -5,6 +5,7 @@ pynlo.utility.chi1
 Functions
 ---------
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Functions
 

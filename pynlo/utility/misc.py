@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Miscellaneous helper classes and functions
+Miscellaneous helper classes and functions.
 
 """
 
-__all__ = ["replace", "ArrayWrapper", "ArrayProperty"]
+__all__ = ["replace"]
 
 
 # %% Imports
@@ -14,7 +14,7 @@ import numpy as np
 # %% Helper Functions
 
 def replace(array, values, key):
-    """A copy of `array` with elements given by `key` replaced by `values`."""
+    """Copy `array` with elements given by `key` replaced by `values`."""
     array = array.copy()
     array[key] = values
     return array
@@ -54,7 +54,7 @@ class ArrayWrapper(np.lib.mixins.NDArrayOperatorsMixin):
 
     def __array_ufunc__(self, ufunc, method, *inputs, out=None, **kwargs):
         """
-        Implemented to supports use of the `out` ufunc keyword.
+        Implemented to support use of the `out` ufunc keyword.
 
         Modified from NumPy docs, "__array_ufunc__ for ufuncs"
 
@@ -96,29 +96,32 @@ class ArrayWrapper(np.lib.mixins.NDArrayOperatorsMixin):
         return getattr(self.__array__(), attr)
 
 
-class ArrayProperty(property):
+class SettableArrayProperty(property):
     """
     A subclass of `property` that allows extending the getter and setter
-    formalism to array elements.
+    formalism to Numpy array elements.
 
     Notes
     -----
     To allow usage of both `__get__`/`__getitem__` and `__set__`/`__setitem__`,
-    the methods fed into `ArrayProperty` must contain a keyword argument and
-    logic for processing the keys used by `__getitem__` and `__setitem__`. In
-    the `setter` method, the `value` parameter must precede the `key`
-    parameter. In the following example, the default key is an open slice
-    (ellipsis), the entire array is retrieved when individual elements are
-    not requested.::
+    the methods fed into `SettableArrayProperty` must contain a keyword
+    argument and logic for processing the keys used by `__getitem__` and
+    `__setitem__`. In the `setter` method, the `value` parameter must precede
+    the `key` parameter. In the following example, the default key is an open
+    slice (ellipsis), the entire array is retrieved when individual elements
+    are not requested.::
 
         class C(object):
-            @property
-            def x(self, key=...):
-                return self._x[key]
+            def __init__(self):
+                self.x = np.array([1,2,3,4])
 
-            @x.setter
-            def x(self, value, key=...):
-                self._x[key] = value
+            @SettableArrayProperty
+            def y(self, key=...):
+                return self.x[key]**2
+
+            @y.setter
+            def y(self, value, key=...):
+                self.x[key] = value**0.5
 
     See the documentation of `property` for other implementation details.
 

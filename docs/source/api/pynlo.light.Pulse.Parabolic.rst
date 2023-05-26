@@ -1,5 +1,5 @@
-pynlo.light.Pulse.Parabolic
-===========================
+Pulse.Parabolic
+===============
 
 .. currentmodule:: pynlo.light
 

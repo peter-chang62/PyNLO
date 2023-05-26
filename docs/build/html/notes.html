@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Notes &#8212; PyNLO dev documentation</title>
+    <title>Notes &#8212; PyNLO 1.dev documentation</title>
   
   
   
@@ -43,7 +43,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Fourier Transforms" href="notes/fourier_transforms.html" />
-    <link rel="prev" title="PPLN: Mismatched SHG" href="examples/ppln_mismatched-shg.html" />
+    <link rel="prev" title="PPLN: Cascaded Chi2" href="examples/ppln_cascaded-chi2.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -199,6 +199,10 @@ document.write(`
   
 
   
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
 
     </nav>
@@ -272,8 +276,7 @@ document.write(`
         <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Topics</span></p>
-<ul class="nav bd-sidenav">
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="notes/fourier_transforms.html">Fourier Transforms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notes/linear_optics.html">Linear Optics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notes/nonlinear_optics.html">Nonlinear Optics</a></li>
@@ -334,9 +337,10 @@ document.write(`
                   
   <section id="notes">
 <h1>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h1>
-<p>Introductions to the mathematics and optical physics numerically implemented by PyNLO.</p>
+<p>These notes provide an introduction to the mathematics and optical physics used by PyNLO. They cover the basics of Fourier transforms and the quirks of their numerical implementation as FFTs; linear optics, as pertains to the propagation of light in optical modes; and nonlinear optics, including how nonlinearity is theoretically and numerically implemented within a generalized propagation equation.</p>
+<section id="topics">
+<h2>Topics<a class="headerlink" href="#topics" title="Permalink to this heading">#</a></h2>
 <div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Topics</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notes/fourier_transforms.html">Fourier Transforms</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="notes/fourier_transforms.html#The-Fourier-Family">The Fourier Family</a></li>
@@ -353,7 +357,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="notes/nonlinear_optics.html">Nonlinear Optics</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="notes/nonlinear_optics.html#Local-Modes">Local Modes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notes/nonlinear_optics.html#Unidirectional-Propagation-Equations">Unidirectional Propagation Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes/nonlinear_optics.html#Single-Mode-UPE">Single Mode UPE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notes/nonlinear_optics.html#Single-Mode-UPE">Single-Mode UPE</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notes/nonlinear_optics.html#Numerical-Implementation">Numerical Implementation</a></li>
 </ul>
 </li>
@@ -368,6 +372,7 @@ document.write(`
 </ul>
 </div>
 </section>
+</section>
 
 
                 </article>
@@ -381,12 +386,12 @@ document.write(`
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="examples/ppln_mismatched-shg.html"
+       href="examples/ppln_cascaded-chi2.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">PPLN: Mismatched SHG</p>
+        <p class="prev-next-title">PPLN: Cascaded Chi2</p>
       </div>
     </a>
     <a class="right-next"
@@ -407,6 +412,20 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#topics">Topics</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

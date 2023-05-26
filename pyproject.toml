@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pynlo"
+description = 'Python nonlinear optics'
+readme = "README.rst"
+license = {file = "COPYING.LESSER.txt"}
+dependencies = [
+    "numpy",
+    "scipy",
+    "mkl_fft",
+    "numba"
+]
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = {attr = "pynlo.__version__"}

@@ -1,5 +1,5 @@
-pynlo.utility.resample\_v
-=========================
+resample\_v
+===========
 
 .. currentmodule:: pynlo.utility
 

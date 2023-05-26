@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>User Guide &#8212; PyNLO dev documentation</title>
+    <title>User Guide &#8212; PyNLO 1.dev documentation</title>
   
   
   
@@ -39,13 +39,11 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'guides';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Silica PCF: Supercontinuum" href="examples/silica-pcf_anomalous.html" />
-    <link rel="prev" title="PyNLO: Nonlinear Optics for Python" href="index.html" />
+    <link rel="next" title="Package Overview" href="overview.html" />
+    <link rel="prev" title="PyNLO: Python Nonlinear Optics" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -278,10 +276,14 @@ document.write(`
         <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="examples/silica-pcf_anomalous.html">Silica PCF: Supercontinuum</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/ppln_mismatched-shg.html">PPLN: Mismatched SHG</a></li>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Package Overview</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="examples.html">Examples</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/silica-pcf_supercontinuum.html">Silica PCF: Supercontinuum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/ppln_cascaded-chi2.html">PPLN: Cascaded Chi2</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </nav></div>
@@ -338,40 +340,29 @@ document.write(`
                   
   <section id="user-guide">
 <h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this heading">#</a></h1>
-<section id="time-and-frequency-grids">
-<h2>Time and Frequency Grids<a class="headerlink" href="#time-and-frequency-grids" title="Permalink to this heading">#</a></h2>
-<p>The core functionality of this package is built off of the well-defined and internally consistent time and frequency grids as given by <a class="reference internal" href="api/pynlo.utility.TFGrid.html#pynlo.utility.TFGrid" title="pynlo.utility.TFGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">pynlo.utility.TFGrid</span></code></a>. These grids represent physical coordinate spaces. Critically, the frequency grid is only defined at positive frequencies and is aligned to the origin. This facilitates Fourier transforms to the time domain with analytic, complex envelope representations as well as with real-valued representations. See the notes on <a class="reference internal" href="notes/fourier_transforms.html"><span class="doc">Fourier transforms</span></a> for more details.</p>
-</section>
-<section id="pulses">
-<h2>Pulses<a class="headerlink" href="#pulses" title="Permalink to this heading">#</a></h2>
-<p>Optical pulses are represented in PyNLO with <a class="reference internal" href="api/pynlo.light.Pulse.html#pynlo.light.Pulse" title="pynlo.light.Pulse"><code class="xref py py-class docutils literal notranslate"><span class="pre">pynlo.light.Pulse</span></code></a> objects. These objects contain methods for accessing the time and frequency domain properties of the pulse and of the underlying time and frequency grids. There are several class methods that can conveniently generate <a class="reference internal" href="api/pynlo.light.Pulse.html#pynlo.light.Pulse" title="pynlo.light.Pulse"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pulse</span></code></a> objects, such as with common pulse shapes (<a class="reference internal" href="api/pynlo.light.Pulse.Sech.html#pynlo.light.Pulse.Sech" title="pynlo.light.Pulse.Sech"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Sech()</span></code></a>, <a class="reference internal" href="api/pynlo.light.Pulse.Gaussian.html#pynlo.light.Pulse.Gaussian" title="pynlo.light.Pulse.Gaussian"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Gaussian()</span></code></a>, and others) or with existing spectral data (<a class="reference internal" href="api/pynlo.light.Pulse.FromPowerSpectrum.html#pynlo.light.Pulse.FromPowerSpectrum" title="pynlo.light.Pulse.FromPowerSpectrum"><code class="xref py py-meth docutils literal notranslate"><span class="pre">FromPowerSpectrum()</span></code></a>).</p>
-</section>
-<section id="media">
-<h2>Media<a class="headerlink" href="#media" title="Permalink to this heading">#</a></h2>
-<p>PyNLO represents single optical modes with <a class="reference internal" href="api/pynlo.media.Mode.html#pynlo.media.Mode" title="pynlo.media.Mode"><code class="xref py py-class docutils literal notranslate"><span class="pre">pynlo.media.Mode</span></code></a> objects. These objects are defined over the frequency domain and contain information due to the coupling of material and spatial properties of a mode. In addition to defining the angular wavenumbers (<span class="math notranslate nohighlight">\(\beta\)</span>), loss (<span class="math notranslate nohighlight">\(\alpha\)</span>), and related properties of a mode, <a class="reference internal" href="api/pynlo.media.Mode.html#pynlo.media.Mode" title="pynlo.media.Mode"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mode</span></code></a> objects also contain information about an optical mode’s effective nonlinearity. Spatially dependent properties can be input as callable functions in which the first argument is the propagation distance (<span class="math notranslate nohighlight">\(z\)</span>).</p>
-</section>
-<section id="models">
-<h2>Models<a class="headerlink" href="#models" title="Permalink to this heading">#</a></h2>
-<p>The unidirectional propagation models implemented in PyNLO are found in <a class="reference internal" href="api/pynlo.model.html#module-pynlo.model" title="pynlo.model"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pynlo.model</span></code></a> and are based on a multi-mode expansion of maxwell’s equations. If a mathematically complete set of modes is used in the expansion, the only approximation that occurs is the assumption that the light propagates in a single direction. See the notes on <a class="reference internal" href="notes/nonlinear_optics.html"><span class="doc">nonlinear optics</span></a> for more details. Only single-mode simulations are currently supported, but models that implement the full multi-modal relationships are intended in future updates. Such multi-mode models would not only enable simulations with multi-mode waveguides, but they would also provide a framework for modeling pulse propagation in bulk materials, such as with Hermite or Laguerre free-space Gaussian modes.</p>
-<p>The single-mode <a class="reference internal" href="api/pynlo.model.SM_UPE.html#pynlo.model.SM_UPE" title="pynlo.model.SM_UPE"><code class="xref py py-class docutils literal notranslate"><span class="pre">pynlo.model.SM_UPE</span></code></a> model is initialized using a single <a class="reference internal" href="api/pynlo.light.Pulse.html#pynlo.light.Pulse" title="pynlo.light.Pulse"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pulse</span></code></a> and <a class="reference internal" href="api/pynlo.media.Mode.html#pynlo.media.Mode" title="pynlo.media.Mode"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mode</span></code></a> object. All simulation specific parameters should be entered when running the model’s <a class="reference internal" href="api/pynlo.model.SM_UPE.simulate.html#pynlo.model.SM_UPE.simulate" title="pynlo.model.SM_UPE.simulate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">simulate()</span></code></a> method. Real-time visualization of the simulation is available in the frequency, wavelength, or time domains by setting the method’s <cite>plot</cite> keyword.</p>
-<section id="anti-aliasing">
-<h3>Anti-Aliasing<a class="headerlink" href="#anti-aliasing" title="Permalink to this heading">#</a></h3>
-<p>Multiplications of functions in the time domain (operations intrinsic to nonlinear optics) are equivalent to convolutions in the frequency domain and vice versa. The support of a convolution is the sum of the support of its parts. Thus, 2nd and 3rd order processes in the time domain need 2x and 3x number of points in the frequency domain to avoid aliasing.</p>
-<p><a class="reference internal" href="api/pynlo.light.Pulse.html#pynlo.light.Pulse" title="pynlo.light.Pulse"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pulse</span></code></a> objects only initialize the minimum number of points necessary to represent the real-valued time domain pulse (i.e. 1x). While this minimizes the numerical complexity of individual nonlinear operations, aliasing introduces systematic error and can even increase the total simulation time by forcing shorter step sizes. More points can be generated for a specific <a class="reference internal" href="api/pynlo.light.Pulse.html#pynlo.light.Pulse" title="pynlo.light.Pulse"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pulse</span></code></a> object by setting an <cite>alias</cite> parameter greater than 1 during its initialization or through its <a class="reference internal" href="api/pynlo.utility.TFGrid.rtf_grids.html#pynlo.utility.TFGrid.rtf_grids" title="pynlo.utility.TFGrid.rtf_grids"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rtf_grids()</span></code></a> method. Anti-aliasing is not always necessary as phase matching can suppress the aliased interactions, but it is best practice to verify that behavior on a case-by-case basis.</p>
-</section>
-</section>
-<section id="utilities">
-<h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this heading">#</a></h2>
-<p>The <a class="reference internal" href="api/pynlo.utility.html#module-pynlo.utility" title="pynlo.utility"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pynlo.utility</span></code></a> module includes helper or calculator type functions in addition to the definition of PyNLO’s time and frequency grids. Conversion functions and estimators of physically relevant parameters are organized into modules based on their relationship to the linear (<a class="reference internal" href="api/pynlo.utility.chi1.html#module-pynlo.utility.chi1" title="pynlo.utility.chi1"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pynlo.utility.chi1</span></code></a>) or nonlinear (<a class="reference internal" href="api/pynlo.utility.chi2.html#module-pynlo.utility.chi2" title="pynlo.utility.chi2"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pynlo.utility.chi2</span></code></a> and <a class="reference internal" href="api/pynlo.utility.chi3.html#module-pynlo.utility.chi3" title="pynlo.utility.chi3"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pynlo.utility.chi3</span></code></a>) susceptibilities. The definitions of the fast Fourier transforms used in PyNLO are contained in <a class="reference internal" href="api/pynlo.utility.fft.html#module-pynlo.utility.fft" title="pynlo.utility.fft"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pynlo.utility.fft</span></code></a>.</p>
-</section>
-<section id="example-code">
-<h2>Example Code<a class="headerlink" href="#example-code" title="Permalink to this heading">#</a></h2>
-<div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="examples/silica-pcf_anomalous.html">Silica PCF: Supercontinuum</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/ppln_mismatched-shg.html">PPLN: Mismatched SHG</a></li>
+<p>The PyNLO package provides an easy-to-use, object-oriented set of tools for modeling the nonlinear interaction of light with matter. It provides many functionalities for representing pulses of light and nonlinear materials.</p>
+<dl class="simple">
+<dt>Features:</dt><dd><ul class="simple">
+<li><p>A solver for the propagation of light through materials with both 2nd- and 3rd-order nonlinearities.</p></li>
+<li><p>A highly-efficient adaptive step size algorithm based on the ERK4(3)-IP method from <a class="reference external" href="https://doi.org/10.1016/j.cpc.2012.12.020">Balac and Mahé (2013)</a>.</p></li>
+<li><p>A flexible object-oriented system for treating laser pulses and optical modes.</p></li>
+<li><p>…and much more!</p></li>
 </ul>
+</dd>
+</dl>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h2>
+<p>PyNLO requires Python 3. If you do not already have Python, the Anaconda distribution is a good all-in-one collection of Python packages. PyNLO depends on the the NumPy, SciPy, Numba, and mkl_fft packages. Matplotlib is necessary if viewing real-time simulation updates or if running the example code.</p>
+<p>The easiest way to install this fork is to download or clone the repository into a directory of your choice, and then insert that directory into your <a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.path">sys.path</a> variable before importing the package. To test the installation, try out the scripts in the examples folder.</p>
+</section>
+<section id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this heading">#</a></h2>
+<p>Open a new issue or discussion on the GitHub repository to add suggestions for improvement, ask questions, or make other comments. Contributions to the documentation, tests, and examples are highly appreciated. New additions should be based off of the <cite>develop</cite> branch.</p>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this heading">#</a></h2>
+<p>PyNLO is licensed under the <a class="reference external" href="https://choosealicense.com/licenses/lgpl-3.0/">GNU LGPLv3 license</a>. This means that you are free to use PyNLO for any project, but all modifications to its source code must be kept open source. PyNLO is provided “as is” with absolutely no warranty.</p>
+<div class="toctree-wrapper compound">
 </div>
 </section>
 </section>
@@ -393,15 +384,15 @@ document.write(`
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">PyNLO: Nonlinear Optics for Python</p>
+        <p class="prev-next-title">PyNLO: Python Nonlinear Optics</p>
       </div>
     </a>
     <a class="right-next"
-       href="examples/silica-pcf_anomalous.html"
+       href="overview.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Silica PCF: Supercontinuum</p>
+        <p class="prev-next-title">Package Overview</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -423,15 +414,9 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-and-frequency-grids">Time and Frequency Grids</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pulses">Pulses</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#media">Media</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#models">Models</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#anti-aliasing">Anti-Aliasing</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#utilities">Utilities</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-code">Example Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing">Contributing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license">License</a></li>
 </ul>
   </nav></div>
 

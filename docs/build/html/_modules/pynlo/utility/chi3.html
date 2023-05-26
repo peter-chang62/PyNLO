@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pynlo.utility.chi3 &#8212; PyNLO dev documentation</title>
+    <title>pynlo.utility.chi3 &#8212; PyNLO 1.dev documentation</title>
   
   
   
@@ -323,12 +323,12 @@ document.write(`
   <h1>Source code for pynlo.utility.chi3</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Conversion functions and other calculators relevant to the 3rd order nonlinear</span>
+<span class="sd">Conversion functions and other calculators relevant to the 3rd-order nonlinear</span>
 <span class="sd">susceptibility.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gamma_to_g3&quot;</span><span class="p">,</span> <span class="s2">&quot;g3_to_gamma&quot;</span><span class="p">,</span> <span class="s2">&quot;g3_spm&quot;</span><span class="p">,</span> <span class="s2">&quot;g3_split&quot;</span><span class="p">,</span> <span class="s2">&quot;nl_response_v&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gamma_to_g3&quot;</span><span class="p">,</span> <span class="s2">&quot;g3_to_gamma&quot;</span><span class="p">,</span> <span class="s2">&quot;g3_split&quot;</span><span class="p">,</span> <span class="s2">&quot;g3_spm&quot;</span><span class="p">,</span> <span class="s2">&quot;raman&quot;</span><span class="p">]</span>
 
 
 <span class="c1"># %% Imports</span>
@@ -344,7 +344,7 @@ document.write(`
 <span class="c1">#---- Effective Nonlinearities g3 and gamma</span>
 <div class="viewcode-block" id="gamma_to_g3"><a class="viewcode-back" href="../../../api/pynlo.utility.chi3.gamma_to_g3.html#pynlo.utility.chi3.gamma_to_g3">[docs]</a><span class="k">def</span> <span class="nf">gamma_to_g3</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">t_shock</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert from the gamma to g3 nonlinear parameter.</span>
+<span class="sd">    Convert from the gamma to the g3 nonlinear parameter.</span>
 
 <span class="sd">    The `t_shock` parameter is used to determine the strength of the</span>
 <span class="sd">    self-steepening effect when gamma is only given at a single point. If an</span>
@@ -379,7 +379,7 @@ document.write(`
 
 <div class="viewcode-block" id="g3_to_gamma"><a class="viewcode-back" href="../../../api/pynlo.utility.chi3.g3_to_gamma.html#pynlo.utility.chi3.g3_to_gamma">[docs]</a><span class="k">def</span> <span class="nf">g3_to_gamma</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">g3</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert from the g3 to gamma nonlinear parameter.</span>
+<span class="sd">    Convert from the g3 to the gamma nonlinear parameter.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -395,7 +395,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">g3</span> <span class="o">*</span> <span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">v_grid</span><span class="p">)</span></div>
 
-<span class="c1">#---- 3rd Order Nonlinear Susceptibility chi3 and Kerr Parameter</span>
+<span class="c1">#---- 3rd-Order Nonlinear Susceptibility chi3 and Kerr Parameter</span>
 <span class="k">def</span> <span class="nf">n2_to_chi3</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n2</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">n2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">4</span><span class="o">/</span><span class="mi">3</span> <span class="o">*</span> <span class="n">e0</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">n</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
@@ -412,29 +412,9 @@ document.write(`
 
 <span class="c1"># %% Nonlinearity</span>
 
-<div class="viewcode-block" id="g3_spm"><a class="viewcode-back" href="../../../api/pynlo.utility.chi3.g3_spm.html#pynlo.utility.chi3.g3_spm">[docs]</a><span class="k">def</span> <span class="nf">g3_spm</span><span class="p">(</span><span class="n">n_eff</span><span class="p">,</span> <span class="n">a_eff</span><span class="p">,</span> <span class="n">chi3_eff</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The 3rd order nonlinear parameter weighted for self-phase modulation.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    n_eff : array_like of float</span>
-<span class="sd">        The effective refractive indices.</span>
-<span class="sd">    a_eff : array_like of float</span>
-<span class="sd">        The effective areas.</span>
-<span class="sd">    chi3_eff : array_like</span>
-<span class="sd">        The effective 3rd order susceptibilities.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    g3 : ndarray</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">chi3_eff</span><span class="o">/</span><span class="p">(</span><span class="n">e0</span><span class="o">*</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n_eff</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a_eff</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="g3_split"><a class="viewcode-back" href="../../../api/pynlo.utility.chi3.g3_split.html#pynlo.utility.chi3.g3_split">[docs]</a><span class="k">def</span> <span class="nf">g3_split</span><span class="p">(</span><span class="n">n_eff</span><span class="p">,</span> <span class="n">a_eff</span><span class="p">,</span> <span class="n">chi3_eff</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The unit decomposition of the 3rd order nonlinear parameter.</span>
+<span class="sd">    The 3rd-order nonlinear parameter weighted by unit decomposition.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -443,12 +423,12 @@ document.write(`
 <span class="sd">    a_eff : array_like of float</span>
 <span class="sd">        The effective areas.</span>
 <span class="sd">    chi3_eff : array_like</span>
-<span class="sd">        The effective 3rd order susceptibilities.</span>
+<span class="sd">        The effective 3rd-order susceptibilities.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ndarray (2, n)</span>
-<span class="sd">        The decomposition of the 3rd order nonlinear parameter. The first</span>
+<span class="sd">        The unit decomposition of the 3rd-order nonlinear parameter. The first</span>
 <span class="sd">        index contains the output factors while the second index contains the</span>
 <span class="sd">        input factors.</span>
 
@@ -456,70 +436,90 @@ document.write(`
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="p">((</span><span class="n">e0</span><span class="o">*</span><span class="n">a_eff</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">c</span><span class="o">*</span><span class="n">n_eff</span><span class="p">))</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">chi3_eff</span><span class="p">,</span>
                      <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">e0</span><span class="o">*</span><span class="n">c</span><span class="o">*</span><span class="n">n_eff</span><span class="o">*</span><span class="n">a_eff</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="nl_response_v"><a class="viewcode-back" href="../../../api/pynlo.utility.chi3.nl_response_v.html#pynlo.utility.chi3.nl_response_v">[docs]</a><span class="k">def</span> <span class="nf">nl_response_v</span><span class="p">(</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">r_weights</span><span class="p">,</span> <span class="n">b_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="g3_spm"><a class="viewcode-back" href="../../../api/pynlo.utility.chi3.g3_spm.html#pynlo.utility.chi3.g3_spm">[docs]</a><span class="k">def</span> <span class="nf">g3_spm</span><span class="p">(</span><span class="n">n_eff</span><span class="p">,</span> <span class="n">a_eff</span><span class="p">,</span> <span class="n">chi3_eff</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the Raman and instantaneous nonlinear response function.</span>
-
-<span class="sd">    This calculates the normalized Raman response using approximate, analytic</span>
-<span class="sd">    equations in the time domain.</span>
+<span class="sd">    The 3rd-order nonlinear parameter weighted for self-phase modulation.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    t_grid : array_like of float</span>
-<span class="sd">        The time grid over which to calculate the nonlinear response function.</span>
-<span class="sd">        This should be the same time grid as given by `Pulse.rt_grid`.</span>
-<span class="sd">    dt : float</span>
-<span class="sd">        The time grid step size. This should be the same time step as given by</span>
-<span class="sd">        `Pulse.rdt`.</span>
-<span class="sd">    r_weights : array_like of float</span>
-<span class="sd">        The contributions due to vibrational resonances in the material. Must</span>
-<span class="sd">        be given as ``[fraction, tau_1, tau_2]``, where `fraction` is the</span>
-<span class="sd">        fractional contribution of the resonance to the total nonlinear</span>
-<span class="sd">        response function, `tau_1` is the period of the vibrational frequency,</span>
-<span class="sd">        and `tau_2` is the resonance&#39;s characteristic decay time. Enter more</span>
-<span class="sd">        than one resonance using an (n, 3) shaped input array.</span>
-<span class="sd">    b_weights : array_like of float, optional</span>
-<span class="sd">        The contributions due to boson peaks found in amorphous materials.</span>
-<span class="sd">        Must be given as ``[fraction, tau_b]``, where `fraction` is the</span>
-<span class="sd">        fractional contribution of the boson peak to the total nonlinear</span>
-<span class="sd">        response function, and `tau_b` is the boson peak&#39;s characteristic</span>
-<span class="sd">        decay time. Enter more than one peak using an (n, 2) shaped input</span>
-<span class="sd">        array. The default behavior is to ignore this term.</span>
+<span class="sd">    n_eff : array_like of float</span>
+<span class="sd">        The effective refractive indices.</span>
+<span class="sd">    a_eff : array_like of float</span>
+<span class="sd">        The effective areas.</span>
+<span class="sd">    chi3_eff : array_like</span>
+<span class="sd">        The effective 3rd-order susceptibilities.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    nonlinear_v : ndarray of float</span>
+<span class="sd">    g3 : ndarray</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">chi3_eff</span><span class="o">/</span><span class="p">(</span><span class="n">e0</span><span class="o">*</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n_eff</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a_eff</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="raman"><a class="viewcode-back" href="../../../api/pynlo.utility.chi3.raman.html#pynlo.utility.chi3.raman">[docs]</a><span class="k">def</span> <span class="nf">raman</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">r_weights</span><span class="p">,</span> <span class="n">b_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the frequency-domain Raman and instantaneous nonlinear response</span>
+<span class="sd">    function.</span>
+
+<span class="sd">    This calculates the normalized Raman response using approximate formulas in</span>
+<span class="sd">    the time domain. The total Raman fraction from the resonant and boson</span>
+<span class="sd">    contributions should be less than 1.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n : int</span>
+<span class="sd">        The number of points in the time domain.</span>
+<span class="sd">    dt : float</span>
+<span class="sd">        The time grid step size.</span>
+<span class="sd">    r_weights : array_like of float</span>
+<span class="sd">        The contributions due to resonant vibrations. Must be given as</span>
+<span class="sd">        ``[fraction, tau_1, tau_2]``, where `fraction` is the fractional</span>
+<span class="sd">        contribution of the resonance to the total nonlinear response function,</span>
+<span class="sd">        `tau_1` is the period of the vibrational frequency, and `tau_2` is the</span>
+<span class="sd">        resonance&#39;s characteristic decay time. More than one resonance may be</span>
+<span class="sd">        entered using an (n, 3) shaped array.</span>
+<span class="sd">    b_weights : array_like of float, optional</span>
+<span class="sd">        The contributions due to boson peaks found in amorphous materials. Must</span>
+<span class="sd">        be given as ``[fraction, tau_b]``, where `fraction` is the</span>
+<span class="sd">        fractional contribution of the boson peak to the total nonlinear</span>
+<span class="sd">        response function, and `tau_b` is the boson peak&#39;s characteristic</span>
+<span class="sd">        decay time. More than one peak may be entered using an (n, 2) shaped</span>
+<span class="sd">        array.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rv_grid : ndarray of float</span>
+<span class="sd">        The origin-continuous frequency grid associated with the nonlinear</span>
+<span class="sd">        response function.</span>
+<span class="sd">    nonlinear_v : ndarray of complex</span>
 <span class="sd">        The frequency-domain nonlinear response function. This is defined over</span>
-<span class="sd">        the same frequency grid as `Pulse.rv_grid`.</span>
+<span class="sd">        the frequency grid given by dv``dv=1/(n*dt)``.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    The equations used are the analytical formulations as summarized in</span>
+<span class="sd">    The equations used are the approximate formulations as summarized in</span>
 <span class="sd">    section 2.3.3 of Agrawal&#39;s Nonlinear Fiber Optics [1]_. More accurate</span>
-<span class="sd">    simulations may be obtainable using digitized spectral measurements, such</span>
-<span class="sd">    as from [2]_.</span>
+<span class="sd">    simulations may be obtainable using digitized experimental measurements,</span>
+<span class="sd">    such as those shown in figure 2.2 of [1]_.</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
 <span class="sd">    .. [1] Agrawal GP. Nonlinear Fiber Optics. Sixth ed. London; San Diego,</span>
 <span class="sd">        CA;: Academic Press; 2019.</span>
-
 <span class="sd">        https://doi.org/10.1016/B978-0-12-817042-7.00009-9</span>
 
-<span class="sd">    .. [2] R.H. Stolen in &quot;Raman Amplifiers for Telecommunications&quot;. See</span>
-<span class="sd">        figure 2.10 and comments in reference 28.</span>
-
-<span class="sd">        https://doi.org/10.1007/978-0-387-21583-9_2</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">t_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">t_grid</span><span class="o">.</span><span class="n">size</span>
-    <span class="k">assert</span> <span class="n">t_grid</span><span class="p">[</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;The origin must be at the center of the time grid.&quot;</span>
+    <span class="c1">#---- Grids</span>
+    <span class="n">t_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span>
+    <span class="n">dv</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">dt</span><span class="p">)</span>
+    <span class="n">rv_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">dv</span>
 
     <span class="c1">#---- Raman Response</span>
+    <span class="n">raman_frac</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># initialize</span>
+
     <span class="k">def</span> <span class="nf">h_r</span><span class="p">(</span><span class="n">fraction</span><span class="p">,</span> <span class="n">tau_1</span><span class="p">,</span> <span class="n">tau_2</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The contributions due to vibrational resonances.</span>
+<span class="sd">        Contributions due to vibrational resonances.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -533,14 +533,12 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">h_r</span> <span class="o">=</span> <span class="n">tau_1</span><span class="o">*</span><span class="p">(</span><span class="n">tau_1</span><span class="o">**-</span><span class="mi">2</span> <span class="o">+</span> <span class="n">tau_2</span><span class="o">**-</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t_grid</span><span class="o">/</span><span class="n">tau_2</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t_grid</span><span class="o">/</span><span class="n">tau_1</span><span class="p">)</span>
-        <span class="n">h_r</span><span class="p">[</span><span class="n">t_grid</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">h_r</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">h_r</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span>
         <span class="n">h_r</span> <span class="o">*=</span> <span class="n">fraction</span>
         <span class="k">return</span> <span class="n">h_r</span>
 
     <span class="k">def</span> <span class="nf">h_b</span><span class="p">(</span><span class="n">fraction</span><span class="p">,</span> <span class="n">tau_b</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The contributions due to boson peaks.</span>
+<span class="sd">        Contributions due to boson peaks.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -553,8 +551,6 @@ document.write(`
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">h_b</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">tau_b</span> <span class="o">-</span> <span class="n">t_grid</span><span class="p">)</span><span class="o">/</span><span class="n">tau_b</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t_grid</span><span class="o">/</span><span class="n">tau_b</span><span class="p">)</span>
-        <span class="n">h_b</span><span class="p">[</span><span class="n">t_grid</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">h_b</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">h_b</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span>
         <span class="n">h_b</span> <span class="o">*=</span> <span class="n">fraction</span>
         <span class="k">return</span> <span class="n">h_b</span>
 
@@ -564,6 +560,7 @@ document.write(`
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">r_weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">r_weights</span> <span class="o">=</span> <span class="n">r_weights</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">r_weights</span><span class="p">:</span>
+        <span class="n">raman_frac</span> <span class="o">+=</span> <span class="n">weight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">raman_t</span> <span class="o">+=</span> <span class="n">h_r</span><span class="p">(</span><span class="o">*</span><span class="n">weight</span><span class="p">)</span>
 
     <span class="c1"># Boson Peaks</span>
@@ -572,17 +569,20 @@ document.write(`
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">b_weights</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">b_weights</span> <span class="o">=</span> <span class="n">b_weights</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">b_weights</span><span class="p">:</span>
+            <span class="n">raman_frac</span> <span class="o">+=</span> <span class="n">weight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">raman_t</span> <span class="o">+=</span> <span class="n">h_b</span><span class="p">(</span><span class="o">*</span><span class="n">weight</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">raman_frac</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;The total fractional Raman contribution must be less than 1.&quot;</span>
 
     <span class="c1">#---- Instantaneous Response</span>
     <span class="n">delta_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t_grid</span><span class="p">)</span>
-    <span class="n">delta_t</span><span class="p">[</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">delta_t</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta_t</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span>
-    <span class="n">delta_t</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">raman_t</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span> <span class="c1"># leftovers</span>
+    <span class="n">delta_t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">dt</span>
+    <span class="n">delta_t</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">raman_frac</span> <span class="c1"># remove raman fraction</span>
 
+    <span class="c1">#---- Total Nonlinear Response</span>
     <span class="n">nonlinear_t</span> <span class="o">=</span> <span class="n">raman_t</span> <span class="o">+</span> <span class="n">delta_t</span>
-    <span class="n">nonlinear_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">nonlinear_t</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">nonlinear_v</span></div>
+    <span class="n">nonlinear_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">nonlinear_t</span><span class="p">,</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span> <span class="c1"># already in standard fft order</span>
+    <span class="k">return</span> <span class="n">rv_grid</span><span class="p">,</span> <span class="n">nonlinear_v</span></div>
 
 
 <span class="c1"># %% Solitons</span>

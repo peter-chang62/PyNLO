@@ -1,5 +1,5 @@
-pynlo.utility.TFGrid.copy
-=========================
+TFGrid.copy
+===========
 
 .. currentmodule:: pynlo.utility
 

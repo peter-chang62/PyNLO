@@ -1,5 +1,5 @@
-pynlo.utility.fft.irfft
-=======================
+irfft
+=====
 
 .. currentmodule:: pynlo.utility.fft
 

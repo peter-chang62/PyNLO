@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Fourier Transforms &#8212; PyNLO dev documentation</title>
+    <title>Fourier Transforms &#8212; PyNLO 1.dev documentation</title>
   
   
   
@@ -278,8 +278,7 @@ document.write(`
         <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Topics</span></p>
-<ul class="current nav bd-sidenav">
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Fourier Transforms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="linear_optics.html">Linear Optics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nonlinear_optics.html">Nonlinear Optics</a></li>
@@ -394,7 +393,7 @@ N d\nu = 1 /dt = \text{the sample rate}
 <p>where <span class="math notranslate nohighlight">\(\lfloor ... \rfloor\)</span> represents the floor function, and the range of the summation indices <span class="math notranslate nohighlight">\(m\)</span> and <span class="math notranslate nohighlight">\(n\)</span> are chosen so that the summation indices are the same as the coordinate indices. The transform given by the first equation is called the inverse Fourier transform (<span class="math notranslate nohighlight">\(\nu \to t\)</span>) and that given by the second is called the Fourier transform (<span class="math notranslate nohighlight">\(t \to \nu\)</span>). The definitions require only a discrete set of points, but because no information is lost if sampling at
 more than twice the largest frequency component <em>these relationships carry no approximations</em> with respect to the periodic functions <span class="math notranslate nohighlight">\(f\!\left[t\right]\)</span> or <span class="math notranslate nohighlight">\(F\!\left[\nu\right]\)</span>. Due to the efficient <a class="reference external" href="https://mathworld.wolfram.com/FastFourierTransform.html">fast Fourier transform</a> (FFT) algorithms, DFTs are preferred when performing Fourier transforms numerically.</p>
 <p>An interesting side effect of the discrete Fourier transform is that, along with the periodicity of the time domain, the representation in the frequency domain becomes periodic as well. The time range <span class="math notranslate nohighlight">\(\pm 1/(2 \, d\nu)\)</span> is the periodic time window that corresponds to sampling the frequency domain in steps of <span class="math notranslate nohighlight">\(d\nu\)</span>. Similarly, the frequency range <span class="math notranslate nohighlight">\(\pm 1/ (2 \, dt)\)</span> is the periodic frequency window due to sampling the time domain in steps of <span class="math notranslate nohighlight">\(dt\)</span>. The frequency
-<span class="math notranslate nohighlight">\(\nu = 1/ (2 \, dt)\)</span> is called the <a class="reference external" href="https://mathworld.wolfram.com/NyquistFrequency.html">Nyquist frequency</a>, and is the maximum allowed frequency for a given time domain step size. Any components that are at frequencies greater than the Nyquist frequency will <a class="reference external" href="https://mathworld.wolfram.com/Aliasing.html">alias</a>, or wrap, back onto the primary grid.</p>
+<span class="math notranslate nohighlight">\(\nu = 1/ (2 \, dt)\)</span> is called the <a class="reference external" href="https://mathworld.wolfram.com/NyquistFrequency.html">Nyquist frequency</a>, and is the maximum allowed frequency for a given time-domain step size. Any components that are at frequencies greater than the Nyquist frequency will <a class="reference external" href="https://mathworld.wolfram.com/Aliasing.html">alias</a>, or wrap, back onto the primary grid.</p>
 <p>The above equations represent discrete integrals over <strong>points that are centered on</strong> <span class="math notranslate nohighlight">\(t_m\)</span> (<span class="math notranslate nohighlight">\(\nu_n\)</span>) <strong>and extend in bins of</strong> <span class="math notranslate nohighlight">\(\pm 0.5 \, dt\)</span> (<span class="math notranslate nohighlight">\(\pm 0.5 \, d\nu\)</span>). Thus, the transforms span the entire periodic windows:</p>
 <div class="math notranslate nohighlight">
 \[\begin{align}
@@ -522,7 +521,7 @@ E &amp;= \int_{-\infty}^{\infty} \Bigl\vert f\!\left[t\right] \Bigr\vert^{2} dt 
 \\
 &amp;= 2 \int_{0}^{\infty} \Bigl\vert F\!\left[\nu\right] \Bigr\vert^{2} d\nu = \int_{0}^{\infty} \Bigl\vert \sqrt{2} \ F\!\left[\nu\right] \Bigr\vert^{2} d\nu
 \end{align}\end{split}\]</div>
-<p>If we replace the quantity in the last absolute value with a single expression, we arrive at an analytic, or complex envelope, representation:</p>
+<p>If we replace the quantity in the last absolute value with a single expression, we arrive at an analytic representation:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
 E = \int_{-\infty}^{\infty} \Bigl\vert A\!\left[\nu\right] \Bigr\vert^{2} d\nu = \int_{-\infty}^{\infty} \Bigl\vert a\!\left[t\right] \Bigr\vert^{2} dt
@@ -537,7 +536,7 @@ a\!\left[t\right] = \mathscr{F}^{-1}\!\Bigl[ A\!\left[\nu\right] \Bigr]
 A\!\left[\nu\right] = \mathscr{F}\!\Bigl[ a\!\left[t\right] \Bigr]
 \end{gather}\end{split}\]</div>
 <p>There are alternative ways of relating an analytic spectrum to the full Fourier transform of the real function, but this particular method does not require modifications to the normalization relationship.</p>
-<p>Further simplifications can be made by shifting the analytic spectrum to the origin and discarding points that contain zero amplitude. That allows the efficient use of Fourier transforms over just a subset of the real function’s total frequency range, i.e. calculations need only be performed over the support of the analytic spectrum:</p>
+<p>A further simplification, known as the complex envelope representation, can be made by shifting the analytic spectrum to the origin and discarding points that contain zero amplitude. Since calculations need only be performed over the support of the analytic spectrum this allows for the efficient application of Fourier transforms, i.e. over just a subset of the frequency range required by the real function:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
 \nu^{\prime} = \nu - \nu_0
@@ -646,7 +645,7 @@ N_r = \text{the number of sampled points in the time domain}
 dt \, d\nu = 1 / N_r
 \end{gather}\end{split}\]</div>
 <p>One important property of these functions is that <em>the output of a rfft does not have the same number of points as its input</em>. In general, the frequency domain output array has <span class="math notranslate nohighlight">\(N = \lfloor N_r/2 \rfloor + 1\)</span> number of points, where <span class="math notranslate nohighlight">\(N_r\)</span> is the total number of points in the time domain. This does not pose any complications when using the rfft, but in general <em>the number of real output points must be explicitly given to the irfft function</em>. The reduced number of points in the
-frequency domain has another implication, <em>the frequency domain output array is always arranged such that the coordinates are in monotonic order</em>. The time domain array is still ordered as described in the previous section, but since the rfft only returns the positive side of the spectrum the array ends before it wraps around. The slight caveat to this is that the Nyquist frequency (when reached) is considered positive instead of negative.</p>
+frequency domain has another implication, <em>the frequency domain output array is always arranged such that the coordinates are in monotonic order</em>. The time-domain array is still ordered as described in the previous section, but since the rfft only returns the positive side of the spectrum the array ends before it wraps around. The slight caveat to this is that the Nyquist frequency (when reached) is considered positive instead of negative.</p>
 <p>When transforming between real and analytic representations of the spectrum the first and last points need to be adjusted due to the discrete nature of the frequency bins:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
@@ -841,7 +840,7 @@ F\left[\nu_r\right]_n =
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Numeric-Implementation-of-DFTs">Numeric Implementation of DFTs</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fftshift-and-ifftshift">fftshift and ifftshift</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Real-DFTs">Real DFTs</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FFT-Cookbook">FFT Cookbook</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FFT-Cookbook">FFT Cookbook</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Analytic-Representation">Analytic Representation</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Real-Valued-Representation">Real-Valued Representation</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Array-Ordering">Array Ordering</a><ul class="nav section-nav flex-column">

@@ -19,14 +19,15 @@ Modules
 Functions
 ---------
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Functions
 
+   vacuum
    taylor_series
+   shift
    resample_v
    resample_t
-   derivative_v
-   derivative_t
 
 Classes
 -------

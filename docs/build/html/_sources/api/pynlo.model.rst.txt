@@ -9,4 +9,6 @@ Classes
    :toctree:
    :caption: Classes
 
-   SM_UPE
+   Model
+   NLSE
+   UPE

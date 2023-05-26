@@ -1,4 +1,4 @@
-{{ fullname | escape | underline}}
+{{ objname | escape | underline}}
 .. currentmodule:: {{ module }}
 .. autoclass:: {{ objname }}
 
@@ -8,6 +8,7 @@
 
 {{ _('Methods') | underline(line='-') }}
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Methods
 {% for item in methods %}
@@ -22,6 +23,7 @@
 
 {{ _('Attributes') | underline(line='-') }}
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Attributes
 {% for item in attributes %}

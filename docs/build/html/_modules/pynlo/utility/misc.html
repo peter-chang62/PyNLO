@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pynlo.utility.misc &#8212; PyNLO dev documentation</title>
+    <title>pynlo.utility.misc &#8212; PyNLO 1.dev documentation</title>
   
   
   
@@ -323,11 +323,11 @@ document.write(`
   <h1>Source code for pynlo.utility.misc</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Miscellaneous helper classes and functions</span>
+<span class="sd">Miscellaneous helper classes and functions.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;replace&quot;</span><span class="p">,</span> <span class="s2">&quot;ArrayWrapper&quot;</span><span class="p">,</span> <span class="s2">&quot;ArrayProperty&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;replace&quot;</span><span class="p">]</span>
 
 
 <span class="c1"># %% Imports</span>
@@ -337,18 +337,18 @@ document.write(`
 <span class="c1"># %% Helper Functions</span>
 
 <div class="viewcode-block" id="replace"><a class="viewcode-back" href="../../../api/pynlo.utility.misc.replace.html#pynlo.utility.misc.replace">[docs]</a><span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A copy of `array` with elements given by `key` replaced by `values`.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Copy `array` with elements given by `key` replaced by `values`.&quot;&quot;&quot;</span>
     <span class="n">array</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">array</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span>
     <span class="k">return</span> <span class="n">array</span></div>
 
 <span class="c1"># %% Array Properties for Classes</span>
 
-<div class="viewcode-block" id="ArrayWrapper"><a class="viewcode-back" href="../../../api/pynlo.utility.misc.ArrayWrapper.html#pynlo.utility.misc.ArrayWrapper">[docs]</a><span class="k">class</span> <span class="nc">ArrayWrapper</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">mixins</span><span class="o">.</span><span class="n">NDArrayOperatorsMixin</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ArrayWrapper</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">lib</span><span class="o">.</span><span class="n">mixins</span><span class="o">.</span><span class="n">NDArrayOperatorsMixin</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Emulates an array using custom item getters and setters.&quot;&quot;&quot;</span>
-<div class="viewcode-block" id="ArrayWrapper.__init__"><a class="viewcode-back" href="../../../api/pynlo.utility.misc.ArrayWrapper.__init__.html#pynlo.utility.misc.ArrayWrapper.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">getter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">getter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">setter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_getter</span> <span class="o">=</span> <span class="n">getter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_setter</span> <span class="o">=</span> <span class="n">setter</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setter</span> <span class="o">=</span> <span class="n">setter</span>
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_getter</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
@@ -377,7 +377,7 @@ document.write(`
 
     <span class="k">def</span> <span class="nf">__array_ufunc__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ufunc</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="o">*</span><span class="n">inputs</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Implemented to supports use of the `out` ufunc keyword.</span>
+<span class="sd">        Implemented to support use of the `out` ufunc keyword.</span>
 
 <span class="sd">        Modified from NumPy docs, &quot;__array_ufunc__ for ufuncs&quot;</span>
 
@@ -416,32 +416,35 @@ document.write(`
 
     <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Catch-all for other numpy functions&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__array__</span><span class="p">(),</span> <span class="n">attr</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__array__</span><span class="p">(),</span> <span class="n">attr</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="ArrayProperty"><a class="viewcode-back" href="../../../api/pynlo.utility.misc.ArrayProperty.html#pynlo.utility.misc.ArrayProperty">[docs]</a><span class="k">class</span> <span class="nc">ArrayProperty</span><span class="p">(</span><span class="nb">property</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">SettableArrayProperty</span><span class="p">(</span><span class="nb">property</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A subclass of `property` that allows extending the getter and setter</span>
-<span class="sd">    formalism to array elements.</span>
+<span class="sd">    formalism to Numpy array elements.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    To allow usage of both `__get__`/`__getitem__` and `__set__`/`__setitem__`,</span>
-<span class="sd">    the methods fed into `ArrayProperty` must contain a keyword argument and</span>
-<span class="sd">    logic for processing the keys used by `__getitem__` and `__setitem__`. In</span>
-<span class="sd">    the `setter` method, the `value` parameter must precede the `key`</span>
-<span class="sd">    parameter. In the following example, the default key is an open slice</span>
-<span class="sd">    (ellipsis), the entire array is retrieved when individual elements are</span>
-<span class="sd">    not requested.::</span>
+<span class="sd">    the methods fed into `SettableArrayProperty` must contain a keyword</span>
+<span class="sd">    argument and logic for processing the keys used by `__getitem__` and</span>
+<span class="sd">    `__setitem__`. In the `setter` method, the `value` parameter must precede</span>
+<span class="sd">    the `key` parameter. In the following example, the default key is an open</span>
+<span class="sd">    slice (ellipsis), the entire array is retrieved when individual elements</span>
+<span class="sd">    are not requested.::</span>
 
 <span class="sd">        class C(object):</span>
-<span class="sd">            @property</span>
-<span class="sd">            def x(self, key=...):</span>
-<span class="sd">                return self._x[key]</span>
+<span class="sd">            def __init__(self):</span>
+<span class="sd">                self.x = np.array([1,2,3,4])</span>
 
-<span class="sd">            @x.setter</span>
-<span class="sd">            def x(self, value, key=...):</span>
-<span class="sd">                self._x[key] = value</span>
+<span class="sd">            @SettableArrayProperty</span>
+<span class="sd">            def y(self, key=...):</span>
+<span class="sd">                return self.x[key]**2</span>
+
+<span class="sd">            @y.setter</span>
+<span class="sd">            def y(self, value, key=...):</span>
+<span class="sd">                self.x[key] = value**0.5</span>
 
 <span class="sd">    See the documentation of `property` for other implementation details.</span>
 
@@ -462,7 +465,7 @@ document.write(`
 
         <span class="c1"># Return array with custom item getters and setters</span>
         <span class="n">array</span> <span class="o">=</span> <span class="n">ArrayWrapper</span><span class="p">(</span><span class="n">getter</span><span class="o">=</span><span class="n">item_getter</span><span class="p">,</span> <span class="n">setter</span><span class="o">=</span><span class="n">item_setter</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">array</span></div>
+        <span class="k">return</span> <span class="n">array</span>
 </pre></div>
 
                 </article>

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>pynlo.media.Mode &#8212; PyNLO dev documentation</title>
+    <title>Mode &#8212; PyNLO 1.dev documentation</title>
   
   
   
@@ -44,7 +44,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pynlo.media.Mode';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pynlo.media.Mode.__init__" href="pynlo.media.Mode.__init__.html" />
+    <link rel="next" title="Mode.d_12" href="pynlo.media.Mode.d_12.html" />
     <link rel="prev" title="pynlo.media" href="pynlo.media.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -281,149 +281,158 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="pynlo.light.html">pynlo.light</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.light.Pulse.html">pynlo.light.Pulse</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.__init__.html">pynlo.light.Pulse.__init__</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.FromTFGrid.html">pynlo.light.Pulse.FromTFGrid</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.FromPowerSpectrum.html">pynlo.light.Pulse.FromPowerSpectrum</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.Gaussian.html">pynlo.light.Pulse.Gaussian</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.Sech.html">pynlo.light.Pulse.Sech</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.Parabolic.html">pynlo.light.Pulse.Parabolic</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.Lorentzian.html">pynlo.light.Pulse.Lorentzian</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.CW.html">pynlo.light.Pulse.CW</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.v_width.html">pynlo.light.Pulse.v_width</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.t_width.html">pynlo.light.Pulse.t_width</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.autocorrelation.html">pynlo.light.Pulse.autocorrelation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.spectrogram.html">pynlo.light.Pulse.spectrogram</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.a_v.html">pynlo.light.Pulse.a_v</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.p_v.html">pynlo.light.Pulse.p_v</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.phi_v.html">pynlo.light.Pulse.phi_v</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.tg_v.html">pynlo.light.Pulse.tg_v</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.a_t.html">pynlo.light.Pulse.a_t</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.p_t.html">pynlo.light.Pulse.p_t</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.phi_t.html">pynlo.light.Pulse.phi_t</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.vg_t.html">pynlo.light.Pulse.vg_t</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.ra_t.html">pynlo.light.Pulse.ra_t</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.rp_t.html">pynlo.light.Pulse.rp_t</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.e_p.html">pynlo.light.Pulse.e_p</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.light.Pulse.html">Pulse</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.FromPowerSpectrum.html">Pulse.FromPowerSpectrum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.Gaussian.html">Pulse.Gaussian</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.Sech.html">Pulse.Sech</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.Parabolic.html">Pulse.Parabolic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.Lorentzian.html">Pulse.Lorentzian</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.CW.html">Pulse.CW</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.v_width.html">Pulse.v_width</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.t_width.html">Pulse.t_width</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.autocorrelation.html">Pulse.autocorrelation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.spectrogram.html">Pulse.spectrogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.a_v.html">Pulse.a_v</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.p_v.html">Pulse.p_v</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.phi_v.html">Pulse.phi_v</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.tg_v.html">Pulse.tg_v</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.a_t.html">Pulse.a_t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.p_t.html">Pulse.p_t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.phi_t.html">Pulse.phi_t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.vg_t.html">Pulse.vg_t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.ra_t.html">Pulse.ra_t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.rp_t.html">Pulse.rp_t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.e_p.html">Pulse.e_p</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.v0.html">Pulse.v0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.v0_idx.html">Pulse.v0_idx</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="pynlo.media.html">pynlo.media</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">pynlo.media.Mode</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.__init__.html">pynlo.media.Mode.__init__</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.beta.html">pynlo.media.Mode.beta</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.n.html">pynlo.media.Mode.n</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.alpha.html">pynlo.media.Mode.alpha</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.n_g.html">pynlo.media.Mode.n_g</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.v_g.html">pynlo.media.Mode.v_g</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.d_12.html">pynlo.media.Mode.d_12</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.GVD.html">pynlo.media.Mode.GVD</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.D.html">pynlo.media.Mode.D</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.linear_operator.html">pynlo.media.Mode.linear_operator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.g2.html">pynlo.media.Mode.g2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.g2_inv.html">pynlo.media.Mode.g2_inv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.g3.html">pynlo.media.Mode.g3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.gamma.html">pynlo.media.Mode.gamma</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.r3.html">pynlo.media.Mode.r3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.z.html">pynlo.media.Mode.z</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.v_grid.html">pynlo.media.Mode.v_grid</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.rv_grid.html">pynlo.media.Mode.rv_grid</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.z_dep_linearity.html">pynlo.media.Mode.z_dep_linearity</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.z_dep_nonlinearity.html">pynlo.media.Mode.z_dep_nonlinearity</a></li>
+<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">Mode</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.d_12.html">Mode.d_12</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.linear_operator.html">Mode.linear_operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.copy.html">Mode.copy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.z.html">Mode.z</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.v_grid.html">Mode.v_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.rv_grid.html">Mode.rv_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.z_mode.html">Mode.z_mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.z_linear.html">Mode.z_linear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.z_nonlinear.html">Mode.z_nonlinear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.alpha.html">Mode.alpha</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.beta.html">Mode.beta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.n.html">Mode.n</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.beta1.html">Mode.beta1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.n_g.html">Mode.n_g</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.v_g.html">Mode.v_g</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.beta2.html">Mode.beta2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.D.html">Mode.D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.g2.html">Mode.g2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.g2_inv.html">Mode.g2_inv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.g2_pol.html">Mode.g2_pol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.g3.html">Mode.g3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.gamma.html">Mode.gamma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.r3.html">Mode.r3</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pynlo.device.html">pynlo.device</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="pynlo.model.html">pynlo.model</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.model.SM_UPE.html">pynlo.model.SM_UPE</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.model.SM_UPE.__init__.html">pynlo.model.SM_UPE.__init__</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.model.SM_UPE.estimate_step_size.html">pynlo.model.SM_UPE.estimate_step_size</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.model.SM_UPE.simulate.html">pynlo.model.SM_UPE.simulate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.model.SM_UPE.propagate.html">pynlo.model.SM_UPE.propagate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.model.SM_UPE.integrate.html">pynlo.model.SM_UPE.integrate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.model.SM_UPE.linear_operator.html">pynlo.model.SM_UPE.linear_operator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.model.SM_UPE.nonlinear_operator.html">pynlo.model.SM_UPE.nonlinear_operator</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.model.SM_UPE.nonlinear_operator_svd.html">pynlo.model.SM_UPE.nonlinear_operator_svd</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.model.SM_UPE.update_linearity.html">pynlo.model.SM_UPE.update_linearity</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.model.SM_UPE.update_nonlinearity.html">pynlo.model.SM_UPE.update_nonlinearity</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.model.Model.html">Model</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.estimate_step_size.html">Model.estimate_step_size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.simulate.html">Model.simulate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.propagate.html">Model.propagate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.step.html">Model.step</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.linear_operator.html">Model.linear_operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.nonlinear_operator.html">Model.nonlinear_operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.update_linearity.html">Model.update_linearity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.update_nonlinearity.html">Model.update_nonlinearity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.update_poling.html">Model.update_poling</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.model.NLSE.html">NLSE</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.NLSE.propagate.html">NLSE.propagate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.NLSE.nonlinear_operator.html">NLSE.nonlinear_operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.NLSE.update_linearity.html">NLSE.update_linearity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.NLSE.update_nonlinearity.html">NLSE.update_nonlinearity</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.model.UPE.html">UPE</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.UPE.propagate.html">UPE.propagate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.UPE.nonlinear_operator.html">UPE.nonlinear_operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.UPE.nonlinear_operator_separable.html">UPE.nonlinear_operator_separable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.UPE.update_nonlinearity.html">UPE.update_nonlinearity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.UPE.update_poling.html">UPE.update_poling</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="pynlo.utility.html">pynlo.utility</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.chi1.html">pynlo.utility.chi1</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi1.n_to_beta.html">pynlo.utility.chi1.n_to_beta</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi1.beta_to_n.html">pynlo.utility.chi1.beta_to_n</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi1.D_to_beta2.html">pynlo.utility.chi1.D_to_beta2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi1.beta2_to_D.html">pynlo.utility.chi1.beta2_to_D</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pynlo.utility.html">pynlo.utility</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.chi1.html">pynlo.utility.chi1</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi1.n_to_beta.html">n_to_beta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi1.beta_to_n.html">beta_to_n</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi1.D_to_beta2.html">D_to_beta2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi1.beta2_to_D.html">beta2_to_D</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.chi2.html">pynlo.utility.chi2</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi2.g2_shg.html">pynlo.utility.chi2.g2_shg</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi2.g2_split.html">pynlo.utility.chi2.g2_split</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi2.polling_sign.html">pynlo.utility.chi2.polling_sign</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.chi2.html">pynlo.utility.chi2</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi2.g2_split.html">g2_split</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi2.g2_shg.html">g2_shg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi2.domain_inversions.html">domain_inversions</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.chi3.html">pynlo.utility.chi3</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi3.gamma_to_g3.html">pynlo.utility.chi3.gamma_to_g3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi3.g3_to_gamma.html">pynlo.utility.chi3.g3_to_gamma</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi3.g3_spm.html">pynlo.utility.chi3.g3_spm</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi3.g3_split.html">pynlo.utility.chi3.g3_split</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi3.nl_response_v.html">pynlo.utility.chi3.nl_response_v</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.chi3.html">pynlo.utility.chi3</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi3.gamma_to_g3.html">gamma_to_g3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi3.g3_to_gamma.html">g3_to_gamma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi3.g3_split.html">g3_split</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi3.g3_spm.html">g3_spm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi3.raman.html">raman</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.fft.html">pynlo.utility.fft</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.fft.html">pynlo.utility.fft.fft</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.ifft.html">pynlo.utility.fft.ifft</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.rfft.html">pynlo.utility.fft.rfft</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.irfft.html">pynlo.utility.fft.irfft</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.fftshift.html">pynlo.utility.fft.fftshift</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.ifftshift.html">pynlo.utility.fft.ifftshift</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.fft.html">pynlo.utility.fft</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.fft.html">fft</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.ifft.html">ifft</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.rfft.html">rfft</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.irfft.html">irfft</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.fftshift.html">fftshift</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.ifftshift.html">ifftshift</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.misc.html">pynlo.utility.misc</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.misc.replace.html">pynlo.utility.misc.replace</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="pynlo.utility.misc.ArrayWrapper.html">pynlo.utility.misc.ArrayWrapper</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="pynlo.utility.misc.ArrayWrapper.__init__.html">pynlo.utility.misc.ArrayWrapper.__init__</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.misc.html">pynlo.utility.misc</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.misc.replace.html">replace</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.misc.ArrayProperty.html">pynlo.utility.misc.ArrayProperty</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="pynlo.utility.taylor_series.html">pynlo.utility.taylor_series</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pynlo.utility.resample_v.html">pynlo.utility.resample_v</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pynlo.utility.resample_t.html">pynlo.utility.resample_t</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pynlo.utility.derivative_v.html">pynlo.utility.derivative_v</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pynlo.utility.derivative_t.html">pynlo.utility.derivative_t</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.TFGrid.html">pynlo.utility.TFGrid</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.__init__.html">pynlo.utility.TFGrid.__init__</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.FromFreqRange.html">pynlo.utility.TFGrid.FromFreqRange</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.copy.html">pynlo.utility.TFGrid.copy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rtf_grids.html">pynlo.utility.TFGrid.rtf_grids</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.n.html">pynlo.utility.TFGrid.n</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rn.html">pynlo.utility.TFGrid.rn</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rn_range.html">pynlo.utility.TFGrid.rn_range</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rn_slice.html">pynlo.utility.TFGrid.rn_slice</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.v0.html">pynlo.utility.TFGrid.v0</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.v0_idx.html">pynlo.utility.TFGrid.v0_idx</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.v_grid.html">pynlo.utility.TFGrid.v_grid</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.v_ref.html">pynlo.utility.TFGrid.v_ref</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.dv.html">pynlo.utility.TFGrid.dv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.v_window.html">pynlo.utility.TFGrid.v_window</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.t_grid.html">pynlo.utility.TFGrid.t_grid</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.t_ref.html">pynlo.utility.TFGrid.t_ref</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.dt.html">pynlo.utility.TFGrid.dt</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.t_window.html">pynlo.utility.TFGrid.t_window</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rv_grid.html">pynlo.utility.TFGrid.rv_grid</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rv_ref.html">pynlo.utility.TFGrid.rv_ref</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rdv.html">pynlo.utility.TFGrid.rdv</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rv_window.html">pynlo.utility.TFGrid.rv_window</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rt_grid.html">pynlo.utility.TFGrid.rt_grid</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rt_ref.html">pynlo.utility.TFGrid.rt_ref</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rdt.html">pynlo.utility.TFGrid.rdt</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rt_window.html">pynlo.utility.TFGrid.rt_window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pynlo.utility.vacuum.html">vacuum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pynlo.utility.taylor_series.html">taylor_series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pynlo.utility.shift.html">shift</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pynlo.utility.resample_v.html">resample_v</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pynlo.utility.resample_t.html">resample_t</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.TFGrid.html">TFGrid</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.copy.html">TFGrid.copy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.FromFreqRange.html">TFGrid.FromFreqRange</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rtf_grids.html">TFGrid.rtf_grids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.n.html">TFGrid.n</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rn.html">TFGrid.rn</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rn_range.html">TFGrid.rn_range</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rn_slice.html">TFGrid.rn_slice</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.v_grid.html">TFGrid.v_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.v_ref.html">TFGrid.v_ref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.dv.html">TFGrid.dv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.v_window.html">TFGrid.v_window</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.t_grid.html">TFGrid.t_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.t_ref.html">TFGrid.t_ref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.dt.html">TFGrid.dt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.t_window.html">TFGrid.t_window</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rv_grid.html">TFGrid.rv_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rv_ref.html">TFGrid.rv_ref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rdv.html">TFGrid.rdv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rv_window.html">TFGrid.rv_window</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rt_grid.html">TFGrid.rt_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rt_ref.html">TFGrid.rt_ref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rdt.html">TFGrid.rdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rt_window.html">TFGrid.rt_window</a></li>
 </ul>
 </li>
 </ul>
@@ -471,7 +480,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="pynlo.media.html" class="nav-link">pynlo.media</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">pynlo.media.Mode</li>
+    <li class="breadcrumb-item active" aria-current="page">Mode</li>
   </ul>
 </nav>
 </div>
@@ -488,46 +497,46 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="pynlo-media-mode">
-<h1>pynlo.media.Mode<a class="headerlink" href="#pynlo-media-mode" title="Permalink to this heading">#</a></h1>
+  <section id="mode">
+<h1>Mode<a class="headerlink" href="#mode" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pynlo.media.Mode">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pynlo.media.</span></span><span class="sig-name descname"><span class="pre">Mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g2_v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g2_inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g3_v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rv_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r3_v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/media.html#Mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.media.Mode" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pynlo.media.</span></span><span class="sig-name descname"><span class="pre">Mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g2_inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g3</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rv_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r3</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/media.html#Mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.media.Mode" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>An optical mode, defined over a frequency grid.</p>
-<p>A given input parameter is interpreted as being z-dependent if it is
-callable. All z-dependent parameters must have the position along the
-waveguide (<cite>z</cite>) as their first argument.</p>
+<p>The properties of a medium spatially integrated over the transverse plane
+of an optical mode.</p>
+<p>If a parameters is z dependent, it must be input as a function who’s first
+argument is the propagation distance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>v_grid</strong><span class="classifier">array_like of float</span></dt><dd><p>The frequency grid.</p>
 </dd>
-<dt><strong>beta_v</strong><span class="classifier">array_like of float or callable</span></dt><dd><p>The angular wavenumber, or the real part of the propagation constant,
-defined over the frequency grid.</p>
+<dt><strong>beta</strong><span class="classifier">array_like of float or callable</span></dt><dd><p>The phase coefficient, the real part of the complex wavenumber.</p>
 </dd>
-<dt><strong>alpha_v</strong><span class="classifier">array_like of float or callable, optional</span></dt><dd><p>The gain coefficient, or twice the imaginary part of the propagation
-constant. The default is None.</p>
+<dt><strong>alpha</strong><span class="classifier">array_like of float or callable, optional</span></dt><dd><p>The gain coefficient, twice the imaginary part of the complex
+wavenumber.</p>
 </dd>
-<dt><strong>g2_v</strong><span class="classifier">array_like of complex or callable, optional</span></dt><dd><p>The effective 2nd order nonlinearity. The default is None.</p>
+<dt><strong>g2</strong><span class="classifier">array_like of complex or callable, optional</span></dt><dd><p>The effective 2nd-order nonlinearity.</p>
 </dd>
-<dt><strong>g2_inv</strong><span class="classifier">callable, optional</span></dt><dd><p>Discrete polling of the 2nd order nonlinearity. The default is None.</p>
+<dt><strong>g2_inv</strong><span class="classifier">array_like of float, optional</span></dt><dd><p>The location of all poled domain inversion boundaries.</p>
 </dd>
-<dt><strong>g3_v</strong><span class="classifier">array_like of complex or callable, optional</span></dt><dd><p>The effective 3rd order nonlinearity. The default is None.</p>
+<dt><strong>g3</strong><span class="classifier">array_like of complex or callable, optional</span></dt><dd><p>The effective 3rd-order nonlinearity.</p>
 </dd>
-<dt><strong>rv_grid</strong><span class="classifier">array_like of float, optional</span></dt><dd><p>An origin contiguous frequency grid associated with the 3rd order
-nonlinear response function. The default is None.</p>
+<dt><strong>rv_grid</strong><span class="classifier">array_like of float, optional</span></dt><dd><p>An origin-contiguous frequency grid associated with the 3rd-order
+nonlinear response function.</p>
 </dd>
-<dt><strong>r3_v</strong><span class="classifier">array_like of complex or callable, optional</span></dt><dd><p>The effective 3rd order nonlinear response function containing both
-the instantaneous and Raman nonlinearities. The default is None.</p>
+<dt><strong>r3</strong><span class="classifier">array_like of complex or callable, optional</span></dt><dd><p>The effective 3rd-order nonlinear response function containing both
+the Raman and instantaneous nonlinearities.</p>
 </dd>
-<dt><strong>z</strong><span class="classifier">float, optional</span></dt><dd><p>The position along the waveguide. The default is 0.0.</p>
+<dt><strong>z</strong><span class="classifier">float, optional</span></dt><dd><p>The initial position within the mode. The default is 0.</p>
 </dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>Modes are defined for traveling waves of the form assumed below:</p>
+<p>Forward traveling waves of the mode are defined using the following
+conventions:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}E, H \sim a \, e^{i(\omega t - \kappa z)} + \text{c.c} \\
 \kappa = \beta + i \frac{\alpha}{2}, \quad
@@ -538,50 +547,14 @@ the instantaneous and Raman nonlinearities. The default is None.</p>
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">#</a></h2>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.__init__.html#pynlo.media.Mode.__init__" title="pynlo.media.Mode.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(v_grid, beta_v[, alpha_v, g2_v, ...])</p></td>
-<td><p>Initialize a mode given a set of frequencies, wavenumbers, and other parameters.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.d_12.html#pynlo.media.Mode.d_12" title="pynlo.media.Mode.d_12"><code class="xref py py-obj docutils literal notranslate"><span class="pre">d_12</span></code></a>([v0])</p></td>
+<td><p>The group velocity mismatch, with units of <code class="docutils literal notranslate"><span class="pre">s/m</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.beta.html#pynlo.media.Mode.beta" title="pynlo.media.Mode.beta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">beta</span></code></a>([m, z])</p></td>
-<td><p>The angular wavenumber, with units of <code class="docutils literal notranslate"><span class="pre">1/m</span></code>, or its derivatives with respect to angular frequency.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.linear_operator.html#pynlo.media.Mode.linear_operator" title="pynlo.media.Mode.linear_operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linear_operator</span></code></a>(dz[, v0])</p></td>
+<td><p>The linear operator which advances a pulse over a distance <cite>dz</cite>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.n.html#pynlo.media.Mode.n" title="pynlo.media.Mode.n"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n</span></code></a>([z])</p></td>
-<td><p>The refractive index.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.alpha.html#pynlo.media.Mode.alpha" title="pynlo.media.Mode.alpha"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alpha</span></code></a>([z])</p></td>
-<td><p>The gain constant, with units of <code class="docutils literal notranslate"><span class="pre">1/m</span></code>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.n_g.html#pynlo.media.Mode.n_g" title="pynlo.media.Mode.n_g"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_g</span></code></a>([z])</p></td>
-<td><p>The group index.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.v_g.html#pynlo.media.Mode.v_g" title="pynlo.media.Mode.v_g"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v_g</span></code></a>([z])</p></td>
-<td><p>The group velocity, with units of <code class="docutils literal notranslate"><span class="pre">m/s</span></code>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.d_12.html#pynlo.media.Mode.d_12" title="pynlo.media.Mode.d_12"><code class="xref py py-obj docutils literal notranslate"><span class="pre">d_12</span></code></a>([v0, z])</p></td>
-<td><p>The group velocity mismatch, or walk-off parameter, with units of <code class="docutils literal notranslate"><span class="pre">s/m</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.GVD.html#pynlo.media.Mode.GVD" title="pynlo.media.Mode.GVD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GVD</span></code></a>([z])</p></td>
-<td><p>The group velocity dispersion, with units of <code class="docutils literal notranslate"><span class="pre">s**2/m</span></code>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.D.html#pynlo.media.Mode.D" title="pynlo.media.Mode.D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">D</span></code></a>([z])</p></td>
-<td><p>The dispersion parameter D, with units of <code class="docutils literal notranslate"><span class="pre">s/m**2</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.linear_operator.html#pynlo.media.Mode.linear_operator" title="pynlo.media.Mode.linear_operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linear_operator</span></code></a>(dz[, v0, z])</p></td>
-<td><p>The linear operator which advances the spectrum over a distance <cite>dz</cite>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.g2.html#pynlo.media.Mode.g2" title="pynlo.media.Mode.g2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">g2</span></code></a>([z])</p></td>
-<td><p>The magnitude of the effective 2nd order nonlinear parameter, with units of <code class="docutils literal notranslate"><span class="pre">1/(W**0.5*m*Hz)</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.g2_inv.html#pynlo.media.Mode.g2_inv" title="pynlo.media.Mode.g2_inv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">g2_inv</span></code></a>([z])</p></td>
-<td><p>The sign of the polled 2nd order nonlinearity.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.g3.html#pynlo.media.Mode.g3" title="pynlo.media.Mode.g3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">g3</span></code></a>([z])</p></td>
-<td><p>The effective 3rd order nonlinear parameter, with units of <code class="docutils literal notranslate"><span class="pre">1/(W*m*Hz)</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.gamma.html#pynlo.media.Mode.gamma" title="pynlo.media.Mode.gamma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gamma</span></code></a>([z])</p></td>
-<td><p>The nonlinear parameter <span class="math notranslate nohighlight">\(\gamma\)</span>, with units of <code class="docutils literal notranslate"><span class="pre">1/(W*m)</span></code>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.r3.html#pynlo.media.Mode.r3" title="pynlo.media.Mode.r3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">r3</span></code></a>([z])</p></td>
-<td><p>The effective 3rd order nonlinear response function containing both the instantaneous and Raman nonlinearities.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.copy.html#pynlo.media.Mode.copy" title="pynlo.media.Mode.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
+<td><p>A copy of the mode.</p></td>
 </tr>
 </tbody>
 </table>
@@ -591,19 +564,64 @@ the instantaneous and Raman nonlinearities. The default is None.</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.z.html#pynlo.media.Mode.z" title="pynlo.media.Mode.z"><code class="xref py py-obj docutils literal notranslate"><span class="pre">z</span></code></a></p></td>
-<td><p>The position along the waveguide, with units of <code class="docutils literal notranslate"><span class="pre">m</span></code>.</p></td>
+<td><p>The position within the mode, with units of <code class="docutils literal notranslate"><span class="pre">m</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.v_grid.html#pynlo.media.Mode.v_grid" title="pynlo.media.Mode.v_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v_grid</span></code></a></p></td>
 <td><p>The frequency grid, with units of <code class="docutils literal notranslate"><span class="pre">Hz</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.rv_grid.html#pynlo.media.Mode.rv_grid" title="pynlo.media.Mode.rv_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rv_grid</span></code></a></p></td>
-<td><p>The origin contiguous frequency grid associated with the Raman response.</p></td>
+<td><p>The origin-contiguous frequency grid associated with the Raman response.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.z_dep_linearity.html#pynlo.media.Mode.z_dep_linearity" title="pynlo.media.Mode.z_dep_linearity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">z_dep_linearity</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.z_mode.html#pynlo.media.Mode.z_mode" title="pynlo.media.Mode.z_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">z_mode</span></code></a></p></td>
+<td><p>The z dependence of the mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.z_linear.html#pynlo.media.Mode.z_linear" title="pynlo.media.Mode.z_linear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">z_linear</span></code></a></p></td>
 <td><p>The z dependence of the linear terms.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.z_dep_nonlinearity.html#pynlo.media.Mode.z_dep_nonlinearity" title="pynlo.media.Mode.z_dep_nonlinearity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">z_dep_nonlinearity</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.z_nonlinear.html#pynlo.media.Mode.z_nonlinear" title="pynlo.media.Mode.z_nonlinear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">z_nonlinear</span></code></a></p></td>
 <td><p>The z dependence of the nonlinear terms.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.alpha.html#pynlo.media.Mode.alpha" title="pynlo.media.Mode.alpha"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alpha</span></code></a></p></td>
+<td><p>The gain coefficient, with units of <code class="docutils literal notranslate"><span class="pre">1/m</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.beta.html#pynlo.media.Mode.beta" title="pynlo.media.Mode.beta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">beta</span></code></a></p></td>
+<td><p>The phase coefficient, or angular wavenumber, with units of <code class="docutils literal notranslate"><span class="pre">1/m</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.n.html#pynlo.media.Mode.n" title="pynlo.media.Mode.n"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n</span></code></a></p></td>
+<td><p>The refractive index.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.beta1.html#pynlo.media.Mode.beta1" title="pynlo.media.Mode.beta1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">beta1</span></code></a></p></td>
+<td><p>The group walk-off parameter, with units of <code class="docutils literal notranslate"><span class="pre">s/m</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.n_g.html#pynlo.media.Mode.n_g" title="pynlo.media.Mode.n_g"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_g</span></code></a></p></td>
+<td><p>The group index.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.v_g.html#pynlo.media.Mode.v_g" title="pynlo.media.Mode.v_g"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v_g</span></code></a></p></td>
+<td><p>The group velocity, with units of <code class="docutils literal notranslate"><span class="pre">m/s</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.beta2.html#pynlo.media.Mode.beta2" title="pynlo.media.Mode.beta2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">beta2</span></code></a></p></td>
+<td><p>The group velocity dispersion (GVD), with units of <code class="docutils literal notranslate"><span class="pre">s**2/m</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.D.html#pynlo.media.Mode.D" title="pynlo.media.Mode.D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">D</span></code></a></p></td>
+<td><p>The dispersion parameter D, with units of <code class="docutils literal notranslate"><span class="pre">s/m**2</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.g2.html#pynlo.media.Mode.g2" title="pynlo.media.Mode.g2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">g2</span></code></a></p></td>
+<td><p>The magnitude of the effective 2nd-order nonlinear parameter, with units of <code class="docutils literal notranslate"><span class="pre">1/(W**0.5*m*Hz)</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.g2_inv.html#pynlo.media.Mode.g2_inv" title="pynlo.media.Mode.g2_inv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">g2_inv</span></code></a></p></td>
+<td><p>The location of all 2nd-order domain inverion boundaries within the mode.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.g2_pol.html#pynlo.media.Mode.g2_pol" title="pynlo.media.Mode.g2_pol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">g2_pol</span></code></a></p></td>
+<td><p>The poling status at the current z position.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.g3.html#pynlo.media.Mode.g3" title="pynlo.media.Mode.g3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">g3</span></code></a></p></td>
+<td><p>The effective 3rd-order nonlinear parameter, with units of <code class="docutils literal notranslate"><span class="pre">1/(W*m*Hz)</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.gamma.html#pynlo.media.Mode.gamma" title="pynlo.media.Mode.gamma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gamma</span></code></a></p></td>
+<td><p>The nonlinear parameter <span class="math notranslate nohighlight">\(\gamma\)</span>, with units of <code class="docutils literal notranslate"><span class="pre">1/(W*m)</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.r3.html#pynlo.media.Mode.r3" title="pynlo.media.Mode.r3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">r3</span></code></a></p></td>
+<td><p>The effective 3rd-order nonlinear response function containing both the Raman and instantaneous nonlinearities.</p></td>
 </tr>
 </tbody>
 </table>
@@ -631,11 +649,11 @@ the instantaneous and Raman nonlinearities. The default is None.</p>
       </div>
     </a>
     <a class="right-next"
-       href="pynlo.media.Mode.__init__.html"
+       href="pynlo.media.Mode.d_12.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">pynlo.media.Mode.__init__</p>
+        <p class="prev-next-title">Mode.d_12</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

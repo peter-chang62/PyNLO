@@ -5,11 +5,12 @@ pynlo.utility.chi3
 Functions
 ---------
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Functions
 
    gamma_to_g3
    g3_to_gamma
-   g3_spm
    g3_split
-   nl_response_v
+   g3_spm
+   raman
