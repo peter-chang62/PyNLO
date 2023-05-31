@@ -292,6 +292,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.t_width.html">Pulse.t_width</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.autocorrelation.html">Pulse.autocorrelation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.spectrogram.html">Pulse.spectrogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.copy.html">Pulse.copy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.a_v.html">Pulse.a_v</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.p_v.html">Pulse.p_v</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.phi_v.html">Pulse.phi_v</a></li>
@@ -410,9 +411,9 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="pynlo.utility.resample_v.html">resample_v</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pynlo.utility.resample_t.html">resample_t</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.TFGrid.html">TFGrid</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.copy.html">TFGrid.copy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.FromFreqRange.html">TFGrid.FromFreqRange</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rtf_grids.html">TFGrid.rtf_grids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.copy.html">TFGrid.copy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.n.html">TFGrid.n</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rn.html">TFGrid.rn</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rn_range.html">TFGrid.rn_range</a></li>
@@ -503,10 +504,12 @@ document.write(`
 <dt class="sig sig-object py" id="pynlo.media.Mode">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pynlo.media.</span></span><span class="sig-name descname"><span class="pre">Mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v_grid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g2_inv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g3</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rv_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r3</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/media.html#Mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.media.Mode" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>The properties of a medium spatially integrated over the transverse plane
-of an optical mode.</p>
-<p>If a parameters is z dependent, it must be input as a function who’s first
-argument is the propagation distance.</p>
+<p>An optical mode.</p>
+<p>An optical mode is defined in the frequency domain. All properties must be
+input as effective values, i.e. those found by integrating out the
+transverse spatial dependence of the media and mode. If a parameter is z
+dependent, it can be input as a function who’s first argument is the
+propagation distance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -535,7 +538,7 @@ the Raman and instantaneous nonlinearities.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>Forward traveling waves of the mode are defined using the following
+<p>Forward traveling waves of a mode are defined using the following
 conventions:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}E, H \sim a \, e^{i(\omega t - \kappa z)} + \text{c.c} \\
@@ -609,7 +612,7 @@ conventions:</p>
 <td><p>The magnitude of the effective 2nd-order nonlinear parameter, with units of <code class="docutils literal notranslate"><span class="pre">1/(W**0.5*m*Hz)</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pynlo.media.Mode.g2_inv.html#pynlo.media.Mode.g2_inv" title="pynlo.media.Mode.g2_inv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">g2_inv</span></code></a></p></td>
-<td><p>The location of all 2nd-order domain inverion boundaries within the mode.</p></td>
+<td><p>The location of all 2nd-order domain inversion boundaries within the mode.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pynlo.media.Mode.g2_pol.html#pynlo.media.Mode.g2_pol" title="pynlo.media.Mode.g2_pol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">g2_pol</span></code></a></p></td>
 <td><p>The poling status at the current z position.</p></td>

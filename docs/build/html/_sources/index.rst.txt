@@ -3,7 +3,7 @@
 
 
 Contents
-=============
+========
 .. toctree::
    :includehidden:
    :titlesonly:

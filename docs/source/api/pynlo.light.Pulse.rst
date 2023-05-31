@@ -20,6 +20,7 @@ Methods
    ~Pulse.t_width
    ~Pulse.autocorrelation
    ~Pulse.spectrogram
+   ~Pulse.copy
 
 Attributes
 ----------

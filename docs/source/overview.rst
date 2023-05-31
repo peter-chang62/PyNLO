@@ -15,7 +15,7 @@ Optical pulses are represented in PyNLO with :py:class:`pynlo.light.Pulse` objec
 
 Modes
 -----
-PyNLO represents the modes within an optical medium as :py:class:`pynlo.media.Mode` objects. In addition to the linear properties (i.e. the phase and gain coefficients :math:`\beta` and :math:`\alpha`), they also contain an optical mode's effective 2nd- and 3rd-order nonlinearity. If a material has properties that change with propagation distance, those properties can be input as functions where the first argument is the position :math:`z`.
+PyNLO represents the modes within an optical medium as :py:class:`pynlo.media.Mode` objects. In addition to the linear properties (i.e. the phase and gain coefficients :math:`\beta` and :math:`\alpha`), they also contain an optical mode's effective 2nd- and 3rd-order nonlinearity. If a material has properties that are :math:`z` dependent, those properties can be input as functions who's first argument is the propagation distance.
 
 
 Models

@@ -35,7 +35,7 @@ def period_to_dk(period):
 
 def g2_split(n_eff, a_eff, chi2_eff):
     """
-    The 2nd-order nonlinear parameter weighted by unit decomposition.
+    The 2nd-order nonlinear parameter decomposed according to unit analysis.
 
     Parameters
     ----------
@@ -276,7 +276,7 @@ def dominant_paths(v_grid, beta, beta_qpm=None, full=False): #TODO: add extent (
         The effective wavenumber of an applied quasi-phase matching (QPM)
         structure. If ``None``, the dominant path is calculated without poling.
     full : bool, optional
-        A flag determining nature of the return value. When ``False`` (the
+        A flag determining the nature of the return value. When ``False`` (the
         default) just the path indices are returned, when ``True`` the
         calculated wavenumber mismatch arrays are also returned.
 
@@ -295,7 +295,7 @@ def dominant_paths(v_grid, beta, beta_qpm=None, full=False): #TODO: add extent (
             The frequencies that correspond to all SFG combinations.
         dk_sfg : ndarray of float
             The wavenumber mismatch for all SFG combinations. The mismatch of
-            invalid paths are given as NaN.
+            invalid paths are given as ``np.nan``.
         v_dfg : ndarray of float
             The frequencies that correspond to all DFG combinations.
         dk_dfg : ndarray of float

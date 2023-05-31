@@ -42,7 +42,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/pynlo.utility.TFGrid';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="TFGrid.copy" href="pynlo.utility.TFGrid.copy.html" />
+    <link rel="next" title="TFGrid.FromFreqRange" href="pynlo.utility.TFGrid.FromFreqRange.html" />
     <link rel="prev" title="resample_t" href="pynlo.utility.resample_t.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -290,6 +290,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.t_width.html">Pulse.t_width</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.autocorrelation.html">Pulse.autocorrelation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.spectrogram.html">Pulse.spectrogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.copy.html">Pulse.copy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.a_v.html">Pulse.a_v</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.p_v.html">Pulse.p_v</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.phi_v.html">Pulse.phi_v</a></li>
@@ -408,9 +409,9 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="pynlo.utility.resample_v.html">resample_v</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pynlo.utility.resample_t.html">resample_t</a></li>
 <li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">TFGrid</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.copy.html">TFGrid.copy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.FromFreqRange.html">TFGrid.FromFreqRange</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rtf_grids.html">TFGrid.rtf_grids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.copy.html">TFGrid.copy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.n.html">TFGrid.n</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rn.html">TFGrid.rn</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rn_range.html">TFGrid.rn_range</a></li>
@@ -555,14 +556,14 @@ the DFT.</p>
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this heading">#</a></h2>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.utility.TFGrid.copy.html#pynlo.utility.TFGrid.copy" title="pynlo.utility.TFGrid.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
-<td><p>A copy of the object.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pynlo.utility.TFGrid.FromFreqRange.html#pynlo.utility.TFGrid.FromFreqRange" title="pynlo.utility.TFGrid.FromFreqRange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FromFreqRange</span></code></a>(n, v_min, v_max, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.utility.TFGrid.FromFreqRange.html#pynlo.utility.TFGrid.FromFreqRange" title="pynlo.utility.TFGrid.FromFreqRange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FromFreqRange</span></code></a>(n, v_min, v_max, **kwargs)</p></td>
 <td><p>Initialize a set of time and frequency grids given the total number of grid points and a target minimum and maximum frequency.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.utility.TFGrid.rtf_grids.html#pynlo.utility.TFGrid.rtf_grids" title="pynlo.utility.TFGrid.rtf_grids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rtf_grids</span></code></a>([alias, fast_n, update])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pynlo.utility.TFGrid.rtf_grids.html#pynlo.utility.TFGrid.rtf_grids" title="pynlo.utility.TFGrid.rtf_grids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rtf_grids</span></code></a>([alias, fast_n, update])</p></td>
 <td><p>Complementary time and frequency domain grids for the representation of analytic functions with real-valued amplitudes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.utility.TFGrid.copy.html#pynlo.utility.TFGrid.copy" title="pynlo.utility.TFGrid.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
+<td><p>A copy of the time and frequency grids.</p></td>
 </tr>
 </tbody>
 </table>
@@ -657,11 +658,11 @@ the DFT.</p>
       </div>
     </a>
     <a class="right-next"
-       href="pynlo.utility.TFGrid.copy.html"
+       href="pynlo.utility.TFGrid.FromFreqRange.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">TFGrid.copy</p>
+        <p class="prev-next-title">TFGrid.FromFreqRange</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

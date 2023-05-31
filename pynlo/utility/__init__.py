@@ -99,7 +99,7 @@ def vacuum(v_grid, rng=None):
         P[\\alpha] = \\frac{1}{\\pi} |\\langle \\alpha | \\beta\\rangle|^2
             = \\frac{1}{\\pi} e^{-|\\alpha - \\beta|^2}
 
-    This probability distribution is Gaussian and its noise can be completely
+    This probability distribution is Gaussian, and its noise can be completely
     described by calculating the variance of each quadrature component. Scaled
     to the number of photons (:math:`N=\\alpha^2`), the combined noise from
     both quadratures gives a total variance of one photon per measurement:
@@ -146,7 +146,7 @@ def shift(f_t, dt, t_shift):
     Parameters
     ----------
     f_t : array_like
-        Input array, can be complex or real valued.
+        The input array.
     dt : float
         The grid step size.
     shift_t : float
@@ -211,8 +211,8 @@ def resample_v(v_grid, f_v, n):
     extra point on the negative side.
 
     This method checks if the origin is contained in `v_grid` to determine
-    whether real or complex transforms should be performed. In both cases the
-    resampling is accomplished by removing trailing and leading time bins.
+    whether real or complex transformations should be performed. In both cases
+    the resampling is accomplished by removing trailing and leading time bins.
 
     For analytic representations, the returned frequency grid is defined
     symmetrically about its reference, as in the `TFGrid` class, and for
@@ -432,10 +432,6 @@ class TFGrid():
         #---- Define Real-Valued Time and Frequency Domain Grids
         assert (alias >= 1), "There must be atleast 1 alias-free Nyquist zone."
         self.rtf_grids(alias=alias, update=True)
-
-    def copy(self):
-        """A copy of the object."""
-        return copy.deepcopy(self)
 
     #---- Class Methods
     @classmethod
@@ -927,3 +923,8 @@ class TFGrid():
             self._rdt = rtf_grids.dt
             self._rt_window = rtf_grids.t_window
         return rtf_grids
+
+    #---- Misc
+    def copy(self):
+        """A copy of the time and frequency grids."""
+        return copy.deepcopy(self)

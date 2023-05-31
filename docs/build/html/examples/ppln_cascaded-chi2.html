@@ -397,14 +397,14 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">In this example we use the refractive index, effective area, and nonlinear</span>
 <span class="sd">susceptibility to calculate the linear and nonlinear properties of the mode.</span>
-<span class="sd">The material used in this case is convgruent lithium niobate, and we use the</span>
+<span class="sd">The material used in this case is congruent lithium niobate, and we use the</span>
 <span class="sd">Sellmeier equations from Jundt (1997) for the refractive index. The generalized</span>
-<span class="sd">2nd-order nonlinear parameter is weigthed for second-harmonic generation using</span>
+<span class="sd">2nd-order nonlinear parameter is weighted for second-harmonic generation using</span>
 <span class="sd">the `g2_shg` function from the `utility.chi2` submodule. Poling is implemented</span>
 <span class="sd">by indicating the location of each domain inversion. This is calculated using</span>
 <span class="sd">the `domain_inversion` function of the `utility.chi2` submodule. This example</span>
 <span class="sd">only uses a constant poling period, but the function also supports the</span>
-<span class="sd">generation of arbitrary, continuously-varying poled structures.</span>
+<span class="sd">generation of arbitrarily chirped poling periods.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">length</span> <span class="o">=</span> <span class="mf">7e-3</span> <span class="c1"># 7 mm</span>
@@ -472,7 +472,7 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This code actually runs the simulation. We input the total propagation length,</span>
 <span class="sd">the initial step size, local error, and the number of simulation steps we wish</span>
-<span class="sd">to record. We recieve the output pulse and the propagations distance, pulse</span>
+<span class="sd">to record. We receive the output pulse and the propagations distance, pulse</span>
 <span class="sd">spectrum, and complex envelope at each record point. To view real-time</span>
 <span class="sd">simulation results (updated whenever the simulation reaches a record point),</span>
 <span class="sd">set the `plot` keyword to &quot;frq&quot;, &quot;wvl&quot;, or &quot;time&quot;.</span>
@@ -486,13 +486,12 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">The results are plotted in the time and frequency domains. Although the</span>
 <span class="sd">3rd-order nonlinearity is not directly included in the propagation model we see</span>
-<span class="sd">several 3rd-order phenomena. Due to cascaded chi2 from phase-mismatched SHG</span>
-<span class="sd">there is an effective 3rd-order nonlinearity, which leads to soliton formation</span>
-<span class="sd">and dispersive wave generation. For more details on this effect see DeSalvo et</span>
-<span class="sd">al. (1992). Additionally, the high frequency spike is 3rd-harmonic generation</span>
-<span class="sd">due cascaded second-harmonic and sum-frequency generation of/with the pump</span>
-<span class="sd">freuqency. The other spike is due SHG quasi-phase matched off of the</span>
-<span class="sd">3rd-order spatial harmonic of the poling structure.</span>
+<span class="sd">several 3rd-order phenomena due to cascaded 2nd-order effects. Phase-mismatched</span>
+<span class="sd">SHG yields an effective Kerr effect (see DeSalvo et al. (1992)), which leads to</span>
+<span class="sd">soliton and dispersive wave generation. Additionally, the high frequency spike</span>
+<span class="sd">is third-harmonic generation due cascaded second-harmonic and sum-frequency</span>
+<span class="sd">generation from the pump frequency. The other spike is due to SHG quasi-phase</span>
+<span class="sd">matched off of the 3rd-order spatial harmonic of the poling structure.</span>
 
 <span class="sd">References</span>
 <span class="sd">----------</span>
@@ -511,7 +510,8 @@ document.write(`
 <span class="n">p_v_dB</span> <span class="o">-=</span> <span class="n">p_v_dB</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 <span class="n">ax0</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mf">1e-12</span><span class="o">*</span><span class="n">pulse</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">p_v_dB</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
 <span class="n">ax0</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mf">1e-12</span><span class="o">*</span><span class="n">pulse</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">p_v_dB</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
-<span class="n">ax2</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="mf">1e-12</span><span class="o">*</span><span class="n">pulse</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="mf">1e3</span><span class="o">*</span><span class="n">z</span><span class="p">,</span> <span class="n">p_v_dB</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">40.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="mf">1e-12</span><span class="o">*</span><span class="n">pulse</span><span class="o">.</span><span class="n">v_grid</span><span class="p">,</span> <span class="mf">1e3</span><span class="o">*</span><span class="n">z</span><span class="p">,</span> <span class="n">p_v_dB</span><span class="p">,</span>
+               <span class="n">vmin</span><span class="o">=-</span><span class="mf">40.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
 <span class="n">ax0</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=-</span><span class="mi">50</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frequency (THz)&#39;</span><span class="p">)</span>
 
@@ -519,7 +519,8 @@ document.write(`
 <span class="n">p_t_dB</span> <span class="o">-=</span> <span class="n">p_t_dB</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mf">1e12</span><span class="o">*</span><span class="n">pulse</span><span class="o">.</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">p_t_dB</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mf">1e12</span><span class="o">*</span><span class="n">pulse</span><span class="o">.</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">p_t_dB</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
-<span class="n">ax3</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="mf">1e12</span><span class="o">*</span><span class="n">pulse</span><span class="o">.</span><span class="n">t_grid</span><span class="p">,</span> <span class="mf">1e3</span><span class="o">*</span><span class="n">z</span><span class="p">,</span> <span class="n">p_t_dB</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">40.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="mf">1e12</span><span class="o">*</span><span class="n">pulse</span><span class="o">.</span><span class="n">t_grid</span><span class="p">,</span> <span class="mf">1e3</span><span class="o">*</span><span class="n">z</span><span class="p">,</span> <span class="n">p_t_dB</span><span class="p">,</span>
+               <span class="n">vmin</span><span class="o">=-</span><span class="mf">40.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=-</span><span class="mi">50</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">ax3</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (ps)&#39;</span><span class="p">)</span>
 

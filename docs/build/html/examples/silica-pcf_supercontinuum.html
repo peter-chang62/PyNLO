@@ -395,11 +395,11 @@ document.write(`
 <span class="sd">this example, we are only given the waveguide properties at a single frequency,</span>
 <span class="sd">so we have to extrapolate those to the rest of the frequency grid. For the beta</span>
 <span class="sd">parameter this is accomplished using a Taylor series, but for the nonlinearity</span>
-<span class="sd">we use the `gamma_to_g3` conversion funtion from the `utility.chi3` submodule.</span>
-<span class="sd">This function calculate the generalized 3rd-order nonlinear parameter (required</span>
-<span class="sd">by the PyNLO propagation models) from the gamma parameter and optical shock</span>
-<span class="sd">time scale. If available, the nonlinear parameter can also be generated from</span>
-<span class="sd">the refractive index, effective area, and nonlinear susceptibility, see</span>
+<span class="sd">we use the `gamma_to_g3` conversion function from the `utility.chi3` submodule.</span>
+<span class="sd">This function calculates the generalized 3rd-order nonlinear parameter</span>
+<span class="sd">(required by the PyNLO propagation models) from the gamma parameter and optical</span>
+<span class="sd">shock time scale. If available, the nonlinear parameter can also be generated</span>
+<span class="sd">from the refractive index, effective area, and nonlinear susceptibility, see</span>
 <span class="sd">`utility.chi3` for more details. The Raman effect is implemented using the</span>
 <span class="sd">Raman response function given in section 2.3.3 of Agrawal.</span>
 
@@ -457,7 +457,7 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This code actually runs the simulation. We input the total propagation length,</span>
 <span class="sd">the initial step size, local error, and the number of simulation steps we wish</span>
-<span class="sd">to record. We recieve the output pulse and the propagations distance, pulse</span>
+<span class="sd">to record. We receive the output pulse and the propagations distance, pulse</span>
 <span class="sd">spectrum, and complex envelope at each record point. To view real-time</span>
 <span class="sd">simulation results (updated whenever the simulation reaches a record point),</span>
 <span class="sd">set the `plot` keyword to &quot;frq&quot;, &quot;wvl&quot;, or &quot;time&quot;.</span>

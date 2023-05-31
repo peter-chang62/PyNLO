@@ -320,7 +320,7 @@ document.write(`
   <h1>Source code for pynlo.media</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Representing optical modes in waveguides and other media.</span>
+<span class="sd">Optical modes in waveguides or other media.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -348,11 +348,13 @@ document.write(`
 
 <div class="viewcode-block" id="Mode"><a class="viewcode-back" href="../../api/pynlo.media.Mode.html#pynlo.media.Mode">[docs]</a><span class="k">class</span> <span class="nc">Mode</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The properties of a medium spatially integrated over the transverse plane</span>
-<span class="sd">    of an optical mode.</span>
+<span class="sd">    An optical mode.</span>
 
-<span class="sd">    If a parameters is z dependent, it must be input as a function who&#39;s first</span>
-<span class="sd">    argument is the propagation distance.</span>
+<span class="sd">    An optical mode is defined in the frequency domain. All properties must be</span>
+<span class="sd">    input as effective values, i.e. those found by integrating out the</span>
+<span class="sd">    transverse spatial dependence of the media and mode. If a parameter is z</span>
+<span class="sd">    dependent, it can be input as a function who&#39;s first argument is the</span>
+<span class="sd">    propagation distance.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -380,7 +382,7 @@ document.write(`
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    Forward traveling waves of the mode are defined using the following</span>
+<span class="sd">    Forward traveling waves of a mode are defined using the following</span>
 <span class="sd">    conventions:</span>
 
 <span class="sd">    .. math:: E, H \\sim a \\, e^{i(\\omega t - \\kappa z)} + \\text{c.c} \\\\</span>
@@ -539,7 +541,7 @@ document.write(`
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        any : bool</span>
-<span class="sd">            Whether there is any z dependece of the nonlinearity (excluding</span>
+<span class="sd">            Whether there is any z dependence of the nonlinearity (excluding</span>
 <span class="sd">            poling).</span>
 <span class="sd">        g2 : bool</span>
 <span class="sd">            Z-dependent 2nd-order nonlinear parameter.</span>
@@ -743,10 +745,10 @@ document.write(`
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">g2_inv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The location of all 2nd-order domain inverion boundaries within the</span>
+<span class="sd">        The location of all 2nd-order domain inversion boundaries within the</span>
 <span class="sd">        mode.</span>
 
-<span class="sd">        A value of 1 indicates that the start of an inverted domain. A value of</span>
+<span class="sd">        A value of 1 indicates the start of an inverted domain. A value of</span>
 <span class="sd">        0 indicates the start of an unpoled region.</span>
 
 <span class="sd">        Returns</span>
@@ -825,7 +827,7 @@ document.write(`
 <span class="c1">#     - effective area based on distance to nominal waist location</span>
 <span class="c1">#     - could also include convenience functions for setting up the beam</span>
 <span class="c1">#       through focusing, propagation, etc.</span>
-<span class="c1">#     - check Boyd 2.10 &quot;Nonlinear Optical Interactions with Focused Guassian</span>
+<span class="c1">#     - check Boyd 2.10 &quot;Nonlinear Optical Interactions with Focused Gaussian</span>
 <span class="c1">#       Beams&quot; for complicating factors.</span>
 <span class="c1">#</span>
 <span class="c1">#     &quot;&quot;&quot;</span>

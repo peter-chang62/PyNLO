@@ -358,7 +358,7 @@ document.write(`
 
 <div class="viewcode-block" id="g2_split"><a class="viewcode-back" href="../../../api/pynlo.utility.chi2.g2_split.html#pynlo.utility.chi2.g2_split">[docs]</a><span class="k">def</span> <span class="nf">g2_split</span><span class="p">(</span><span class="n">n_eff</span><span class="p">,</span> <span class="n">a_eff</span><span class="p">,</span> <span class="n">chi2_eff</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The 2nd-order nonlinear parameter weighted by unit decomposition.</span>
+<span class="sd">    The 2nd-order nonlinear parameter decomposed according to unit analysis.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -599,7 +599,7 @@ document.write(`
 <span class="sd">        The effective wavenumber of an applied quasi-phase matching (QPM)</span>
 <span class="sd">        structure. If ``None``, the dominant path is calculated without poling.</span>
 <span class="sd">    full : bool, optional</span>
-<span class="sd">        A flag determining nature of the return value. When ``False`` (the</span>
+<span class="sd">        A flag determining the nature of the return value. When ``False`` (the</span>
 <span class="sd">        default) just the path indices are returned, when ``True`` the</span>
 <span class="sd">        calculated wavenumber mismatch arrays are also returned.</span>
 
@@ -618,7 +618,7 @@ document.write(`
 <span class="sd">            The frequencies that correspond to all SFG combinations.</span>
 <span class="sd">        dk_sfg : ndarray of float</span>
 <span class="sd">            The wavenumber mismatch for all SFG combinations. The mismatch of</span>
-<span class="sd">            invalid paths are given as NaN.</span>
+<span class="sd">            invalid paths are given as ``np.nan``.</span>
 <span class="sd">        v_dfg : ndarray of float</span>
 <span class="sd">            The frequencies that correspond to all DFG combinations.</span>
 <span class="sd">        dk_dfg : ndarray of float</span>

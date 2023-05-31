@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>TFGrid.rt_window &#8212; PyNLO 1.dev documentation</title>
+    <title>Pulse.copy &#8212; PyNLO 1.dev documentation</title>
   
   
   
@@ -39,10 +39,11 @@
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api/pynlo.utility.TFGrid.rt_window';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/pynlo.light.Pulse.copy';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="TFGrid.rdt" href="pynlo.utility.TFGrid.rdt.html" />
+    <link rel="next" title="Pulse.a_v" href="pynlo.light.Pulse.a_v.html" />
+    <link rel="prev" title="Pulse.spectrogram" href="pynlo.light.Pulse.spectrogram.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -277,8 +278,8 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="pynlo.light.html">pynlo.light</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.light.Pulse.html">Pulse</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="pynlo.light.html">pynlo.light</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="pynlo.light.Pulse.html">Pulse</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.FromPowerSpectrum.html">Pulse.FromPowerSpectrum</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.Gaussian.html">Pulse.Gaussian</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.Sech.html">Pulse.Sech</a></li>
@@ -289,7 +290,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.t_width.html">Pulse.t_width</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.autocorrelation.html">Pulse.autocorrelation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.spectrogram.html">Pulse.spectrogram</a></li>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.copy.html">Pulse.copy</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Pulse.copy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.a_v.html">Pulse.a_v</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.p_v.html">Pulse.p_v</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.phi_v.html">Pulse.phi_v</a></li>
@@ -367,7 +368,7 @@ document.write(`
 </li>
 </ul>
 </li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="pynlo.utility.html">pynlo.utility</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="pynlo.utility.html">pynlo.utility</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.chi1.html">pynlo.utility.chi1</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi1.n_to_beta.html">n_to_beta</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi1.beta_to_n.html">beta_to_n</a></li>
@@ -407,7 +408,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="pynlo.utility.shift.html">shift</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pynlo.utility.resample_v.html">resample_v</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pynlo.utility.resample_t.html">resample_t</a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="pynlo.utility.TFGrid.html">TFGrid</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.TFGrid.html">TFGrid</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.FromFreqRange.html">TFGrid.FromFreqRange</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rtf_grids.html">TFGrid.rtf_grids</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.copy.html">TFGrid.copy</a></li>
@@ -430,7 +431,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rt_grid.html">TFGrid.rt_grid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rt_ref.html">TFGrid.rt_ref</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rdt.html">TFGrid.rdt</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">TFGrid.rt_window</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rt_window.html">TFGrid.rt_window</a></li>
 </ul>
 </li>
 </ul>
@@ -481,9 +482,9 @@ document.write(`
     <li class="breadcrumb-item"><i class="fa-solid fa-ellipsis"></i></li>
     
     
-    <li class="breadcrumb-item"><a href="pynlo.utility.TFGrid.html" class="nav-link">TFGrid</a></li>
+    <li class="breadcrumb-item"><a href="pynlo.light.Pulse.html" class="nav-link">Pulse</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">TFGrid.rt_window</li>
+    <li class="breadcrumb-item active" aria-current="page">Pulse.copy</li>
   </ul>
 </nav>
 </div>
@@ -500,20 +501,12 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="tfgrid-rt-window">
-<h1>TFGrid.rt_window<a class="headerlink" href="#tfgrid-rt-window" title="Permalink to this heading">#</a></h1>
-<dl class="py property">
-<dt class="sig sig-object py" id="pynlo.utility.TFGrid.rt_window">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">TFGrid.</span></span><span class="sig-name descname"><span class="pre">rt_window</span></span><a class="headerlink" href="#pynlo.utility.TFGrid.rt_window" title="Permalink to this definition">#</a></dt>
-<dd><p>The span of the time grid in the real-valued time domain
-representation, with units of <code class="docutils literal notranslate"><span class="pre">s</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>float</dt><dd></dd>
-</dl>
-</dd>
-</dl>
+  <section id="pulse-copy">
+<h1>Pulse.copy<a class="headerlink" href="#pulse-copy" title="Permalink to this heading">#</a></h1>
+<dl class="py method">
+<dt class="sig sig-object py" id="pynlo.light.Pulse.copy">
+<span class="sig-prename descclassname"><span class="pre">Pulse.</span></span><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/light.html#Pulse.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.light.Pulse.copy" title="Permalink to this definition">#</a></dt>
+<dd><p>A copy of the pulse.</p>
 </dd></dl>
 
 </section>
@@ -530,13 +523,22 @@ representation, with units of <code class="docutils literal notranslate"><span c
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="pynlo.utility.TFGrid.rdt.html"
+       href="pynlo.light.Pulse.spectrogram.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">TFGrid.rdt</p>
+        <p class="prev-next-title">Pulse.spectrogram</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="pynlo.light.Pulse.a_v.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Pulse.a_v</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div></div>
   
@@ -556,7 +558,7 @@ representation, with units of <code class="docutils literal notranslate"><span c
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pynlo.utility.TFGrid.rt_window"><code class="docutils literal notranslate"><span class="pre">TFGrid.rt_window</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pynlo.light.Pulse.copy"><code class="docutils literal notranslate"><span class="pre">Pulse.copy()</span></code></a></li>
 </ul>
   </nav></div>
 

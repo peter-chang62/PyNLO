@@ -419,7 +419,7 @@ document.write(`
 <span class="sd">        P[\\alpha] = \\frac{1}{\\pi} |\\langle \\alpha | \\beta\\rangle|^2</span>
 <span class="sd">            = \\frac{1}{\\pi} e^{-|\\alpha - \\beta|^2}</span>
 
-<span class="sd">    This probability distribution is Gaussian and its noise can be completely</span>
+<span class="sd">    This probability distribution is Gaussian, and its noise can be completely</span>
 <span class="sd">    described by calculating the variance of each quadrature component. Scaled</span>
 <span class="sd">    to the number of photons (:math:`N=\\alpha^2`), the combined noise from</span>
 <span class="sd">    both quadratures gives a total variance of one photon per measurement:</span>
@@ -466,7 +466,7 @@ document.write(`
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    f_t : array_like</span>
-<span class="sd">        Input array, can be complex or real valued.</span>
+<span class="sd">        The input array.</span>
 <span class="sd">    dt : float</span>
 <span class="sd">        The grid step size.</span>
 <span class="sd">    shift_t : float</span>
@@ -531,8 +531,8 @@ document.write(`
 <span class="sd">    extra point on the negative side.</span>
 
 <span class="sd">    This method checks if the origin is contained in `v_grid` to determine</span>
-<span class="sd">    whether real or complex transforms should be performed. In both cases the</span>
-<span class="sd">    resampling is accomplished by removing trailing and leading time bins.</span>
+<span class="sd">    whether real or complex transformations should be performed. In both cases</span>
+<span class="sd">    the resampling is accomplished by removing trailing and leading time bins.</span>
 
 <span class="sd">    For analytic representations, the returned frequency grid is defined</span>
 <span class="sd">    symmetrically about its reference, as in the `TFGrid` class, and for</span>
@@ -752,10 +752,6 @@ document.write(`
         <span class="c1">#---- Define Real-Valued Time and Frequency Domain Grids</span>
         <span class="k">assert</span> <span class="p">(</span><span class="n">alias</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;There must be atleast 1 alias-free Nyquist zone.&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rtf_grids</span><span class="p">(</span><span class="n">alias</span><span class="o">=</span><span class="n">alias</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<div class="viewcode-block" id="TFGrid.copy"><a class="viewcode-back" href="../../api/pynlo.utility.TFGrid.copy.html#pynlo.utility.TFGrid.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;A copy of the object.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
     <span class="c1">#---- Class Methods</span>
 <div class="viewcode-block" id="TFGrid.FromFreqRange"><a class="viewcode-back" href="../../api/pynlo.utility.TFGrid.FromFreqRange.html#pynlo.utility.TFGrid.FromFreqRange">[docs]</a>    <span class="nd">@classmethod</span>
@@ -1246,7 +1242,12 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">_rt_ref</span> <span class="o">=</span> <span class="n">rtf_grids</span><span class="o">.</span><span class="n">t_ref</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rdt</span> <span class="o">=</span> <span class="n">rtf_grids</span><span class="o">.</span><span class="n">dt</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rt_window</span> <span class="o">=</span> <span class="n">rtf_grids</span><span class="o">.</span><span class="n">t_window</span>
-        <span class="k">return</span> <span class="n">rtf_grids</span></div></div>
+        <span class="k">return</span> <span class="n">rtf_grids</span></div>
+
+    <span class="c1">#---- Misc</span>
+<div class="viewcode-block" id="TFGrid.copy"><a class="viewcode-back" href="../../api/pynlo.utility.TFGrid.copy.html#pynlo.utility.TFGrid.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A copy of the time and frequency grids.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 </pre></div>
 
                 </article>

@@ -461,7 +461,7 @@ document.write(`
 </section>
 <section id="Transverse-and-Longitudinal-Maxwell's-Equations">
 <h2>Transverse and Longitudinal Maxwell’s Equations<a class="headerlink" href="#Transverse-and-Longitudinal-Maxwell's-Equations" title="Permalink to this heading">#</a></h2>
-<p>Maxwell’s equations are separable into transverse and longitudinal components assuming a source free medium, longitudinal invariance <span class="math notranslate nohighlight">\(\left(\frac{\partial}{\partial z} \epsilon = 0\right)\)</span>, and <span class="math notranslate nohighlight">\(\epsilon\)</span> generally in the previous section. In the mixed Fourier domain <span class="math notranslate nohighlight">\(\left(\omega, \mathbf{x}\right)\)</span>, with <span class="math notranslate nohighlight">\(\mathbf{D}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> defined as:</p>
+<p>Maxwell’s equations are separable into transverse and longitudinal components assuming a source free medium, longitudinal invariance <span class="math notranslate nohighlight">\(\left(\frac{\partial}{\partial z} \epsilon = 0\right)\)</span>, and with <span class="math notranslate nohighlight">\(\epsilon\)</span> of the general form given in the previous section. In the frequency-space mixed Fourier domain <span class="math notranslate nohighlight">\(\left(\omega, \mathbf{x}\right)\)</span>, and <span class="math notranslate nohighlight">\(\mathbf{D}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{B}\)</span> defined as:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \mathbf{D} &amp;= \epsilon_0 \left(\epsilon \cdot \mathbf{E}\right)
@@ -553,7 +553,7 @@ document.write(`
 \end{gather}\end{split}\]</div>
 <section id="Modal-Expansion-of-4c">
 <h3>Modal Expansion of 4c<a class="headerlink" href="#Modal-Expansion-of-4c" title="Permalink to this heading">#</a></h3>
-<p>Inserting the expansion of eq-1 into eq-4c of Maxwell’s equations from <a class="reference internal" href="nonlinear_optics.html#Unidirectional-Propagation-Equations"><span class="std std-ref">Nonlinear Optics</span></a> section yields:</p>
+<p>Inserting the expansion of eq-1 into eq-4c of Maxwell’s equations from <a class="reference internal" href="nonlinear_optics.html#Multi-Mode-Propagation-Equations"><span class="std std-ref">Nonlinear Optics</span></a> section yields:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \mathbf{0} &amp;= \sum_m \left(
@@ -653,7 +653,7 @@ document.write(`
 </section>
 <section id="Modal-Expansion-of-4d">
 <h3>Modal Expansion of 4d<a class="headerlink" href="#Modal-Expansion-of-4d" title="Permalink to this heading">#</a></h3>
-<p>Inserting the expansion of eq-1 into eq-4d of Maxwell’s equations from the <a class="reference internal" href="nonlinear_optics.html#Unidirectional-Propagation-Equations"><span class="std std-ref">Nonlinear Optics</span></a> section yields:</p>
+<p>Inserting the expansion of eq-1 into eq-4d of Maxwell’s equations from the <a class="reference internal" href="nonlinear_optics.html#Multi-Mode-Propagation-Equations"><span class="std std-ref">Nonlinear Optics</span></a> section yields:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \mathbf{J}_{f} + i \, \omega \, \mathbf{P}_\text{NL} &amp;= \sum_m \left(
@@ -815,7 +815,7 @@ document.write(`
 </section>
 <section id="Forward-Mode-Propagation-Equation">
 <h3>Forward Mode Propagation Equation<a class="headerlink" href="#Forward-Mode-Propagation-Equation" title="Permalink to this heading">#</a></h3>
-<p>The forward mode propagation equation is found by adding the two curl relations (eq-4c + eq-4d) from the <a class="reference internal" href="nonlinear_optics.html#Unidirectional-Propagation-Equations"><span class="std std-ref">Nonlinear Optics</span></a> section.</p>
+<p>The forward mode propagation equation is found by adding the two curl relations (eq-4c + eq-4d) from the <a class="reference internal" href="nonlinear_optics.html#Multi-Mode-Propagation-Equations"><span class="std std-ref">Nonlinear Optics</span></a> section.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 &amp; -\iint_{A_\infty} \left({\hat{\mathbf{e}}_n^*}_t \cdot {\mathbf{J}_{f}}_t + i \, \omega \, {\hat{\mathbf{e}}_n^*}_t \cdot {\mathbf{P}_\text{NL}}_t\right) \, dA
@@ -870,7 +870,7 @@ document.write(`
 </section>
 <section id="Backward-Mode-Propagation-Equation">
 <h3>Backward Mode Propagation Equation<a class="headerlink" href="#Backward-Mode-Propagation-Equation" title="Permalink to this heading">#</a></h3>
-<p>The backward mode propagation equation is found by subtracting the two curl relations (eq-4c - eq-4d) from the <a class="reference internal" href="nonlinear_optics.html#Unidirectional-Propagation-Equations"><span class="std std-ref">Nonlinear Optics</span></a> section.</p>
+<p>The backward mode propagation equation is found by subtracting the two curl relations (eq-4c - eq-4d) from the <a class="reference internal" href="nonlinear_optics.html#Multi-Mode-Propagation-Equations"><span class="std std-ref">Nonlinear Optics</span></a> section.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 &amp; +\iint_{A_\infty} \left({\hat{\mathbf{e}}_n^*}_t \cdot {\mathbf{J}_{f}}_t + i \, \omega \, {\hat{\mathbf{e}}_n^*}_t \cdot {\mathbf{P}_\text{NL}}_t\right) dA
@@ -925,8 +925,8 @@ document.write(`
 </section>
 <section id="Unit-Analysis-of-the-Effective-Nonlinear-Parameters">
 <h2>Unit Analysis of the Effective Nonlinear Parameters<a class="headerlink" href="#Unit-Analysis-of-the-Effective-Nonlinear-Parameters" title="Permalink to this heading">#</a></h2>
-<p>The effective nonlinear parameter combines multiple effects attributable to the waveguide mode. Through unit analysis the effective nonlinearity may be written in terms of the effective mode areas, refractive indices, and nonlinear susceptibilities. The steps taken to arrive at this result are only explicitly drawn out for the second order nonlinearity, but they are easily extendible to the third order through the same procedure.</p>
-<p>For mode <span class="math notranslate nohighlight">\(n\)</span> the second order nonlinearity is written as the product of sums over modes <span class="math notranslate nohighlight">\(r\)</span> and <span class="math notranslate nohighlight">\(s\)</span>:</p>
+<p>The effective nonlinear parameter combines multiple effects attributable to the waveguide mode. Through unit analysis the effective nonlinearity may be written in terms of the effective mode area, refractive index, and nonlinear susceptibility. The steps taken to arrive at this result are only drawn out for the second-order nonlinearity but are extendible to the third-order through the same procedure.</p>
+<p>For mode <span class="math notranslate nohighlight">\(n\)</span> the second-order nonlinearity is written as the product of sums over modes <span class="math notranslate nohighlight">\(r\)</span> and <span class="math notranslate nohighlight">\(s\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
 \frac{\partial}{\partial z} a_n
@@ -936,13 +936,13 @@ document.write(`
 \\
 g_{n r s}^{\left(2\right)}\!\left[\nu_1, \nu_2\right] = \iint_{A_\infty} \frac{1}{2} \epsilon_0 \, \chi^{\left(2\right)}_{i j k}\!\left[\nu_1, \nu_2\right] {{\hat{\mathbf{e}}_n^*}_t}_i\!\left[\nu_1 + \nu_2\right] {\hat{\mathbf{e}}_r}_j\!\left[\nu_1\right] {\hat{\mathbf{e}}_s}_k\!\left[\nu_2\right] dA
 \end{gather}\end{split}\]</div>
-<p>where the effective nonlinearity parameter <span class="math notranslate nohighlight">\((g_{n r s}^{\left(2\right)})\)</span> integrates out all transverse spatial dependence.</p>
+<p>where the effective nonlinearity parameter <span class="math notranslate nohighlight">\(g_{n r s}^{\left(2\right)}\)</span> integrates out all transverse spatial dependence.</p>
 <p>From the orthogonality relationship, the spatial dependence of the normalized electric field vector scales with the following relationship:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 \hat{e} \sim \frac{1}{\sqrt{\epsilon_0 \, c \, n_\text{eff} \, A_\text{eff}}}
 \end{gather}\]</div>
-<p>If the effects of spatial overlap between modes can be ignored or absorbed into an effective susceptibility (<span class="math notranslate nohighlight">\(\chi^{\left(2\right)}_\text{eff}\)</span>), the expression for <span class="math notranslate nohighlight">\(g_{n r s}^{\left(2\right)}\)</span> can be replaced by its unit decomposition:</p>
+<p>If the effects of spatial overlap between modes can be ignored or absorbed into the effective susceptibility <span class="math notranslate nohighlight">\(\chi^{\left(2\right)}_\text{eff}\)</span>, the expression for <span class="math notranslate nohighlight">\(g_{n r s}^{\left(2\right)}\)</span> can be replaced by its unit decomposition:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
 \begin{split}
@@ -957,8 +957,8 @@ g_{n r s}^{\left(2\right)}\!\left[\nu_1, \nu_2\right] = \iint_{A_\infty} \frac{1
 &amp; \quad \delta\!\left[\nu - \left(\nu_1 + \nu_2\right)\right] d\nu_1 \, d\nu_2
 \end{split}
 \end{gather}\end{split}\]</div>
-<p>Taken together, the terms about each root-power amplitude <span class="math notranslate nohighlight">\(\left(a\right)\)</span> and the amplitude itself form a single quantity with units of electric field (see chapter 2 of <a class="reference external" href="https://doi.org/10.1016/C2015-0-05510-1">Nonlinear Optics (Boyd 2020)</a> for propagation equations of the same form). Following this logic, the quantities about each amplitude term are then associated with the quantities of that amplitude’s mode. Replacing the mode identifiers and manipulating the equation back to its
-origin form yields a natural decomposition of the effective nonlinearity:</p>
+<p>Taken together, the units of the terms about each root-power amplitude <span class="math notranslate nohighlight">\(a\)</span> and of the amplitude itself form a single quantity with units of electric field (see chapter 2 of <a class="reference external" href="https://doi.org/10.1016/C2015-0-05510-1">Nonlinear Optics (Boyd 2020)</a> for propagation equations of the same form). Following this logic, the quantities about each amplitude term are then associated with the quantities of that amplitude’s mode (as they describe a single electric field). Replacing the mode
+identifiers and manipulating the equation back to its origin form yields a natural decomposition for the effective nonlinearity:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
 \begin{split}
@@ -979,8 +979,8 @@ origin form yields a natural decomposition of the effective nonlinearity:</p>
 \\
 g_{n r s}^{\left(2\right)} = \frac{1}{2} \sqrt{\frac{{A_\text{eff}}_n}{{A_\text{eff}}_r \, {A_\text{eff}}_s}} \frac{{\chi^{\left(2\right)}_\text{eff}}_{n r s}}{\sqrt{\epsilon_0 \, c^3 \, {n_\text{eff}}_n \, {n_\text{eff}}_r \, {n_\text{eff}}_s}}
 \end{gather}\end{split}\]</div>
-<p>where the frequency dependence of each mode is implicitly assumed.</p>
-<p>And likewise, for the third order nonlinearity:</p>
+<p>The frequency dependence of each mode has been implicitly assumed.</p>
+<p>Likewise, for the third order nonlinearity:</p>
 <div class="math notranslate nohighlight">
 \[\begin{equation}
 g_{n q r s}^{\left(3\right)} = \frac{1}{2} \sqrt{\frac{{A_\text{eff}}_n}{{A_\text{eff}}_q \, {A_\text{eff}}_r \, {A_\text{eff}}_s}} \frac{{\chi^{\left(3\right)}_\text{eff}}_{n q r s}}{\epsilon_0 \, c^2 \, \sqrt{{n_\text{eff}}_n \, {n_\text{eff}}_q \, {n_\text{eff}}_r \, {n_\text{eff}}_s}}
@@ -988,27 +988,27 @@ g_{n q r s}^{\left(3\right)} = \frac{1}{2} \sqrt{\frac{{A_\text{eff}}_n}{{A_\tex
 </section>
 <section id="Relationship-Between-Kerr-Parameter-and-Nonlinear-Susceptibility">
 <h2>Relationship Between Kerr Parameter and Nonlinear Susceptibility<a class="headerlink" href="#Relationship-Between-Kerr-Parameter-and-Nonlinear-Susceptibility" title="Permalink to this heading">#</a></h2>
-<p>The nonlinear Kerr parameter (<span class="math notranslate nohighlight">\(n_2\)</span>) describes the change in refractive index due to the instantaneous, time averaged optical power. For single frequency, linearly polarized light:</p>
+<p>The nonlinear Kerr parameter <span class="math notranslate nohighlight">\(n_2\)</span> describes the change in refractive index due to the instantaneous, time-averaged optical power. For single-frequency, linearly-polarized light:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 n &amp;= n_0 + n_2 \left&lt;I\right&gt;
 \\
 &amp;= n_0 + n_2 \left( \epsilon_0 \, c \, n_0 \left&lt;E^2\right&gt;\right)
 \end{align}\end{split}\]</div>
-<p>The third order nonlinear susceptibility <span class="math notranslate nohighlight">\(\left(\chi^{\left(3\right)}\right)\)</span> can be cast in terms of the Kerr parameter by relating the two through the definition of the relative permittivity <span class="math notranslate nohighlight">\(\left(\epsilon\right)\)</span>. Following a procedure similar to <a class="reference external" href="https://doi.org/10.1016/C2015-0-05510-1">Nonlinear Optics (Boyd 2020)</a>, a single frequency electric field is written as the sum of its Fourier amplitude <span class="math notranslate nohighlight">\(\left(A\right)\)</span>. Its instantaneous time average is then given by twice
-the absolute square of that Fourier amplitude:</p>
+<p>The third-order nonlinear susceptibility <span class="math notranslate nohighlight">\(\chi^{\left(3\right)}\)</span> can be cast in terms of the Kerr parameter by relating them through the definition of the relative permittivity <span class="math notranslate nohighlight">\(\epsilon\)</span>. Following a procedure similar to <a class="reference external" href="https://doi.org/10.1016/C2015-0-05510-1">Nonlinear Optics (Boyd 2020)</a>, a single-frequency electric field is written as the sum of its Fourier amplitude <span class="math notranslate nohighlight">\(A\)</span>. Its instantaneous time average is then given by twice the absolute square of the Fourier
+amplitude:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
 E\!\left[t\right] = 2 A \cos\left[\omega \, t - \beta \, z\right] = A e^{-i \left(\omega \, t - \beta \, z\right)} + \text{c.c.}
 \\
 \left&lt;E^2\right&gt; = 2 \bigl|A\bigr|^2
 \end{gather}\end{split}\]</div>
-<p>The third order nonlinear polarization may also be expanded in terms of this single frequency field. Most importantly, the expansion includes a term proportional to the electric field:</p>
+<p>The third-order nonlinear polarization may also be expanded in terms of this single-frequency field. This expansion includes a term proportional to the electric field:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 P_{NL} = \epsilon_0 \, \chi^{\left(3\right)} \, E\left[t\right]^3 = \epsilon_0 \, \chi^{\left(3\right)} \left(3 \, \bigl|A\bigr|^2 E\!\left[t\right] + \ldots\right)
 \end{gather}\]</div>
-<p>The relative permittivity is defined as the collection of terms in the electric displacement <span class="math notranslate nohighlight">\(\left(\mathbf{D}\right)\)</span> directly proportional to the electric field, and alternatively as the square of the refractive index:</p>
+<p>The relative permittivity is defined as the collection of terms in the electric displacement <span class="math notranslate nohighlight">\(\mathbf{D}\)</span> directly proportional to the electric field, and alternatively, as the square of the refractive index:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \epsilon &amp;= 1 + \chi^{\left(1\right)} + 3 \, \chi^{\left(3\right)} \bigl|A\bigr|^2 + \ldots
@@ -1019,7 +1019,7 @@ P_{NL} = \epsilon_0 \, \chi^{\left(3\right)} \, E\left[t\right]^3 = \epsilon_0 \
 \\
 &amp;= n_0^2 + 4 \, \epsilon_0 \, c \, n_0^2 \, n_2 \, \bigl|A\bigr|^2 + \ldots
 \end{align}\end{split}\]</div>
-<p>Finally, equating like terms, those with the same power of <span class="math notranslate nohighlight">\(A\)</span>, yields the following relationships for the electric susceptibilities:</p>
+<p>Equating like terms (those with the same power of <span class="math notranslate nohighlight">\(A\)</span>) yields the following relationships for the electric susceptibilities:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \chi^{\left(1\right)} &amp;= n_0^2 - 1

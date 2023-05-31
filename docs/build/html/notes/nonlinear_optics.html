@@ -344,9 +344,9 @@ document.write(`
 <h1>Nonlinear Optics<a class="headerlink" href="#Nonlinear-Optics" title="Permalink to this heading">#</a></h1>
 <section id="Local-Modes">
 <h2>Local Modes<a class="headerlink" href="#Local-Modes" title="Permalink to this heading">#</a></h2>
-<p>Local modes are a generalization of the idealized waveguide modes from the <a class="reference internal" href="linear_optics.html#Waveguides"><span class="std std-ref">previous page</span></a> and allow for the modal expansion of the electromagnetic field under non-longitudinally invariant conditions. Local modes are defined as the set of <span class="math notranslate nohighlight">\(z\)</span> dependent modes that locally satisfy Maxwell’s equations under idealized waveguide conditions. Local modes are the modes of an ideal waveguide’s instantaneous cross section. Local modes at distinct locations in the
-waveguide are considered the same mode if they are related to one another through an adiabatic transformation. Any arbitrary field may be described through the linear combinations of an orthogonal set, and with local modes each point along the waveguide can be represented by a different set. Having such a generalized representation allows the modal expansion to best capture the physical properties of the waveguide and the underlying physics.</p>
-<p>The expansion used below is restricted to positive mode designators <span class="math notranslate nohighlight">\(\left(n\right)\)</span> and explicitly includes both the forward and backward propagating modes. In the mixed frequency and spatial domain <span class="math notranslate nohighlight">\(\left(\omega, \mathbf{x}\right)\)</span>:</p>
+<p>An arbitrary field may be described through the linear combinations of an orthogonal set, and with local modes each point along the waveguide can be represented by a distinct set. Such a generalized representation allows modal expansion to separate the physical properties of the waveguide from the underlying physics under non-longitudinally invariant conditions. Local modes are defined as the set of <span class="math notranslate nohighlight">\(z\)</span> dependent modes that locally satisfy Maxwell’s equations under idealized waveguide
+conditions. In other words, local modes are the modes of a waveguide’s instantaneous cross section. Local modes at different points along a waveguide are considered the same mode if they are related to one another through an adiabatic transformation.</p>
+<p>The expansions used below are restricted to positive mode designators <span class="math notranslate nohighlight">\(\left(n\right)\)</span> and explicitly include both the forward and backward propagating modes. In the frequency-space domain <span class="math notranslate nohighlight">\(\left(\omega, \mathbf{x}\right)\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \mathbf{E} &amp;= \sum_n \left(a_n\!\left[\omega, z\right] \, \hat{\mathbf{e}}_n\!\left[\omega, \mathbf{x}\right]\right) + \left(a_{-n}\!\left[\omega, z\right] \, \hat{\mathbf{e}}_{-n}\!\left[\omega, \mathbf{x}\right]\right) \tag{1a}
@@ -370,7 +370,7 @@ waveguide are considered the same mode if they are related to one another throug
     &amp;&amp;
 \end{split} \tag{2}
 \end{align}\end{split}\]</div>
-<p>At every point along the waveguide, local modes satisfy the idealized, longitudinally invariant Maxwell’s equations:</p>
+<p>At every point along the waveguide, local modes satisfy Maxwell’s equations where <span class="math notranslate nohighlight">\(\epsilon^{\prime}\)</span> is the idealized, lossless and longitudinally-invariant relative permittivity:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 0 &amp;= \nabla_t \cdot \left(\epsilon^{\prime}_t \cdot {\hat{\mathbf{e}}_n}_t\right) - i \, \beta_n \, \epsilon^{\prime}_{zz} \ {\hat{e}_n}_z \tag{3a}
@@ -385,11 +385,10 @@ waveguide are considered the same mode if they are related to one another throug
 \\
 \mathbf{0} &amp;= \nabla_t \times {\hat{\mathbf{h}}_n}_t - i \, \omega \, \epsilon_0 \, \epsilon^{\prime}_{zz} \, {\hat{e}_n}_z \, \hat{\mathbf{z}} \tag{3f}
 \end{align}\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\epsilon^{\prime}\)</span> is the idealized, lossless relative permittivity.</p>
 </section>
-<section id="Unidirectional-Propagation-Equations">
-<h2>Unidirectional Propagation Equations<a class="headerlink" href="#Unidirectional-Propagation-Equations" title="Permalink to this heading">#</a></h2>
-<p>The full set of Maxwell’s equations in the mixed frequency and spatial domains <span class="math notranslate nohighlight">\(\left(\omega, \mathbf{x}\right)\)</span> are as follows:</p>
+<section id="Multi-Mode-Propagation-Equations">
+<h2>Multi-Mode Propagation Equations<a class="headerlink" href="#Multi-Mode-Propagation-Equations" title="Permalink to this heading">#</a></h2>
+<p>Maxwell’s equations in the frequency-space domain <span class="math notranslate nohighlight">\(\left(\omega, \mathbf{x}\right)\)</span> are as follows:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \rho_{f} &amp;= \nabla \cdot \left(\epsilon_0 \, \left(\mathbf{\epsilon} \cdot \mathbf{E}\right) + \mathbf{P}_\text{NL}\right) \tag{4a}
@@ -400,8 +399,7 @@ waveguide are considered the same mode if they are related to one another throug
 \\
 \mathbf{J}_{f} &amp;= \nabla \times \mathbf{H} - i \, \omega \left(\epsilon_0 \, \left(\mathbf{\epsilon} \cdot \mathbf{E}\right) + \mathbf{P}_\text{NL}\right) \tag{4d}
 \end{align}\end{split}\]</div>
-<p>The unidirectional propagation equations (UPE) are derived by substituting the modal expansion into the curl equations (see the <a class="reference internal" href="supplemental.html#Derivation-of-the-Forward-and-Backward-Propagation-Equations"><span class="std std-ref">supplemental</span></a>), with the only additional assumption being that <span class="math notranslate nohighlight">\(\epsilon\)</span> is separable into transverse and longitudinal components.</p>
-<p>As seen in the following results, the evolution of a pulse is driven by the following effects:</p>
+<p>Generalized unidirectional propagation equations (UPE) may be derived for the forward and backward propagating modes by substituting the modal expansion into the curl equations (see the <a class="reference internal" href="supplemental.html#Derivation-of-the-Forward-and-Backward-Propagation-Equations"><span class="std std-ref">supplemental</span></a> for more details). As seen in the following results, the evolution of a pulse is driven by the following effects:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
 \frac{\partial}{\partial z} a_n = \begin{cases}
@@ -411,8 +409,8 @@ waveguide are considered the same mode if they are related to one another throug
 \text{free sources and nonlinearity}
 \end{cases}
 \end{gather}\end{split}\]</div>
-<section id="Forward-Propagation-Equation">
-<h3>Forward Propagation Equation<a class="headerlink" href="#Forward-Propagation-Equation" title="Permalink to this heading">#</a></h3>
+<section id="Forward-Mode-Equation">
+<h3>Forward Mode Equation<a class="headerlink" href="#Forward-Mode-Equation" title="Permalink to this heading">#</a></h3>
 <p>The forward mode propagation equation is found by adding the two curl relations (4c + 4d).</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -435,8 +433,8 @@ waveguide are considered the same mode if they are related to one another throug
 &amp; \quad -\iint_{A_\infty} \frac{1}{2} \left({\hat{\mathbf{e}}_n^*}_t \cdot {\mathbf{J}_{f}}_t + i \, \omega \, {\hat{\mathbf{e}}_n^*}_t \cdot {\mathbf{P}_\text{NL}}_t\right) \, dA
 \end{align}\end{split}\]</div>
 </section>
-<section id="Backward-Propagation-Equation">
-<h3>Backward Propagation Equation<a class="headerlink" href="#Backward-Propagation-Equation" title="Permalink to this heading">#</a></h3>
+<section id="Backward-Mode-Equation">
+<h3>Backward Mode Equation<a class="headerlink" href="#Backward-Mode-Equation" title="Permalink to this heading">#</a></h3>
 <p>The backward mode propagation equation is found by subtracting the two curl relations (4c - 4d).</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -465,38 +463,39 @@ waveguide are considered the same mode if they are related to one another throug
 \[\begin{gather}
 \frac{\partial}{\partial z} a_n\!\left[\nu\right] = \ldots - i \, \beta_n \, a_n
 \end{gather}\]</div>
-<p>This is the standard linear dispersion term, and it leads to oscillations that evolve with the local value of the wavenumber:</p>
+<p>The first term governs linear dispersion. It leads to oscillations with position that evolve at the local value of the phase coefficient:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 a_n\!\left[z\right] \approx a_n\!\left[0\right] \, e^{-i \int^z \beta_n \, dz^\prime}
 \end{gather}\]</div>
 <section id="Phase-Matching">
 <h4>Phase Matching<a class="headerlink" href="#Phase-Matching" title="Permalink to this heading">#</a></h4>
-<p>It is useful to consider an alternative definition of the modal amplitude that explicitly separates out contributions due to the dispersion term:</p>
+<p>Phase matching is the most important factor determining the strength of a linear or nonlinear interaction. To see this, we examine an alternative form of the modal amplitude that explicitly separates out contributions due to linear dispersion:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 a_n &amp;= b_n \, e^{-i \int^z \beta_n \, dz^\prime}
 \\
 \frac{\partial a_n}{\partial z}  + i \, \beta_n \, a_n &amp;= \frac{\partial b_n}{\partial z} e^{-i \int^z \beta_n \, dz^\prime}
 \end{align}\end{split}\]</div>
-<p>Replacing <span class="math notranslate nohighlight">\(a_n\)</span> with the equivalent expressions containing <span class="math notranslate nohighlight">\(b_n\)</span> clearly reveals the phase matching conditions of individual terms</p>
-<p>Phase matching is important for differential equations of the form given below (which is the same form as all other terms in the propagation equation). In general, the amplitude <span class="math notranslate nohighlight">\(\left(b\right)\)</span> builds up until the phase mismatch <span class="math notranslate nohighlight">\(\left(\Delta\beta \ z\right)\)</span> accumulates to half a cycle, or <span class="math notranslate nohighlight">\(\pi\)</span> radians, and the resulting exponential changes sign. The distance at which this occurs is called the coherence length of the interaction, and is the maximum length scale at which
-non-oscillatory transfer can occur between two modes:</p>
+<p>Replacing <span class="math notranslate nohighlight">\(a_n\)</span> in the propagation equations with the equivalent expressions containing <span class="math notranslate nohighlight">\(b_n\)</span> reveals that the phase coefficients add or subtract exponentially whenever two or more modes interact.</p>
+<p>The implications of this can be seen in a toy model that only considers the wavenumber mismatch <span class="math notranslate nohighlight">\(\Delta\beta\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\begin{gather}
-\frac{\partial}{\partial z} b = f \, e^{-i \int^z \Delta\beta \, dz^\prime}
-\\
-\Delta\beta \, L_\text{coh} = \pi
-\end{gather}\end{split}\]</div>
-<p>When <span class="math notranslate nohighlight">\(\Delta\beta = 0\)</span> the process is said to be <em>phase matched</em> and the transfer is limited only by back action affecting the dynamical quantity <span class="math notranslate nohighlight">\(f\)</span>. If the interaction occurs over a distance shorter than <span class="math notranslate nohighlight">\(L_\text{coh}\)</span> then there can be a noticeable change in the steady state amplitudes, but due to the rapidly changing phase the maximum power transfer only scales as <span class="math notranslate nohighlight">\(f^2 / \Delta\beta^2\)</span>:</p>
+\[\frac{\partial}{\partial z} b = f \, e^{-i \int^z \Delta\beta \, dz^\prime}\]</div>
+<p>In this model the placeholder term <span class="math notranslate nohighlight">\(f\)</span> represents the magnitude of the linear or nonlinear coupling, while <span class="math notranslate nohighlight">\(\Delta\beta\)</span> represents the difference between the phase coefficients of the input and output modes. In general, conversion from one (spatial or frequency) mode to another occurs until the phase difference <span class="math notranslate nohighlight">\(\Delta\beta \, z\)</span> accumulates to half a cycle, and the quadrature component of the complex exponential changes sign. The distance that this occurs is called the
+coherence length <span class="math notranslate nohighlight">\(L_\text{coh}\)</span>, and is the maximum length scale at which non-oscillatory transfer can occur between two modes:</p>
+<div class="math notranslate nohighlight">
+\[\Delta\beta \, L_\text{coh} = \pi\]</div>
+<p>At distances shorter than the coherence length, the maximum power transfer scales with <span class="math notranslate nohighlight">\(f^2 / \Delta\beta^2\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \int^L \left(\frac{\partial}{\partial z} b \right) dz &amp;= \int^L \left( f \, e^{-i \int^z \Delta\beta \, dz^\prime} \right) dz
 \\
-b\!\left[L\right] &amp;\approx -i \frac{f}{\Delta\beta} \left(1 - e^{-i \, \Delta\beta \, L}\right) &amp; \text{(holding $f$ and $\Delta\beta$ constant)}
+b\!\left[L\right] &amp;\approx -i \frac{f}{\Delta\beta} \left(1 - e^{-i \, \Delta\beta \, L}\right) \qquad \text{(holding $f$ and $\Delta\beta$ constant)}
 \\
-\Bigl|b\!\left[L\right]\Bigr|^2 &amp;\approx 4 \frac{f^2}{\Delta\beta^2} \sin\!\!\left[\frac{\Delta\beta \ L}{2}\right]^2
+\Bigl|b\!\left[L\right]\Bigr|^2 &amp;\approx 4 \frac{f^2}{\Delta\beta^2} \sin\!\!\left[\frac{\Delta\beta \, L}{2}\right]^2 = f^2 L^2 \operatorname{sinc}\!\!\left[\frac{\Delta\beta \, L}{2}\right]^2
 \end{align}\end{split}\]</div>
+<p>When <span class="math notranslate nohighlight">\(\Delta\beta \neq 0\)</span>, mode conversion oscillates with propagation distance. The technique of <em>quasi-phase matching</em> interrupts this oscillation by changing the sign of the coupling term <span class="math notranslate nohighlight">\(f\)</span> at intervals of the coherence length. This requires the generation of a grating with period <span class="math notranslate nohighlight">\(\Lambda = 2\pi/\Delta\beta = 2 \, L_\text{coh}\)</span>, and is typically fabricated by inverting, or poling, the crystal axis.</p>
+<p>When <span class="math notranslate nohighlight">\(\Delta\beta = 0\)</span>, the process is <em>phase matched</em> and the mode transfer is only limited by back action affecting the dynamical quantities we have hidden in the coupling term <span class="math notranslate nohighlight">\(f\)</span>.</p>
 </section>
 </section>
 <section id="Gain-and-Loss">
@@ -508,12 +507,12 @@ b\!\left[L\right] &amp;\approx -i \frac{f}{\Delta\beta} \left(1 - e^{-i \, \Delt
         \left(\epsilon_t - \epsilon^{\prime}_t\right) \cdot {\hat{\mathbf{e}}_m}_t
     \right) dA
 \end{gather}\]</div>
-<p>To take full advantage of the local mode formulism, <span class="math notranslate nohighlight">\(\epsilon\)</span> should be equal to <span class="math notranslate nohighlight">\(\epsilon^\prime\)</span> of the idealized waveguide apart from gain or loss. Since the lossless condition specifies that <span class="math notranslate nohighlight">\(\epsilon^\prime\)</span> is equal to its conjugate transpose, the difference between <span class="math notranslate nohighlight">\(\epsilon\)</span> and <span class="math notranslate nohighlight">\(\epsilon^\prime\)</span> should equal the anti-Hermitian part of <span class="math notranslate nohighlight">\(\epsilon\)</span>:</p>
+<p>Gain or loss is encoded in the difference between <span class="math notranslate nohighlight">\(\epsilon\)</span> and the <span class="math notranslate nohighlight">\(\epsilon^\prime\)</span> of the idealized waveguide. Since the lossless condition specifies that <span class="math notranslate nohighlight">\(\epsilon^\prime\)</span> is equal to its conjugate transpose, the difference between <span class="math notranslate nohighlight">\(\epsilon\)</span> and <span class="math notranslate nohighlight">\(\epsilon^\prime\)</span> is the anti-Hermitian part of <span class="math notranslate nohighlight">\(\epsilon\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 \Delta \epsilon = \epsilon - \epsilon^\prime = \frac{1}{2}\left(\epsilon - \epsilon^\dagger\right)
 \end{gather}\]</div>
-<p>The result of the spatial integral is more illuminating after casting the relative permittivity in terms of the refractive indices (<span class="math notranslate nohighlight">\(n\)</span>) and the gain/loss factors (<span class="math notranslate nohighlight">\(\alpha\)</span>) of the bulk materials:</p>
+<p>The relative permittivity can be decomposed in terms of the refractive indices <span class="math notranslate nohighlight">\(n\)</span> and the gain coefficients <span class="math notranslate nohighlight">\(\alpha\)</span> of the bulk materials:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 \epsilon = \mathbb{1} + \chi^{(1)} = \left(n + i \frac{c}{\omega} \frac{\alpha}{2} \right)^{2}
@@ -527,19 +526,20 @@ b\!\left[L\right] &amp;\approx -i \frac{f}{\Delta\beta} \left(1 - e^{-i \, \Delt
 \\
 &amp;= \epsilon_0 \, c \, n_\text{eff} \ {\hat{\mathbf{e}}^*_n}_t \cdot \left(\frac{n}{n_\text{eff}}\frac{\alpha}{2} + \frac{i}{8} \frac{\alpha^2}{\beta_n}\right) \cdot {\hat{\mathbf{e}}_m}_t
 \end{align}\end{split}\]</div>
-<p>where the effective refractive index (<span class="math notranslate nohighlight">\(n_\text{eff}\)</span>) is assumed to be that of the <span class="math notranslate nohighlight">\(n^{th}\)</span> mode, and <span class="math notranslate nohighlight">\(\beta_n = \omega \, n_\text{eff} / c\)</span>. This form, suggestive of the orthogonality relationship, distributes the contributions towards the evolution of <span class="math notranslate nohighlight">\(a_n\)</span> between an effective gain or loss term (<span class="math notranslate nohighlight">\(\alpha_\text{eff}\)</span>) and an additional dispersive term (<span class="math notranslate nohighlight">\(\beta_\alpha\)</span>).</p>
+<p>where the effective refractive index <span class="math notranslate nohighlight">\(n_\text{eff}\)</span> is that of the output mode <span class="math notranslate nohighlight">\(n\)</span>, with <span class="math notranslate nohighlight">\(\beta_n = \omega \, n_\text{eff} / c\)</span>.</p>
+<p>This form distributes contributions between an effective gain coefficient <span class="math notranslate nohighlight">\(\alpha_\text{eff}\)</span> and a gain-induced phase coefficient <span class="math notranslate nohighlight">\(\beta_\alpha\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
-\frac{\partial}{\partial z} a_n\!\left[\nu\right] = \ldots - i \sum_{m} \left(-{\beta_\alpha}_{nm} + i \frac{{\alpha_\text{eff}}_{nm}}{2} \right) \left(a_m + a_{-m}\right)
+\frac{\partial}{\partial z} a_n\!\left[\nu\right] = \ldots + \sum_{m} \left(\frac{\alpha_\text{eff}}{2} + i \, \beta_\alpha\right) \left(a_m + a_{-m}\right)
 \end{gather}\]</div>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-{\alpha_\text{eff}}_{nm}\!\left[\nu\right] &amp;= \iint_{A_\infty} \epsilon_0 \, c \, n_\text{eff} \, {\hat{\mathbf{e}}^*_n}_t \cdot \left(\frac{n}{n_\text{eff}} \alpha\right) \cdot {\hat{\mathbf{e}}_m}_t \, dA
+{\alpha_\text{eff}}_{nm}\!\left[\nu\right] &amp;= \iint_{A_\infty} \left(\epsilon_0 \, c \, n_\text{eff}\right) \, {\hat{\mathbf{e}}^*_n}_t \cdot \left(\frac{n}{n_\text{eff}} \alpha\right) \cdot {\hat{\mathbf{e}}_m}_t \, dA
 \\
-{\beta_\alpha}_{nm}\!\left[\nu\right] &amp;= \iint_{A_\infty} \epsilon_0 \, c \, n_\text{eff} \, {\hat{\mathbf{e}}^*_n}_t \cdot \left(\frac{1}{8} \frac{\alpha^2}{\beta_n}\right) \cdot {\hat{\mathbf{e}}_m}_t \, dA
+{\beta_\alpha}_{nm}\!\left[\nu\right] &amp;= \iint_{A_\infty} \left(\epsilon_0 \, c \, n_\text{eff}\right) \, {\hat{\mathbf{e}}^*_n}_t \cdot \left(\frac{1}{8} \frac{\alpha^2}{\beta_n}\right) \cdot {\hat{\mathbf{e}}_m}_t \, dA
 \end{align}\end{split}\]</div>
-<p>Since <span class="math notranslate nohighlight">\(\beta_n\)</span> is of the order of <span class="math notranslate nohighlight">\(10^{6}\)</span> per meter for near-infrared light <span class="math notranslate nohighlight">\(\beta_\alpha\)</span> can usually be ignored. However, it should be included when the magnitude of <span class="math notranslate nohighlight">\(\alpha\)</span> is unusually large such as in an absorptive material or in an amplifier gain medium.</p>
-<p>From the orthogonality relationship, <span class="math notranslate nohighlight">\({\hat{\mathbf{e}}_n^*}_t \cdot {\hat{\mathbf{e}}_m}_t\)</span> only equals <span class="math notranslate nohighlight">\(\delta_{m n}\)</span> if the longitudinal component of the electric fields (<span class="math notranslate nohighlight">\(\hat{e}_z\)</span>) are negligible. Thus, if <span class="math notranslate nohighlight">\(\alpha\)</span> is not homogenous across the transverse plane, or if <span class="math notranslate nohighlight">\(\hat{e}_z\)</span> cannot be ignored, then gain and loss have the potential to couple modes together.</p>
+<p>Since <span class="math notranslate nohighlight">\(\beta_n\)</span> is of the order of <span class="math notranslate nohighlight">\(10^{6}\)</span> per meter for near-infrared light, <span class="math notranslate nohighlight">\(\beta_\alpha\)</span> can usually be ignored. However, it should be included when the magnitude of <span class="math notranslate nohighlight">\(\alpha\)</span> is unusually large such as in an absorptive material or in the gain medium of an amplifier.</p>
+<p>From the orthogonality relationship, <span class="math notranslate nohighlight">\({\hat{\mathbf{e}}_n^*}_t \cdot {\hat{\mathbf{e}}_m}_t\)</span> only integrates to a Kronecker delta <span class="math notranslate nohighlight">\(\delta_{m n}\)</span> if the longitudinal components of the electric fields (<span class="math notranslate nohighlight">\(\hat{e}_z\)</span>) are negligible. Thus, besides an inhomogeneous <span class="math notranslate nohighlight">\(\alpha\)</span>, gain and loss can also couple modes together because of a large <span class="math notranslate nohighlight">\(\hat{e}_z\)</span> component.</p>
 </section>
 <section id="Changing-Mode-Profiles">
 <h3>Changing Mode Profiles<a class="headerlink" href="#Changing-Mode-Profiles" title="Permalink to this heading">#</a></h3>
@@ -553,7 +553,7 @@ b\!\left[L\right] &amp;\approx -i \frac{f}{\Delta\beta} \left(1 - e^{-i \, \Delt
         \frac{\partial {\hat{\mathbf{e}}_{-m}}_t}{\partial z} \times {\hat{\mathbf{h}}^*_n}_t + {\hat{\mathbf{e}}_n^*}_t \times \frac{\partial {\hat{\mathbf{h}}_{-m}}_t}{\partial z}
     \right) \cdot \hat{\mathbf{z}} \, dA &amp; \quad \text{b.p.m.}
 \end{align}\end{split}\]</div>
-<p>These term couple modes together due to changes in the modal profiles themselves, which occur due to changes in the underlying geometry or material properties that determine the set of ideal modes. These terms bear a resemblance to the orthogonality relationship and can be thought of as a differential orthogonality relationship that applies when smoothly changing from one set of modes to another.</p>
+<p>These terms couple forward and backward propagating modes together due to changes in the modal profiles themselves. These can occur due to changes in the underlying geometry or material properties that determine the local modes. The terms bear a resemblance to the <a class="reference internal" href="linear_optics.html#Orthogonality"><span class="std std-ref">orthogonality relationship</span></a> and can be thought of as a differential orthogonality relationship that applies when smoothly changing from one set of local modes to another.</p>
 </section>
 <section id="Free-Sources-and-Nonlinearity">
 <h3>Free Sources and Nonlinearity<a class="headerlink" href="#Free-Sources-and-Nonlinearity" title="Permalink to this heading">#</a></h3>
@@ -561,25 +561,25 @@ b\!\left[L\right] &amp;\approx -i \frac{f}{\Delta\beta} \left(1 - e^{-i \, \Delt
 \[\begin{split}\begin{align}
 \frac{\partial}{\partial z} a_n\!\left[\nu\right] = \ldots &amp; -\iint_{A_\infty} \frac{1}{2} {\hat{\mathbf{e}}_n^*}_t \cdot {\mathbf{J}_{f}}_t \, dA &amp; \quad \text{free sources}
 \\
-&amp; -i \ \omega \iint_{A_\infty} \frac{1}{2} \, {\hat{\mathbf{e}}_n^*}_t \cdot {\mathbf{P}_\text{NL}}_t \, dA &amp; \quad \text{nonlinearity}
+&amp; -i \, \omega \iint_{A_\infty} \frac{1}{2} \, {\hat{\mathbf{e}}_n^*}_t \cdot {\mathbf{P}_\text{NL}}_t \, dA &amp; \quad \text{nonlinearity}
 \end{align}\end{split}\]</div>
-<p>The free source term generates power across different modes and frequencies and the nonlinear term redistributes power between different modes and frequencies. As the free current would need to be oscillating at optical frequencies to couple power into an optical mode this term is generally negligible, but the extent to which oscillating current could couple power into a mode depends solely on the transverse overlap between the distribution of current and the mode profile. The coupling of the
-nonlinear term is similar but is modified by <span class="math notranslate nohighlight">\(i \ \omega\)</span>, which corresponds to a derivative in the time domain. In general, the nonlinear term is a function of the total electric field and is written as the sum of second and third order effects:</p>
+<p>The free-source term couples modes to an external source of radiation. The extent to which oscillating current couples power into a mode depends solely on the transverse overlap between the current distribution and the mode profile. However, in optics the free current term is negligible, as coupling to an optical mode would require it to be oscillating at optical frequencies.</p>
+<p>The nonlinear term is modified by <span class="math notranslate nohighlight">\(i \, \omega\)</span>, which corresponds to a derivative in the time domain. In general, the nonlinear polarization is a function of the total electric field and is written as the sum of second and third order effects:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 \mathbf{P}_\text{NL} = \mathbf{P}^{\left(2\right)}_\text{NL} + \mathbf{P}^{\left(3\right)}_\text{NL}
 \end{gather}\]</div>
-<p>Individually, these terms are convolutions of the time-domain electric field and the nonlinear optical susceptibilities <span class="math notranslate nohighlight">\((\chi^{\left(2\right)}, \chi^{\left(3\right)})\)</span>. In the frequency domain this corresponds to the sum of all possible interactions that end at a particular output frequency. In terms of the modal expansion, the nonlinear terms are represented as the sum of all possible terms given by the product of the sum of modes. See <a class="reference external" href="https://doi.org/10.1016/C2015-0-05510-1">Nonlinear Optics (Boyd
-2020)</a> for an exhaustive discussion of the important properties and symmetries associated with the nonlinear susceptibilities.</p>
+<p>Individually, these terms are convolutions of the time-domain electric field and the nonlinear optical susceptibilities <span class="math notranslate nohighlight">\((\chi^{\left(2\right)}, \chi^{\left(3\right)})\)</span>. See <a class="reference external" href="https://doi.org/10.1016/C2015-0-05510-1">Nonlinear Optics (Boyd 2020)</a> for an exhaustive discussion of the important properties and symmetries associated with the nonlinear susceptibilities. In the frequency domain this corresponds to the sum of all possible interactions that yield a particular output frequency.
+Given the modal expansion, the nonlinear terms are represented as the sum of all possible terms given by the product of the sum of modes.</p>
 <section id="Second-Order-Nonlinearity">
-<h4>Second Order Nonlinearity<a class="headerlink" href="#Second-Order-Nonlinearity" title="Permalink to this heading">#</a></h4>
+<h4>Second-Order Nonlinearity<a class="headerlink" href="#Second-Order-Nonlinearity" title="Permalink to this heading">#</a></h4>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \frac{\partial}{\partial z} a_n\!\left[\nu\right] = \ldots -i \, \omega \sum_{r s} \iint_{-\infty}^{\infty} &amp; g_{n r s}^{\left(2\right)}\!\left[\nu_1, \nu_2\right] a_r\!\left[\nu_1\right] a_s\!\left[\nu_2\right]
 \\
 &amp; \qquad \delta\!\left[\nu - \left(\nu_1 + \nu_2\right)\right] d\nu_1 \, d\nu_2
 \end{align}\end{split}\]</div>
-<p>In the time domain the second order nonlinear polarization is defined as the convolution of the second order nonlinear susceptibility <span class="math notranslate nohighlight">\((\chi^{\left(2\right)}_{i j k})\)</span> and two delayed copies of the total electric field <span class="math notranslate nohighlight">\(\left(\mathbf{E}_j, \mathbf{E}_k\right)\)</span>. The second order susceptibility is a third-rank tensor, and the last two indices sum over all combinations of the electric field’s Cartesian components. In the frequency domain the convolution may be interpreted as summing the
+<p>The second-order nonlinear polarization is defined in the time domain as the convolution of the second-order nonlinear susceptibility <span class="math notranslate nohighlight">\(\chi^{\left(2\right)}_{i j k}\)</span> and two delayed copies of the electric field <span class="math notranslate nohighlight">\(\left(\mathbf{E}_j, \mathbf{E}_k\right)\)</span>. The second-order susceptibility is a third-rank tensor, and the last two indices sum over all combinations of the electric field’s Cartesian components. In the frequency domain the convolution may be interpreted as summing the
 contributions from all possible frequency pathways:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -599,28 +599,28 @@ contributions from all possible frequency pathways:</p>
 \[\begin{gather}
 g_{n r s}^{\left(2\right)}\!\left[\nu_1, \nu_2\right] = \iint_{A_\infty} \frac{1}{2} \epsilon_0 \, \chi^{\left(2\right)}_{i j k}\!\left[\nu_1, \nu_2\right] {{\hat{\mathbf{e}}_n^*}_t}_i\!\left[\nu_1 + \nu_2\right] {\hat{\mathbf{e}}_r}_j\!\left[\nu_1\right] {\hat{\mathbf{e}}_s}_k\!\left[\nu_2\right] dA
 \end{gather}\]</div>
-<p>where <span class="math notranslate nohighlight">\(g_{n r s}^{\left(2\right)}\)</span> is the effective second order nonlinear parameter, and the sum of all modes <span class="math notranslate nohighlight">\(r\)</span> and <span class="math notranslate nohighlight">\(s\)</span> represents all terms in the product of the sum over modes <span class="math notranslate nohighlight">\(r\)</span> and the sum over modes <span class="math notranslate nohighlight">\(s\)</span> (both forwards and backwards):</p>
+<p>where <span class="math notranslate nohighlight">\(g_{n r s}^{\left(2\right)}\)</span> is the effective second-order nonlinear parameter, and the sum of all modes <span class="math notranslate nohighlight">\(r\)</span> and <span class="math notranslate nohighlight">\(s\)</span> represents all terms in the product of the sum over modes <span class="math notranslate nohighlight">\(r\)</span> and the sum over modes <span class="math notranslate nohighlight">\(s\)</span> (both forwards and backwards):</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 \sum_{r s} \ldots = \left(\sum_r \ldots\right) \left(\sum_s \ldots\right)
 \end{gather}\]</div>
-<p>From unit analysis and inspection of the above equations (see <a class="reference internal" href="supplemental.html#Unit-Analysis-of-the-Effective-Nonlinear-Parameters"><span class="std std-ref">supplemental</span></a> for a full derivation), the effective second order nonlinear parameter <span class="math notranslate nohighlight">\(\left(g^{\left(2\right)}\right)\)</span> can be cast naturally in terms of an effective second order nonlinear susceptibility <span class="math notranslate nohighlight">\((\chi^{\left(2\right)}_\text{eff})\)</span> that takes into account both the bulk nonlinear susceptibility and the overlap of the interacting modes:</p>
+<p>From unit analysis and inspection of the above equations (see the <a class="reference internal" href="supplemental.html#Unit-Analysis-of-the-Effective-Nonlinear-Parameters"><span class="std std-ref">supplemental</span></a> for a full derivation), the effective second-order nonlinear parameter <span class="math notranslate nohighlight">\(g^{\left(2\right)}\)</span> can be cast in terms of an effective second-order nonlinear susceptibility <span class="math notranslate nohighlight">\(\chi^{\left(2\right)}_\text{eff}\)</span> that takes into account both the bulk nonlinear susceptibility and the overlap of the interacting modes:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 g_{n r s}^{\left(2\right)} = \frac{1}{2} \sqrt{\frac{{A_\text{eff}}_n}{{A_\text{eff}}_r \, {A_\text{eff}}_s}} \frac{{\chi^{\left(2\right)}_\text{eff}}_{n r s}}{\sqrt{\epsilon_0 \, c^3 \, {n_\text{eff}}_n \, {n_\text{eff}}_r \, {n_\text{eff}}_s}}
 \end{gather}\]</div>
-<p>where the frequency dependence of each mode is implicitly assumed. By definition this is the same quantity as given by the first definition of <span class="math notranslate nohighlight">\(g^{\left(2\right)}\)</span>, but in separating out the physical origin of the contributing terms we arrive at an equation that better yields to the intuition and allows for back of the envelope estimates when full spatial mode profiles are not available.</p>
+<p>The frequency dependence of each mode in the above equation is implicitly assumed. By definition this is the same quantity as given by the first definition of <span class="math notranslate nohighlight">\(g^{\left(2\right)}\)</span>.</p>
 </section>
 <section id="Third-Order-Nonlinearity">
-<h4>Third Order Nonlinearity<a class="headerlink" href="#Third-Order-Nonlinearity" title="Permalink to this heading">#</a></h4>
+<h4>Third-Order Nonlinearity<a class="headerlink" href="#Third-Order-Nonlinearity" title="Permalink to this heading">#</a></h4>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \frac{\partial}{\partial z} a_n\!\left[\nu\right] = \ldots -i \, \omega \sum_{q r s} \iiint_{-\infty}^{\infty} &amp; g_{n q r s}^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] a_q\!\left[\nu_1\right] a_r\!\left[\nu_2\right] a_s\!\left[\nu_3\right]
 \\
 &amp; \qquad \delta\!\left[\nu - \left(\nu_1 + \nu_2 + \nu_3\right)\right] d\nu_1 \, d\nu_2 \, d\nu_3
 \end{align}\end{split}\]</div>
-<p>In the time domain the third order nonlinear polarization is defined as the convolution of the third order nonlinear susceptibility <span class="math notranslate nohighlight">\((\chi^{\left(3\right)}_{i j k l})\)</span> and three delayed copies of the total electric field <span class="math notranslate nohighlight">\(\left(\mathbf{E}_j, \mathbf{E}_k, \mathbf{E}_l\right)\)</span>. The third order susceptibility is a fourth-rank tensor, and the last three indices sum over all combinations of the electric field’s Cartesian components. In the frequency domain the convolution may be
-interpreted as summing the contributions from all possible frequency pathways:</p>
+<p>The third-order nonlinear polarization is defined in the time domain as the convolution of the third-order nonlinear susceptibility <span class="math notranslate nohighlight">\(\chi^{\left(3\right)}_{i j k l}\)</span> and three delayed copies of the electric field <span class="math notranslate nohighlight">\(\left(\mathbf{E}_j, \mathbf{E}_k, \mathbf{E}_l\right)\)</span>. The third-order susceptibility is a fourth-rank tensor, and the last three indices sum over all combinations of the electric field’s Cartesian components. In the frequency domain the convolution may be interpreted as
+summing the contributions from all possible frequency pathways:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 {\mathbf{P}_\text{NL}^{\left(3\right)}}_{i}\!\left[t\right] &amp;= \epsilon_0 \iiint_{-\infty}^{\infty} \chi^{\left(3\right)}_{i j k l}\!\left[\tau_1, \tau_2, \tau_3\right] \mathbf{E}_j\!\left[t - \tau_1\right] \mathbf{E}_k\!\left[t - \tau_2\right] \mathbf{E}_l\!\left[t - \tau_3\right] d\tau_1 \ d\tau_2 \ d\tau_3
@@ -640,23 +640,23 @@ interpreted as summing the contributions from all possible frequency pathways:</
 \[\begin{gather}
 g_{n q r s}^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] = \iint_{A_\infty} \frac{1}{2} \epsilon_0 \, \chi^{\left(3\right)}_{i j k l}\!\left[\nu_1, \nu_2, \nu_3\right] {{\hat{\mathbf{e}}_n^*}_t}_i\!\left[\nu_1 + \nu_2 + \nu_3\right] {\hat{\mathbf{e}}_q}_j\!\left[\nu_1\right] {\hat{\mathbf{e}}_r}_k\!\left[\nu_2\right] {\hat{\mathbf{e}}_s}_l\!\left[\nu_3\right] dA
 \end{gather}\]</div>
-<p>where <span class="math notranslate nohighlight">\(g_{n q r s}^{\left(3\right)}\)</span> is the effective third order nonlinear parameter, and the sum of all modes <span class="math notranslate nohighlight">\(q\)</span>, <span class="math notranslate nohighlight">\(r\)</span>, and <span class="math notranslate nohighlight">\(s\)</span> represents all terms in the product of the sum over modes <span class="math notranslate nohighlight">\(q\)</span>, <span class="math notranslate nohighlight">\(r\)</span>, and <span class="math notranslate nohighlight">\(s\)</span> (both forwards and backwards):</p>
+<p>where <span class="math notranslate nohighlight">\(g_{n q r s}^{\left(3\right)}\)</span> is the effective third-order nonlinear parameter, and the sum of all modes <span class="math notranslate nohighlight">\(q\)</span>, <span class="math notranslate nohighlight">\(r\)</span>, and <span class="math notranslate nohighlight">\(s\)</span> represents all terms in the product of the sum over modes <span class="math notranslate nohighlight">\(q\)</span>, <span class="math notranslate nohighlight">\(r\)</span>, and <span class="math notranslate nohighlight">\(s\)</span> (both forwards and backwards):</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 \sum_{q r s} \ldots = \left(\sum_q \ldots\right) \left(\sum_r \ldots\right) \left(\sum_s \ldots\right)
 \end{gather}\]</div>
-<p>Similar to the second order nonlinearity (see <a class="reference internal" href="supplemental.html#Unit-Analysis-of-the-Effective-Nonlinear-Parameters"><span class="std std-ref">supplemental</span></a>), the effective third order nonlinear parameter <span class="math notranslate nohighlight">\((g^{\left(3\right)})\)</span> can also be cast naturally in terms of an effective nonlinear susceptibility <span class="math notranslate nohighlight">\((\chi^{\left(3\right)}_\text{eff})\)</span> that takes into account both the bulk nonlinear susceptibility and the overlap of the interacting modes:</p>
+<p>Similar to the second-order nonlinearity (see the <a class="reference internal" href="supplemental.html#Unit-Analysis-of-the-Effective-Nonlinear-Parameters"><span class="std std-ref">supplemental</span></a> for more details), the effective third-order nonlinear parameter <span class="math notranslate nohighlight">\(g^{\left(3\right)}\)</span> can also be cast in terms of an effective nonlinear susceptibility <span class="math notranslate nohighlight">\(\chi^{\left(3\right)}_\text{eff}\)</span> that takes into account both the bulk nonlinear susceptibility and the overlap of the interacting modes:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 g_{n q r s}^{\left(3\right)} = \frac{1}{2} \sqrt{\frac{{A_\text{eff}}_n}{{A_\text{eff}}_q \, {A_\text{eff}}_r \, {A_\text{eff}}_s}} \frac{{\chi^{\left(3\right)}_\text{eff}}_{n q r s}}{\epsilon_0 \, c^2 \, \sqrt{{n_\text{eff}}_n \, {n_\text{eff}}_q \, {n_\text{eff}}_r \, {n_\text{eff}}_s}}
 \end{gather}\]</div>
-<p>where the frequency dependence of each mode is implicitly assumed.</p>
+<p>The frequency dependence of each mode in the above equation is implicitly assumed. By definition this is the same quantity as given by the first definition of <span class="math notranslate nohighlight">\(g^{\left(3\right)}\)</span>.</p>
 </section>
 </section>
 </section>
 <section id="Single-Mode-UPE">
 <h2>Single-Mode UPE<a class="headerlink" href="#Single-Mode-UPE" title="Permalink to this heading">#</a></h2>
-<p>The propagation equation simplifies when considering only a single, forward propagating waveguide mode. Due to the phase mismatch between different modes this is typically a good approximation:</p>
+<p>Considering only a single forward propagating mode simplifies the propagation equation. Due to phase mismatch between different modes this is typically a good approximation:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \frac{\partial}{\partial z} a\!\left[\nu\right] &amp;=  - i \, \beta \, a &amp; \quad \text{linear dispersion}
@@ -680,14 +680,14 @@ g_{n q r s}^{\left(3\right)} = \frac{1}{2} \sqrt{\frac{{A_\text{eff}}_n}{{A_\tex
         \left(\epsilon_t - \epsilon^{\prime}_t
 \right) \cdot {\hat{\mathbf{e}}}_t\right) dA
 \\
-&amp;= \ldots - i \left(-\beta_\alpha + i \frac{\alpha_\text{eff}}{2} \right) a
+&amp;= \ldots + \left(\frac{\alpha_\text{eff}}{2} + i \, \beta_\alpha  \right) a
 \end{align}\end{split}\]</div>
-<p>The overlap between the relative permittivity difference and the spatial mode determines the effective propagation gain or loss. Each term is a sum weighted with the orthonormal spatial mode of the waveguide:</p>
+<p>The overlap between the change in relative permittivity and the spatial mode determines the effective propagation gain or loss. Each term is a sum weighted with the orthonormal spatial mode of the waveguide:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-\alpha_\text{eff}\!\left[\nu\right] &amp;= \iint_{A_\infty} \left( \epsilon_0 \, c \, n_\text{eff} \, \hat{\mathbf{e}}^*_t \cdot \left(\frac{n}{n_\text{eff}} \alpha\right) \cdot {\hat{\mathbf{e}}}_t \right) dA
+\alpha_\text{eff}\!\left[\nu\right] &amp;= \iint_{A_\infty} \left( \epsilon_0 \, c \, n_\text{eff}\right) \, \hat{\mathbf{e}}^*_t \cdot \left(\frac{n}{n_\text{eff}} \alpha\right) \cdot {\hat{\mathbf{e}}}_t \ dA
 \\
-\beta_{\alpha}\!\left[\nu\right] &amp;= \iint_{A_\infty} \left( \epsilon_0 \, c \, n_\text{eff} \, \hat{\mathbf{e}}^*_t \cdot \left(\frac{1}{8} \frac{\alpha^2}{\beta_\text{eff}}\right) \cdot {\hat{\mathbf{e}}}_t \right) dA
+\beta_{\alpha}\!\left[\nu\right] &amp;= \iint_{A_\infty} \left( \epsilon_0 \, c \, n_\text{eff} \right) \, \hat{\mathbf{e}}^*_t \cdot \left(\frac{1}{8} \frac{\alpha^2}{\beta_\text{eff}}\right) \cdot {\hat{\mathbf{e}}}_t \ dA
 \end{align}\end{split}\]</div>
 <p>The above relationships take a simpler form in the limit that the longitudinal component of the electric field <span class="math notranslate nohighlight">\(\left(\hat{e}_z\right)\)</span> can be ignored and that <span class="math notranslate nohighlight">\(\alpha\)</span> is isotropic and homogenous across the transverse plane:</p>
 <div class="math notranslate nohighlight">
@@ -703,19 +703,47 @@ a\!\left[z\right] \approx a\!\left[0\right] e^{\int^{z} \left(-i \ \left(\beta -
 \end{gather}\]</div>
 </section>
 <section id="id2">
-<h3>Third Order Nonlinearity<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<h3>Second Order Nonlinearity<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align}
+\frac{\partial}{\partial z} a\!\left[\nu\right] = \ldots - i \, \omega \iint_{-\infty}^{\infty} &amp; g^{\left(2\right)}\!\left[\nu_1, \nu_2\right] a\!\left[\nu_1\right] a\!\left[\nu_2\right]
+\\
+&amp; \qquad \delta\!\left[\nu - \left(\nu_1 + \nu_2\right)\right] d\nu_1 \, d\nu_2
+\end{align}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(g^{\left(2\right)}\)</span> is the effective second-order nonlinear parameter defined as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{gather}
+g^{\left(2\right)}\!\left[\nu_1, \nu_2\right] = \frac{1}{2} \epsilon_0 \iint_{A_\infty} \chi^{\left(2\right)}_{i j k}\!\left[\nu_1, \nu_2\right] {\hat{\mathbf{e}}^*_t}_i\!\left[\nu_1 + \nu_2\right] \hat{\mathbf{e}}_j\!\left[\nu_1\right] \hat{\mathbf{e}}_k\!\left[\nu_2\right] dA
+\end{gather}\]</div>
+<p>In general, the nonlinear parameter may be refactored in terms of the characteristic waveguide properties and an effective nonlinear susceptibility <span class="math notranslate nohighlight">\(\chi^{\left(2\right)}_\text{eff}\)</span> that considers both the bulk nonlinear susceptibility and the overlap of the interacting modes:</p>
+<div class="math notranslate nohighlight">
+\[\begin{gather}
+g^{\left(2\right)}\!\left[\nu_1, \nu_2\right] = \frac{1}{2} \sqrt{\frac{{A_\text{eff}}\!\left[\nu\right]}{{A_\text{eff}}\!\left[\nu_1\right] \, {A_\text{eff}}\!\left[\nu_2\right]}} \frac{{\chi^{\left(2\right)}_\text{eff}}\!\left[\nu_1, \nu_2\right]}{\sqrt{\epsilon_0 \, c^3 \, {n_\text{eff}}\!\left[\nu\right] \, {n_\text{eff}}\!\left[\nu_1\right] \, {n_\text{eff}}\!\left[\nu_2\right]}}
+\end{gather}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\nu\)</span> is the sum of <span class="math notranslate nohighlight">\(\nu_1\)</span> and <span class="math notranslate nohighlight">\(\nu_2\)</span>.</p>
+<section id="Cascaded-Effects">
+<h4>Cascaded Effects<a class="headerlink" href="#Cascaded-Effects" title="Permalink to this heading">#</a></h4>
+<p>The second-order nonlinearity is best known for sum <span class="math notranslate nohighlight">\((\omega = \omega_1 + \omega_2)\)</span> and difference <span class="math notranslate nohighlight">\((\omega = \omega_1 - \omega_2)\)</span> frequency generation, but in certain cases cascaded effects can also be important. Cascaded nonlinearity produces a higher-order nonlinearity through repeated action of a lower-order nonlinearity. One of the more interesting phenomena is the effective nonlinear refractive index <span class="math notranslate nohighlight">\(n_2^\text{eff}\)</span> due to phase-mismatched second-harmonic generation.
+This effect has the same properties as the equivalent third-order nonlinearity <a class="reference external" href="#Nonlinear-Refractive-Index">discussed below</a>. For sufficiently large values of the phase mismatch <span class="math notranslate nohighlight">\(\Delta\beta\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[n_2^\text{eff} \approx - \frac{\nu}{\epsilon_0 \, c^2} \frac{\chi^{(2)}_\text{eff}}{n_{2\omega} \, n_\omega^2} \frac{\pi}{\Delta\beta}\]</div>
+<p>Depending on the sign of the phase mismatch <span class="math notranslate nohighlight">\(n_2^\text{eff}\)</span> can be either positive or negative, however, this equation breaks down as the phase mismatch approaches <span class="math notranslate nohighlight">\(0\)</span> (see <a class="reference external" href="https://doi.org/10.1364/OL.17.000028">DeSalvo (1992)</a> for more details).</p>
+</section>
+</section>
+<section id="id3">
+<h3>Third-Order Nonlinearity<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \frac{\partial}{\partial z} a\!\left[\nu\right] = \ldots - i \, \omega \iiint_{-\infty}^{\infty} &amp; g^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] a\!\left[\nu_1\right] a\!\left[\nu_2\right] a\!\left[\nu_3\right]
 \\
 &amp; \qquad \delta\!\left[\nu - \left(\nu_1 + \nu_2 + \nu_3\right)\right] d\nu_1 \, d\nu_2 \, d\nu_3
 \end{align}\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(g^{\left(3\right)}\)</span> is the effective nonlinear parameter defined as:</p>
+<p>where <span class="math notranslate nohighlight">\(g^{\left(3\right)}\)</span> is the effective third-order nonlinear parameter defined as:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 g^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] = \iint_{A_\infty} \frac{1}{2} \epsilon_0 \, \chi^{\left(3\right)}_{i j k l}\!\left[\nu_1, \nu_2, \nu_3\right] {\hat{\mathbf{e}}^*_t}_i\!\left[\nu_1 + \nu_2 + \nu_3\right] \hat{\mathbf{e}}_j\!\left[\nu_1\right] \hat{\mathbf{e}}_k\!\left[\nu_2\right] \hat{\mathbf{e}}_l\!\left[\nu_3\right] dA
 \end{gather}\]</div>
-<p>In general, the nonlinear parameter may be refactored in terms of the characteristic waveguide properties and an effective nonlinear susceptibility <span class="math notranslate nohighlight">\((\chi^{\left(3\right)}_\text{eff})\)</span> that considers both the bulk nonlinear susceptibility and the overlap of the interacting modes:</p>
+<p>In general, the nonlinear parameter may be refactored in terms of the characteristic waveguide properties and an effective nonlinear susceptibility <span class="math notranslate nohighlight">\(\chi^{\left(3\right)}_\text{eff}\)</span> that considers both the bulk nonlinear susceptibility and the overlap of the interacting modes:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 g^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] = \frac{1}{2} \sqrt{\frac{A_\text{eff}\!\left[\nu\right]}{A_\text{eff}\!\left[\nu_1\right] \, A_\text{eff}\!\left[\nu_2\right] \, A_\text{eff}\!\left[\nu_3\right]}} \frac{\chi^{\left(3\right)}_\text{eff}\!\left[\nu_1, \nu_2, \nu_3\right]}{\epsilon_0 \, c^2 \sqrt{n_\text{eff}\!\left[\nu\right] \, n_\text{eff}\!\left[\nu_1\right] \, n_\text{eff}\!\left[\nu_2\right] \, n_\text{eff}\!\left[\nu_3\right]}}
@@ -728,23 +756,23 @@ g^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] = \frac{1}{2} \sqrt{\frac{A
 \[\begin{gather}
 g_\text{spm}^{\left(3\right)}\!\left[\nu\right] = \frac{1}{2} \frac{\chi^{\left(3\right)}_\text{eff}\!\left[\nu, \nu, -\nu\right]}{\epsilon_0 \, c^2 \, n_\text{eff}^2 \, A_\text{eff}}
 \end{gather}\]</div>
-<p>where the frequency dependence of the effective refractive index and area are implicit. If one assumes that phase mismatch suppresses all other interactions, then <span class="math notranslate nohighlight">\(g^{\left(3\right)}_\text{spm}\)</span> can be completely removed from the integral and the convolution can be cast as a multiplication in the time domain:</p>
+<p>The frequency dependence of the effective refractive index and area are implicit. If one assumes that phase mismatch suppresses all other interactions, then <span class="math notranslate nohighlight">\(g^{\left(3\right)}_\text{spm}\)</span> can be completely removed from the frequency integrals and the convolution can be cast as a multiplication in the time domain:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 \frac{\partial}{\partial z} a\!\left[\nu\right]
 \approx \ldots - i \, \omega \, g^{\left(3\right)}_\text{spm} \, \mathscr{F}\!\left[a\left[t\right]^3\right]
 \end{gather}\]</div>
-<p>With a little manipulation, one arrives at the familiar <span class="math notranslate nohighlight">\(\gamma\)</span> nonlinear parameter:</p>
+<p>With a little manipulation, one arrives at the familiar nonlinear parameter <span class="math notranslate nohighlight">\(\gamma\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 \gamma\!\left[\nu\right] = \frac{3}{2} \, \omega \, g^{\left(3\right)}_\text{spm}
 \end{gather}\]</div>
-<p>where the factor of <span class="math notranslate nohighlight">\(3\)</span> is due to the degeneracy of the self-phase modulation term <span class="math notranslate nohighlight">\(\left(\omega = \omega_1 + \omega_2 - \omega_3\right)\)</span> in the triple product of the carrier-resolved amplitude <span class="math notranslate nohighlight">\((a\left[t\right]^3)\)</span>, and the factor of <span class="math notranslate nohighlight">\(1/2\)</span> is due to the <span class="math notranslate nohighlight">\(\gamma\)</span> parameter being defined against the <a class="reference external" href="#Analytic-Representation">analytic</a>, root-mean-square amplitude <span class="math notranslate nohighlight">\(\left(a'\right)\)</span>, where <span class="math notranslate nohighlight">\(a'\!\left[\nu\right] = \sqrt{2} \, a\!\left[\nu\right]\)</span>:</p>
+<p>where the factor of <span class="math notranslate nohighlight">\(3\)</span> is due to the degeneracy of the self-phase modulation term <span class="math notranslate nohighlight">\(\left(\omega = \omega_1 + \omega_2 - \omega_3\right)\)</span> in the triple product of the carrier-resolved amplitude <span class="math notranslate nohighlight">\((a\left[t\right]^3)\)</span>. The factor of <span class="math notranslate nohighlight">\(1/2\)</span> is due to the <span class="math notranslate nohighlight">\(\gamma\)</span> parameter being defined against the <a class="reference external" href="#Analytic-Normalization">analytic</a>, root-mean-square amplitude <span class="math notranslate nohighlight">\(a'\)</span>, where <span class="math notranslate nohighlight">\(a'\!\left[\nu\right] = \sqrt{2} \, a\!\left[\nu\right]\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 \frac{\partial}{\partial z} a'\!\left[\nu\right] \approx \ldots -i \, \gamma \, \mathscr{F}\!\left[a' \, \left|a'\right|^2\right]
 \end{gather}\]</div>
-<p>The expected nonlinear phase shift has a simple, proportional relationship to the instantaneous power:</p>
+<p>The expected nonlinear phase shift is proportional to the instantaneous power and propagation distance:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
 \phi_{NL} = \gamma \, P \, L
@@ -754,15 +782,15 @@ P = \left|a'\right|^2 = \text{RMS power}
 L = \text{propagation length}
 \end{gather}\end{split}\]</div>
 </section>
-<section id="Intensity-Dependent-Refractive-Index">
-<h4>Intensity Dependent Refractive Index<a class="headerlink" href="#Intensity-Dependent-Refractive-Index" title="Permalink to this heading">#</a></h4>
-<p>The <span class="math notranslate nohighlight">\(\gamma\)</span> factor is often cast in terms of the nonlinear Kerr parameter (<span class="math notranslate nohighlight">\(n_2\)</span>), which describes the change in refractive index due to the instantaneous, time averaged optical power. For single frequency, linearly polarized light:</p>
+<section id="Nonlinear-Refractive-Index">
+<h4>Nonlinear Refractive Index<a class="headerlink" href="#Nonlinear-Refractive-Index" title="Permalink to this heading">#</a></h4>
+<p>The <span class="math notranslate nohighlight">\(\gamma\)</span> factor is often cast in terms of the nonlinear Kerr parameter <span class="math notranslate nohighlight">\(n_2\)</span>, which describes the change in refractive index due to the instantaneous, time-averaged optical power. For single frequency, linearly polarized light:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 n = n_0 + n_2 \left&lt;I\right&gt;
 \end{gather}\]</div>
 <p>where <span class="math notranslate nohighlight">\(I\)</span> is the intensity of the light defined through the Poynting vector, and <span class="math notranslate nohighlight">\(\left&lt;\ldots\right&gt;\)</span> denotes the instantaneous time average as given by the absolute mean square of the electric field’s complex envelope.</p>
-<p>The third order nonlinear susceptibility <span class="math notranslate nohighlight">\((\chi^{\left(3\right)})\)</span> may be cast in terms of the Kerr nonlinear index <span class="math notranslate nohighlight">\(\left(n_2\right)\)</span> by relating the two through the definition of the relative permittivity (see <a class="reference internal" href="supplemental.html#Relationship-Between-Kerr-Parameter-and-Nonlinear-Susceptibility"><span class="std std-ref">supplemental</span></a>):</p>
+<p>The third order nonlinear susceptibility <span class="math notranslate nohighlight">\(\chi^{\left(3\right)}\)</span> may be cast in terms of the Kerr nonlinear index <span class="math notranslate nohighlight">\(n_2\)</span> by relating the two through the definition of the relative permittivity (see the <a class="reference internal" href="supplemental.html#Relationship-Between-Kerr-Parameter-and-Nonlinear-Susceptibility"><span class="std std-ref">supplemental</span></a> for more details):</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \chi^{\left(3\right)} &amp;= \frac{4}{3} \, \epsilon_0 \, c \, n_0^2 \, n_2
@@ -770,47 +798,51 @@ n = n_0 + n_2 \left&lt;I\right&gt;
 \gamma &amp;= \frac{\omega \, n_2}{c \, A_\text{eff}}
 \end{align}\end{split}\]</div>
 </section>
-<section id="Shock-Term">
-<h4>Shock Term<a class="headerlink" href="#Shock-Term" title="Permalink to this heading">#</a></h4>
-<p>The shock term typically seen in the literature is an artifact of using a constant nonlinear parameter <span class="math notranslate nohighlight">\((\gamma\!\left[\omega\right] \approx \gamma\!\left[\omega_0\right])\)</span>. If everything is properly accounted for, then the shock term <span class="math notranslate nohighlight">\(\left(\gamma_1\right)\)</span> and the standard nonlinear term <span class="math notranslate nohighlight">\(\left(\gamma\!\left[\omega_0\right]\right)\)</span> collapse into a frequency dependent nonlinear parameter consistent with the previous sections:</p>
+<section id="Optical-Shock">
+<h4>Optical Shock<a class="headerlink" href="#Optical-Shock" title="Permalink to this heading">#</a></h4>
+<p>The shock term <span class="math notranslate nohighlight">\(\gamma_1\)</span> typically seen in the literature is an artifact of approximating the time derivative applied to the nonlinear polarization. In practice this means using a constant nonlinear parameter, i.e. <span class="math notranslate nohighlight">\(\gamma_0 = \gamma\!\left[\omega_0\right]\)</span>. If everything is properly accounted for the shock term <span class="math notranslate nohighlight">\(\gamma_1\)</span> and the standard nonlinear term <span class="math notranslate nohighlight">\(\gamma_0\)</span> collapse into the frequency-dependent nonlinear parameter <span class="math notranslate nohighlight">\(\gamma\!\left[\omega\right]\)</span> consistent
+with the previous sections:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 \gamma\!\left[\omega\right] = \frac{\omega \, n_2}{c \, A_\text{eff}} = \frac{3}{2} \, \omega \, g^{\left(3\right)}_\text{spm}
 \end{gather}\]</div>
-<p>The Fourier transform of the complex envelope is defined below, which uses the sign of the Fourier transform and other general notation as in <a class="reference external" href="https://doi.org/10.1016/C2018-0-01168-8">Nonlinear Fiber Optics (Agrawal 2019)</a>:</p>
+<p>The following arguments are made using the Fourier transform of the complex envelope:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-a\!\left[t\right] &amp;= \int_{-\infty}^{\infty} a\!\left[\omega - \omega_0\right] e^{-i \left(\left(\omega - \omega_0\right) t\right)} \frac{d\omega}{2 \, \pi}
+a\!\left[t\right] &amp;= \int_{-\infty}^{\infty} a\!\left[\omega - \omega_0\right] e^{+i \left(\left(\omega - \omega_0\right) t\right)} \frac{d\omega}{2 \, \pi}
 \\
-a\!\left[\omega - \omega_0\right] &amp;= \int_{-\infty}^{\infty} a\!\left[t\right] e^{+i \left(\left(\omega - \omega_0\right) t\right)} \, dt
+a\!\left[\omega - \omega_0\right] &amp;= \int_{-\infty}^{\infty} a\!\left[t\right] e^{-i \left(\left(\omega - \omega_0\right) t\right)} \, dt
 \end{align}\end{split}\]</div>
-<p>With the “typical” value of <span class="math notranslate nohighlight">\(\gamma_1 \approx \gamma\!\left[\omega_0\right]/\omega_0\)</span>:</p>
+<p>Starting in the time domain, we expand <span class="math notranslate nohighlight">\(\gamma[t]\)</span> in terms of <span class="math notranslate nohighlight">\(\gamma_0\)</span> and <span class="math notranslate nohighlight">\(\gamma_1\)</span>. Note, the sign before <span class="math notranslate nohighlight">\(\gamma_1\)</span> is due to our definition of the Fourier transform:</p>
+<div class="math notranslate nohighlight">
+\[\gamma\!\left[t\right] = \gamma_0 - i \, \gamma_1 \frac{\partial}{\partial t}\]</div>
+<p>With <span class="math notranslate nohighlight">\(\gamma_1 = \gamma_0/\omega_0\)</span>, the Fourier transform gives the frequency-dependent <span class="math notranslate nohighlight">\(\gamma[\omega]\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
-i \left(\gamma\!\left[\omega_0\right] + i \, \gamma_1 \, \frac{\partial}{\partial t}\right) f\!\left[t\right] &amp;= i \, \gamma\!\left[\omega_0\right] \left(1 + \frac{i}{\omega_0} \frac{\partial}{\partial t}\right) f\!\left[t\right]
+\left(\gamma_0 - i \, \gamma_1 \, \frac{\partial}{\partial t}\right) f\!\left[t\right] &amp;= \gamma_0 \left(1 - \frac{i}{\omega_0} \frac{\partial}{\partial t}\right) f\!\left[t\right]
 \\
-\text{Fourier transform $\left(t \to \omega - \omega_0\right)$} &amp; \Rightarrow i \, \gamma\!\left[\omega_0\right] \left(1 + \frac{1}{\omega_0} \left(\omega - \omega_0\right)\right) f\!\left[\omega - \omega_0\right]
+\text{Fourier transform $t \to \omega - \omega_0$} &amp; \Rightarrow \gamma_0 \left(1 + \frac{1}{\omega_0} \left(\omega - \omega_0\right)\right) f\!\left[\omega - \omega_0\right]
 \\
-&amp;= i \, \gamma\!\left[\omega_0\right] \frac{\omega}{\omega_0} \, f\!\left[\omega - \omega_0\right]
+&amp;= \gamma_0 \frac{\omega}{\omega_0} \, f\!\left[\omega - \omega_0\right]
 \\
-&amp;= i \, \gamma\!\left[\omega\right] \, f\!\left[\omega - \omega_0\right]
+&amp;= \gamma\!\left[\omega\right] \, f\!\left[\omega - \omega_0\right]
 \end{align}\end{split}\]</div>
 </section>
 <section id="Raman-Nonlinearity">
 <h4>Raman Nonlinearity<a class="headerlink" href="#Raman-Nonlinearity" title="Permalink to this heading">#</a></h4>
-<p>Raman nonlinearity is a third order effect that couples energy between the light field and vibrational modes of the substrate. It is represented in terms of a unitless nonlinear response parameter <span class="math notranslate nohighlight">\((R)\)</span> that couples two of the three input frequencies. The symmetrized form is given as follows:</p>
+<p>Raman nonlinearity is a third-order effect that couples energy between light and vibrational modes of the substrate. It is represented in terms of a unitless nonlinear response parameter <span class="math notranslate nohighlight">\(R\)</span> that takes two of the three frequencies as input. The symmetrized form is given below:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
 \chi^{(3)}\!\left[\nu_1, \nu_2, \nu_3\right] \approx \chi^{(3)}_\text{eff} \left( \frac{1}{3} \left( R\!\left[\nu_1 + \nu_2\right] + R\!\left[\nu_2 + \nu_3\right] + R\!\left[\nu_3 + \nu_1\right]\right)\right)
 \end{gather}\]</div>
-<p>The nonlinear response parameter is itself split between instantaneous nonlinearity and the delayed Raman response function <span class="math notranslate nohighlight">\((h_R)\)</span>:</p>
+<p>The nonlinear response parameter is itself split between the instantaneous nonlinearity of the Kerr effect and the delayed Raman response function <span class="math notranslate nohighlight">\(h_R\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
 R\!\left[t\right] = f_R \, h_R\!\left[t\right] + \left(1 - f_R\right) \delta\!\left[t\right]
 \\
 1 = \int_{0}^{\infty} R\!\left[t\right] dt = \int_{0}^{\infty} h_R\!\left[t\right] dt
 \end{gather}\end{split}\]</div>
-<p>Where the Raman fraction <span class="math notranslate nohighlight">\((f_R)\)</span> sets the relative strength of the instantaneous and delayed responses. The Raman term <span class="math notranslate nohighlight">\((h_R)\)</span> primarily acts on the difference frequencies of the two inputs. In silica it is strongest at offsets between 10 to 15 THz.</p>
+<p>The Raman fraction <span class="math notranslate nohighlight">\(f_R\)</span> sets the relative strength of the instantaneous and delayed effects. The Raman response <span class="math notranslate nohighlight">\(h_R\)</span> primarily acts on the difference frequencies of the two inputs. In silica it is strongest at offsets between 10 to 15 THz.</p>
 <p>In the time domain, the nonlinear response parameter acts through convolution with the square of the time-domain amplitude:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
@@ -818,46 +850,27 @@ R\!\left[t\right] = f_R \, h_R\!\left[t\right] + \left(1 - f_R\right) \delta\!\l
 \end{gather}\]</div>
 </section>
 </section>
-<section id="id3">
-<h3>Second Order Nonlinearity<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\frac{\partial}{\partial z} a\!\left[\nu\right] = \ldots - i \, \omega \iint_{-\infty}^{\infty} &amp; g^{\left(2\right)}\!\left[\nu_1, \nu_2\right] a\!\left[\nu_1\right] a\!\left[\nu_2\right]
-\\
-&amp; \qquad \delta\!\left[\nu - \left(\nu_1 + \nu_2\right)\right] d\nu_1 \, d\nu_2
-\end{align}\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(g^{\left(2\right)}\)</span> is the effective nonlinear parameter defined as:</p>
-<div class="math notranslate nohighlight">
-\[\begin{gather}
-g^{\left(2\right)}\!\left[\nu_1, \nu_2\right] = \frac{1}{2} \epsilon_0 \iint_{A_\infty} \chi^{\left(2\right)}_{i j k}\!\left[\nu_1, \nu_2\right] {\hat{\mathbf{e}}^*_t}_i\!\left[\nu_1 + \nu_2\right] \hat{\mathbf{e}}_j\!\left[\nu_1\right] \hat{\mathbf{e}}_k\!\left[\nu_2\right] dA
-\end{gather}\]</div>
-<p>In general, the nonlinear parameter may be refactored in terms of the characteristic waveguide properties and an effective nonlinear susceptibility <span class="math notranslate nohighlight">\((\chi^{\left(2\right)}_\text{eff})\)</span> that considers both the bulk nonlinear susceptibility and the overlap of the interacting modes:</p>
-<div class="math notranslate nohighlight">
-\[\begin{gather}
-g^{\left(2\right)}\!\left[\nu_1, \nu_2\right] = \frac{1}{2} \sqrt{\frac{{A_\text{eff}}\!\left[\nu\right]}{{A_\text{eff}}\!\left[\nu_1\right] \, {A_\text{eff}}\!\left[\nu_2\right]}} \frac{{\chi^{\left(2\right)}_\text{eff}}\!\left[\nu_1, \nu_2\right]}{\sqrt{\epsilon_0 \, c^3 \, {n_\text{eff}}\!\left[\nu\right] \, {n_\text{eff}}\!\left[\nu_1\right] \, {n_\text{eff}}\!\left[\nu_2\right]}}
-\end{gather}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\nu\)</span> is the sum of <span class="math notranslate nohighlight">\(\nu_1\)</span> and <span class="math notranslate nohighlight">\(\nu_2\)</span>.</p>
-<p>The second order nonlinearity is best known for sum <span class="math notranslate nohighlight">\((\omega = \omega_1 + \omega_2)\)</span> and difference <span class="math notranslate nohighlight">\((\omega = \omega_1 - \omega_2)\)</span> frequency generation, but in certain cases cascaded effects can also be important. Cascaded nonlinearity produces an effective higher order nonlinearity through repeated action of a lower order nonlinearity. One of the more interesting effects is an effective third order nonlinearity due to the cascade of sum and difference frequency generation within
-phase-mismatched second harmonic generation. This produces an effective nonlinear refractive index that has the same form as that for the third order nonlinearity. Depending on the sign of the phase mismatch this nonlinear index can be either positive or negative. See <a class="reference external" href="https://doi.org/10.1364/OL.17.000028">DeSalvo (1992)</a> for more details.</p>
-</section>
 </section>
 <section id="Numerical-Implementation">
 <h2>Numerical Implementation<a class="headerlink" href="#Numerical-Implementation" title="Permalink to this heading">#</a></h2>
-<p>The numerical complexity of the convolutions necessary to calculate the second and third order nonlinear terms go as <span class="math notranslate nohighlight">\(N^2\)</span> and <span class="math notranslate nohighlight">\(N^3\)</span> respectively. However, if the terms in the convolution can be put in separable form, where the convolution is represented by the product of single variable functions, then the convolution can be recast as a product of those functions’ Fourier transforms. Using the fast Fourier transform the complexity of the convolutions then scale as
-<span class="math notranslate nohighlight">\(N \log\left[N\right]\)</span>. For the number of points typically used in nonlinear simulations, that difference can mean multiple orders of magnitude improvement to the run time. The goal of a fast and accurate numerical implementation is to cast the equations into a form that minimizes both the numerical complexity and the degree of approximation. Besides just reducing the numerical complexity of individual terms, it is also important to use an accurate and efficient numerical differential
-equation solver. For this purpose, the embedded 4th-order Runge-Kutta method of <a class="reference external" href="https://doi.org/10.1016/j.cpc.2012.12.020">Balac and Mahé (2013)</a> is quite optimal.</p>
-<p>The most general approximation procedure involves numerically calculating all terms in the 2nd- and 3rd-rank <span class="math notranslate nohighlight">\(g\)</span> parameters and then using techniques such as eigenvalue or singular value decomposition to represent the inseparable nonlinear parameters as the sum of the products of separable functions. In general, the <span class="math notranslate nohighlight">\(g\)</span> parameters may be written as the product of a function <span class="math notranslate nohighlight">\(h\)</span>, dependent on the output frequency <span class="math notranslate nohighlight">\(\nu\)</span>, and the sum of products of functions <span class="math notranslate nohighlight">\(\eta\)</span>,
-dependent on the input frequencies <span class="math notranslate nohighlight">\(\nu_i\)</span>:</p>
+<p>The goal of a fast and accurate numerical implementation is to cast the equations into a form that minimizes both the numerical complexity and the degree of approximation. Besides just reducing the numerical complexity of individual terms, it is also important to use an accurate and efficient numerical differential equation solver. For this purpose, PyNLO uses the embedded 4th-order Runge-Kutta method of <a class="reference external" href="https://doi.org/10.1016/j.cpc.2012.12.020">Balac and Mahé (2013)</a>.</p>
+<section id="Simplifying-the-Nonlinear-Terms">
+<h3>Simplifying the Nonlinear Terms<a class="headerlink" href="#Simplifying-the-Nonlinear-Terms" title="Permalink to this heading">#</a></h3>
+<p>The numerical complexity of the convolutions required to calculate the second- and third-order nonlinear terms go as <span class="math notranslate nohighlight">\(N^2\)</span> and <span class="math notranslate nohighlight">\(N^3\)</span> respectively. However, if the terms in the convolution can be put in separable form, where the convolution is represented by the product of single variable functions, then the convolution can be recast as a product of Fourier transforms. Using the fast Fourier transform (fft) the complexity of the resulting convolutions scale as
+<span class="math notranslate nohighlight">\(N \log\left[N\right]\)</span>. For the number of points typically used in nonlinear simulations, that difference can mean orders of magnitude improvement to the run time.</p>
+<section id="Vector-Decomposition">
+<h4>Vector Decomposition<a class="headerlink" href="#Vector-Decomposition" title="Permalink to this heading">#</a></h4>
+<p>The most general procedure involves numerically calculating all terms in the 2nd- and 3rd-order <span class="math notranslate nohighlight">\(g\)</span> parameters and then decomposing the tensors as the sum of the product of separable functions. In general, the <span class="math notranslate nohighlight">\(g\)</span> parameters may be written as the product of a function <span class="math notranslate nohighlight">\(h\)</span>, dependent on the output frequency <span class="math notranslate nohighlight">\(\nu\)</span>, and the sum of the products of functions <span class="math notranslate nohighlight">\(\eta\)</span>, dependent on the input frequencies <span class="math notranslate nohighlight">\(\nu_i\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 g^{\left(2\right)}\!\left[\nu_1, \nu_2\right] &amp;= h^{\left(2\right)}\!\left[\nu\right] \sum_n \eta_n^{\left(2\right)}\!\left[\nu_1\right] \eta_n^{\left(2\right)}\!\left[\nu_2\right]
 \\
 g^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] &amp;= h^{\left(3\right)}\!\left[\nu\right] \sum_n \eta_n^{\left(3\right)}\!\left[\nu_1\right] \eta_n^{\left(3\right)}\!\left[\nu_2\right] \eta_n^{\left(3\right)}\!\left[\nu_3\right]
 \end{align}\end{split}\]</div>
-<p>Each function in the sum <span class="math notranslate nohighlight">\((\eta)\)</span> may be used to weight the spectral amplitudes <span class="math notranslate nohighlight">\((a)\)</span> before taking the Fourier transform:</p>
+<p>Before taking the Fourier transform, each function in the sum <span class="math notranslate nohighlight">\((\eta_n)\)</span> is used to weight the spectral amplitudes <span class="math notranslate nohighlight">\(a\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{gather}
-b\!\left[\nu\right] = a \, \eta
+b_n\!\left[\nu\right] = a \, \eta_n
 \end{gather}\]</div>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
@@ -865,15 +878,22 @@ b\!\left[\nu\right] = a \, \eta
 \\
 &amp; - i \, \omega \, h^{\left(3\right)}\!\left[\nu\right] \, \mathscr{F}\!\left[\sum_n b_n\left[t\right]^3 \right]
 \end{align}\end{split}\]</div>
-<p>If the nonlinear susceptibility is instantaneous and effects due to mode overlap can be ignored, separability occurs naturally. In this case, the summation collapses to a single <span class="math notranslate nohighlight">\(h\)</span> and <span class="math notranslate nohighlight">\(\eta\)</span> term dependent on the effective refractive index, area, and nonlinear susceptibilities. The decomposition below is based on unit analysis of the effective nonlinear parameters (see <a class="reference internal" href="supplemental.html#Unit-Analysis-of-the-Effective-Nonlinear-Parameters"><span class="std std-ref">supplemental</span></a>):</p>
+</section>
+<section id="Unit-Decomposition">
+<h4>Unit Decomposition<a class="headerlink" href="#Unit-Decomposition" title="Permalink to this heading">#</a></h4>
+<p>If effects due to mode overlap can be ignored and the nonlinear susceptibility only depends on the output frequency, separability occurs naturally. In this case, the summation collapses to a single <span class="math notranslate nohighlight">\(h\)</span> and <span class="math notranslate nohighlight">\(\eta\)</span> term dependent on the effective refractive index, area, and nonlinear susceptibilities. The decomposition below is based on unit analysis of the effective nonlinear parameters (see the <a class="reference internal" href="supplemental.html#Unit-Analysis-of-the-Effective-Nonlinear-Parameters"><span class="std std-ref">supplemental</span></a>)
+and is equivalent to calculating the nonlinear terms as powers of the electric field:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
 h\!\left[\nu\right] \approx \frac{1}{2} \sqrt{\frac{\epsilon_0 \, A_\text{eff}}{c \, n_\text{eff}}} \, \chi_\text{eff}
 \\
 \eta\!\left[\nu\right] \approx \frac{1}{\sqrt{\epsilon_0 \, c \, n_\text{eff} \, A_\text{eff}}}
 \end{gather}\end{split}\]</div>
-<p>The simplest approximation takes advantage of the selective nature of phase matching. Phase matched frequency combinations dominate over all other nonlinear interactions. For a particular output frequency, the <span class="math notranslate nohighlight">\(g\)</span> parameters that correspond to these interactions can be pulled out of the integral and the unweighted spectral amplitudes can be Fourier transformed. The unweighted terms still contain a multitude of nonlinear pathways, but only the phase matched pathway needs to have an accurate
-coupling term as phase mismatch suppresses all other contributions to the final result.</p>
+</section>
+<section id="Phase-Matched-Pathways">
+<h4>Phase-Matched Pathways<a class="headerlink" href="#Phase-Matched-Pathways" title="Permalink to this heading">#</a></h4>
+<p>The most straightforward approximation takes advantage of the selective nature of phase matching. Phase-matched frequency combinations dominate over all other nonlinear interactions. For a particular output frequency, the <span class="math notranslate nohighlight">\(g\)</span> parameters that correspond to these interactions can be pulled out of the integral and the unweighted spectral amplitudes can be Fourier transformed. The unweighted terms still contain a multitude of nonlinear pathways, but as phase mismatch suppresses all other
+contributions only the phase-matched pathway needs to have an accurate coupling term:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 g^{\left(2\right)}\!\left[\nu_1, \nu_2\right] &amp;\approx g^{\left(2\right)}_\text{eff}\!\left[\nu\right]
@@ -886,10 +906,13 @@ g^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] &amp;\approx g^{\left(3\rig
 \\
 &amp; - i \, \omega \, g^{\left(3\right)}_\text{eff}\!\left[\nu\right] \, \mathscr{F}\!\left[a\left[t\right]^3 \right]
 \end{align}\end{split}\]</div>
+</section>
+</section>
 <section id="Analytic-Representation">
 <h3>Analytic Representation<a class="headerlink" href="#Analytic-Representation" title="Permalink to this heading">#</a></h3>
-<p>The analytic representation is an important concept for the theoretical and numerical manipulation of optical pulses. Since the physical <span class="math notranslate nohighlight">\(\mathbf{E}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> fields are real, as mentioned in <a class="reference internal" href="fourier_transforms.html#Real-Functions-and-the-Analytic-Representation"><span class="std std-ref">Fourier Transforms</span></a>, it is possible to represent them in analytical form using only the amplitudes from the positive frequency side of the spectrum. This is straightforward when only linear interactions are
-considered but becomes more difficult when nonlinear terms are involved. Nonlinearity mixes positive and negative frequency components together in an inseparable way. For the second order nonlinearity the following interactions are possible:</p>
+<p>The analytic representation is an important concept for the theoretical and numerical manipulation of optical pulses. Since the physical <span class="math notranslate nohighlight">\(\mathbf{E}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> fields are real, as mentioned in <a class="reference internal" href="fourier_transforms.html#Real-Functions-and-the-Analytic-Representation"><span class="std std-ref">Fourier Transforms</span></a>, it is possible to represent them in analytic form using only the amplitudes from the positive-frequency side of the spectrum. This is straightforward when only linear interactions are
+considered but becomes more difficult when nonlinear terms are involved. Nonlinearity mixes positive and negative frequency components together in an inseparable way.</p>
+<p>For the second order nonlinearity the following interactions are possible:</p>
 <table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(\chi^{\left(2\right)}\)</span> Process</p></th>
@@ -960,14 +983,16 @@ considered but becomes more difficult when nonlinear terms are involved. Nonline
 </tbody>
 </table>
 <p>where <span class="math notranslate nohighlight">\(\nu_c\)</span> is the central or average frequency of the pulse.</p>
-<p>Negative frequency components at the input to the nonlinear interaction can always be replaced by conjugated positive frequency components, the difficultly arises when restricting the range of the output frequencies to only positive values. To reduce the numerical complexity, nonlinear terms are best calculated as products in the time domain. With <span class="math notranslate nohighlight">\(N\)</span> being the number of points involved, the complexity of the fast Fourier transform needed to go from the frequency domain to the time domain
-scales as <span class="math notranslate nohighlight">\(N \log\left[N\right]\)</span>, while the complexity of the nonlinear terms’ convolutions in the frequency domain scale as <span class="math notranslate nohighlight">\(N^2\)</span> or <span class="math notranslate nohighlight">\(N^3\)</span>. However, in general each discrete interaction spans both positive and negative frequencies so most of the potential time-domain products are not strictly analytic. If one were to perform these products in the time domain with analytic grids, that only support the positive half of the spectrum, the negative frequency components would alias
-into positive frequencies. This could potentially lead to erroneous results, especially if an aliased term inadvertently phase matched.</p>
-<p>The simplest way around this is to cheat the analyticity and perform the frequency-to-time-domain Fourier transform with enough extra points to allow the negative frequency components to alias outside of the frequency range of interest. The “analytic” nonlinear terms are then all entries in the above tables that have the potential to contain positive output frequencies. After Fourier transforming back to the frequency domain the extra points are dropped, leaving only the analytic results. If the
-analytic grid has a support from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(\nu_\text{max}\)</span>, then the second order nonlinearity would need a grid that supports at least another <span class="math notranslate nohighlight">\(\nu_\text{max}\)</span> worth of points, while the third order nonlinearity would need an extra <span class="math notranslate nohighlight">\(2 \, \nu_\text{max}\)</span>.</p>
-<p>Mathematically, the waveforms of analytic, complex envelopes are downshifted to baseband by removing a center frequency <span class="math notranslate nohighlight">\(\left(\nu_c\right)\)</span>. All time-domain products of a waveform with a frequency range centered about the origin result in waveforms with frequency ranges centered about the origin. However, the nonlinear interactions generally have center frequencies that are different than the center frequency of the original waveform. In order to calculate the correct terms each
-interaction must be frequency shifted by the difference between the initial center frequency and the respective output center frequency before Fourier transforming back to the frequency domain.</p>
-<p>In the limit of constant mode area and instantaneous nonlinear susceptibility, the analytic nonlinear terms have the following form:</p>
+<section id="Analytic-Nonlinear-Terms">
+<h4>Analytic Nonlinear Terms<a class="headerlink" href="#Analytic-Nonlinear-Terms" title="Permalink to this heading">#</a></h4>
+<p>Negative frequency components at the input to a nonlinear process can always be replaced by conjugated positive frequency components, the difficulty arises when restricting the range of output frequencies to positive values. To reduce the numerical complexity, nonlinear terms are best calculated as products in the time domain. However, the time-domain products are not strictly analytic as in general they each span both positive and negative frequencies. If one were to perform these products in
+the time domain with analytic grids that only support the positive half of the spectrum, the negative frequency components would alias into positive frequencies. This could lead to erroneous results, especially if an aliased term is inadvertently phase matched.</p>
+<p>The simplest way around this is to cheat the analyticity and perform the frequency-to-time-domain Fourier transform with enough extra points to allow the negative frequency components to alias outside of the frequency range of interest. The “analytic” nonlinear terms are thus all entries in the above tables with the potential to generate positive output frequencies. After Fourier transforming back to the frequency domain, the extra points are dropped and only the analytic results remain. If the
+analytic grid has a support from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(\nu_\text{max}\)</span>, then the second-order nonlinearity would need a grid that supports at least another <span class="math notranslate nohighlight">\(\nu_\text{max}\)</span> worth of points, while the third-order nonlinearity would need an extra <span class="math notranslate nohighlight">\(2 \, \nu_\text{max}\)</span>, requiring a grid that supports a total of <span class="math notranslate nohighlight">\(2 \, \nu_\text{max}\)</span> and <span class="math notranslate nohighlight">\(3 \, \nu_\text{max}\)</span> points respectively.</p>
+</section>
+<section id="Analytic-Nonlinear-Propagation-Equations">
+<h4>Analytic Nonlinear Propagation Equations<a class="headerlink" href="#Analytic-Nonlinear-Propagation-Equations" title="Permalink to this heading">#</a></h4>
+<p>In the limit of constant mode area and instantaneous nonlinear susceptibility, the analytic nonlinear propagation equations have the following form:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
 \frac{\partial}{\partial z} a\!\left[\nu\right] = \ldots - i \, \omega \, g^{\left(2\right)}_\text{eff} \, \mathscr{F}\!\left[ 2 \, \left|a\right|^2 \, e^{-i \, \omega_c \, t} + a^2 \, e^{i \, \omega_c \, t} \right]
@@ -980,17 +1005,23 @@ g^{\left(2\right)}_\text{eff} = \frac{1}{2} \frac{\chi^{\left(2\right)}_\text{ef
 \\
 g^{\left(3\right)}_\text{eff} = \frac{1}{2} \frac{\chi^{\left(3\right)}_\text{eff}}{\epsilon_0 \, c^2 \, n_\text{eff}^2 \, A_\text{eff}}
 \end{gather}\end{split}\]</div>
-<p>where the amplitudes <span class="math notranslate nohighlight">\(\left(a\right)\)</span> are defined over only the positive half of the spectrum.</p>
-<section id="Normalization">
-<h4>Normalization<a class="headerlink" href="#Normalization" title="Permalink to this heading">#</a></h4>
-<p>It is important to consider the normalization of the analytic amplitudes when comparing against other formulas in the literature. There are two common alternatives to, as above, simply using the amplitudes as given by the positive half of the double-sided spectrum. The first rescales the analytic representation such that the integral of the absolute amplitude squared over positive frequencies is equal to the total energy <span class="math notranslate nohighlight">\(\left(E\right)\)</span>:</p>
+<p>where the nonlinear terms have been constructed using all possible combinations with positive output frequencies. Conjugate amplitudes have been substituted for amplitudes at negative-frequency <span class="math notranslate nohighlight">\((a[-\nu] = a[\nu]^*)\)</span>.</p>
+<p>Each nonlinear process has been frequency shifted by the respective difference between the input and output center frequency <span class="math notranslate nohighlight">\(\nu_c\)</span>. This is required because mathematically, the analytic spectra are centered at baseband. Since time-domain products of waveforms with a frequency range centered about the origin result in waveforms with frequency ranges centered about the origin, frequency shifts are necessary in order to correctly calculate the nonlinear process.</p>
+<p>PyNLO does not use the analytic representation when calculating the nonlinear interactions and it does so for several reasons. In the attempt to extend the analytic representation to nonlinear interactions the set of equations has in general become more complicated than the equivalent implementation in the real-valued representation. Given that complex multiplications require 3 operations to complete, the analytic representation requires up to 12 to 27 array operations compared to the 2 to 3 in
+the real-valued representation. For the same number of points, the <em>rffts</em> used in the real-valued representation are also more performant than the <em>ffts</em> used in the analytic representation. Additionally, if the frequency grids are aligned to the origin (as mentioned in the <a class="reference internal" href="fourier_transforms.html#FFT-Cookbook"><span class="std std-ref">FFT Cookbook</span></a>), one representation can be easily transformed to the other using array indexing operations. In summary, the analytic representation useful when modeling linear
+effects is more of a burden than a benefit when modeling nonlinear effects.</p>
+</section>
+<section id="Analytic-Normalization">
+<h4>Analytic Normalization<a class="headerlink" href="#Analytic-Normalization" title="Permalink to this heading">#</a></h4>
+<p>When comparing against other formulas in the literature it is important to consider the normalization of the analytic amplitudes. There are two common alternatives to formulas given above, which use the amplitudes as given by the positive half of the double-sided spectrum:</p>
+<p>The first rescales the analytic representation such that the integral of the absolute-squared amplitude over positive frequencies is equal to the total energy <span class="math notranslate nohighlight">\(E\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
 a'\!\left[\nu\right] = \sqrt{2} \, a
 \\
 E = \int_0^{\infty} \left|a'\right|^2 d\nu = \int_{-\infty}^{\infty} \left|a\right|^2 d\nu
 \end{gather}\end{split}\]</div>
-<p>The second is derived by using the time-domain <a class="reference external" href="https://mathworld.wolfram.com/HilbertTransform.html">Hilbert transform</a> to zero out all negative frequency components:</p>
+<p>The second is derived using the time-domain <a class="reference external" href="https://mathworld.wolfram.com/HilbertTransform.html">Hilbert transform</a> to zero out the negative frequency components:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
 a''\!\left[\nu\right] = 2 \, a
@@ -1050,9 +1081,9 @@ a''\!\left[t\right] = a + i \, \mathcal{H}\!\left[a\right]
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Local-Modes">Local Modes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Unidirectional-Propagation-Equations">Unidirectional Propagation Equations</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Forward-Propagation-Equation">Forward Propagation Equation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Backward-Propagation-Equation">Backward Propagation Equation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Multi-Mode-Propagation-Equations">Multi-Mode Propagation Equations</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Forward-Mode-Equation">Forward Mode Equation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Backward-Mode-Equation">Backward Mode Equation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Linear-Dispersion">Linear Dispersion</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Phase-Matching">Phase Matching</a></li>
 </ul>
@@ -1060,27 +1091,38 @@ a''\!\left[t\right] = a + i \, \mathcal{H}\!\left[a\right]
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Gain-and-Loss">Gain and Loss</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Changing-Mode-Profiles">Changing Mode Profiles</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Free-Sources-and-Nonlinearity">Free Sources and Nonlinearity</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Second-Order-Nonlinearity">Second Order Nonlinearity</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Third-Order-Nonlinearity">Third Order Nonlinearity</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Second-Order-Nonlinearity">Second-Order Nonlinearity</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Third-Order-Nonlinearity">Third-Order Nonlinearity</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Single-Mode-UPE">Single-Mode UPE</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Gain and Loss</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Third Order Nonlinearity</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Second Order Nonlinearity</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Cascaded-Effects">Cascaded Effects</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Third-Order Nonlinearity</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Self-Phase-Modulation">Self-Phase Modulation</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Intensity-Dependent-Refractive-Index">Intensity Dependent Refractive Index</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Shock-Term">Shock Term</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Nonlinear-Refractive-Index">Nonlinear Refractive Index</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Optical-Shock">Optical Shock</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Raman-Nonlinearity">Raman Nonlinearity</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Second Order Nonlinearity</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Numerical-Implementation">Numerical Implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Simplifying-the-Nonlinear-Terms">Simplifying the Nonlinear Terms</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Vector-Decomposition">Vector Decomposition</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Unit-Decomposition">Unit Decomposition</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Phase-Matched-Pathways">Phase-Matched Pathways</a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Analytic-Representation">Analytic Representation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Normalization">Normalization</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Analytic-Nonlinear-Terms">Analytic Nonlinear Terms</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Analytic-Nonlinear-Propagation-Equations">Analytic Nonlinear Propagation Equations</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Analytic-Normalization">Analytic Normalization</a></li>
 </ul>
 </li>
 </ul>

@@ -91,7 +91,7 @@ def gamma_to_n2(v_grid, a_eff, gamma):
 
 def g3_split(n_eff, a_eff, chi3_eff):
     """
-    The 3rd-order nonlinear parameter weighted by unit decomposition.
+    The 3rd-order nonlinear parameter decomposed according to unit analysis.
 
     Parameters
     ----------
@@ -170,7 +170,7 @@ def raman(n, dt, r_weights, b_weights=None):
         response function.
     nonlinear_v : ndarray of complex
         The frequency-domain nonlinear response function. This is defined over
-        the frequency grid given by dv``dv=1/(n*dt)``.
+        the frequency grid given by ``dv=1/(n*dt)``.
 
     Notes
     -----

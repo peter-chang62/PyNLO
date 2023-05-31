@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Representing optical modes in waveguides and other media.
+Optical modes in waveguides or other media.
 
 """
 
@@ -28,11 +28,13 @@ _NonlinearZ = collections.namedtuple("NonlinearZ", ["any", "g2", "pol", "g3", "r
 
 class Mode():
     """
-    The properties of a medium spatially integrated over the transverse plane
-    of an optical mode.
+    An optical mode.
 
-    If a parameters is z dependent, it must be input as a function who's first
-    argument is the propagation distance.
+    An optical mode is defined in the frequency domain. All properties must be
+    input as effective values, i.e. those found by integrating out the
+    transverse spatial dependence of the media and mode. If a parameter is z
+    dependent, it can be input as a function who's first argument is the
+    propagation distance.
 
     Parameters
     ----------
@@ -60,7 +62,7 @@ class Mode():
 
     Notes
     -----
-    Forward traveling waves of the mode are defined using the following
+    Forward traveling waves of a mode are defined using the following
     conventions:
 
     .. math:: E, H \\sim a \\, e^{i(\\omega t - \\kappa z)} + \\text{c.c} \\\\
@@ -219,7 +221,7 @@ class Mode():
         Returns
         -------
         any : bool
-            Whether there is any z dependece of the nonlinearity (excluding
+            Whether there is any z dependence of the nonlinearity (excluding
             poling).
         g2 : bool
             Z-dependent 2nd-order nonlinear parameter.
@@ -423,10 +425,10 @@ class Mode():
     @property
     def g2_inv(self):
         """
-        The location of all 2nd-order domain inverion boundaries within the
+        The location of all 2nd-order domain inversion boundaries within the
         mode.
 
-        A value of 1 indicates that the start of an inverted domain. A value of
+        A value of 1 indicates the start of an inverted domain. A value of
         0 indicates the start of an unpoled region.
 
         Returns
@@ -505,7 +507,7 @@ class Mode():
 #     - effective area based on distance to nominal waist location
 #     - could also include convenience functions for setting up the beam
 #       through focusing, propagation, etc.
-#     - check Boyd 2.10 "Nonlinear Optical Interactions with Focused Guassian
+#     - check Boyd 2.10 "Nonlinear Optical Interactions with Focused Gaussian
 #       Beams" for complicating factors.
 #
 #     """

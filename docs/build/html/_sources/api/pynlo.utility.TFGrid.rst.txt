@@ -10,9 +10,9 @@ Methods
    :toctree:
    :caption: Methods
 
-   ~TFGrid.copy
    ~TFGrid.FromFreqRange
    ~TFGrid.rtf_grids
+   ~TFGrid.copy
 
 Attributes
 ----------

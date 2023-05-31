@@ -290,6 +290,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.t_width.html">Pulse.t_width</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.autocorrelation.html">Pulse.autocorrelation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.spectrogram.html">Pulse.spectrogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.copy.html">Pulse.copy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.a_v.html">Pulse.a_v</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.p_v.html">Pulse.p_v</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.phi_v.html">Pulse.phi_v</a></li>
@@ -408,9 +409,9 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="pynlo.utility.resample_v.html">resample_v</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pynlo.utility.resample_t.html">resample_t</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.TFGrid.html">TFGrid</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.copy.html">TFGrid.copy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.FromFreqRange.html">TFGrid.FromFreqRange</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rtf_grids.html">TFGrid.rtf_grids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.copy.html">TFGrid.copy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.n.html">TFGrid.n</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rn.html">TFGrid.rn</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rn_range.html">TFGrid.rn_range</a></li>
@@ -529,7 +530,7 @@ ending points.</p>
 <dt><strong>plot</strong><span class="classifier">None or string, optional</span></dt><dd><p>A flag that activates real-time visualization of the simulation.
 The options are <code class="docutils literal notranslate"><span class="pre">&quot;frq&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;time&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;wvl&quot;</span></code>, corresponding
 to the frequency, time, and wavelength domains. If set, the plot is
-updated each time the simulation reaches one of the z position
+updated each time the simulation reaches one of the z positions
 returned at the output. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the default is to run the
 simulation without real-time plotting.</p>
 </dd>

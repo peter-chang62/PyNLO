@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Representing light in the time and frequency domains.
+Light in the time and frequency domains.
 
 Notes
 -----
@@ -40,7 +40,10 @@ Spectrogram = collections.namedtuple("Spectrogram", ["v_grid", "t_grid", "spg", 
 
 class Pulse(TFGrid):
     """
-    An optical pulse, defined over complementary time and frequency grids.
+    An optical pulse.
+
+    A set of complementary time and frequency grids are generated to represent
+    the pulse in both the time and frequency domains.
 
     Parameters
     ----------
@@ -83,8 +86,9 @@ class Pulse(TFGrid):
         a_v = 2**0.5 * ra_v[rn_slice]
         ra_v[rn_slice] = 2**-0.5 * a_v
 
-    The comoving-frame reference frequency `v0` is used to adjust the group
-    delay of the time window during pulse propagation simulations.
+    The comoving-frame reference frequency `v0` is only used to adjust the
+    group delay of the time window during pulse propagation simulations, it
+    does not otherwise affect the properties of the pulse.
 
     """
     def __init__(self, n, v_ref, dv, v0=None, a_v=None, alias=1):
@@ -420,7 +424,7 @@ class Pulse(TFGrid):
     @SettableArrayProperty
     def phi_v(self, key=...):
         """
-        The phase of the power spectrum, in ``rad``.
+        The spectral phase, in ``rad``.
 
         Returns
         -------
@@ -435,7 +439,7 @@ class Pulse(TFGrid):
     @SettableArrayProperty
     def _phi_v(self, key=...):
         """
-        The phase of the power spectrum arranged in standard fft order.
+        The spectral phase arranged in standard fft order.
 
         Returns
         -------
@@ -452,7 +456,7 @@ class Pulse(TFGrid):
     @property
     def tg_v(self):
         """
-        The group delay of the power spectrum, with units of ``s``.
+        The spectral group delay, with units of ``s``.
 
         Returns
         -------
@@ -556,10 +560,11 @@ class Pulse(TFGrid):
     @SettableArrayProperty
     def p_t(self, key=...):
         """
-        The average power envelope, with units of ``J/s``.
+        The power envelope, with units of ``J/s``.
 
-        The envelope of the instantaneous power, the peak power of each optical
-        cycle, is a factor of 2 larger.
+        This gives the average or rms power of the complex envelope. The
+        envelope of the instantaneous power, which tracks the peak power of
+        each optical cycle, is a factor of 2 larger.
 
         Returns
         -------
@@ -580,7 +585,7 @@ class Pulse(TFGrid):
     @SettableArrayProperty
     def _p_t(self, key=...):
         """
-        The average power envelope arranged in standard fft order.
+        The power envelope arranged in standard fft order.
 
         Returns
         -------
@@ -966,7 +971,7 @@ class Pulse(TFGrid):
             n_t = int(4*round((t_max - t_min)/t_fwhm))
         elif isinstance(n_t, str):
             assert (n_t in ["equal"]), (
-                "'{:}' is not a valid string arguments for n_t".format(n_t))
+                "'{:}' is not a valid string argument for n_t".format(n_t))
             n_t = n
         else:
             assert isinstance(n_t, (int, np.integer)), "The number of points must be an integer."
@@ -992,3 +997,8 @@ class Pulse(TFGrid):
         #---- Construct Spectrogram
         spg = Spectrogram(v_grid=v_grid, t_grid=delay_t_grid, spg=p_spg, extent=extent)
         return spg
+
+    #---- Misc
+    def copy(self):
+        """A copy of the pulse."""
+        return super().copy()

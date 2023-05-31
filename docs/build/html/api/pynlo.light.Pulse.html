@@ -290,6 +290,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.t_width.html">Pulse.t_width</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.autocorrelation.html">Pulse.autocorrelation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.spectrogram.html">Pulse.spectrogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.copy.html">Pulse.copy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.a_v.html">Pulse.a_v</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.p_v.html">Pulse.p_v</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.phi_v.html">Pulse.phi_v</a></li>
@@ -408,9 +409,9 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="pynlo.utility.resample_v.html">resample_v</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pynlo.utility.resample_t.html">resample_t</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.TFGrid.html">TFGrid</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.copy.html">TFGrid.copy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.FromFreqRange.html">TFGrid.FromFreqRange</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rtf_grids.html">TFGrid.rtf_grids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.copy.html">TFGrid.copy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.n.html">TFGrid.n</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rn.html">TFGrid.rn</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rn_range.html">TFGrid.rn_range</a></li>
@@ -501,7 +502,9 @@ document.write(`
 <dt class="sig sig-object py" id="pynlo.light.Pulse">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pynlo.light.</span></span><span class="sig-name descname"><span class="pre">Pulse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/light.html#Pulse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.light.Pulse" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pynlo.utility.TFGrid.html#pynlo.utility.TFGrid" title="pynlo.utility.TFGrid"><code class="xref py py-class docutils literal notranslate"><span class="pre">TFGrid</span></code></a></p>
-<p>An optical pulse, defined over complementary time and frequency grids.</p>
+<p>An optical pulse.</p>
+<p>A set of complementary time and frequency grids are generated to represent
+the pulse in both the time and frequency domains.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
@@ -546,8 +549,9 @@ normalization:</p>
 <span class="n">ra_v</span><span class="p">[</span><span class="n">rn_slice</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">a_v</span>
 </pre></div>
 </div>
-<p>The comoving-frame reference frequency <cite>v0</cite> is used to adjust the group
-delay of the time window during pulse propagation simulations.</p>
+<p>The comoving-frame reference frequency <cite>v0</cite> is only used to adjust the
+group delay of the time window during pulse propagation simulations, it
+does not otherwise affect the properties of the pulse.</p>
 </dd></dl>
 
 <section id="methods">
@@ -584,6 +588,9 @@ delay of the time window during pulse propagation simulations.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="pynlo.light.Pulse.spectrogram.html#pynlo.light.Pulse.spectrogram" title="pynlo.light.Pulse.spectrogram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spectrogram</span></code></a>([t_fwhm, v_range, n_t, t_range])</p></td>
 <td><p>Calculate the spectrogram of the pulse through convolution with a Gaussian window.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pynlo.light.Pulse.copy.html#pynlo.light.Pulse.copy" title="pynlo.light.Pulse.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
+<td><p>A copy of the pulse.</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -598,16 +605,16 @@ delay of the time window during pulse propagation simulations.</p>
 <td><p>The power spectrum, with units of <code class="docutils literal notranslate"><span class="pre">J/Hz</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pynlo.light.Pulse.phi_v.html#pynlo.light.Pulse.phi_v" title="pynlo.light.Pulse.phi_v"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_v</span></code></a></p></td>
-<td><p>The phase of the power spectrum, in <code class="docutils literal notranslate"><span class="pre">rad</span></code>.</p></td>
+<td><p>The spectral phase, in <code class="docutils literal notranslate"><span class="pre">rad</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pynlo.light.Pulse.tg_v.html#pynlo.light.Pulse.tg_v" title="pynlo.light.Pulse.tg_v"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tg_v</span></code></a></p></td>
-<td><p>The group delay of the power spectrum, with units of <code class="docutils literal notranslate"><span class="pre">s</span></code>.</p></td>
+<td><p>The spectral group delay, with units of <code class="docutils literal notranslate"><span class="pre">s</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pynlo.light.Pulse.a_t.html#pynlo.light.Pulse.a_t" title="pynlo.light.Pulse.a_t"><code class="xref py py-obj docutils literal notranslate"><span class="pre">a_t</span></code></a></p></td>
 <td><p>The root-power complex envelope, with units of <code class="docutils literal notranslate"><span class="pre">(J/s)**0.5</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pynlo.light.Pulse.p_t.html#pynlo.light.Pulse.p_t" title="pynlo.light.Pulse.p_t"><code class="xref py py-obj docutils literal notranslate"><span class="pre">p_t</span></code></a></p></td>
-<td><p>The average power envelope, with units of <code class="docutils literal notranslate"><span class="pre">J/s</span></code>.</p></td>
+<td><p>The power envelope, with units of <code class="docutils literal notranslate"><span class="pre">J/s</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pynlo.light.Pulse.phi_t.html#pynlo.light.Pulse.phi_t" title="pynlo.light.Pulse.phi_t"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phi_t</span></code></a></p></td>
 <td><p>The phase of the complex envelope, in <code class="docutils literal notranslate"><span class="pre">rad</span></code>.</p></td>

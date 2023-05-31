@@ -51,14 +51,14 @@ pulse = pynlo.light.Pulse.Gaussian(n_points, v_min, v_max, v0, e_p, t_fwhm,
 """
 In this example we use the refractive index, effective area, and nonlinear
 susceptibility to calculate the linear and nonlinear properties of the mode.
-The material used in this case is convgruent lithium niobate, and we use the
+The material used in this case is congruent lithium niobate, and we use the
 Sellmeier equations from Jundt (1997) for the refractive index. The generalized
-2nd-order nonlinear parameter is weigthed for second-harmonic generation using
+2nd-order nonlinear parameter is weighted for second-harmonic generation using
 the `g2_shg` function from the `utility.chi2` submodule. Poling is implemented
 by indicating the location of each domain inversion. This is calculated using
 the `domain_inversion` function of the `utility.chi2` submodule. This example
 only uses a constant poling period, but the function also supports the
-generation of arbitrary, continuously-varying poled structures.
+generation of arbitrarily chirped poling periods.
 
 """
 length = 7e-3 # 7 mm
@@ -126,7 +126,7 @@ dz = model.estimate_step_size(local_error=local_error)
 """
 This code actually runs the simulation. We input the total propagation length,
 the initial step size, local error, and the number of simulation steps we wish
-to record. We recieve the output pulse and the propagations distance, pulse
+to record. We receive the output pulse and the propagations distance, pulse
 spectrum, and complex envelope at each record point. To view real-time
 simulation results (updated whenever the simulation reaches a record point),
 set the `plot` keyword to "frq", "wvl", or "time".
@@ -140,13 +140,12 @@ pulse_out2, z, a_t, a_v = model.simulate(
 """
 The results are plotted in the time and frequency domains. Although the
 3rd-order nonlinearity is not directly included in the propagation model we see
-several 3rd-order phenomena. Due to cascaded chi2 from phase-mismatched SHG
-there is an effective 3rd-order nonlinearity, which leads to soliton formation
-and dispersive wave generation. For more details on this effect see DeSalvo et
-al. (1992). Additionally, the high frequency spike is 3rd-harmonic generation
-due cascaded second-harmonic and sum-frequency generation of/with the pump
-freuqency. The other spike is due SHG quasi-phase matched off of the
-3rd-order spatial harmonic of the poling structure.
+several 3rd-order phenomena due to cascaded 2nd-order effects. Phase-mismatched
+SHG yields an effective Kerr effect (see DeSalvo et al. (1992)), which leads to
+soliton and dispersive wave generation. Additionally, the high frequency spike
+is third-harmonic generation due cascaded second-harmonic and sum-frequency
+generation from the pump frequency. The other spike is due to SHG quasi-phase
+matched off of the 3rd-order spatial harmonic of the poling structure.
 
 References
 ----------
@@ -165,7 +164,8 @@ p_v_dB = 10*np.log10(np.abs(a_v)**2)
 p_v_dB -= p_v_dB.max()
 ax0.plot(1e-12*pulse.v_grid, p_v_dB[0], color="b")
 ax0.plot(1e-12*pulse.v_grid, p_v_dB[-1], color="g")
-ax2.pcolormesh(1e-12*pulse.v_grid, 1e3*z, p_v_dB, vmin=-40.0, vmax=0, shading="auto")
+ax2.pcolormesh(1e-12*pulse.v_grid, 1e3*z, p_v_dB,
+               vmin=-40.0, vmax=0, shading="auto")
 ax0.set_ylim(bottom=-50, top=10)
 ax2.set_xlabel('Frequency (THz)')
 
@@ -173,7 +173,8 @@ p_t_dB = 10*np.log10(np.abs(a_t)**2)
 p_t_dB -= p_t_dB.max()
 ax1.plot(1e12*pulse.t_grid, p_t_dB[0], color="b")
 ax1.plot(1e12*pulse.t_grid, p_t_dB[-1], color="g")
-ax3.pcolormesh(1e12*pulse.t_grid, 1e3*z, p_t_dB, vmin=-40.0, vmax=0, shading="auto")
+ax3.pcolormesh(1e12*pulse.t_grid, 1e3*z, p_t_dB,
+               vmin=-40.0, vmax=0, shading="auto")
 ax1.set_ylim(bottom=-50, top=10)
 ax3.set_xlabel('Time (ps)')
 

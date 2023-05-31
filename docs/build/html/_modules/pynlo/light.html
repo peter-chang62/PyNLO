@@ -320,7 +320,7 @@ document.write(`
   <h1>Source code for pynlo.light</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Representing light in the time and frequency domains.</span>
+<span class="sd">Light in the time and frequency domains.</span>
 
 <span class="sd">Notes</span>
 <span class="sd">-----</span>
@@ -360,7 +360,10 @@ document.write(`
 
 <div class="viewcode-block" id="Pulse"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.html#pynlo.light.Pulse">[docs]</a><span class="k">class</span> <span class="nc">Pulse</span><span class="p">(</span><span class="n">TFGrid</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    An optical pulse, defined over complementary time and frequency grids.</span>
+<span class="sd">    An optical pulse.</span>
+
+<span class="sd">    A set of complementary time and frequency grids are generated to represent</span>
+<span class="sd">    the pulse in both the time and frequency domains.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -403,8 +406,9 @@ document.write(`
 <span class="sd">        a_v = 2**0.5 * ra_v[rn_slice]</span>
 <span class="sd">        ra_v[rn_slice] = 2**-0.5 * a_v</span>
 
-<span class="sd">    The comoving-frame reference frequency `v0` is used to adjust the group</span>
-<span class="sd">    delay of the time window during pulse propagation simulations.</span>
+<span class="sd">    The comoving-frame reference frequency `v0` is only used to adjust the</span>
+<span class="sd">    group delay of the time window during pulse propagation simulations, it</span>
+<span class="sd">    does not otherwise affect the properties of the pulse.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v_ref</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">a_v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -740,7 +744,7 @@ document.write(`
     <span class="nd">@SettableArrayProperty</span>
     <span class="k">def</span> <span class="nf">phi_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The phase of the power spectrum, in ``rad``.</span>
+<span class="sd">        The spectral phase, in ``rad``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -755,7 +759,7 @@ document.write(`
     <span class="nd">@SettableArrayProperty</span>
     <span class="k">def</span> <span class="nf">_phi_v</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The phase of the power spectrum arranged in standard fft order.</span>
+<span class="sd">        The spectral phase arranged in standard fft order.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -772,7 +776,7 @@ document.write(`
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">tg_v</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The group delay of the power spectrum, with units of ``s``.</span>
+<span class="sd">        The spectral group delay, with units of ``s``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -876,10 +880,11 @@ document.write(`
     <span class="nd">@SettableArrayProperty</span>
     <span class="k">def</span> <span class="nf">p_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The average power envelope, with units of ``J/s``.</span>
+<span class="sd">        The power envelope, with units of ``J/s``.</span>
 
-<span class="sd">        The envelope of the instantaneous power, the peak power of each optical</span>
-<span class="sd">        cycle, is a factor of 2 larger.</span>
+<span class="sd">        This gives the average or rms power of the complex envelope. The</span>
+<span class="sd">        envelope of the instantaneous power, which tracks the peak power of</span>
+<span class="sd">        each optical cycle, is a factor of 2 larger.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -900,7 +905,7 @@ document.write(`
     <span class="nd">@SettableArrayProperty</span>
     <span class="k">def</span> <span class="nf">_p_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="o">=...</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The average power envelope arranged in standard fft order.</span>
+<span class="sd">        The power envelope arranged in standard fft order.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1286,7 +1291,7 @@ document.write(`
             <span class="n">n_t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="nb">round</span><span class="p">((</span><span class="n">t_max</span> <span class="o">-</span> <span class="n">t_min</span><span class="p">)</span><span class="o">/</span><span class="n">t_fwhm</span><span class="p">))</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_t</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">assert</span> <span class="p">(</span><span class="n">n_t</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;equal&quot;</span><span class="p">]),</span> <span class="p">(</span>
-                <span class="s2">&quot;&#39;</span><span class="si">{:}</span><span class="s2">&#39; is not a valid string arguments for n_t&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_t</span><span class="p">))</span>
+                <span class="s2">&quot;&#39;</span><span class="si">{:}</span><span class="s2">&#39; is not a valid string argument for n_t&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_t</span><span class="p">))</span>
             <span class="n">n_t</span> <span class="o">=</span> <span class="n">n</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_t</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)),</span> <span class="s2">&quot;The number of points must be an integer.&quot;</span>
@@ -1311,7 +1316,12 @@ document.write(`
 
         <span class="c1">#---- Construct Spectrogram</span>
         <span class="n">spg</span> <span class="o">=</span> <span class="n">Spectrogram</span><span class="p">(</span><span class="n">v_grid</span><span class="o">=</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">t_grid</span><span class="o">=</span><span class="n">delay_t_grid</span><span class="p">,</span> <span class="n">spg</span><span class="o">=</span><span class="n">p_spg</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">spg</span></div></div>
+        <span class="k">return</span> <span class="n">spg</span></div>
+
+    <span class="c1">#---- Misc</span>
+<div class="viewcode-block" id="Pulse.copy"><a class="viewcode-back" href="../../api/pynlo.light.Pulse.copy.html#pynlo.light.Pulse.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A copy of the pulse.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div></div>
 </pre></div>
 
                 </article>

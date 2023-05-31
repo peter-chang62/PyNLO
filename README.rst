@@ -19,16 +19,16 @@ Features:
 
 Installation
 ------------
-PyNLO requires Python 3. If you do not already have Python, the Anaconda distribution is a good all-in-one collection of Python packages. PyNLO depends on the the NumPy, SciPy, Numba, and mkl_fft packages. Matplotlib is necessary if viewing real-time simulation updates or if running the example code.
+PyNLO requires Python 3. If you do not already have Python, the Anaconda distribution is a good all-in-one collection of Python packages. PyNLO depends on the NumPy, SciPy, Numba, and mkl_fft packages. Matplotlib is necessary if viewing real-time simulation updates or if running the example code.
 
-The easiest way to install this fork is to download or clone the repository into a directory of your choice, and then insert that directory into your `sys.path <https://docs.python.org/3/library/sys.html#sys.path>`_ variable before importing the package. To test the installation, try out the scripts in the examples folder.
+The easiest way to install this fork is to download or clone the repository into a directory of your choice, and then insert that directory into your `sys.path <https://docs.python.org/3/library/sys.html#sys.path>`_ variable before importing the package. Test out the installation with the scripts in the examples folder.
 
 
 Contributing
 ------------
-Open a new issue or discussion on the GitHub repository to add suggestions for improvement, ask questions, or make other comments. Contributions to the documentation, tests, and examples are highly appreciated. New additions should be based off of the `develop` branch.
+Open a new issue or discussion on the GitHub repository to add suggestions for improvement, ask questions, or make other comments. Contributions to the documentation, tests, and examples are highly appreciated. New additions should be based off the `develop` branch.
 
 
 License
 -------
-PyNLO is licensed under the `GNU LGPLv3 license <https://choosealicense.com/licenses/lgpl-3.0/>`_. This means that you are free to use PyNLO for any project, but all modifications to its source code must be kept open source. PyNLO is provided "as is" with absolutely no warranty.
+PyNLO is licensed under the `GNU LGPLv3 license <https://choosealicense.com/licenses/lgpl-3.0/>`_. This means that you are free to use PyNLO for any project, but all modifications to it must be kept open source. PyNLO is provided "as is" with absolutely no warranty.

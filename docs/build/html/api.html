@@ -290,6 +290,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="api/pynlo.light.Pulse.t_width.html">Pulse.t_width</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/pynlo.light.Pulse.autocorrelation.html">Pulse.autocorrelation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/pynlo.light.Pulse.spectrogram.html">Pulse.spectrogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/pynlo.light.Pulse.copy.html">Pulse.copy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/pynlo.light.Pulse.a_v.html">Pulse.a_v</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/pynlo.light.Pulse.p_v.html">Pulse.p_v</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/pynlo.light.Pulse.phi_v.html">Pulse.phi_v</a></li>
@@ -408,9 +409,9 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="api/pynlo.utility.resample_v.html">resample_v</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/pynlo.utility.resample_t.html">resample_t</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="api/pynlo.utility.TFGrid.html">TFGrid</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/pynlo.utility.TFGrid.copy.html">TFGrid.copy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/pynlo.utility.TFGrid.FromFreqRange.html">TFGrid.FromFreqRange</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/pynlo.utility.TFGrid.rtf_grids.html">TFGrid.rtf_grids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/pynlo.utility.TFGrid.copy.html">TFGrid.copy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/pynlo.utility.TFGrid.n.html">TFGrid.n</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/pynlo.utility.TFGrid.rn.html">TFGrid.rn</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/pynlo.utility.TFGrid.rn_range.html">TFGrid.rn_range</a></li>
@@ -492,27 +493,27 @@ document.write(`
   <section id="module-pynlo">
 <span id="pynlo-reference"></span><h1>PyNLO Reference<a class="headerlink" href="#module-pynlo" title="Permalink to this heading">#</a></h1>
 <p>Python Nonlinear Optics</p>
-<p>TODO: brief overview of capabilites</p>
+<p>TODO: brief overview of capabilities</p>
 <section id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Permalink to this heading">#</a></h2>
-<p>All quantities should be expressed in base SI units, i.e. frequency in <code class="docutils literal notranslate"><span class="pre">Hz</span></code>,
-time in <code class="docutils literal notranslate"><span class="pre">s</span></code>, and energy in <code class="docutils literal notranslate"><span class="pre">J</span></code>.</p>
+<p>PyNLO is intended to be used with all quantities expressed in base SI units,
+i.e. frequency in <code class="docutils literal notranslate"><span class="pre">Hz</span></code>, time in <code class="docutils literal notranslate"><span class="pre">s</span></code>, and energy in <code class="docutils literal notranslate"><span class="pre">J</span></code>.</p>
 </section>
 <section id="modules">
 <h2>Modules<a class="headerlink" href="#modules" title="Permalink to this heading">#</a></h2>
 <table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="api/pynlo.light.html#module-pynlo.light" title="pynlo.light"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pynlo.light</span></code></a></p></td>
-<td><p>Representing light in the time and frequency domains.</p></td>
+<td><p>Light in the time and frequency domains.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="api/pynlo.media.html#module-pynlo.media" title="pynlo.media"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pynlo.media</span></code></a></p></td>
-<td><p>Representing optical modes in waveguides and other media.</p></td>
+<td><p>Optical modes in waveguides or other media.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="api/pynlo.device.html#module-pynlo.device" title="pynlo.device"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pynlo.device</span></code></a></p></td>
 <td><p>TODO: pulse shaper, grating compressor, prism compressor</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="api/pynlo.model.html#module-pynlo.model" title="pynlo.model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pynlo.model</span></code></a></p></td>
-<td><p>Models for simulating the propagation of light through optical media.</p></td>
+<td><p>Models for simulating the propagation of light through optical modes.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="api/pynlo.utility.html#module-pynlo.utility" title="pynlo.utility"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pynlo.utility</span></code></a></p></td>
 <td><p>Time and frequency grid utilities and other miscellaneous helper functions.</p></td>

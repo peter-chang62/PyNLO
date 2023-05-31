@@ -2,12 +2,12 @@
 """
 Python Nonlinear Optics
 
-TODO: brief overview of capabilites
+TODO: brief overview of capabilities
 
 Notes
 -----
-All quantities should be expressed in base SI units, i.e. frequency in ``Hz``,
-time in ``s``, and energy in ``J``.
+PyNLO is intended to be used with all quantities expressed in base SI units,
+i.e. frequency in ``Hz``, time in ``s``, and energy in ``J``.
 
 """
 __version__ = '1.dev'

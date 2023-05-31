@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Models for simulating the propagation of light through optical media.
+Models for simulating the propagation of light through optical modes.
 
 """
 
@@ -216,7 +216,7 @@ class Model():
             A flag that activates real-time visualization of the simulation.
             The options are ``"frq"``, ``"time"``, or ``"wvl"``, corresponding
             to the frequency, time, and wavelength domains. If set, the plot is
-            updated each time the simulation reaches one of the z position
+            updated each time the simulation reaches one of the z positions
             returned at the output. If ``None``, the default is to run the
             simulation without real-time plotting.
 
@@ -233,12 +233,11 @@ class Model():
         a_v : ndarray of complex
             The root-power spectrum of the pulse at each z position.
         """
-        #---- Z Sample Space
+        #---- Z Grid
         z_grid = np.asarray(z_grid, dtype=float)
         if z_grid.size==1:
-            # Since only the end point was given, assume that the start point is the origin
+            # Since only the end point was given, the start point is the origin
             z_grid = np.append(0.0, z_grid)
-        z = z_grid[0]
 
         if n_records is None:
             n_records = z_grid.size
@@ -247,37 +246,41 @@ class Model():
             assert (n_records >= 2), "The output must include atleast 2 points."
             z_record = np.linspace(z_grid.min(), z_grid.max(), n_records)
             z_grid = np.unique(np.append(z_grid, z_record))
+        z_record = {z:idx for idx, z in enumerate(z_record)}
 
         if self.mode.z_nonlinear.pol: # support subclasses with poling
             # always simulate up to the edge of a poled domain
             z_grid = np.unique(np.append(z_grid, list(self.mode.g2_inv)))
 
-        #---- Setup Pulse
+        #---- Setup
+        z = z_grid[0]
         pulse_out = self.pulse.copy()
+
         # Frequency Domain
         a_v_record = np.empty((n_records,pulse_out.n), dtype=complex)
         a_v_record[0,:] = pulse_out.a_v
+
         # Time Domain
         a_t_record = np.empty((n_records,pulse_out.n), dtype=complex)
         a_t_record[0,:] = pulse_out.a_t
 
-        #---- Plotting
+        # Step Size
+        if dz is None:
+            dz = self.estimate_step_size(pulse_out.a_v, z, local_error)
+            print("Initial Step Size:\t{:.3g}m".format(dz))
+
+        # Plotting
         if plot is not None:
             assert (plot in ["frq", "time", "wvl"]), (
                 "Plot choice '{:}' is unrecognized").format(plot)
             # Setup Plots
             self._setup_plots(plot, pulse_out, z)
 
-        #---- Step Size
-        if dz is None:
-            dz = self.estimate_step_size(pulse_out.a_v, z, local_error)
-            print("Initial Step Size:\t{:.3g}m".format(dz))
-
         #---- Propagate
         k5_v = None
         cont = False
         for z_stop in z_grid[1:]:
-            #---- Step
+            # Step
             (pulse_out.a_v, z, dz, k5_v, cont) = self.propagate(
                 pulse_out.a_v,
                 z, z_stop, dz,
@@ -285,13 +288,13 @@ class Model():
                 k5_v=k5_v,
                 cont=cont)
 
-            #---- Record
+            # Record
             if z in z_record:
-                idx = np.flatnonzero(z==z_record)
+                idx = z_record[z]
                 a_t_record[idx,:] = pulse_out.a_t
                 a_v_record[idx,:] = pulse_out.a_v
 
-                #---- Plot
+                # Plot
                 if plot is not None:
                     # Update Plots
                     self._update_plots(plot, pulse_out, z)
@@ -300,8 +303,10 @@ class Model():
                         # End animation with the last step
                         for artist in self._artists:
                             artist.set_animated(False)
+
             sim_res = SimulationResult(
-                pulse=pulse_out, z=z_record, a_t=a_t_record, a_v=a_v_record)
+                pulse=pulse_out, z=np.fromiter(z_record.keys(), dtype=float),
+                a_t=a_t_record, a_v=a_v_record)
         return sim_res
 
     def propagate(self, a_v, z, z_stop, dz, local_error, k5_v=None, cont=False):
@@ -367,8 +372,7 @@ class Model():
             a_RK4_v, a_RK3_v, k5_v_next = self.step(a_v, z, z_next, k5_v=k5_v, cont=cont)
 
             #---- Estimate Relative Local Error
-            est_error = l2_error(a_RK4_v, a_RK3_v) #TODO: better to have error in freq or time domain?
-            # est_error = l2_error(fft.ifft(a_RK4_v), fft.ifft(a_RK3_v)) #TODO: better to have error in freq or time domain?
+            est_error = l2_error(a_RK4_v, a_RK3_v)
             error_ratio = (est_error/local_error)**0.25
 
             #---- Propagate Solution
