@@ -46,16 +46,17 @@ pulse = pynlo.light.Pulse.Sech(n_points, v_min, v_max, v0, e_p, t_fwhm)
 # %% Mode Properties
 """
 We need to define both the linear and nonlinear properties of the waveguide. In
-this example, we are only given the waveguide properties at a single frequency,
-so we have to extrapolate those to the rest of the frequency grid. For the beta
+this example, we are only given the waveguide properties at a single frequency
+so we must extrapolate to the rest of the frequency grid. For the beta
 parameter this is accomplished using a Taylor series, but for the nonlinearity
 we use the `gamma_to_g3` conversion function from the `utility.chi3` submodule.
 This function calculates the generalized 3rd-order nonlinear parameter
-(required by the PyNLO propagation models) from the gamma parameter and optical
-shock time scale. If available, the nonlinear parameter can also be generated
-from the refractive index, effective area, and nonlinear susceptibility, see
-`utility.chi3` for more details. The Raman effect is implemented using the
-Raman response function given in section 2.3.3 of Agrawal.
+(required by the PyNLO propagation models) from the gamma parameter and the
+optical shock time scale. If available, the nonlinear parameter can also be
+generated from the refractive index, effective area, and nonlinear
+susceptibility, see `utility.chi3` for more details. The Raman effect is
+implemented using the Raman response function given in section 2.3.3 of
+Agrawal.
 
 References
 ----------
@@ -96,8 +97,8 @@ mode = pynlo.media.Mode(pulse.v_grid, beta, g3=g3, rv_grid=rv_grid, r3=raman)
 # %% Model
 """
 The NLSE model is initialized with the pulse and mode objects defined above. At
-this stage we also use the target local error to estimate the optimal initial
-step size.
+this stage we also estimate the optimal initial step size given a target local
+error.
 
 """
 model = pynlo.model.NLSE(pulse, mode)
@@ -109,12 +110,12 @@ dz = model.estimate_step_size(local_error=local_error)
 
 # %% Simulate
 """
-This code actually runs the simulation. We input the total propagation length,
-the initial step size, local error, and the number of simulation steps we wish
-to record. We receive the output pulse and the propagations distance, pulse
-spectrum, and complex envelope at each record point. To view real-time
-simulation results (updated whenever the simulation reaches a record point),
-set the `plot` keyword to "frq", "wvl", or "time".
+The model's `simulate` method runs the simulation. We input the total
+propagation length, the initial step size, local error, and the number of
+simulation steps we wish to record. We receive the output pulse and the
+propagations distance, pulse spectrum, and complex envelope at each record
+point. To view real-time simulation results (updated whenever the simulation
+reaches a record point), set the `plot` keyword to "frq", "wvl", or "time".
 
 """
 pulse_out, z, a_t, a_v = model.simulate(

@@ -885,7 +885,7 @@ class TFGrid():
             n = self.n
         else:
             assert (alias >= 1), "The harmonic support must be atleast 1."
-            target_n_v = self.rn_range.max()*alias
+            target_n_v = round(self.rn_range.max()*alias)
             if alias == 1:
                 n = 2*target_n_v - 1 # odd
             else:

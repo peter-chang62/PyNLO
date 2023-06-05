@@ -124,12 +124,12 @@ dz = model.estimate_step_size(local_error=local_error)
 
 # %% Simulate
 """
-This code actually runs the simulation. We input the total propagation length,
-the initial step size, local error, and the number of simulation steps we wish
-to record. We receive the output pulse and the propagations distance, pulse
-spectrum, and complex envelope at each record point. To view real-time
-simulation results (updated whenever the simulation reaches a record point),
-set the `plot` keyword to "frq", "wvl", or "time".
+The model's `simulate` method runs the simulation. We input the total
+propagation length, the initial step size, local error, and the number of
+simulation steps we wish to record. We receive the output pulse and the
+propagations distance, pulse spectrum, and complex envelope at each record
+point. To view real-time simulation results (updated whenever the simulation
+reaches a record point), set the `plot` keyword to "frq", "wvl", or "time".
 
 """
 pulse_out2, z, a_t, a_v = model.simulate(
@@ -143,7 +143,7 @@ The results are plotted in the time and frequency domains. Although the
 several 3rd-order phenomena due to cascaded 2nd-order effects. Phase-mismatched
 SHG yields an effective Kerr effect (see DeSalvo et al. (1992)), which leads to
 soliton and dispersive wave generation. Additionally, the high frequency spike
-is third-harmonic generation due cascaded second-harmonic and sum-frequency
+is third-harmonic generation due to cascaded second-harmonic and sum-frequency
 generation from the pump frequency. The other spike is due to SHG quasi-phase
 matched off of the 3rd-order spatial harmonic of the poling structure.
 

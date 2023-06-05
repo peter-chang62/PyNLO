@@ -43,7 +43,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Notes" href="../notes.html" />
-    <link rel="prev" title="Silica PCF: Supercontinuum" href="silica-pcf_supercontinuum.html" />
+    <link rel="prev" title="Optical Solitons" href="optical-solitons.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -277,6 +277,7 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Package Overview</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../examples.html">Examples</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="silica-pcf_supercontinuum.html">Silica PCF: Supercontinuum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optical-solitons.html">Optical Solitons</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">PPLN: Cascaded Chi2</a></li>
 </ul>
 </li>
@@ -470,12 +471,12 @@ document.write(`
 
 <span class="c1"># %% Simulate</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This code actually runs the simulation. We input the total propagation length,</span>
-<span class="sd">the initial step size, local error, and the number of simulation steps we wish</span>
-<span class="sd">to record. We receive the output pulse and the propagations distance, pulse</span>
-<span class="sd">spectrum, and complex envelope at each record point. To view real-time</span>
-<span class="sd">simulation results (updated whenever the simulation reaches a record point),</span>
-<span class="sd">set the `plot` keyword to &quot;frq&quot;, &quot;wvl&quot;, or &quot;time&quot;.</span>
+<span class="sd">The model&#39;s `simulate` method runs the simulation. We input the total</span>
+<span class="sd">propagation length, the initial step size, local error, and the number of</span>
+<span class="sd">simulation steps we wish to record. We receive the output pulse and the</span>
+<span class="sd">propagations distance, pulse spectrum, and complex envelope at each record</span>
+<span class="sd">point. To view real-time simulation results (updated whenever the simulation</span>
+<span class="sd">reaches a record point), set the `plot` keyword to &quot;frq&quot;, &quot;wvl&quot;, or &quot;time&quot;.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">pulse_out2</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">a_t</span><span class="p">,</span> <span class="n">a_v</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span>
@@ -489,7 +490,7 @@ document.write(`
 <span class="sd">several 3rd-order phenomena due to cascaded 2nd-order effects. Phase-mismatched</span>
 <span class="sd">SHG yields an effective Kerr effect (see DeSalvo et al. (1992)), which leads to</span>
 <span class="sd">soliton and dispersive wave generation. Additionally, the high frequency spike</span>
-<span class="sd">is third-harmonic generation due cascaded second-harmonic and sum-frequency</span>
+<span class="sd">is third-harmonic generation due to cascaded second-harmonic and sum-frequency</span>
 <span class="sd">generation from the pump frequency. The other spike is due to SHG quasi-phase</span>
 <span class="sd">matched off of the 3rd-order spatial harmonic of the poling structure.</span>
 
@@ -545,12 +546,12 @@ document.write(`
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="silica-pcf_supercontinuum.html"
+       href="optical-solitons.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Silica PCF: Supercontinuum</p>
+        <p class="prev-next-title">Optical Solitons</p>
       </div>
     </a>
     <a class="right-next"

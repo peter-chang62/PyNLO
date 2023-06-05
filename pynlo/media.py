@@ -342,7 +342,7 @@ class Mode():
         ndarray of float
 
         """
-        return np.gradient(self.beta1(), self._w_grid, edge_order=2)
+        return np.gradient(self.beta1, self._w_grid, edge_order=2)
 
     @property
     def D(self):

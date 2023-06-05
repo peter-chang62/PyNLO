@@ -876,9 +876,9 @@ class NLSE(Model):
 
         #---- Raman
         if self.r3 is not None:
-            a2_v = fft.rfft(a2_t, fsc=self.dt)
-            a2r_v = prod(a2_v, self.r3)
-            a2_t = fft.irfft(a2r_v, fsc=self.dt, n=self.n_points)
+            a2_rv = fft.rfft(a2_t, fsc=self.dt)
+            a2r_rv = prod(self.r3, a2_rv)
+            a2_t = fft.irfft(a2r_rv, fsc=self.dt, n=self.n_points)
 
         #---- Kerr
         a3_t = prod(a_t, a2_t)
@@ -982,21 +982,19 @@ class UPE(Model):
         self._1j_w_grid = 1j * self.w_grid
 
         # Real-Valued Time Domain Grid
-        self.nl_n_points = self.pulse.rn
-        self.nl_dt = self.pulse.rdt
+        self.rn_points = self.pulse.rn
+        self.rdt = self.pulse.rdt
 
         # Carrier-Resolved Slice
-        self.cr_slice = self.pulse.rn_slice
-        self.cr_pre_slice = slice(None, self.pulse.rn_range.min())
-        self.cr_post_slice = slice(self.pulse.rn_range.max() + 1, None)
+        self.rn_slice = self.pulse.rn_slice
 
         # Initialize Arrays
         self._0_v = np.zeros_like(self.pulse.v_grid, dtype=complex)
         self._nl_v = np.zeros_like(self.pulse.v_grid, dtype=complex)
-        self._nl_a_v = np.zeros_like(self.pulse.rv_grid, dtype=complex)
+        self._a_rv = np.zeros_like(self.pulse.rv_grid, dtype=complex)
         self._0_rt = np.zeros_like(self.pulse.rt_grid, dtype=float)
-        self._nl_a2_t = np.zeros_like(self.pulse.rt_grid, dtype=float)
-        self._nl_a3_t = np.zeros_like(self.pulse.rt_grid, dtype=float)
+        self._a2_rt = np.zeros_like(self.pulse.rt_grid, dtype=float)
+        self._a3_rt = np.zeros_like(self.pulse.rt_grid, dtype=float)
 
     def propagate(self, a_v, z, z_stop, dz, local_error, k5_v=None, cont=False):
         #---- Update Poling
@@ -1029,30 +1027,30 @@ class UPE(Model):
         """
         #---- Setup
         self._nl_v[...] = self._0_v # zero
-        self._nl_a_v[self.cr_slice] = a_v
-        nl_a_t = fft.irfft(self._nl_a_v, fsc=self.nl_dt * 2**0.5, n=self.nl_n_points) # 1/2**0.5 for analytic to real
-        nl_a2_t = nl_a_t * nl_a_t
+        self._a_rv[self.rn_slice] = a_v
+        a_rt = fft.irfft(self._a_rv, fsc=self.rdt * 2**0.5, n=self.rn_points) # 1/2**0.5 for analytic to real
+        a2_rt = a_rt * a_rt
 
         #---- 2nd-Order Nonlinearity
         if self.g2 is not None:
-            nl_a2_v = fft.rfft(nl_a2_t, fsc=self.nl_dt * 2**0.5) # 2**0.5 for real to analytic
+            a2_rv = fft.rfft(a2_rt, fsc=self.rdt * 2**0.5) # 2**0.5 for real to analytic
             if self.g2_pol: # poled
-                self._nl_v += prod(self.g2, nl_a2_v[self.cr_slice])
+                self._nl_v += prod(self.g2, a2_rv[self.rn_slice])
             else: # not poled
-                self._nl_v -= prod(self.g2, nl_a2_v[self.cr_slice])
+                self._nl_v -= prod(self.g2, a2_rv[self.rn_slice])
 
         #---- 3rd-Order Nonlinearity
         if self.g3 is not None:
             # Raman
             if self.r3 is not None:
-                nl_a2_v = (fft.rfft(nl_a2_t, fsc=self.nl_dt) if self.g2 is None
-                           else nl_a2_v * 2**-0.5) # 1/2**0.5 for analytic to real
-                nl_a2r3_v = prod(nl_a2_v, self.r3)
-                nl_a2_t = fft.irfft(nl_a2r3_v, fsc=self.nl_dt, n=self.nl_n_points)
+                a2_rv = (fft.rfft(a2_rt, fsc=self.rdt) if self.g2 is None
+                           else a2_rv * 2**-0.5) # 1/2**0.5 for analytic to real
+                a2r_rv = prod(self.r3, a2_rv)
+                a2_rt = fft.irfft(a2r_rv, fsc=self.rdt, n=self.rn_points)
             # Kerr
-            nl_a3_t = nl_a_t * nl_a2_t
-            nl_a3_v = fft.rfft(nl_a3_t, fsc=self.nl_dt * 2**0.5) # 2**0.5 for real to analytic
-            self._nl_v -= prod(self.g3, nl_a3_v[self.cr_slice])
+            a3_rt = a_rt * a2_rt
+            a3_rv = fft.rfft(a3_rt, fsc=self.rdt * 2**0.5) # 2**0.5 for real to analytic
+            self._nl_v -= prod(self.g3, a3_rv[self.rn_slice])
 
         #---- Nonlinear Response
         return prod(self._1j_w_grid, self._nl_v) # minus sign included in _nl_v
@@ -1104,31 +1102,31 @@ class UPE(Model):
 
         #---- 2nd-Order Nonlinearity
         if self.g2 is not None:
-            self._nl_a2_t[...] = self._0_rt # zero
+            self._a2_rt[...] = self._0_rt # zero
             for g2_internal in self.g2[1:]:
-                self._nl_a_v[self.cr_slice] = prod(a_v, g2_internal)
-                nl_a_t = fft.irfft(self._nl_a_v, fsc=self.nl_dt * 2**0.5, n=self.nl_n_points) # 1/2**0.5 for analytic to real
-                self._nl_a2_t += nl_a_t * nl_a_t
-            nl_a2_v = fft.rfft(self._nl_a2_t, fsc=self.nl_dt * 2**0.5) # 2**0.5 for real to analytic
+                self._a_rv[self.rn_slice] = prod(a_v, g2_internal)
+                a_rt = fft.irfft(self._a_rv, fsc=self.rdt * 2**0.5, n=self.rn_points) # 1/2**0.5 for analytic to real
+                self._a2_rt += a_rt * a_rt
+            a2_rv = fft.rfft(self._a2_rt, fsc=self.rdt * 2**0.5) # 2**0.5 for real to analytic
             if self.g2_pol: # poled
-                self._nl_v += prod(self.g2[0], nl_a2_v[self.cr_slice])
+                self._nl_v += prod(self.g2[0], a2_rv[self.rn_slice])
             else: # not poled
-                self._nl_v -= prod(self.g2[0], nl_a2_v[self.cr_slice])
+                self._nl_v -= prod(self.g2[0], a2_rv[self.rn_slice])
 
         #---- 3rd-Order Nonlinearity
         if self.g3 is not None:
-            self._nl_a3_t[...] = self._0_rt # zero
+            self._a3_rt[...] = self._0_rt # zero
             for g3_internal in self.g3[1:]:
-                self._nl_a_v[self.cr_slice] = prod(a_v, g3_internal)
-                nl_a_t = fft.irfft(self._nl_a_v, fsc=self.nl_dt * 2**0.5, n=self.nl_n_points) # 1/2**0.5 for analytic to real
-                nl_a2_t = nl_a_t * nl_a_t
+                self._a_rv[self.rn_slice] = prod(a_v, g3_internal)
+                a_rt = fft.irfft(self._a_rv, fsc=self.rdt * 2**0.5, n=self.rn_points) # 1/2**0.5 for analytic to real
+                a2_rt = a_rt * a_rt
                 if self.r3 is not None:
-                    nl_a2_v = fft.rfft(nl_a2_t, fsc=self.nl_dt)
-                    nl_a2r3_v = prod(nl_a2_v, * self.r3)
-                    nl_a2_t = fft.irfft(nl_a2r3_v, fsc=self.nl_dt, n=self.nl_n_points)
-                self._nl_a3_t += nl_a_t * nl_a2_t
-            nl_a3_v = fft.rfft(self._nl_a3_t, fsc=self.nl_dt * 2**0.5) # 2**0.5 for real to analytic
-            self._nl_v -= prod(self.g3[0], nl_a3_v[self.cr_slice])
+                    a2_rv = fft.rfft(a2_rt, fsc=self.rdt)
+                    a2r_rv = prod(self.r3, a2_rv)
+                    a2_rt = fft.irfft(a2r_rv, fsc=self.rdt, n=self.rn_points)
+                self._a3_rt += a_rt * a2_rt
+            a3_rv = fft.rfft(self._a3_rt, fsc=self.rdt * 2**0.5) # 2**0.5 for real to analytic
+            self._nl_v -= prod(self.g3[0], a3_rv[self.rn_slice])
 
         #---- Nonlinear Response
         return prod(self._1j_w_grid, self._nl_v) # minus sign included in _nl_v

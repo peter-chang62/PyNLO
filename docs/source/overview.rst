@@ -10,7 +10,7 @@ The core functionality of this package is built off of the time and frequency gr
 
 Pulses
 ------
-Optical pulses are represented in PyNLO with :py:class:`pynlo.light.Pulse` objects. These contain methods for accessing the time and frequency domain properties of the pulse and the underlying time and frequency grids. There are several convenience methods for generating pulses from pre-defined shapes (:py:meth:`~pynlo.light.Pulse.Sech`, :py:meth:`~pynlo.light.Pulse.Gaussian`, and others) and from existing spectral data (:py:meth:`~pynlo.light.Pulse.FromPowerSpectrum`).
+Optical pulses are represented in PyNLO with :py:class:`pynlo.light.Pulse` objects. These contain methods for accessing the time and frequency domain properties of the pulse and the underlying time and frequency grids. There are several convenience methods for generating pulses from pre-defined shapes (:py:meth:`~pynlo.light.Pulse.Sech`, :py:meth:`~pynlo.light.Pulse.Gaussian`, etc.) and from existing spectral data (:py:meth:`~pynlo.light.Pulse.FromPowerSpectrum`).
 
 
 Modes
@@ -25,4 +25,4 @@ The propagation models implemented in PyNLO are found in :py:mod:`pynlo.model`. 
 
 Utilities
 ---------
-The :py:mod:`pynlo.utility` module includes helper and calculator-type functions as well as other miscellaneous items such as the :py:class:`~pynlo.utility.TFGrid` class and functions for evaluating :py:func:`~pynlo.utility.taylor_series` and calculating :py:func:`~pynlo.utility.vacuum` noise. The utilities are organized into submodules based on their relationship to the linear (:py:mod:`~pynlo.utility.chi1`) or nonlinear (:py:mod:`~pynlo.utility.chi2` and :py:mod:`~pynlo.utility.chi3`) susceptibilities. The fast Fourier transforms used in PyNLO are defined in the :py:mod:`~pynlo.utility.fft` submodule.
+The :py:mod:`pynlo.utility` module includes helper and calculator-type functions as well as other miscellaneous items such as the :py:class:`~pynlo.utility.TFGrid` class, functions for evaluating :py:func:`~pynlo.utility.taylor_series`, calculating :py:func:`~pynlo.utility.vacuum` noise, et cetera. The utilities are organized into submodules based on their relationship to the linear (:py:mod:`~pynlo.utility.chi1`) or nonlinear (:py:mod:`~pynlo.utility.chi2` and :py:mod:`~pynlo.utility.chi3`) susceptibilities. The fast Fourier transforms used in PyNLO are defined in the :py:mod:`~pynlo.utility.fft` submodule.

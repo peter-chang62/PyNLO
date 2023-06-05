@@ -505,11 +505,11 @@ document.write(`
 <h1>raman<a class="headerlink" href="#raman" title="Permalink to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pynlo.utility.chi3.raman">
-<span class="sig-prename descclassname"><span class="pre">pynlo.utility.chi3.</span></span><span class="sig-name descname"><span class="pre">raman</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/utility/chi3.html#raman"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.utility.chi3.raman" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pynlo.utility.chi3.</span></span><span class="sig-name descname"><span class="pre">raman</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r_weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analytic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pynlo/utility/chi3.html#raman"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pynlo.utility.chi3.raman" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the frequency-domain Raman and instantaneous nonlinear response
 function.</p>
-<p>This calculates the normalized Raman response using approximate formulas in
-the time domain. The total Raman fraction from the resonant and boson
+<p>This calculates the normalized Raman response using approximated formulas
+in the time domain. The total Raman fraction from the resonant and boson
 contributions should be less than 1.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -532,6 +532,11 @@ response function, and <cite>tau_b</cite> is the boson peak’s characteristic
 decay time. More than one peak may be entered using an (n, 2) shaped
 array.</p>
 </dd>
+<dt><strong>analytic</strong><span class="classifier">bool, optional</span></dt><dd><p>A flag that sets the proper normalization for use with the analytic or
+real-valued representation. The default normalizes for the analytic
+representation, which is the proper format for use with the <cite>NLSE</cite>
+model. Set this parameter to <cite>False</cite> if using the <cite>UPE</cite> model.</p>
+</dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -546,10 +551,23 @@ the frequency grid given by <code class="docutils literal notranslate"><span cla
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The equations used are the approximate formulations as summarized in
+<p>The equations used are the approximated formulations as summarized in
 section 2.3.3 of Agrawal’s Nonlinear Fiber Optics <a class="reference internal" href="#r63e12b8249aa-1" id="id1">[1]</a>. More accurate
 simulations may be obtainable using digitized experimental measurements,
-such as those shown in figure 2.2 of <a class="reference internal" href="#r63e12b8249aa-1" id="id2">[1]</a>.</p>
+such as those shown in figure 2.2 of <a class="reference internal" href="#r63e12b8249aa-1" id="id2">[1]</a>. The coefficients listed in
+Agrawal for silica-based fibers are as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">r_weights</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.245</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mf">0.21</span><span class="p">),</span> <span class="mf">12.2e-15</span><span class="p">,</span> <span class="mf">32e-15</span><span class="p">]</span> <span class="c1"># resonant contribution</span>
+<span class="n">b_weights</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.245</span><span class="o">*</span><span class="mf">0.21</span><span class="p">,</span> <span class="mf">96e-15</span><span class="p">]</span> <span class="c1"># boson contribution</span>
+</pre></div>
+</div>
+<p>For the carrier-resolved or real-valued representation, an additional
+factor of 3/2 is necessary to properly normalize the Raman response. The
+formulas used in this method have been fit to the analytic representation,
+which is normalized assuming that all three self-phase modulation pathways
+fold through baseband. In the real-valued domain however, only two pass
+through baseband. The third pathway is through the second harmonic. Thus,
+in the real-valued representation the Raman response must be normalized to
+produce the same nonlinear response against 2/3 the spectral amplitude.</p>
 <p class="rubric">References</p>
 <div role="list" class="citation-list">
 <div class="citation" id="r63e12b8249aa-1" role="doc-biblioentry">

@@ -133,13 +133,13 @@ def g3_spm(n_eff, a_eff, chi3_eff):
     """
     return 1/2 * chi3_eff/(e0*c**2 * n_eff**2 * a_eff)
 
-def raman(n, dt, r_weights, b_weights=None):
+def raman(n, dt, r_weights, b_weights=None, analytic=True):
     """
     Calculate the frequency-domain Raman and instantaneous nonlinear response
     function.
 
-    This calculates the normalized Raman response using approximate formulas in
-    the time domain. The total Raman fraction from the resonant and boson
+    This calculates the normalized Raman response using approximated formulas
+    in the time domain. The total Raman fraction from the resonant and boson
     contributions should be less than 1.
 
     Parameters
@@ -162,6 +162,11 @@ def raman(n, dt, r_weights, b_weights=None):
         response function, and `tau_b` is the boson peak's characteristic
         decay time. More than one peak may be entered using an (n, 2) shaped
         array.
+    analytic : bool, optional
+        A flag that sets the proper normalization for use with the analytic or
+        real-valued representation. The default normalizes for the analytic
+        representation, which is the proper format for use with the `NLSE`
+        model. Set this parameter to `False` if using the `UPE` model.
 
     Returns
     -------
@@ -174,10 +179,23 @@ def raman(n, dt, r_weights, b_weights=None):
 
     Notes
     -----
-    The equations used are the approximate formulations as summarized in
+    The equations used are the approximated formulations as summarized in
     section 2.3.3 of Agrawal's Nonlinear Fiber Optics [1]_. More accurate
     simulations may be obtainable using digitized experimental measurements,
-    such as those shown in figure 2.2 of [1]_.
+    such as those shown in figure 2.2 of [1]_. The coefficients listed in
+    Agrawal for silica-based fibers are as follows::
+
+        r_weights = [0.245*(1-0.21), 12.2e-15, 32e-15] # resonant contribution
+        b_weights = [0.245*0.21, 96e-15] # boson contribution
+
+    For the carrier-resolved or real-valued representation, an additional
+    factor of 3/2 is necessary to properly normalize the Raman response. The
+    formulas used in this method have been fit to the analytic representation,
+    which is normalized assuming that all three self-phase modulation pathways
+    fold through baseband. In the real-valued domain however, only two pass
+    through baseband. The third pathway is through the second harmonic. Thus,
+    in the real-valued representation the Raman response must be normalized to
+    produce the same nonlinear response against 2/3 the spectral amplitude.
 
     References
     ----------
@@ -249,7 +267,12 @@ def raman(n, dt, r_weights, b_weights=None):
             raman_frac += weight[0]
             raman_t += h_b(*weight)
 
+    # Normalize
     assert raman_frac <= 1, "The total fractional Raman contribution must be less than 1."
+    if raman_frac != 0:
+        raman_t *= raman_frac/(np.sum(raman_t)*dt)
+    if not analytic:
+        raman_t *= 3/2
 
     #---- Instantaneous Response
     delta_t = np.zeros_like(t_grid)
@@ -260,6 +283,7 @@ def raman(n, dt, r_weights, b_weights=None):
     nonlinear_t = raman_t + delta_t
     nonlinear_v = fft.rfft(nonlinear_t, fsc=dt) # already in standard fft order
     return rv_grid, nonlinear_v
+
 
 
 # %% Solitons

@@ -538,7 +538,7 @@ b\!\left[L\right] &amp;\approx -i \frac{f}{\Delta\beta} \left(1 - e^{-i \, \Delt
 \\
 {\beta_\alpha}_{nm}\!\left[\nu\right] &amp;= \iint_{A_\infty} \left(\epsilon_0 \, c \, n_\text{eff}\right) \, {\hat{\mathbf{e}}^*_n}_t \cdot \left(\frac{1}{8} \frac{\alpha^2}{\beta_n}\right) \cdot {\hat{\mathbf{e}}_m}_t \, dA
 \end{align}\end{split}\]</div>
-<p>Since <span class="math notranslate nohighlight">\(\beta_n\)</span> is of the order of <span class="math notranslate nohighlight">\(10^{6}\)</span> per meter for near-infrared light, <span class="math notranslate nohighlight">\(\beta_\alpha\)</span> can usually be ignored. However, it should be included when the magnitude of <span class="math notranslate nohighlight">\(\alpha\)</span> is unusually large such as in an absorptive material or in the gain medium of an amplifier.</p>
+<p>Since <span class="math notranslate nohighlight">\(\beta_n\)</span> is on the order of <span class="math notranslate nohighlight">\(10^{6}\)</span> per meter for near-infrared light, <span class="math notranslate nohighlight">\(\beta_\alpha\)</span> can usually be ignored. However, it should be included when the magnitude of <span class="math notranslate nohighlight">\(\alpha\)</span> is unusually large such as in an absorptive material or in the gain medium of an amplifier.</p>
 <p>From the orthogonality relationship, <span class="math notranslate nohighlight">\({\hat{\mathbf{e}}_n^*}_t \cdot {\hat{\mathbf{e}}_m}_t\)</span> only integrates to a Kronecker delta <span class="math notranslate nohighlight">\(\delta_{m n}\)</span> if the longitudinal components of the electric fields (<span class="math notranslate nohighlight">\(\hat{e}_z\)</span>) are negligible. Thus, besides an inhomogeneous <span class="math notranslate nohighlight">\(\alpha\)</span>, gain and loss can also couple modes together because of a large <span class="math notranslate nohighlight">\(\hat{e}_z\)</span> component.</p>
 </section>
 <section id="Changing-Mode-Profiles">
@@ -727,7 +727,7 @@ g^{\left(2\right)}\!\left[\nu_1, \nu_2\right] = \frac{1}{2} \sqrt{\frac{{A_\text
 This effect has the same properties as the equivalent third-order nonlinearity <a class="reference external" href="#Nonlinear-Refractive-Index">discussed below</a>. For sufficiently large values of the phase mismatch <span class="math notranslate nohighlight">\(\Delta\beta\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[n_2^\text{eff} \approx - \frac{\nu}{\epsilon_0 \, c^2} \frac{\chi^{(2)}_\text{eff}}{n_{2\omega} \, n_\omega^2} \frac{\pi}{\Delta\beta}\]</div>
-<p>Depending on the sign of the phase mismatch <span class="math notranslate nohighlight">\(n_2^\text{eff}\)</span> can be either positive or negative, however, this equation breaks down as the phase mismatch approaches <span class="math notranslate nohighlight">\(0\)</span> (see <a class="reference external" href="https://doi.org/10.1364/OL.17.000028">DeSalvo (1992)</a> for more details).</p>
+<p>Depending on the sign of the phase mismatch, the nonlinear index <span class="math notranslate nohighlight">\(n_2^\text{eff}\)</span> can be either positive or negative. In the small phase mismatch regime, this equation breaks down and the nonlinear index is governed by a Kramers-Kronig relationship with the pump depletion rate (see <a class="reference external" href="https://doi.org/10.1364/OL.17.000028">DeSalvo (1992)</a> for more details).</p>
 </section>
 </section>
 <section id="id3">
@@ -790,7 +790,7 @@ L = \text{propagation length}
 n = n_0 + n_2 \left&lt;I\right&gt;
 \end{gather}\]</div>
 <p>where <span class="math notranslate nohighlight">\(I\)</span> is the intensity of the light defined through the Poynting vector, and <span class="math notranslate nohighlight">\(\left&lt;\ldots\right&gt;\)</span> denotes the instantaneous time average as given by the absolute mean square of the electric field’s complex envelope.</p>
-<p>The third order nonlinear susceptibility <span class="math notranslate nohighlight">\(\chi^{\left(3\right)}\)</span> may be cast in terms of the Kerr nonlinear index <span class="math notranslate nohighlight">\(n_2\)</span> by relating the two through the definition of the relative permittivity (see the <a class="reference internal" href="supplemental.html#Relationship-Between-Kerr-Parameter-and-Nonlinear-Susceptibility"><span class="std std-ref">supplemental</span></a> for more details):</p>
+<p>The third order nonlinear susceptibility <span class="math notranslate nohighlight">\(\chi^{\left(3\right)}\)</span> may be cast in terms of the Kerr nonlinear index <span class="math notranslate nohighlight">\(n_2\)</span> by relating the two through the definition of the relative permittivity (see the <a class="reference internal" href="supplemental.html#Relationship-Between-the-Kerr-Parameter-and-the-Nonlinear-Susceptibility"><span class="std std-ref">supplemental</span></a> for more details):</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align}
 \chi^{\left(3\right)} &amp;= \frac{4}{3} \, \epsilon_0 \, c \, n_0^2 \, n_2
@@ -838,9 +838,9 @@ a\!\left[\omega - \omega_0\right] &amp;= \int_{-\infty}^{\infty} a\!\left[t\righ
 <p>The nonlinear response parameter is itself split between the instantaneous nonlinearity of the Kerr effect and the delayed Raman response function <span class="math notranslate nohighlight">\(h_R\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
-R\!\left[t\right] = f_R \, h_R\!\left[t\right] + \left(1 - f_R\right) \delta\!\left[t\right]
+R\!\left[t\right] = f_R \, h_R\!\left[t\right] + \left(1 - f_R\right) \, \delta\!\left[t\right]
 \\
-1 = \int_{0}^{\infty} R\!\left[t\right] dt = \int_{0}^{\infty} h_R\!\left[t\right] dt
+1 = \int_{0}^{\infty} R\!\left[t\right] \, dt = \int_{0}^{\infty} h_R\!\left[t\right] \, dt
 \end{gather}\end{split}\]</div>
 <p>The Raman fraction <span class="math notranslate nohighlight">\(f_R\)</span> sets the relative strength of the instantaneous and delayed effects. The Raman response <span class="math notranslate nohighlight">\(h_R\)</span> primarily acts on the difference frequencies of the two inputs. In silica it is strongest at offsets between 10 to 15 THz.</p>
 <p>In the time domain, the nonlinear response parameter acts through convolution with the square of the time-domain amplitude:</p>
@@ -854,10 +854,10 @@ R\!\left[t\right] = f_R \, h_R\!\left[t\right] + \left(1 - f_R\right) \delta\!\l
 <section id="Numerical-Implementation">
 <h2>Numerical Implementation<a class="headerlink" href="#Numerical-Implementation" title="Permalink to this heading">#</a></h2>
 <p>The goal of a fast and accurate numerical implementation is to cast the equations into a form that minimizes both the numerical complexity and the degree of approximation. Besides just reducing the numerical complexity of individual terms, it is also important to use an accurate and efficient numerical differential equation solver. For this purpose, PyNLO uses the embedded 4th-order Runge-Kutta method of <a class="reference external" href="https://doi.org/10.1016/j.cpc.2012.12.020">Balac and Mahé (2013)</a>.</p>
-<section id="Simplifying-the-Nonlinear-Terms">
-<h3>Simplifying the Nonlinear Terms<a class="headerlink" href="#Simplifying-the-Nonlinear-Terms" title="Permalink to this heading">#</a></h3>
-<p>The numerical complexity of the convolutions required to calculate the second- and third-order nonlinear terms go as <span class="math notranslate nohighlight">\(N^2\)</span> and <span class="math notranslate nohighlight">\(N^3\)</span> respectively. However, if the terms in the convolution can be put in separable form, where the convolution is represented by the product of single variable functions, then the convolution can be recast as a product of Fourier transforms. Using the fast Fourier transform (fft) the complexity of the resulting convolutions scale as
-<span class="math notranslate nohighlight">\(N \log\left[N\right]\)</span>. For the number of points typically used in nonlinear simulations, that difference can mean orders of magnitude improvement to the run time.</p>
+<section id="Nonlinear-Terms">
+<h3>Nonlinear Terms<a class="headerlink" href="#Nonlinear-Terms" title="Permalink to this heading">#</a></h3>
+<p>The numerical complexity of the convolutions required to calculate the second- and third-order nonlinear terms go as <span class="math notranslate nohighlight">\(N^2\)</span> and <span class="math notranslate nohighlight">\(N^3\)</span> respectively. However, if the nonlinear terms can be put in separable form, i.e. as the product of single variable functions, then the convolution can be recast as a product of Fourier transforms. Using the fast Fourier transform (fft) the complexity of the resulting convolutions scale as <span class="math notranslate nohighlight">\(N \log\left[N\right]\)</span>. For the number of points typically
+used in nonlinear simulations, that difference can mean orders of magnitude improvement to the run time.</p>
 <section id="Vector-Decomposition">
 <h4>Vector Decomposition<a class="headerlink" href="#Vector-Decomposition" title="Permalink to this heading">#</a></h4>
 <p>The most general procedure involves numerically calculating all terms in the 2nd- and 3rd-order <span class="math notranslate nohighlight">\(g\)</span> parameters and then decomposing the tensors as the sum of the product of separable functions. In general, the <span class="math notranslate nohighlight">\(g\)</span> parameters may be written as the product of a function <span class="math notranslate nohighlight">\(h\)</span>, dependent on the output frequency <span class="math notranslate nohighlight">\(\nu\)</span>, and the sum of the products of functions <span class="math notranslate nohighlight">\(\eta\)</span>, dependent on the input frequencies <span class="math notranslate nohighlight">\(\nu_i\)</span>:</p>
@@ -881,8 +881,8 @@ b_n\!\left[\nu\right] = a \, \eta_n
 </section>
 <section id="Unit-Decomposition">
 <h4>Unit Decomposition<a class="headerlink" href="#Unit-Decomposition" title="Permalink to this heading">#</a></h4>
-<p>If effects due to mode overlap can be ignored and the nonlinear susceptibility only depends on the output frequency, separability occurs naturally. In this case, the summation collapses to a single <span class="math notranslate nohighlight">\(h\)</span> and <span class="math notranslate nohighlight">\(\eta\)</span> term dependent on the effective refractive index, area, and nonlinear susceptibilities. The decomposition below is based on unit analysis of the effective nonlinear parameters (see the <a class="reference internal" href="supplemental.html#Unit-Analysis-of-the-Effective-Nonlinear-Parameters"><span class="std std-ref">supplemental</span></a>)
-and is equivalent to calculating the nonlinear terms as powers of the electric field:</p>
+<p>If effects due to mode overlap can be ignored and the nonlinear susceptibility only depends on the output frequency, separability occurs naturally. In this case, the summation collapses to a single <span class="math notranslate nohighlight">\(h\)</span> and <span class="math notranslate nohighlight">\(\eta\)</span> term dependent on the effective refractive index, area, and nonlinear susceptibilities. The decomposition below is based on unit analysis of the effective nonlinear parameters (see the <a class="reference internal" href="supplemental.html#Unit-Analysis-of-the-Effective-Nonlinear-Parameters"><span class="std std-ref">supplemental</span></a>
+for more details) and is equivalent to calculating the nonlinear terms as powers of the electric field:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
 h\!\left[\nu\right] \approx \frac{1}{2} \sqrt{\frac{\epsilon_0 \, A_\text{eff}}{c \, n_\text{eff}}} \, \chi_\text{eff}
@@ -908,11 +908,11 @@ g^{\left(3\right)}\!\left[\nu_1, \nu_2, \nu_3\right] &amp;\approx g^{\left(3\rig
 \end{align}\end{split}\]</div>
 </section>
 </section>
-<section id="Analytic-Representation">
-<h3>Analytic Representation<a class="headerlink" href="#Analytic-Representation" title="Permalink to this heading">#</a></h3>
-<p>The analytic representation is an important concept for the theoretical and numerical manipulation of optical pulses. Since the physical <span class="math notranslate nohighlight">\(\mathbf{E}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> fields are real, as mentioned in <a class="reference internal" href="fourier_transforms.html#Real-Functions-and-the-Analytic-Representation"><span class="std std-ref">Fourier Transforms</span></a>, it is possible to represent them in analytic form using only the amplitudes from the positive-frequency side of the spectrum. This is straightforward when only linear interactions are
-considered but becomes more difficult when nonlinear terms are involved. Nonlinearity mixes positive and negative frequency components together in an inseparable way.</p>
-<p>For the second order nonlinearity the following interactions are possible:</p>
+<section id="The-Analytic-Representation">
+<h3>The Analytic Representation<a class="headerlink" href="#The-Analytic-Representation" title="Permalink to this heading">#</a></h3>
+<p>The analytic representation is an important concept for the theoretical and numerical manipulation of optical pulses. Since the physical <span class="math notranslate nohighlight">\(\mathbf{E}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> fields are real, as mentioned in <a class="reference internal" href="fourier_transforms.html#Real-Functions-and-the-Analytic-Representation"><span class="std std-ref">Fourier Transforms</span></a>, it is possible to represent them in analytic form using amplitudes from only the positive-frequency side of the spectrum. This is straightforward when only linear interactions are considered
+but becomes more difficult when nonlinear terms are involved. Nonlinearity mixes positive and negative frequency components together in an inseparable way.</p>
+<p>For the second-order nonlinearity the following interactions are possible:</p>
 <table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(\chi^{\left(2\right)}\)</span> Process</p></th>
@@ -939,7 +939,7 @@ considered but becomes more difficult when nonlinear terms are involved. Nonline
 </tr>
 </tbody>
 </table>
-<p>Similarly, for the third order nonlinearity:</p>
+<p>Similarly, for the third-order nonlinearity:</p>
 <table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(\chi^{\left(3\right)}\)</span> Process</p></th>
@@ -992,7 +992,7 @@ analytic grid has a support from <span class="math notranslate nohighlight">\(0\
 </section>
 <section id="Analytic-Nonlinear-Propagation-Equations">
 <h4>Analytic Nonlinear Propagation Equations<a class="headerlink" href="#Analytic-Nonlinear-Propagation-Equations" title="Permalink to this heading">#</a></h4>
-<p>In the limit of constant mode area and instantaneous nonlinear susceptibility, the analytic nonlinear propagation equations have the following form:</p>
+<p>In the limit of constant mode area and instantaneous nonlinear susceptibility, the analytic second- and third-order nonlinear propagation equations have the following form:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{gather}
 \frac{\partial}{\partial z} a\!\left[\nu\right] = \ldots - i \, \omega \, g^{\left(2\right)}_\text{eff} \, \mathscr{F}\!\left[ 2 \, \left|a\right|^2 \, e^{-i \, \omega_c \, t} + a^2 \, e^{i \, \omega_c \, t} \right]
@@ -1005,11 +1005,12 @@ g^{\left(2\right)}_\text{eff} = \frac{1}{2} \frac{\chi^{\left(2\right)}_\text{ef
 \\
 g^{\left(3\right)}_\text{eff} = \frac{1}{2} \frac{\chi^{\left(3\right)}_\text{eff}}{\epsilon_0 \, c^2 \, n_\text{eff}^2 \, A_\text{eff}}
 \end{gather}\end{split}\]</div>
-<p>where the nonlinear terms have been constructed using all possible combinations with positive output frequencies. Conjugate amplitudes have been substituted for amplitudes at negative-frequency <span class="math notranslate nohighlight">\((a[-\nu] = a[\nu]^*)\)</span>.</p>
-<p>Each nonlinear process has been frequency shifted by the respective difference between the input and output center frequency <span class="math notranslate nohighlight">\(\nu_c\)</span>. This is required because mathematically, the analytic spectra are centered at baseband. Since time-domain products of waveforms with a frequency range centered about the origin result in waveforms with frequency ranges centered about the origin, frequency shifts are necessary in order to correctly calculate the nonlinear process.</p>
-<p>PyNLO does not use the analytic representation when calculating the nonlinear interactions and it does so for several reasons. In the attempt to extend the analytic representation to nonlinear interactions the set of equations has in general become more complicated than the equivalent implementation in the real-valued representation. Given that complex multiplications require 3 operations to complete, the analytic representation requires up to 12 to 27 array operations compared to the 2 to 3 in
-the real-valued representation. For the same number of points, the <em>rffts</em> used in the real-valued representation are also more performant than the <em>ffts</em> used in the analytic representation. Additionally, if the frequency grids are aligned to the origin (as mentioned in the <a class="reference internal" href="fourier_transforms.html#FFT-Cookbook"><span class="std std-ref">FFT Cookbook</span></a>), one representation can be easily transformed to the other using array indexing operations. In summary, the analytic representation useful when modeling linear
-effects is more of a burden than a benefit when modeling nonlinear effects.</p>
+<p>where the nonlinear terms have been constructed using all possible combinations with positive output frequencies. Conjugate amplitudes have been substituted for amplitudes at negative-frequency, i.e. <span class="math notranslate nohighlight">\(a[-\nu] \to a[\nu]^*\)</span>.</p>
+<p>Each nonlinear process has been frequency shifted by the respective difference between the input and output center frequency <span class="math notranslate nohighlight">\(\nu_c\)</span>. This is required because, mathematically speaking, the analytic spectra are centered at baseband. Since time-domain products of waveforms with a frequency range centered about the origin result in waveforms with frequency ranges centered about the origin, frequency shifts are necessary in order to maintain the correct center frequency of the nonlinear
+process.</p>
+<p>PyNLO does not use the analytic representation when calculating nonlinear interactions and it does so for several reasons. The result of extending the analytic representation to nonlinear terms is a set of equations that are more complicated than their equivalent real-valued implementation. Given that the multiplication of complex numbers takes 3 operations to complete, the analytic representation requires 11 to 19 array operations compared to the 1 to 2 of the real-valued representation. For
+the same number of points, the <em>rffts</em> used in the real-valued representation are also more performant than the <em>ffts</em> used in the analytic representation. Additionally, if the frequency grids are aligned to the origin (as mentioned in the <a class="reference internal" href="fourier_transforms.html#FFT-Cookbook"><span class="std std-ref">FFT Cookbook</span></a>), one representation can be easily transformed to the other using array indexing operations. Ultimately, the analytic representation, while useful when modeling linear effects, is more of a burden than a
+benefit for nonlinear effects.</p>
 </section>
 <section id="Analytic-Normalization">
 <h4>Analytic Normalization<a class="headerlink" href="#Analytic-Normalization" title="Permalink to this heading">#</a></h4>
@@ -1113,13 +1114,13 @@ a''\!\left[t\right] = a + i \, \mathcal{H}\!\left[a\right]
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Numerical-Implementation">Numerical Implementation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Simplifying-the-Nonlinear-Terms">Simplifying the Nonlinear Terms</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Nonlinear-Terms">Nonlinear Terms</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Vector-Decomposition">Vector Decomposition</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Unit-Decomposition">Unit Decomposition</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Phase-Matched-Pathways">Phase-Matched Pathways</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#Analytic-Representation">Analytic Representation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#The-Analytic-Representation">The Analytic Representation</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Analytic-Nonlinear-Terms">Analytic Nonlinear Terms</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Analytic-Nonlinear-Propagation-Equations">Analytic Nonlinear Propagation Equations</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#Analytic-Normalization">Analytic Normalization</a></li>

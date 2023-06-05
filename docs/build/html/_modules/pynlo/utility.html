@@ -1205,7 +1205,7 @@ document.write(`
             <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">assert</span> <span class="p">(</span><span class="n">alias</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;The harmonic support must be atleast 1.&quot;</span>
-            <span class="n">target_n_v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rn_range</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">*</span><span class="n">alias</span>
+            <span class="n">target_n_v</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rn_range</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">*</span><span class="n">alias</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">alias</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">target_n_v</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># odd</span>
             <span class="k">else</span><span class="p">:</span>

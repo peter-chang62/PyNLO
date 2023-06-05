@@ -456,13 +456,13 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">chi3_eff</span><span class="o">/</span><span class="p">(</span><span class="n">e0</span><span class="o">*</span><span class="n">c</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n_eff</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a_eff</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="raman"><a class="viewcode-back" href="../../../api/pynlo.utility.chi3.raman.html#pynlo.utility.chi3.raman">[docs]</a><span class="k">def</span> <span class="nf">raman</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">r_weights</span><span class="p">,</span> <span class="n">b_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="raman"><a class="viewcode-back" href="../../../api/pynlo.utility.chi3.raman.html#pynlo.utility.chi3.raman">[docs]</a><span class="k">def</span> <span class="nf">raman</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">r_weights</span><span class="p">,</span> <span class="n">b_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">analytic</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the frequency-domain Raman and instantaneous nonlinear response</span>
 <span class="sd">    function.</span>
 
-<span class="sd">    This calculates the normalized Raman response using approximate formulas in</span>
-<span class="sd">    the time domain. The total Raman fraction from the resonant and boson</span>
+<span class="sd">    This calculates the normalized Raman response using approximated formulas</span>
+<span class="sd">    in the time domain. The total Raman fraction from the resonant and boson</span>
 <span class="sd">    contributions should be less than 1.</span>
 
 <span class="sd">    Parameters</span>
@@ -485,6 +485,11 @@ document.write(`
 <span class="sd">        response function, and `tau_b` is the boson peak&#39;s characteristic</span>
 <span class="sd">        decay time. More than one peak may be entered using an (n, 2) shaped</span>
 <span class="sd">        array.</span>
+<span class="sd">    analytic : bool, optional</span>
+<span class="sd">        A flag that sets the proper normalization for use with the analytic or</span>
+<span class="sd">        real-valued representation. The default normalizes for the analytic</span>
+<span class="sd">        representation, which is the proper format for use with the `NLSE`</span>
+<span class="sd">        model. Set this parameter to `False` if using the `UPE` model.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -497,10 +502,23 @@ document.write(`
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    The equations used are the approximate formulations as summarized in</span>
+<span class="sd">    The equations used are the approximated formulations as summarized in</span>
 <span class="sd">    section 2.3.3 of Agrawal&#39;s Nonlinear Fiber Optics [1]_. More accurate</span>
 <span class="sd">    simulations may be obtainable using digitized experimental measurements,</span>
-<span class="sd">    such as those shown in figure 2.2 of [1]_.</span>
+<span class="sd">    such as those shown in figure 2.2 of [1]_. The coefficients listed in</span>
+<span class="sd">    Agrawal for silica-based fibers are as follows::</span>
+
+<span class="sd">        r_weights = [0.245*(1-0.21), 12.2e-15, 32e-15] # resonant contribution</span>
+<span class="sd">        b_weights = [0.245*0.21, 96e-15] # boson contribution</span>
+
+<span class="sd">    For the carrier-resolved or real-valued representation, an additional</span>
+<span class="sd">    factor of 3/2 is necessary to properly normalize the Raman response. The</span>
+<span class="sd">    formulas used in this method have been fit to the analytic representation,</span>
+<span class="sd">    which is normalized assuming that all three self-phase modulation pathways</span>
+<span class="sd">    fold through baseband. In the real-valued domain however, only two pass</span>
+<span class="sd">    through baseband. The third pathway is through the second harmonic. Thus,</span>
+<span class="sd">    in the real-valued representation the Raman response must be normalized to</span>
+<span class="sd">    produce the same nonlinear response against 2/3 the spectral amplitude.</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
@@ -572,7 +590,12 @@ document.write(`
             <span class="n">raman_frac</span> <span class="o">+=</span> <span class="n">weight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">raman_t</span> <span class="o">+=</span> <span class="n">h_b</span><span class="p">(</span><span class="o">*</span><span class="n">weight</span><span class="p">)</span>
 
+    <span class="c1"># Normalize</span>
     <span class="k">assert</span> <span class="n">raman_frac</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;The total fractional Raman contribution must be less than 1.&quot;</span>
+    <span class="k">if</span> <span class="n">raman_frac</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">raman_t</span> <span class="o">*=</span> <span class="n">raman_frac</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">raman_t</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">analytic</span><span class="p">:</span>
+        <span class="n">raman_t</span> <span class="o">*=</span> <span class="mi">3</span><span class="o">/</span><span class="mi">2</span>
 
     <span class="c1">#---- Instantaneous Response</span>
     <span class="n">delta_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">t_grid</span><span class="p">)</span>
@@ -583,6 +606,7 @@ document.write(`
     <span class="n">nonlinear_t</span> <span class="o">=</span> <span class="n">raman_t</span> <span class="o">+</span> <span class="n">delta_t</span>
     <span class="n">nonlinear_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">nonlinear_t</span><span class="p">,</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span> <span class="c1"># already in standard fft order</span>
     <span class="k">return</span> <span class="n">rv_grid</span><span class="p">,</span> <span class="n">nonlinear_v</span></div>
+
 
 
 <span class="c1"># %% Solitons</span>
