@@ -5,6 +5,7 @@ pynlo.utility.fft
 Functions
 ---------
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Functions
 
@@ -12,3 +13,5 @@ Functions
    ifft
    rfft
    irfft
+   fftshift
+   ifftshift

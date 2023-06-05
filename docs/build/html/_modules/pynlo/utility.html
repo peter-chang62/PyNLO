@@ -1,160 +1,343 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pynlo.utility &#8212; PyNLO dev documentation</title>
-    
-  <link href="../../_static/css/theme.css" rel="stylesheet" />
-  <link href="../../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
-
-    
-  <link rel="stylesheet"
-    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-
-    
-      
-
-    
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
-    
-  <link rel="preload" as="script" href="../../_static/js/index.1c5a1a01449ed65a7b51.js">
-
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
-    
-  </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
-
-    
-    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
-
-  <div id="navbar-start">
-    
-    
-
-<a class="navbar-brand" href="../../index.html">
-  <img src="../../_static/pynlo.svg" class="logo" alt="logo">
-</a>
-
-
-    
-  </div>
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <title>pynlo.utility &#8212; PyNLO 1.dev documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
   
-  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
-    <div id="navbar-center" class="mr-auto">
-      
-      <div class="navbar-center-item">
-        <ul id="navbar-main-elements" class="navbar-nav">
-    <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../guides.html">
-  User Guide
- </a>
-</li>
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../notes.html">
-  Notes
- </a>
-</li>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../api.html">
-  API Reference
- </a>
-</li>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pynlo/utility';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-</ul>
-      </div>
-      
-    </div>
-
-    <div id="navbar-end">
-      
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
-      </ul>
-      </div>
-      
-    </div>
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
   </div>
-</div>
-    </nav>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
     
+      <div class="navbar-item">
+  
 
-    <div class="container-xl">
-      <div class="row">
-          
-            
-            <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-  <div class="bd-toc-item active">
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/pynlo.svg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/pynlo.svg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
     
   </div>
-</nav>
-            </div>
-            
-          
-
-          
-          <div class="d-none d-xl-block col-xl-2 bd-toc">
-            
-          </div>
-          
-
-          
-          
-            
-          
-          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
-              
-              <div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../guides.html">
+                        User Guide
+                      </a>
+                    </li>
                 
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../notes.html">
+                        Notes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../guides.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../notes.html">
+                        Notes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">pynlo.utility</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <h1>Source code for pynlo.utility</h1><div class="highlight"><pre>
 <span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Time and frequency grid utilites and and other miscellaneous helper functions.</span>
+<span class="sd">Time and frequency grid utilities and other miscellaneous helper functions.</span>
 
 <span class="sd">The submodules contain calculator type functions for converting between</span>
 <span class="sd">physically relevant parameters related to the linear and nonlinear</span>
-<span class="sd">susceptibilities as well as an efficient interface to fast fourier transforms.</span>
+<span class="sd">susceptibilities, as well as an efficient interface to fast Fourier transforms.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;chi1&quot;</span><span class="p">,</span> <span class="s2">&quot;chi2&quot;</span><span class="p">,</span> <span class="s2">&quot;chi3&quot;</span><span class="p">,</span> <span class="s2">&quot;fft&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;taylor_series&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;resample_v&quot;</span><span class="p">,</span> <span class="s2">&quot;resample_t&quot;</span><span class="p">,</span> <span class="s2">&quot;derivative_v&quot;</span><span class="p">,</span> <span class="s2">&quot;derivative_t&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;vacuum&quot;</span><span class="p">,</span> <span class="s2">&quot;taylor_series&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;shift&quot;</span><span class="p">,</span> <span class="s2">&quot;resample_v&quot;</span><span class="p">,</span> <span class="s2">&quot;resample_t&quot;</span><span class="p">,</span>
            <span class="s2">&quot;TFGrid&quot;</span><span class="p">]</span>
 
 
 <span class="c1"># %% Imports</span>
 
 <span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">copy</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">h</span>
@@ -168,15 +351,15 @@
 
 <span class="n">_ResampledT</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;ResampledT&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;t_grid&quot;</span><span class="p">,</span> <span class="s2">&quot;f_t&quot;</span><span class="p">,</span> <span class="s2">&quot;dt&quot;</span><span class="p">])</span>
 
-<span class="n">_RTFGrid</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;RTFGrid&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="s2">&quot;v0&quot;</span><span class="p">,</span>
+<span class="n">_RTFGrid</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;RTFGrid&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">,</span>
                                              <span class="s2">&quot;v_grid&quot;</span><span class="p">,</span> <span class="s2">&quot;v_ref&quot;</span><span class="p">,</span> <span class="s2">&quot;dv&quot;</span><span class="p">,</span> <span class="s2">&quot;v_window&quot;</span><span class="p">,</span>
                                              <span class="s2">&quot;t_grid&quot;</span><span class="p">,</span> <span class="s2">&quot;t_ref&quot;</span><span class="p">,</span> <span class="s2">&quot;dt&quot;</span><span class="p">,</span> <span class="s2">&quot;t_window&quot;</span><span class="p">])</span>
 
 
 <span class="c1"># %% Routines</span>
 
-<div class="viewcode-block" id="taylor_series"><a class="viewcode-back" href="../../api/pynlo.utility.taylor_series.html#pynlo.utility.taylor_series">[docs]</a><span class="k">def</span> <span class="nf">taylor_series</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">derivatives</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="taylor_series"><a class="viewcode-back" href="../../api/pynlo.utility.taylor_series.html#pynlo.utility.taylor_series">[docs]</a><span class="k">def</span> <span class="nf">taylor_series</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate a Taylor series expansion given the derivatives of a function</span>
 <span class="sd">    about a point.</span>
 
@@ -184,9 +367,9 @@
 <span class="sd">    ----------</span>
 <span class="sd">    x0 : float</span>
 <span class="sd">        The center point of the Taylor series expansion.</span>
-<span class="sd">    derivatives : array_like</span>
-<span class="sd">        The derivatives of the function with respect to `x` evaluated at `x0`.</span>
-<span class="sd">        The coefficients must be given in order of increasing degree, i.e.</span>
+<span class="sd">    fn : array_like</span>
+<span class="sd">        The value and derivatives of the function evaluated at `x0`. The</span>
+<span class="sd">        coefficients must be given in order of increasing degree, i.e.</span>
 <span class="sd">        ``[f(x0), f&#39;(x0), f&#39;&#39;(x0), ...]``.</span>
 
 <span class="sd">    Returns</span>
@@ -197,204 +380,126 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">window</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
     <span class="n">domain</span> <span class="o">=</span> <span class="n">window</span> <span class="o">+</span> <span class="n">x0</span>
-    <span class="n">poly_coefs</span> <span class="o">=</span> <span class="p">[</span><span class="n">coef</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">coef</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">derivatives</span><span class="p">)]</span>
+    <span class="n">poly_coefs</span> <span class="o">=</span> <span class="p">[</span><span class="n">coef</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">coef</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fn</span><span class="p">)]</span>
     <span class="n">pwr_series</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polynomial</span><span class="o">.</span><span class="n">Polynomial</span><span class="p">(</span><span class="n">poly_coefs</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="n">window</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">pwr_series</span></div>
 
-<span class="k">def</span> <span class="nf">coherent_noise_v</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate a randomized root-power noise spectrum due to the quantum</span>
-<span class="sd">    fluctuations of a coherent state.</span>
-
-<span class="sd">    This noise is independent of the field amplitude and is equivalent to</span>
-<span class="sd">    the noise due to vacuum fluctuations.</span>
+<div class="viewcode-block" id="vacuum"><a class="viewcode-back" href="../../api/pynlo.utility.vacuum.html#pynlo.utility.vacuum">[docs]</a><span class="k">def</span> <span class="nf">vacuum</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a root-power spectrum due to quantum vacuum fluctuations.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    v_grid : array_like of float</span>
 <span class="sd">        The frequency grid.</span>
-<span class="sd">    dv : float</span>
-<span class="sd">        The frequency grid spacing.</span>
 <span class="sd">    rng : np.random.Generator, optional</span>
-<span class="sd">        A NumPy random number generator. Set `rng` to pass in an already</span>
-<span class="sd">        initialized `Generator`, the default initializes a new `Generator`</span>
-<span class="sd">        at each function call.</span>
+<span class="sd">        A NumPy random number generator. The default initializes a new</span>
+<span class="sd">        `Generator` on each function call.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    This **is not** shot noise (which is related to the collapse of coherent</span>
-<span class="sd">    states onto discrete number states during photon detection), but the noise</span>
-<span class="sd">    due to the quantum uncertainty of a coherent state&#39;s amplitude and phase.</span>
-<span class="sd">    A coherent state :math:`|\\alpha\\rangle` is defined by a displacement</span>
-<span class="sd">    :math:`\\alpha` and the set of number states :math:`|n\\rangle`:</span>
+<span class="sd">    The combined noise of a coherent state&#39;s amplitude and phase quadratures is</span>
+<span class="sd">    equal to that of the vacuum. A coherent state :math:`|\\alpha\\rangle` is</span>
+<span class="sd">    defined by the displacement :math:`\\alpha = x_1 + i \\, x_2`, where</span>
+<span class="sd">    :math:`x_1` and :math:`x_2` are the &quot;amplitude&quot; and &quot;phase&quot; (real and</span>
+<span class="sd">    imaginary) quadrature amplitudes. In the number state basis</span>
+<span class="sd">    :math:`|n\\rangle`, a coherent state takes the form of a Poissonian</span>
+<span class="sd">    distribution:</span>
 
 <span class="sd">    ..  math::</span>
 <span class="sd">        |\\alpha\\rangle = e^{-\\frac{|\\alpha|^2}{2}}</span>
 <span class="sd">            \sum_{n=0}^\\infty \\frac{\\alpha^n}{\sqrt{n!}} |n\\rangle</span>
 
-<span class="sd">    The probability distribution :math:`P[\\alpha]` of finding a coherent</span>
-<span class="sd">    state with displacement :math:`\\alpha`, given an average displacement</span>
-<span class="sd">    :math:`\\beta`, is as follows:</span>
+<span class="sd">    The probability :math:`P[\\alpha]` of measuring displacement</span>
+<span class="sd">    :math:`\\alpha` from a coherent state with average displacement</span>
+<span class="sd">    :math:`\\beta`, a simultaneous measurement of :math:`x_1` and :math:`x_2`,</span>
+<span class="sd">    is as follows:</span>
 
 <span class="sd">    ..  math::</span>
-<span class="sd">        &amp;\\text{with } \\alpha = x_1 + i \\, x_2</span>
-
-<span class="sd">        P[\\alpha] &amp;= \\frac{1}{\\pi} |\\langle \\alpha | \\beta\\rangle|^2</span>
+<span class="sd">        P[\\alpha] = \\frac{1}{\\pi} |\\langle \\alpha | \\beta\\rangle|^2</span>
 <span class="sd">            = \\frac{1}{\\pi} e^{-|\\alpha - \\beta|^2}</span>
 
-<span class="sd">    where :math:`x_1` and :math:`x_2` are the root-photon normalized</span>
-<span class="sd">    &quot;amplitude&quot; and &quot;phase&quot; (real and imaginary) field quadratures.</span>
-
-<span class="sd">    Since the probability distribution is gaussian the noise is completely</span>
-<span class="sd">    described by the variance of the two quadratures, which are scaled to the</span>
-<span class="sd">    number of photons (:math:`N=\\alpha^2`). The combined noise from both</span>
-<span class="sd">    quadratures gives a total variance of one photon per measurement:</span>
+<span class="sd">    This probability distribution is Gaussian, and its noise can be completely</span>
+<span class="sd">    described by calculating the variance of each quadrature component. Scaled</span>
+<span class="sd">    to the number of photons (:math:`N=\\alpha^2`), the combined noise from</span>
+<span class="sd">    both quadratures gives a total variance of one photon per measurement:</span>
 
 <span class="sd">    ..  math:: \\sigma_{x_1}^2 = \\sigma_{x_2}^2 = \\frac{1}{2}</span>
 
 <span class="sd">    ..  math:: \\sigma_\\alpha^2 = \\sigma_{x_1}^2 + \\sigma_{x_2}^2 = 1</span>
 
-<span class="sd">    The width of the probability distribution is independent of the average</span>
-<span class="sd">    displacement of the coherent state, so the root-photon noise may be</span>
-<span class="sd">    generated independently by sampling a standard normal distribution</span>
-<span class="sd">    centered about zero mean. Also, since the Fourier transform of gaussian</span>
-<span class="sd">    noise is also gaussian noise, the root-photon noise can be equivalently</span>
-<span class="sd">    generated in either the time or frequency domains. Normalizing to the</span>
-<span class="sd">    number of photons per measurement interval, the root photon noise for both</span>
-<span class="sd">    quadratures becomes ``1/(2 * dt)**0.5`` for the time domain and</span>
-<span class="sd">    ``1/(2 * dv)**0.5`` for frequency domain. The final root-power noise is</span>
-<span class="sd">    found by multiplying the frequency domain root-photon noise by the square</span>
-<span class="sd">    root of the photon energy associated with each bin&#39;s frequency.</span>
+<span class="sd">    The width of the probability distribution is independent of the coherent</span>
+<span class="sd">    state&#39;s average displacement, which can be zero. This means that the</span>
+<span class="sd">    root-photon noise can be generated independent of the state by sampling a</span>
+<span class="sd">    normal distribution centered about zero mean. Also, since the Fourier</span>
+<span class="sd">    transform of Gaussian noise is also Gaussian noise, the root-photon noise</span>
+<span class="sd">    can be equivalently generated in either the time or frequency domains.</span>
+<span class="sd">    Normalizing to the number of photons per measurement interval, the root</span>
+<span class="sd">    photon noise for both quadratures becomes ``1/(2 * dt)**0.5`` for the time</span>
+<span class="sd">    domain and ``1/(2 * dv)**0.5`` for the frequency domain. The final</span>
+<span class="sd">    root-power noise is found by multiplying the frequency domain root-photon</span>
+<span class="sd">    noise by the square root of the photon energy associated with each bin&#39;s</span>
+<span class="sd">    frequency.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    a_v : ndarray of complex</span>
-<span class="sd">        The randomly generated coherent state root-power noise.</span>
+<span class="sd">        The randomly-generated vacuum state root-power spectrum.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">rng</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
 
     <span class="n">v_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">dv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">v_grid</span><span class="p">))</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">v_grid</span><span class="o">.</span><span class="n">size</span>
+
     <span class="n">a_v</span> <span class="o">=</span> <span class="p">((</span><span class="n">h</span><span class="o">*</span><span class="n">v_grid</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">dv</span><span class="p">))</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">a_v</span>
+    <span class="k">return</span> <span class="n">a_v</span></div>
 
-<span class="k">def</span> <span class="nf">shift_v</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">f_v</span><span class="p">,</span> <span class="n">dv</span><span class="p">):</span>
-    <span class="k">pass</span> <span class="c1">#TODO: Fouier shift in frequency</span>
+<div class="viewcode-block" id="shift"><a class="viewcode-back" href="../../api/pynlo.utility.shift.html#pynlo.utility.shift">[docs]</a><span class="k">def</span> <span class="nf">shift</span><span class="p">(</span><span class="n">f_t</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">t_shift</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fourier shift.</span>
 
-<span class="k">def</span> <span class="nf">shift_t</span><span class="p">(</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">f_t</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
-    <span class="k">pass</span> <span class="c1">#TODO: Fourier shift in time</span>
-
-<div class="viewcode-block" id="derivative_v"><a class="viewcode-back" href="../../api/pynlo.utility.derivative_v.html#pynlo.utility.derivative_v">[docs]</a><span class="k">def</span> <span class="nf">derivative_v</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">f_v</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">t_ref</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the derivative of a frequency domain function using the Fourier</span>
-<span class="sd">    method. This method is only strictly valid for input functions that have</span>
-<span class="sd">    zero mean.</span>
-
-<span class="sd">    The complementary time data is assumed to be of finite support,</span>
-<span class="sd">    discontinuities in the frequency domain amplitude will manifest as ringing</span>
-<span class="sd">    in the derivatives.</span>
+<span class="sd">    The output array is at `f(t - t_shift)`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    v_grid : array_like of float</span>
-<span class="sd">        The frequency grid.</span>
-<span class="sd">    f_v : array_like of complex</span>
-<span class="sd">        The frequency domain function.</span>
-<span class="sd">    n : float</span>
-<span class="sd">        The order of the derivative. Positive orders correspond to derivatives</span>
-<span class="sd">        and negative orders correspond to antiderivatives (integrals).</span>
-<span class="sd">    t_ref : float, optional</span>
-<span class="sd">        The grid reference time in the complementary time domain. The default</span>
-<span class="sd">        is 0.</span>
+<span class="sd">    f_t : array_like</span>
+<span class="sd">        The input array.</span>
+<span class="sd">    dt : float</span>
+<span class="sd">        The grid step size.</span>
+<span class="sd">    shift_t : float</span>
+<span class="sd">        The amount to shift.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    ndarray of complex</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        The shifted array.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v_grid</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">f_v</span><span class="p">)),</span> <span class="p">(</span><span class="s2">&quot;The frequency grid and frequency&quot;</span>
-                                       <span class="s2">&quot; domain data must be the same length.&quot;</span><span class="p">)</span>
-    <span class="c1">#---- Inverse Transform</span>
-    <span class="n">dv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">v_grid</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="n">n_0</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">v_grid</span><span class="p">)</span>
-    <span class="n">dt</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n_0</span><span class="o">*</span><span class="n">dv</span><span class="p">)</span>
-    <span class="n">f_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">f_v</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">overwrite_x</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="n">f_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">f_t</span><span class="p">)</span>
 
-    <span class="c1">#---- Derivative</span>
-    <span class="n">t_grid</span> <span class="o">=</span> <span class="n">dt</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_0</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">n_0</span><span class="o">//</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">t_ref</span>
-
-    <span class="n">dfdv_t</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">t_grid</span><span class="p">)</span><span class="o">**</span><span class="n">n</span> <span class="o">*</span> <span class="n">f_t</span>
-    <span class="n">dfdv_t</span><span class="p">[</span><span class="n">t_grid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="c1">#---- Transform</span>
-    <span class="n">dfdv_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">dfdv_t</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">overwrite_x</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">dfdv_v</span></div>
-
-<div class="viewcode-block" id="derivative_t"><a class="viewcode-back" href="../../api/pynlo.utility.derivative_t.html#pynlo.utility.derivative_t">[docs]</a><span class="k">def</span> <span class="nf">derivative_t</span><span class="p">(</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">f_t</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v_ref</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the derivative of a time domain function using the Fourier</span>
-<span class="sd">    method. This method is only strictly valid for input functions that have</span>
-<span class="sd">    zero mean.</span>
-
-<span class="sd">    The complementary frequency data is assumed to be band-limited,</span>
-<span class="sd">    discontinuities in the time domain amplitude will manifest as ringing in</span>
-<span class="sd">    the derivatives.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    t_grid : array_like of float</span>
-<span class="sd">        The time grid.</span>
-<span class="sd">    f_t : array_like of complex</span>
-<span class="sd">        The time domain function.</span>
-<span class="sd">    n : float</span>
-<span class="sd">        The order of the derivative. Positive orders correspond to derivatives</span>
-<span class="sd">        and negative orders correspond to antiderivatives (integrals).</span>
-<span class="sd">    v_ref : float, optional</span>
-<span class="sd">        The grid reference frequency in the complementary frequency domain.</span>
-<span class="sd">        The default is 0.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    ndarray of complex</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t_grid</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">f_t</span><span class="p">)),</span> <span class="p">(</span><span class="s2">&quot;The time grid and time domain data&quot;</span>
-                                       <span class="s2">&quot; must be the same length.&quot;</span><span class="p">)</span>
-    <span class="c1">#---- Transform</span>
-    <span class="n">n_0</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t_grid</span><span class="p">)</span>
-    <span class="n">dt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t_grid</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="n">dv</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n_0</span><span class="o">*</span><span class="n">dt</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isrealobj</span><span class="p">(</span><span class="n">f_t</span><span class="p">)</span> <span class="ow">and</span> <span class="n">v_ref</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
-        <span class="c1"># Real-Valued Representation</span>
-        <span class="n">f_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">f_t</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
-        <span class="n">v_grid</span> <span class="o">=</span> <span class="n">dv</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">f_v</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># Complex Envelope Representation</span>
-        <span class="n">f_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">f_t</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">overwrite_x</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-        <span class="n">v_grid</span> <span class="o">=</span> <span class="n">dv</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_0</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">n_0</span><span class="o">//</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">v_ref</span>
-
-    <span class="c1">#---- Derivative</span>
-    <span class="n">dfdt_v</span> <span class="o">=</span> <span class="p">(</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="n">v_grid</span><span class="p">)</span><span class="o">**</span><span class="n">n</span> <span class="o">*</span> <span class="n">f_v</span>
-    <span class="n">dfdt_v</span><span class="p">[</span><span class="n">v_grid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-
-    <span class="c1">#---- Inverse Transform</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isrealobj</span><span class="p">(</span><span class="n">f_t</span><span class="p">)</span> <span class="ow">and</span> <span class="n">v_ref</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
-        <span class="c1"># Real-Valued Representation</span>
-        <span class="n">dfdt_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">irfft</span><span class="p">(</span><span class="n">dfdt_v</span><span class="p">,</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n_0</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># Complex Envelope Representation</span>
-        <span class="n">dfdt_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">dfdt_v</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">overwrite_x</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">dfdt_t</span></div>
+    <span class="c1"># Grid</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">f_t</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">dv</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">dt</span><span class="p">)</span>
+    <span class="n">v_grid</span> <span class="o">=</span> <span class="n">dv</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># Shift</span>
+    <span class="n">f_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">f_t</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">))</span>
+    <span class="n">shift_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span> <span class="o">*</span> <span class="n">v_grid</span> <span class="o">*</span> <span class="n">t_shift</span><span class="p">)</span>
+    <span class="n">shift_f_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">f_v</span> <span class="o">*</span> <span class="n">shift_v</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">))</span>
+    <span class="c1">#</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isreal</span><span class="p">(</span><span class="n">f_t</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">shift_f_t</span> <span class="o">=</span> <span class="n">shift_f_t</span><span class="o">.</span><span class="n">real</span>
+    <span class="k">return</span> <span class="n">shift_f_t</span></div>
 
 <div class="viewcode-block" id="resample_v"><a class="viewcode-back" href="../../api/pynlo.utility.resample_v.html#pynlo.utility.resample_v">[docs]</a><span class="k">def</span> <span class="nf">resample_v</span><span class="p">(</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">f_v</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Resample frequency domain data to the given number of points.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resample frequency-domain data to the given number of points.</span>
 
 <span class="sd">    The complementary time data is assumed to be of finite support, so the</span>
 <span class="sd">    resampling is accomplished by adding or removing trailing and leading time</span>
-<span class="sd">    bins. Discontinuities in the frequency domain amplitude will manifest as</span>
+<span class="sd">    bins. Discontinuities in the frequency-domain amplitude will manifest as</span>
 <span class="sd">    ringing when resampled.</span>
 
 <span class="sd">    Parameters</span>
@@ -402,7 +507,7 @@
 <span class="sd">    v_grid : array_like of float</span>
 <span class="sd">        The frequency grid of the input data.</span>
 <span class="sd">    f_v : array_like of complex</span>
-<span class="sd">        The frequency domain data to be resampled.</span>
+<span class="sd">        The frequency-domain data to be resampled.</span>
 <span class="sd">    n : int</span>
 <span class="sd">        The number of points at which to resample the input data. When the</span>
 <span class="sd">        input corresponds to a real-valued time domain representation, this</span>
@@ -413,7 +518,7 @@
 <span class="sd">    v_grid : ndarray of float</span>
 <span class="sd">        The resampled frequency grid.</span>
 <span class="sd">    f_v : ndarray of real or complex</span>
-<span class="sd">        The resampled frequency domain data.</span>
+<span class="sd">        The resampled frequency-domain data.</span>
 <span class="sd">    dv : float</span>
 <span class="sd">        The spacing of the resampled frequency grid.</span>
 <span class="sd">    dt : float</span>
@@ -426,23 +531,23 @@
 <span class="sd">    extra point on the negative side.</span>
 
 <span class="sd">    This method checks if the origin is contained in `v_grid` to determine</span>
-<span class="sd">    whether real or complex transforms should be performed. In both cases the</span>
-<span class="sd">    resampling is accomplished by removing trailing and leading time bins.</span>
+<span class="sd">    whether real or complex transformations should be performed. In both cases</span>
+<span class="sd">    the resampling is accomplished by removing trailing and leading time bins.</span>
 
-<span class="sd">    For complex envelope representations, the returned frequency grid is</span>
-<span class="sd">    defined symmetrically about its reference, as in the `TFGrid` class, and</span>
-<span class="sd">    for real-valued representations the grid is defined starting at the origin.</span>
+<span class="sd">    For analytic representations, the returned frequency grid is defined</span>
+<span class="sd">    symmetrically about its reference, as in the `TFGrid` class, and for</span>
+<span class="sd">    real-valued representations the grid is defined starting at the origin.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)),</span> <span class="s2">&quot;The requested number of points must be an integer&quot;</span>
     <span class="k">assert</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The requested number of points must be greater than 0.&quot;</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v_grid</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">f_v</span><span class="p">)),</span> <span class="p">(</span><span class="s2">&quot;The frequency grid and frequency&quot;</span>
-                                       <span class="s2">&quot; domain data must be the same length.&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v_grid</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">f_v</span><span class="p">)),</span> <span class="p">(</span>
+        <span class="s2">&quot;The frequency grid and frequency-domain data must be the same length.&quot;</span><span class="p">)</span>
     <span class="c1">#---- Inverse Transform</span>
     <span class="n">dv_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">v_grid</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">v_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isreal</span><span class="p">(</span><span class="n">f_v</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="s2">&quot;When the input is in the real-valued&quot;</span>
-                                   <span class="s2">&quot; representation, the amplitude at the origin must be real.&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isreal</span><span class="p">(</span><span class="n">f_v</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span>
+            <span class="s2">&quot;When the input is in the real-valued representation, the amplitude at the origin must be real.&quot;</span><span class="p">)</span>
 
         <span class="c1"># Real-Valued Representation</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isreal</span><span class="p">(</span><span class="n">f_v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
@@ -452,7 +557,7 @@
         <span class="n">dt_0</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n_0</span><span class="o">*</span><span class="n">dv_0</span><span class="p">)</span>
         <span class="n">f_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">irfft</span><span class="p">(</span><span class="n">f_v</span><span class="p">,</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt_0</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n_0</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># Complex Envelope Representation</span>
+        <span class="c1"># Analytic Representation</span>
         <span class="n">n_0</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">v_grid</span><span class="p">)</span>
         <span class="n">dt_0</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n_0</span><span class="o">*</span><span class="n">dv_0</span><span class="p">)</span>
         <span class="n">v_ref_0</span> <span class="o">=</span> <span class="n">v_grid</span><span class="p">[</span><span class="n">n_0</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
@@ -474,7 +579,7 @@
         <span class="n">f_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">f_t</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
         <span class="n">v_grid</span> <span class="o">=</span> <span class="n">dv</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">f_v</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># Complex Envelope Representation</span>
+        <span class="c1"># Analytic Representation</span>
         <span class="n">f_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">f_t</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">overwrite_x</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
         <span class="n">v_grid</span> <span class="o">=</span> <span class="n">dv</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">))</span>
         <span class="n">v_grid</span> <span class="o">+=</span> <span class="n">v_ref_0</span>
@@ -484,12 +589,12 @@
     <span class="k">return</span> <span class="n">resampled</span></div>
 
 <div class="viewcode-block" id="resample_t"><a class="viewcode-back" href="../../api/pynlo.utility.resample_t.html#pynlo.utility.resample_t">[docs]</a><span class="k">def</span> <span class="nf">resample_t</span><span class="p">(</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">f_t</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Resample time domain data to the given number of points.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resample time-domain data to the given number of points.</span>
 
 <span class="sd">    The complementary frequency data is assumed to be band-limited, so the</span>
 <span class="sd">    resampling is accomplished by adding or removing high frequency bins.</span>
-<span class="sd">    Discontinuities in the time domain amplitude will manifest as ringing when</span>
+<span class="sd">    Discontinuities in the time-domain amplitude will manifest as ringing when</span>
 <span class="sd">    resampled.</span>
 
 <span class="sd">    Parameters</span>
@@ -497,7 +602,7 @@
 <span class="sd">    t_grid : array_like of float</span>
 <span class="sd">        The time grid of the input data.</span>
 <span class="sd">    f_t : array_like of real or complex</span>
-<span class="sd">        The time domain data to be resampled.</span>
+<span class="sd">        The time-domain data to be resampled.</span>
 <span class="sd">    n : int</span>
 <span class="sd">        The number of points at which to resample the input data.</span>
 
@@ -506,7 +611,7 @@
 <span class="sd">    t_grid : ndarray of float</span>
 <span class="sd">        The resampled time grid.</span>
 <span class="sd">    f_t : ndarray of real or complex</span>
-<span class="sd">        The resampled time domain data.</span>
+<span class="sd">        The resampled time-domain data.</span>
 <span class="sd">    dt : float</span>
 <span class="sd">        The spacing of the resampled time grid.</span>
 
@@ -525,8 +630,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)),</span> <span class="s2">&quot;The requested number of points must be an integer&quot;</span>
     <span class="k">assert</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The requested number of points must be greater than 0.&quot;</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t_grid</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">f_t</span><span class="p">)),</span> <span class="p">(</span><span class="s2">&quot;The time grid and time domain data&quot;</span>
-                                       <span class="s2">&quot; must be the same length.&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t_grid</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">f_t</span><span class="p">)),</span> <span class="p">(</span>
+        <span class="s2">&quot;The time grid and time-domain data must be the same length.&quot;</span><span class="p">)</span>
     <span class="c1">#---- Define Time Grid</span>
     <span class="n">n_0</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">t_grid</span><span class="p">)</span>
     <span class="n">dt_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">t_grid</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
@@ -544,7 +649,7 @@
             <span class="n">f_v</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">/=</span> <span class="mi">2</span> <span class="c1"># renormalize aliased Nyquist component</span>
         <span class="n">f_t</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">irfft</span><span class="p">(</span><span class="n">f_v</span><span class="p">,</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># Complex Envelope Representation</span>
+        <span class="c1"># Analytic Representation</span>
         <span class="n">f_v</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">f_t</span><span class="p">),</span> <span class="n">fsc</span><span class="o">=</span><span class="n">dt_0</span><span class="p">,</span> <span class="n">overwrite_x</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="n">n_0</span><span class="p">:</span>
             <span class="n">f_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">f_v</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="n">n_0</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;constant&quot;</span><span class="p">,</span> <span class="n">constant_values</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -557,31 +662,33 @@
     <span class="k">return</span> <span class="n">resampled</span></div>
 
 
-<span class="c1"># %% Classes</span>
+<span class="c1"># %% Time and Frequency Grids</span>
 
 <div class="viewcode-block" id="TFGrid"><a class="viewcode-back" href="../../api/pynlo.utility.TFGrid.html#pynlo.utility.TFGrid">[docs]</a><span class="k">class</span> <span class="nc">TFGrid</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Complementary grids defined over both time and frequency domains for the</span>
-<span class="sd">    representation of analytic functions with complex-valued envelopes.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Complementary time- and frequency-domain grids for the representation of</span>
+<span class="sd">    analytic functions with complex-valued envelopes.</span>
 
-<span class="sd">    The frequency grid is shifted and scaled such that the grid is aligned with</span>
-<span class="sd">    the origin and contains only positive frequencies. The values given to the</span>
+<span class="sd">    The frequency grid is shifted and scaled such that it is aligned with the</span>
+<span class="sd">    origin and contains only positive frequencies. The values given to the</span>
 <span class="sd">    initializers are only targets and may be adjusted slightly. If necessary,</span>
-<span class="sd">    the frequency step size will be decreased so that the grid is formed</span>
-<span class="sd">    without any negative frequencies, fitting the desired number of points</span>
-<span class="sd">    between (0, `v_max`].</span>
+<span class="sd">    the reference frequency will be increased so that the grids can be formed</span>
+<span class="sd">    without any negative frequencies.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    n_points : int</span>
+<span class="sd">    n : int</span>
 <span class="sd">        The number of grid points.</span>
-<span class="sd">    v_max : float</span>
-<span class="sd">        The target maximum frequency.</span>
+<span class="sd">    v_ref : float</span>
+<span class="sd">        The target central frequency of the grid.</span>
 <span class="sd">    dv : float</span>
-<span class="sd">        The target frequency grid step size.</span>
-<span class="sd">    v0 : float, optional</span>
-<span class="sd">        The comoving frame reference frequency. The default selects the</span>
-<span class="sd">        central frequency of the resulting grid.</span>
+<span class="sd">        The frequency step size. This is equal to the reciprocal of the total</span>
+<span class="sd">        time window.</span>
+<span class="sd">    alias : int, optional</span>
+<span class="sd">        The number of harmonics supported by the real-valued time domain grid</span>
+<span class="sd">        without aliasing. The default is 1, which only generates enough points</span>
+<span class="sd">        for one alias-free Nyquist zone. A higher number may be useful when</span>
+<span class="sd">        simulating nonlinear interactions.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -597,12 +704,8 @@
 <span class="sd">    Aligning the frequency grid to the origin facilitates calculations using</span>
 <span class="sd">    real Fourier transforms, which have grids that start at zero frequency. The</span>
 <span class="sd">    `rtf_grids` method and the `rn_range` and `rn_slice` attributes are useful</span>
-<span class="sd">    when transitioning between the analytic, complex envelope representation</span>
-<span class="sd">    of this class to the real-valued representation.</span>
-
-<span class="sd">    The comoving frame reference frequency `v0` does not affect the definition</span>
-<span class="sd">    of the grids but defines the frequency at which the comoving frame is</span>
-<span class="sd">    referenced.</span>
+<span class="sd">    when transitioning between the analytic representation of this class to the</span>
+<span class="sd">    real-valued representation.</span>
 
 <span class="sd">    By definition of the DFT, the time and frequency grids must range</span>
 <span class="sd">    symmetrically about the origin, with the time grid incrementing in unit</span>
@@ -615,125 +718,70 @@
 <span class="sd">    the DFT.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="TFGrid.__init__"><a class="viewcode-back" href="../../api/pynlo.utility.TFGrid.__init__.html#pynlo.utility.TFGrid.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a time and frequency grid given a target maximum frequency,</span>
-<span class="sd">        a target frequency step size, and the total number of grid points.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        n_points : int</span>
-<span class="sd">            The number of grid points.</span>
-<span class="sd">        v_max : float</span>
-<span class="sd">            The target maximum frequency.</span>
-<span class="sd">        dv : float</span>
-<span class="sd">            The target frequency step size.</span>
-<span class="sd">        v0 : float, optional</span>
-<span class="sd">            The comoving frame reference frequency. The default selects the</span>
-<span class="sd">            central frequency of the resulting grid.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)),</span> <span class="s2">&quot;The number of points must be an integer.&quot;</span>
-        <span class="k">assert</span> <span class="p">(</span><span class="n">n_points</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">),</span>  <span class="s2">&quot;The number of points must be greater than 1.&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v_ref</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)),</span> <span class="s2">&quot;The number of points must be an integer.&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">),</span>  <span class="s2">&quot;The number of points must be greater than 1.&quot;</span>
         <span class="k">assert</span> <span class="p">(</span><span class="n">dv</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The frequency grid step size must be greater than 0.&quot;</span>
-        <span class="k">assert</span> <span class="p">(</span><span class="n">v_max</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The target maximum frequency must be greater than 0.&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">v_ref</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The target central frequency must be greater than 0.&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dv</span> <span class="o">=</span> <span class="n">dv</span>
 
         <span class="c1">#---- Align Frequency Grid</span>
-        <span class="n">v_max_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">modf</span><span class="p">(</span><span class="n">v_max</span> <span class="o">/</span> <span class="n">dv</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
-        <span class="n">v_min_index</span> <span class="o">=</span> <span class="n">v_max_index</span> <span class="o">-</span> <span class="p">(</span><span class="n">n_points</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">v_min_index</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">v_max_index</span> <span class="o">=</span> <span class="n">n_points</span>
-            <span class="n">v_min_index</span> <span class="o">=</span> <span class="mi">1</span>
-            <span class="n">dv</span> <span class="o">=</span> <span class="n">v_max</span><span class="o">/</span><span class="n">v_max_index</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rn_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">v_min_index</span><span class="p">,</span> <span class="n">v_max_index</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rn_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rn_range</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">rn_range</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_n</span> <span class="o">=</span> <span class="n">n_points</span>
+        <span class="n">ref_idx</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">v_ref</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">dv</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ref_idx</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">ref_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_v_ref</span> <span class="o">=</span> <span class="n">ref_idx</span> <span class="o">*</span> <span class="n">dv</span>
+
+        <span class="n">min_idx</span> <span class="o">=</span> <span class="n">ref_idx</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span>
+        <span class="n">max_idx</span> <span class="o">=</span> <span class="n">ref_idx</span> <span class="o">+</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rn_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">min_idx</span><span class="p">,</span> <span class="n">max_idx</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rn_slice</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rn_range</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">rn_range</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
         <span class="c1">#---- Define Frequency Grid</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dv</span> <span class="o">=</span> <span class="n">dv</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_v_grid</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dv</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="n">v_min_index</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_v_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__v_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dv</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_ref</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_v_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_v_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dv</span>
-        <span class="k">if</span> <span class="n">v0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">v0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># same as v_ref</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">v0</span> <span class="o">=</span> <span class="n">v0</span>
 
         <span class="c1">#---- Define Complex Time Grid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dt</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dv</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_t_grid</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_points</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">)))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_t_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_t_grid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__t_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_t_ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_t_window</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span>
 
-        <span class="c1">#---- Define Real Time and Frequency Grids</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rtf_grids</span><span class="p">(</span><span class="n">n_harmonic</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="c1">#---- Define Real-Valued Time and Frequency Domain Grids</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">alias</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;There must be atleast 1 alias-free Nyquist zone.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rtf_grids</span><span class="p">(</span><span class="n">alias</span><span class="o">=</span><span class="n">alias</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1">#---- Class Methods</span>
 <div class="viewcode-block" id="TFGrid.FromFreqRange"><a class="viewcode-back" href="../../api/pynlo.utility.TFGrid.FromFreqRange.html#pynlo.utility.TFGrid.FromFreqRange">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">FromFreqRange</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a time and frequency grid given a target minimum and maximum</span>
-<span class="sd">        frequency and the total number of grid points.</span>
+    <span class="k">def</span> <span class="nf">FromFreqRange</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">v_min</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a set of time and frequency grids given the total number of</span>
+<span class="sd">        grid points and a target minimum and maximum frequency.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        n_points : int</span>
+<span class="sd">        n : int</span>
 <span class="sd">            The number of grid points.</span>
 <span class="sd">        v_min : float</span>
 <span class="sd">            The target minimum frequency.</span>
 <span class="sd">        v_max : float</span>
 <span class="sd">            The target maximum frequency.</span>
-<span class="sd">        v0 : float, optional</span>
-<span class="sd">            The comoving frame reference frequency. The default selects the</span>
-<span class="sd">            central frequency of the resulting grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="p">(</span><span class="n">v_max</span> <span class="o">&gt;</span> <span class="n">v_min</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;The target maximum frequency must be greater&quot;</span>
-                                 <span class="s2">&quot; than the target minimum frequency.&quot;</span><span class="p">)</span>
-        <span class="n">dv</span> <span class="o">=</span> <span class="p">(</span><span class="n">v_max</span> <span class="o">-</span> <span class="n">v_min</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">n_points</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="TFGrid.FromTimeWindowAndFreq"><a class="viewcode-back" href="../../api/pynlo.utility.TFGrid.FromTimeWindowAndFreq.html#pynlo.utility.TFGrid.FromTimeWindowAndFreq">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">FromTimeWindowAndFreq</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">t_window</span><span class="p">,</span> <span class="n">v0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize a time and frequency grid given a target time window, a</span>
-<span class="sd">        target center frequency, and the total number of grid points.</span>
-
-<span class="sd">        If there are too many points to place `v0` at the center of the grid</span>
-<span class="sd">        the excess number is added at higher frequencies.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        n_points : int</span>
-<span class="sd">            The number of grid points.</span>
-<span class="sd">        t_window : float</span>
-<span class="sd">            The target time window.</span>
-<span class="sd">        v0 : float</span>
-<span class="sd">            The target center frequency, which is also taken as the comoving</span>
-<span class="sd">            frame reference frequency.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="p">(</span><span class="n">t_window</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The target time window must be greater than 0.&quot;</span>
-        <span class="k">assert</span> <span class="p">(</span><span class="n">v0</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The target center frequency must be greater than 0.&quot;</span>
-
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">t_window</span><span class="o">/</span><span class="n">n_points</span>
-        <span class="n">dv</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n_points</span><span class="o">*</span><span class="n">dt</span><span class="p">)</span>
-
-        <span class="n">v_min</span> <span class="o">=</span> <span class="n">v0</span> <span class="o">-</span> <span class="p">(</span><span class="n">n_points</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">dv</span>
-        <span class="n">v_min_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">modf</span><span class="p">(</span><span class="n">v_min</span> <span class="o">/</span> <span class="n">dv</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
-        <span class="k">if</span> <span class="n">v_min_index</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">v_max_index</span> <span class="o">=</span> <span class="n">n_points</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">v_max_index</span> <span class="o">=</span> <span class="n">v_min_index</span> <span class="o">+</span> <span class="p">(</span><span class="n">n_points</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">v_max</span> <span class="o">=</span> <span class="n">dv</span> <span class="o">*</span> <span class="n">v_max_index</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">v_max</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="n">v0</span><span class="p">)</span></div>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">v_max</span> <span class="o">&gt;</span> <span class="n">v_min</span><span class="p">),</span> <span class="p">(</span>
+            <span class="s2">&quot;The target maximum frequency must be greater than the target minimum frequency.&quot;</span><span class="p">)</span>
+        <span class="n">dv</span> <span class="o">=</span> <span class="p">(</span><span class="n">v_max</span> <span class="o">-</span> <span class="n">v_min</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">v_ref</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">v_min</span> <span class="o">+</span> <span class="n">v_max</span><span class="p">)</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">v_ref</span><span class="p">,</span> <span class="n">dv</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
 
     <span class="c1">#---- General Properties</span>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">n</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The number of grid points in the complex envelope representation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The number of grid points of the analytic representation.</span>
 
 <span class="sd">        This value is the same for both the time and frequency grids.</span>
 
@@ -746,8 +794,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The number of grid points in the real-valued time domain</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The number of grid points of the real-valued time domain</span>
 <span class="sd">        representation.</span>
 
 <span class="sd">        Returns</span>
@@ -759,11 +807,10 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rn_range</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The minimum and maximum indices of the origin contiguous frequency</span>
-<span class="sd">        grid associated with the real-valued time domain representation that</span>
-<span class="sd">        correspond to the first and last points of the analytic frequency grid</span>
-<span class="sd">        associated with the complex envelope time domain representation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The minimum and maximum indices of the origin-contiguous frequency</span>
+<span class="sd">        grid, associated with the real-valued time domain representation, that</span>
+<span class="sd">        correspond to the first and last points of the analytic frequency grid.</span>
 
 <span class="sd">        These values are useful for indexing and constructing frequency grids</span>
 <span class="sd">        for applications with real DFTs.</span>
@@ -777,11 +824,10 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rn_slice</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A slice object that indexes the origin contiguous frequency grid</span>
-<span class="sd">        associated with the real-valued time domain representation onto the</span>
-<span class="sd">        analytic frequency grid associated with the complex envelope time</span>
-<span class="sd">        domain representation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A slice object that indexes the origin-contiguous frequency grid,</span>
+<span class="sd">        associated with the real-valued time domain representation, onto the</span>
+<span class="sd">        analytic frequency grid.</span>
 
 <span class="sd">        This is useful for indexing and constructing frequency gridded arrays</span>
 <span class="sd">        for applications with real DFTs. It is assumed that the arrays are</span>
@@ -794,41 +840,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rn_slice</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">v0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The comoving frame reference frequency.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        float</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span>
-    <span class="nd">@v0</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">v0</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v0</span><span class="p">):</span>
-        <span class="k">assert</span> <span class="p">(</span><span class="n">v0</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">),</span> <span class="s2">&quot;The comoving frame reference frequency must be greater than 0.&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_v0_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span> <span class="o">-</span> <span class="n">v0</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">v0_idx</span><span class="p">]</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">v0_idx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The array index of the comoving frame’s reference frequency.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        int</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v0_idx</span>
-
     <span class="c1">#---- Frequency Grid Properties</span>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">v_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The frequency grid in the complex envelope representation, with units</span>
-<span class="sd">        of ``Hz``.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The frequency grid of the analytic representation, with units of</span>
+<span class="sd">        ``Hz``.</span>
 
 <span class="sd">        The frequency grid is aligned to the origin and contains only positive</span>
 <span class="sd">        frequencies.</span>
@@ -838,15 +855,30 @@
 <span class="sd">        ndarray of float</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_v_grid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__v_grid</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_v_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The frequency grid of the analytic representation, arranged in standard</span>
+<span class="sd">        fft order.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ndarray of float</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_grid</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">v_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The grid reference frequency in the complex envelope representation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The grid reference frequency of the analytic representation, with units</span>
+<span class="sd">        of ``Hz``.</span>
 
-<span class="sd">        This is the frequency offset between `v_grid` and the origin of the</span>
-<span class="sd">        frequency grid implicitly defined by a DFT with `n` points.</span>
+<span class="sd">        This is the offset between `v_grid` and the frequency grid of the</span>
+<span class="sd">        complex-envelope representation implicitly defined by a DFT with `n`</span>
+<span class="sd">        points.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -857,8 +889,9 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The frequency grid step size in the complex envelope representation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The frequency grid step size of the analytic representation, with units</span>
+<span class="sd">        of ``Hz``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -869,8 +902,9 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">v_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The span of the frequency grid in the complex envelope representation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The span of the frequency grid in the analytic representation, with</span>
+<span class="sd">        units of ``Hz``.</span>
 
 <span class="sd">        This is equal to the number of grid points times the frequency grid</span>
 <span class="sd">        step size.</span>
@@ -885,9 +919,8 @@
     <span class="c1">#---- Time Grid Properties</span>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">t_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The time grid in the complex envelope representation, with units of</span>
-<span class="sd">        ``s``.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The time grid of the analytic representation, with units of ``s``.</span>
 
 <span class="sd">        The time grid is aligned symmetrically about the origin.</span>
 
@@ -896,15 +929,30 @@
 <span class="sd">        ndarray of float</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_t_grid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__t_grid</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_t_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The time grid of the analytic representation arranged in standard fft</span>
+<span class="sd">        order.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ndarray of float</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t_grid</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">t_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The grid reference time in the complex envelope representation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The grid reference time of the analytic representation, with units of</span>
+<span class="sd">        ``s``.</span>
 
-<span class="sd">        This is the time offset between `t_grid` and the origin of the time</span>
-<span class="sd">        grid implicitly defined by a DFT with `n` points.</span>
+<span class="sd">        This is the offset between `t_grid` and the time grid of the</span>
+<span class="sd">        complex-envelope representation implicitly defined by a DFT with `n`</span>
+<span class="sd">        points.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -915,15 +963,16 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The time grid step size in the complex envelope representation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The time grid step size of the analytic representation, with units of</span>
+<span class="sd">        ``s``.</span>
 
-<span class="sd">        This is the differential for Fourier transforms. Multiplying the</span>
-<span class="sd">        integrand of the transform by this factor will preserve the integrated</span>
-<span class="sd">        absolute squared magnitude::</span>
+<span class="sd">        The time step is used as the differential of Fourier transforms.</span>
+<span class="sd">        Multiplying the input of the transform by this factor will preserve the</span>
+<span class="sd">        integrated absolute squared magnitude of the transformed result::</span>
 
 <span class="sd">            a_v = fft.fft(a_t, fsc=dt)</span>
-<span class="sd">            np.sum(np.abs(a_t)**2 * dt) == np.sum(np.abs(a_v)**2 *dv)</span>
+<span class="sd">            np.sum(np.abs(a_t)**2 * dt) == np.sum(np.abs(a_v)**2 * dv)</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -934,10 +983,11 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">t_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The span of the time grid in the complex envelope representation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The span of the time grid in the analytic representation, with units of</span>
+<span class="sd">        ``s``.</span>
 
-<span class="sd">        This is equal to the number of grid points time the time grid step</span>
+<span class="sd">        This is equal to the number of grid points times the time grid step</span>
 <span class="sd">        size.</span>
 
 <span class="sd">        Returns</span>
@@ -950,8 +1000,8 @@
     <span class="c1">#---- Real Time/Frequency Grid Properties</span>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rv_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The origin contiguous frequency grid for the real-valued time domain</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The origin-contiguous frequency grid of the real-valued time domain</span>
 <span class="sd">        representation, with units of ``Hz``.</span>
 
 <span class="sd">        Returns</span>
@@ -959,13 +1009,13 @@
 <span class="sd">        ndarray of float</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rv_grid</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__rv_grid</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rv_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The grid reference frequency in the real-valued time domain</span>
-<span class="sd">        representation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The grid reference frequency of the real-valued time domain</span>
+<span class="sd">        representation, with units of ``Hz``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -976,11 +1026,11 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rdv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The frequency grid step size in the real-valued time domain</span>
-<span class="sd">        representation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The frequency grid step size of the real-valued time domain</span>
+<span class="sd">        representation, with units of ``Hz``.</span>
 
-<span class="sd">        This is equal to the frequency grid step size in the complex envelope</span>
+<span class="sd">        This is equal to the frequency grid step size of the analytic</span>
 <span class="sd">        representation.</span>
 
 <span class="sd">        Returns</span>
@@ -992,9 +1042,9 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rv_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The span of the frequency grid in the real-valued time domain</span>
-<span class="sd">        representation.</span>
+<span class="sd">        representation, with units of ``Hz``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1005,8 +1055,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rt_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The time grid in the real-valued time domain representation, with</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The time grid of the real-valued time domain representation, with</span>
 <span class="sd">        units of ``s``.</span>
 
 <span class="sd">        Returns</span>
@@ -1014,12 +1064,26 @@
 <span class="sd">        ndarray of float</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rt_grid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__rt_grid</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_rt_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The time grid of the real-valued time domain representation, arranged</span>
+<span class="sd">        in standard fft order.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ndarray of float</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rt_grid</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rt_ref</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The grid reference time in the real-valued time domain representation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The grid reference time of the real-valued time domain representation,</span>
+<span class="sd">        with units of ``s``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1030,8 +1094,9 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rdt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The time grid step size in the real-valued time domain representation.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The time grid step size of the real-valued time domain representation,</span>
+<span class="sd">        with units of ``s``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1042,9 +1107,9 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rt_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The span of the time grid in the real-valued time domain</span>
-<span class="sd">        representation.</span>
+<span class="sd">        representation, with units of ``s``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1053,40 +1118,45 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rt_window</span>
 
-<div class="viewcode-block" id="TFGrid.rtf_grids"><a class="viewcode-back" href="../../api/pynlo.utility.TFGrid.rtf_grids.html#pynlo.utility.TFGrid.rtf_grids">[docs]</a>    <span class="k">def</span> <span class="nf">rtf_grids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_harmonic</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fast_n</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Complementary grids defined over both time and frequency domains for</span>
-<span class="sd">        the representation of analytic functions with real-valued amplitudes.</span>
+<div class="viewcode-block" id="TFGrid.rtf_grids"><a class="viewcode-back" href="../../api/pynlo.utility.TFGrid.rtf_grids.html#pynlo.utility.TFGrid.rtf_grids">[docs]</a>    <span class="k">def</span> <span class="nf">rtf_grids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fast_n</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Complementary time and frequency domain grids for the representation of</span>
+<span class="sd">        analytic functions with real-valued amplitudes.</span>
 
-<span class="sd">        The frequency grid contains the origin and positive frequencies. The</span>
-<span class="sd">        `n_harmonic` parameter determines the number of harmonics the</span>
-<span class="sd">        resulting time grid supports without aliasing. In order to maintain</span>
-<span class="sd">        efficient DFT behavior, the number of points can be extended further based</span>
-<span class="sd">        on the output of `scipy.fft.next_fast_len`. These grids are suitable</span>
-<span class="sd">        for use with real DFTs, see `fft.rfft` and `fft.irfft`.</span>
+<span class="sd">        The `alias` parameter determines the number of harmonics the time grid</span>
+<span class="sd">        supports without aliasing. In order to maintain efficient DFT behavior,</span>
+<span class="sd">        the number of points can be extended further based on the output of</span>
+<span class="sd">        `scipy.fft.next_fast_len` for aliases greater than or equal to 1. An</span>
+<span class="sd">        alias of 0 returns the set of time and frequency grids consistent with</span>
+<span class="sd">        a real-valued function defined over the original, analytic `t_grid`.</span>
+
+<span class="sd">        The resulting frequency grid contains the origin and positive</span>
+<span class="sd">        frequencies and is suitable for use with real DFTs (see `fft.rfft` and</span>
+<span class="sd">        `fft.irfft`).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        n_harmonic : int, optional</span>
-<span class="sd">            The harmonic support of the generated grids. The default is 1, the</span>
-<span class="sd">            fundamental harmonic.</span>
+<span class="sd">        alias : float, optional</span>
+<span class="sd">            The harmonic support of the generated grids (the number of</span>
+<span class="sd">            alias-free Nyquist zones). The default is 1, the fundamental</span>
+<span class="sd">            harmonic.</span>
 <span class="sd">        fast_n : bool, optional</span>
-<span class="sd">            A parameter that determines whether the length of the</span>
-<span class="sd">            array is extended up to the next fast fft length. The default is</span>
-<span class="sd">            to extend.</span>
+<span class="sd">            A flag that determines whether the length of the new array is</span>
+<span class="sd">            extended up to the next fast fft length. The default is to extend.</span>
+<span class="sd">            This parameter has no effect when the `alias` is 0.</span>
 <span class="sd">        update : bool, optional</span>
-<span class="sd">            A parameter that determines whether to update the real time</span>
-<span class="sd">            and frequency grids of the parent object with the results of this method.</span>
-<span class="sd">            The default is to update.</span>
+<span class="sd">            A flag that determines whether to update the real-valued time and</span>
+<span class="sd">            frequency domain grids of the parent object with the results of</span>
+<span class="sd">            this method. The default is to return the calculated grids without</span>
+<span class="sd">            updating the associated values stored in the class. This parameter</span>
+<span class="sd">            is only valid when `alias` is greater than or equal to 1.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        n : int</span>
 <span class="sd">            The number of grid points.</span>
-<span class="sd">        v0 : float</span>
-<span class="sd">            The comoving frame reference frequency.</span>
 <span class="sd">        v_grid : array of float</span>
-<span class="sd">            The origin contiguous frequency grid.</span>
+<span class="sd">            The origin-contiguous frequency grid.</span>
 <span class="sd">        v_ref : float</span>
 <span class="sd">            The grid reference frequency.</span>
 <span class="sd">        dv : float</span>
@@ -1104,22 +1174,15 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        Multiplication of functions in the time domain (an operation intrinsic</span>
-<span class="sd">        to nonlinear optics) is equivalent to convolution in the frequency</span>
-<span class="sd">        domain and vice versa. The support of a convolution is the sum of the</span>
-<span class="sd">        support of its parts. Thus, in order to avoid aliasing, 2nd and 3rd</span>
-<span class="sd">        order processes in the time domain need support up to the 2nd and 3rd</span>
-<span class="sd">        harmonics in the frequency domain.</span>
-
 <span class="sd">        To avoid dealing with case-specific amplitude scale factors when</span>
-<span class="sd">        transforming between complex envelope and real-valued representations</span>
-<span class="sd">        the frequency grid for complex-valued function must not contain the</span>
-<span class="sd">        origin and there must be enough points in the real-valued</span>
-<span class="sd">        representation to avoid aliasing the Nyquist frequency of the complex</span>
-<span class="sd">        envelope representation. The initializer of this class enforces the</span>
-<span class="sd">        first condition, the frequency grid starts at minimum one step size</span>
-<span class="sd">        away from the origin, and this method enforces the second by making</span>
-<span class="sd">        the minimum number of points odd if at the first harmonic.</span>
+<span class="sd">        transforming between analytic and real-valued representations the</span>
+<span class="sd">        frequency grid for complex-valued functions must not contain the origin</span>
+<span class="sd">        and there must be enough points in the real-valued representation to</span>
+<span class="sd">        avoid aliasing the Nyquist frequency of the analytic representation.</span>
+<span class="sd">        The initializer of the `TFGrid` class enforces the first condition, the</span>
+<span class="sd">        frequency grid starts at minimum one step size away from the origin,</span>
+<span class="sd">        and this method enforces the second by making the minimum number of</span>
+<span class="sd">        points odd if the real grid only extends to the first harmonic.</span>
 
 <span class="sd">        The transformation between representations is performed as in the</span>
 <span class="sd">        following example, with `tf` an instance of the `TFGrid` class, `rtf`</span>
@@ -1137,18 +1200,19 @@
 <span class="sd">            np.sum(ra_t**2 * rtf.dt) == np.sum(np.abs(a_v)**2 * tf.dv)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="p">(</span><span class="n">n_harmonic</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;The harmonic support must be atleast 1.&quot;</span>
         <span class="c1">#---- Number of Points</span>
-        <span class="n">target_n_v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rn_range</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">*</span><span class="n">n_harmonic</span>
-        <span class="k">if</span> <span class="n">n_harmonic</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">target_n_t</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">target_n_v</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># odd</span>
+        <span class="k">if</span> <span class="n">alias</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">target_n_t</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">target_n_v</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># even</span>
-        <span class="k">if</span> <span class="n">fast_n</span><span class="p">:</span>
-            <span class="n">n</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">next_fast_len</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">target_n_t</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">n</span> <span class="o">=</span> <span class="n">target_n_t</span>
-        <span class="n">n_v</span> <span class="o">=</span> <span class="n">n</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">assert</span> <span class="p">(</span><span class="n">alias</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">),</span> <span class="s2">&quot;The harmonic support must be atleast 1.&quot;</span>
+            <span class="n">target_n_v</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rn_range</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">*</span><span class="n">alias</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">alias</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">target_n_v</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># odd</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">target_n_v</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># even</span>
+            <span class="k">if</span> <span class="n">fast_n</span><span class="p">:</span>
+                <span class="n">n</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">next_fast_len</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">n_v</span> <span class="o">=</span> <span class="n">n</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span> <span class="c1"># points in the frequency grid</span>
 
         <span class="c1">#---- Define Frequency Grid</span>
         <span class="n">v_grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dv</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_v</span><span class="p">)</span>
@@ -1156,63 +1220,104 @@
 
         <span class="c1">#---- Define Time Grid</span>
         <span class="n">dt</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dv</span><span class="p">)</span>
-        <span class="n">t_grid</span> <span class="o">=</span> <span class="n">dt</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">))</span>
-        <span class="n">t_ref</span> <span class="o">=</span> <span class="n">t_grid</span><span class="p">[</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">t_grid</span> <span class="o">=</span> <span class="n">dt</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">t_ref</span> <span class="o">=</span> <span class="n">t_grid</span><span class="p">[</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># 0 by definition</span>
 
         <span class="c1">#---- Construct RTFGrid</span>
         <span class="n">rtf_grids</span> <span class="o">=</span> <span class="n">_RTFGrid</span><span class="p">(</span>
-            <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">v0</span><span class="p">,</span>
+            <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span>
             <span class="n">v_grid</span><span class="o">=</span><span class="n">v_grid</span><span class="p">,</span> <span class="n">v_ref</span><span class="o">=</span><span class="n">v_ref</span><span class="p">,</span> <span class="n">dv</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dv</span><span class="p">,</span> <span class="n">v_window</span><span class="o">=</span><span class="n">n_v</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">dv</span><span class="p">,</span>
             <span class="n">t_grid</span><span class="o">=</span><span class="n">t_grid</span><span class="p">,</span> <span class="n">t_ref</span><span class="o">=</span><span class="n">t_ref</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">,</span> <span class="n">t_window</span><span class="o">=</span><span class="n">n</span><span class="o">*</span><span class="n">dt</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">update</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">update</span> <span class="ow">and</span> <span class="n">alias</span><span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rn</span> <span class="o">=</span> <span class="n">rtf_grids</span><span class="o">.</span><span class="n">n</span>
 
             <span class="c1"># Frequency Grid</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_rv_grid</span> <span class="o">=</span> <span class="n">rtf_grids</span><span class="o">.</span><span class="n">v_grid</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__rv_grid</span> <span class="o">=</span> <span class="n">rtf_grids</span><span class="o">.</span><span class="n">v_grid</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rv_ref</span> <span class="o">=</span> <span class="n">rtf_grids</span><span class="o">.</span><span class="n">v_ref</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rv_window</span> <span class="o">=</span> <span class="n">rtf_grids</span><span class="o">.</span><span class="n">v_window</span>
 
             <span class="c1"># Time Grid</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_rt_grid</span> <span class="o">=</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftshift</span><span class="p">(</span><span class="n">rtf_grids</span><span class="o">.</span><span class="n">t_grid</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__rt_grid</span> <span class="o">=</span> <span class="n">rtf_grids</span><span class="o">.</span><span class="n">t_grid</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rt_ref</span> <span class="o">=</span> <span class="n">rtf_grids</span><span class="o">.</span><span class="n">t_ref</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rdt</span> <span class="o">=</span> <span class="n">rtf_grids</span><span class="o">.</span><span class="n">dt</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rt_window</span> <span class="o">=</span> <span class="n">rtf_grids</span><span class="o">.</span><span class="n">t_window</span>
-        <span class="k">return</span> <span class="n">rtf_grids</span></div></div>
+        <span class="k">return</span> <span class="n">rtf_grids</span></div>
+
+    <span class="c1">#---- Misc</span>
+<div class="viewcode-block" id="TFGrid.copy"><a class="viewcode-back" href="../../api/pynlo.utility.TFGrid.copy.html#pynlo.utility.TFGrid.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A copy of the time and frequency grids.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 </pre></div>
 
-              </div>
+                </article>
               
               
-              <div class='prev-next-bottom'>
-                
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
+</div>
 
-              </div>
+                </footer>
               
-          </main>
-          
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
 
-      </div>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2023, PyNLO authors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    <br/>
+  </p>
+</div>
+      
     </div>
   
-  <script src="../../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
 
-  <footer class="footer mt-5 mt-md-0">
-  <div class="container">
-    
-    <div class="footer-item">
-      <p class="copyright">
-    &copy; Copyright 2021, PyNLO authors.<br/>
-</p>
-    </div>
-    
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.<br/>
-</p>
-    </div>
-    
-  </div>
-</footer>
+  </footer>
   </body>
 </html>

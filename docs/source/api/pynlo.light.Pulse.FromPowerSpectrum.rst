@@ -1,5 +1,5 @@
-pynlo.light.Pulse.FromPowerSpectrum
-===================================
+Pulse.FromPowerSpectrum
+=======================
 
 .. currentmodule:: pynlo.light
 

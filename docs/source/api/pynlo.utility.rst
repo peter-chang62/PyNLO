@@ -14,18 +14,20 @@ Modules
    pynlo.utility.chi2
    pynlo.utility.chi3
    pynlo.utility.fft
+   pynlo.utility.misc
 
 Functions
 ---------
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Functions
 
+   vacuum
    taylor_series
+   shift
    resample_v
    resample_t
-   derivative_v
-   derivative_t
 
 Classes
 -------

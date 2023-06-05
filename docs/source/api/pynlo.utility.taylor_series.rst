@@ -1,5 +1,5 @@
-pynlo.utility.taylor\_series
-============================
+taylor\_series
+==============
 
 .. currentmodule:: pynlo.utility
 

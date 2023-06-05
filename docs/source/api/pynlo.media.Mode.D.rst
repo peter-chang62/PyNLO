@@ -1,6 +1,6 @@
-pynlo.media.Mode.D
-==================
+Mode.D
+======
 
 .. currentmodule:: pynlo.media
 
-.. automethod:: Mode.D
+.. autoproperty:: Mode.D

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-TODO:
+TODO: pulse shaper, grating compressor, prism compressor
 
 """
 
@@ -11,9 +11,11 @@ __all__ = []
 
 # %%
 
-#TODO: pulse shaper
+# class methods to explore attributes, call class with pulse to apply
 
-#TODO: gratting compressor
+#TODO: pulse shaper (arbitrary phase, or gdd, tod, etc.)
+
+#TODO: grating compressor
 
 #TODO: prism compressor
 
@@ -350,4 +352,3 @@ __all__ = []
 # plt.xlim(190, 450)
 # plt.legend()
 # plt.grid(True)
-

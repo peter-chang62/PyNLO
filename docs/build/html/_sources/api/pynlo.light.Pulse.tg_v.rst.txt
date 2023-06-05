@@ -1,5 +1,5 @@
-pynlo.light.Pulse.tg\_v
-=======================
+Pulse.tg\_v
+===========
 
 .. currentmodule:: pynlo.light
 

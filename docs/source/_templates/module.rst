@@ -23,6 +23,7 @@
 
 {{ _('Module Attributes') | underline(line='-')}}
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Module Attributes
 {% for item in attributes %}
@@ -37,6 +38,7 @@
 
 {{ _('Functions') | underline(line='-') }}
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Functions
 {% for item in functions %}
@@ -66,6 +68,7 @@
 
 {{ _('Exceptions') | underline(line='-') }}
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Exceptions
 {% for item in exceptions %}

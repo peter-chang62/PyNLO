@@ -1,5 +1,5 @@
-pynlo.utility.TFGrid.rn\_slice
-==============================
+TFGrid.rn\_slice
+================
 
 .. currentmodule:: pynlo.utility
 

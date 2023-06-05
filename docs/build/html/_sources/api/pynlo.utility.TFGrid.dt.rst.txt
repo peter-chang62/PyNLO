@@ -1,5 +1,5 @@
-pynlo.utility.TFGrid.dt
-=======================
+TFGrid.dt
+=========
 
 .. currentmodule:: pynlo.utility
 

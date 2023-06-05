@@ -1,5 +1,5 @@
-pynlo.utility.chi1.beta\_to\_n
-==============================
+beta\_to\_n
+===========
 
 .. currentmodule:: pynlo.utility.chi1
 

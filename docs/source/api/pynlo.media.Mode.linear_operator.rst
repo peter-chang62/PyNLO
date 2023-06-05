@@ -1,5 +1,5 @@
-pynlo.media.Mode.linear\_operator
-=================================
+Mode.linear\_operator
+=====================
 
 .. currentmodule:: pynlo.media
 

@@ -5,9 +5,10 @@ pynlo.utility.chi2
 Functions
 ---------
 .. autosummary::
+   :template: base.rst
    :toctree:
    :caption: Functions
 
-   g2_shg
    g2_split
-   polling_sign
+   g2_shg
+   domain_inversions

@@ -1,5 +1,5 @@
-pynlo.utility.chi3.gamma\_to\_g3
-================================
+gamma\_to\_g3
+=============
 
 .. currentmodule:: pynlo.utility.chi3
 

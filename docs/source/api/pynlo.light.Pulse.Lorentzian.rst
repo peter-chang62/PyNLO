@@ -1,5 +1,5 @@
-pynlo.light.Pulse.Lorentzian
-============================
+Pulse.Lorentzian
+================
 
 .. currentmodule:: pynlo.light
 

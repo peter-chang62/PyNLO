@@ -1,5 +1,5 @@
-pynlo.utility.TFGrid.rv\_grid
-=============================
+TFGrid.rv\_grid
+===============
 
 .. currentmodule:: pynlo.utility
 

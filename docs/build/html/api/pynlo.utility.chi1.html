@@ -1,886 +1,627 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html lang="en" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pynlo.utility.chi1 &#8212; PyNLO dev documentation</title>
-    
-  <link href="../_static/css/theme.css" rel="stylesheet" />
-  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    
-  <link rel="stylesheet"
-    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
-
-    
-      
-
-    
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
-    
-  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
-
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pynlo.utility.chi1.n_to_beta" href="pynlo.utility.chi1.n_to_beta.html" />
-    <link rel="prev" title="pynlo.utility" href="pynlo.utility.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
-    
-  </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
-
-    
-    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
-
-  <div id="navbar-start">
-    
-    
-
-<a class="navbar-brand" href="../index.html">
-  <img src="../_static/pynlo.svg" class="logo" alt="logo">
-</a>
-
-
-    
-  </div>
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <title>pynlo.utility.chi1 &#8212; PyNLO 1.dev documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
   
-  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
-    <div id="navbar-center" class="mr-auto">
-      
-      <div class="navbar-center-item">
-        <ul id="navbar-main-elements" class="navbar-nav">
-    <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../guides.html">
-  User Guide
- </a>
-</li>
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-<li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../notes.html">
-  Notes
- </a>
-</li>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
-<li class="toctree-l1 current active nav-item">
- <a class="reference internal nav-link" href="../api.html">
-  API Reference
- </a>
-</li>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/pynlo.utility.chi1';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="n_to_beta" href="pynlo.utility.chi1.n_to_beta.html" />
+    <link rel="prev" title="pynlo.utility" href="pynlo.utility.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-</ul>
-      </div>
-      
-    </div>
-
-    <div id="navbar-end">
-      
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
-      </ul>
-      </div>
-      
-    </div>
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
   </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/pynlo.svg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/pynlo.svg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../guides.html">
+                        User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notes.html">
+                        Notes
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
+
     </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
     
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../guides.html">
+                        User Guide
+                      </a>
+                    </li>
+                
 
-    <div class="container-xl">
-      <div class="row">
-          
-            
-            <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
-  <div class="bd-toc-item active">
-    <p class="caption">
- <span class="caption-text">
-  Modules
- </span>
-</p>
-<ul class="current nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="pynlo.light.html">
-   pynlo.light
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="pynlo.light.Pulse.html">
-     pynlo.light.Pulse
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-    <label for="toctree-checkbox-2">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.__init__.html">
-       pynlo.light.Pulse.__init__
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.FromTFGrid.html">
-       pynlo.light.Pulse.FromTFGrid
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.FromPowerSpectrum.html">
-       pynlo.light.Pulse.FromPowerSpectrum
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.Gaussian.html">
-       pynlo.light.Pulse.Gaussian
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.Sech.html">
-       pynlo.light.Pulse.Sech
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.Parabolic.html">
-       pynlo.light.Pulse.Parabolic
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.Lorentzian.html">
-       pynlo.light.Pulse.Lorentzian
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.CW.html">
-       pynlo.light.Pulse.CW
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.v_width.html">
-       pynlo.light.Pulse.v_width
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.t_width.html">
-       pynlo.light.Pulse.t_width
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.autocorrelation.html">
-       pynlo.light.Pulse.autocorrelation
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.spectrogram.html">
-       pynlo.light.Pulse.spectrogram
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.a_v.html">
-       pynlo.light.Pulse.a_v
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.p_v.html">
-       pynlo.light.Pulse.p_v
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.phi_v.html">
-       pynlo.light.Pulse.phi_v
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.tg_v.html">
-       pynlo.light.Pulse.tg_v
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.a_t.html">
-       pynlo.light.Pulse.a_t
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.p_t.html">
-       pynlo.light.Pulse.p_t
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.phi_t.html">
-       pynlo.light.Pulse.phi_t
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.vg_t.html">
-       pynlo.light.Pulse.vg_t
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.ra_t.html">
-       pynlo.light.Pulse.ra_t
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.rp_t.html">
-       pynlo.light.Pulse.rp_t
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.light.Pulse.e_p.html">
-       pynlo.light.Pulse.e_p
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="pynlo.media.html">
-   pynlo.media
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="pynlo.media.Mode.html">
-     pynlo.media.Mode
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
-    <label for="toctree-checkbox-4">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.__init__.html">
-       pynlo.media.Mode.__init__
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.beta.html">
-       pynlo.media.Mode.beta
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.n.html">
-       pynlo.media.Mode.n
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.alpha.html">
-       pynlo.media.Mode.alpha
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.n_g.html">
-       pynlo.media.Mode.n_g
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.v_g.html">
-       pynlo.media.Mode.v_g
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.d_12.html">
-       pynlo.media.Mode.d_12
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.GVD.html">
-       pynlo.media.Mode.GVD
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.D.html">
-       pynlo.media.Mode.D
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.linear_operator.html">
-       pynlo.media.Mode.linear_operator
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.g2.html">
-       pynlo.media.Mode.g2
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.g2_inv.html">
-       pynlo.media.Mode.g2_inv
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.g3.html">
-       pynlo.media.Mode.g3
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.gamma.html">
-       pynlo.media.Mode.gamma
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.r3.html">
-       pynlo.media.Mode.r3
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.z.html">
-       pynlo.media.Mode.z
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.v_grid.html">
-       pynlo.media.Mode.v_grid
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.rv_grid.html">
-       pynlo.media.Mode.rv_grid
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.z_dep_linearity.html">
-       pynlo.media.Mode.z_dep_linearity
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.media.Mode.z_dep_nonlinearity.html">
-       pynlo.media.Mode.z_dep_nonlinearity
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pynlo.device.html">
-   pynlo.device
-  </a>
- </li>
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="pynlo.model.html">
-   pynlo.model
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
-  <label for="toctree-checkbox-5">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="pynlo.model.SM_UPE.html">
-     pynlo.model.SM_UPE
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
-    <label for="toctree-checkbox-6">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.model.SM_UPE.__init__.html">
-       pynlo.model.SM_UPE.__init__
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.model.SM_UPE.estimate_step_size.html">
-       pynlo.model.SM_UPE.estimate_step_size
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.model.SM_UPE.simulate.html">
-       pynlo.model.SM_UPE.simulate
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.model.SM_UPE.propagate.html">
-       pynlo.model.SM_UPE.propagate
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.model.SM_UPE.integrate.html">
-       pynlo.model.SM_UPE.integrate
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.model.SM_UPE.linear_operator.html">
-       pynlo.model.SM_UPE.linear_operator
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.model.SM_UPE.nonlinear_operator.html">
-       pynlo.model.SM_UPE.nonlinear_operator
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.model.SM_UPE.nonlinear_operator_svd.html">
-       pynlo.model.SM_UPE.nonlinear_operator_svd
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.model.SM_UPE.update_linearity.html">
-       pynlo.model.SM_UPE.update_linearity
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.model.SM_UPE.update_nonlinearity.html">
-       pynlo.model.SM_UPE.update_nonlinearity
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="pynlo.utility.html">
-   pynlo.utility
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
-  <label for="toctree-checkbox-7">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2 current active has-children">
-    <a class="current reference internal" href="#">
-     pynlo.utility.chi1
-    </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
-    <label for="toctree-checkbox-8">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi1.n_to_beta.html">
-       pynlo.utility.chi1.n_to_beta
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi1.beta_to_n.html">
-       pynlo.utility.chi1.beta_to_n
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi1.D_to_beta2.html">
-       pynlo.utility.chi1.D_to_beta2
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi1.beta2_to_D.html">
-       pynlo.utility.chi1.beta2_to_D
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="pynlo.utility.chi2.html">
-     pynlo.utility.chi2
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
-    <label for="toctree-checkbox-9">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi2.g2_shg.html">
-       pynlo.utility.chi2.g2_shg
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi2.g2_split.html">
-       pynlo.utility.chi2.g2_split
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi2.polling_sign.html">
-       pynlo.utility.chi2.polling_sign
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="pynlo.utility.chi3.html">
-     pynlo.utility.chi3
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
-    <label for="toctree-checkbox-10">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi3.gamma_to_g3.html">
-       pynlo.utility.chi3.gamma_to_g3
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi3.g3_to_gamma.html">
-       pynlo.utility.chi3.g3_to_gamma
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi3.g3_spm.html">
-       pynlo.utility.chi3.g3_spm
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi3.g3_split.html">
-       pynlo.utility.chi3.g3_split
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.chi3.nl_response_v.html">
-       pynlo.utility.chi3.nl_response_v
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="pynlo.utility.fft.html">
-     pynlo.utility.fft
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
-    <label for="toctree-checkbox-11">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.fft.fft.html">
-       pynlo.utility.fft.fft
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.fft.ifft.html">
-       pynlo.utility.fft.ifft
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.fft.rfft.html">
-       pynlo.utility.fft.rfft
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.fft.irfft.html">
-       pynlo.utility.fft.irfft
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="pynlo.utility.taylor_series.html">
-     pynlo.utility.taylor_series
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="pynlo.utility.resample_v.html">
-     pynlo.utility.resample_v
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="pynlo.utility.resample_t.html">
-     pynlo.utility.resample_t
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="pynlo.utility.derivative_v.html">
-     pynlo.utility.derivative_v
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="pynlo.utility.derivative_t.html">
-     pynlo.utility.derivative_t
-    </a>
-   </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="pynlo.utility.TFGrid.html">
-     pynlo.utility.TFGrid
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
-    <label for="toctree-checkbox-12">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.__init__.html">
-       pynlo.utility.TFGrid.__init__
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.FromFreqRange.html">
-       pynlo.utility.TFGrid.FromFreqRange
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.FromTimeWindowAndFreq.html">
-       pynlo.utility.TFGrid.FromTimeWindowAndFreq
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.rtf_grids.html">
-       pynlo.utility.TFGrid.rtf_grids
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.n.html">
-       pynlo.utility.TFGrid.n
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.rn.html">
-       pynlo.utility.TFGrid.rn
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.rn_range.html">
-       pynlo.utility.TFGrid.rn_range
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.rn_slice.html">
-       pynlo.utility.TFGrid.rn_slice
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.v0.html">
-       pynlo.utility.TFGrid.v0
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.v0_idx.html">
-       pynlo.utility.TFGrid.v0_idx
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.v_grid.html">
-       pynlo.utility.TFGrid.v_grid
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.v_ref.html">
-       pynlo.utility.TFGrid.v_ref
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.dv.html">
-       pynlo.utility.TFGrid.dv
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.v_window.html">
-       pynlo.utility.TFGrid.v_window
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.t_grid.html">
-       pynlo.utility.TFGrid.t_grid
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.t_ref.html">
-       pynlo.utility.TFGrid.t_ref
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.dt.html">
-       pynlo.utility.TFGrid.dt
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.t_window.html">
-       pynlo.utility.TFGrid.t_window
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.rv_grid.html">
-       pynlo.utility.TFGrid.rv_grid
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.rv_ref.html">
-       pynlo.utility.TFGrid.rv_ref
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.rdv.html">
-       pynlo.utility.TFGrid.rdv
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.rv_window.html">
-       pynlo.utility.TFGrid.rv_window
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.rt_grid.html">
-       pynlo.utility.TFGrid.rt_grid
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.rt_ref.html">
-       pynlo.utility.TFGrid.rt_ref
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.rdt.html">
-       pynlo.utility.TFGrid.rdt
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="pynlo.utility.TFGrid.rt_window.html">
-       pynlo.utility.TFGrid.rt_window
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
-</ul>
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../notes.html">
+                        Notes
+                      </a>
+                    </li>
+                
 
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../api.html">
+                        API Reference
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
   </div>
-</nav>
-            </div>
-            
-          
-
-          
-          <div class="d-none d-xl-block col-xl-2 bd-toc">
-            
-              
-              <div class="toc-item">
-                
-<div class="tocsection onthispage pt-5 pb-3">
-    <i class="fas fa-list"></i> On this page
-</div>
-
-<nav id="bd-toc-nav">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#functions">
-   Functions
-  </a>
- </li>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Modules</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="pynlo.light.html">pynlo.light</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.light.Pulse.html">Pulse</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.FromPowerSpectrum.html">Pulse.FromPowerSpectrum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.Gaussian.html">Pulse.Gaussian</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.Sech.html">Pulse.Sech</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.Parabolic.html">Pulse.Parabolic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.Lorentzian.html">Pulse.Lorentzian</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.CW.html">Pulse.CW</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.v_width.html">Pulse.v_width</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.t_width.html">Pulse.t_width</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.autocorrelation.html">Pulse.autocorrelation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.spectrogram.html">Pulse.spectrogram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.copy.html">Pulse.copy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.a_v.html">Pulse.a_v</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.p_v.html">Pulse.p_v</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.phi_v.html">Pulse.phi_v</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.tg_v.html">Pulse.tg_v</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.a_t.html">Pulse.a_t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.p_t.html">Pulse.p_t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.phi_t.html">Pulse.phi_t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.vg_t.html">Pulse.vg_t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.ra_t.html">Pulse.ra_t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.rp_t.html">Pulse.rp_t</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.e_p.html">Pulse.e_p</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.v0.html">Pulse.v0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.light.Pulse.v0_idx.html">Pulse.v0_idx</a></li>
 </ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pynlo.media.html">pynlo.media</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.media.Mode.html">Mode</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.d_12.html">Mode.d_12</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.linear_operator.html">Mode.linear_operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.copy.html">Mode.copy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.z.html">Mode.z</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.v_grid.html">Mode.v_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.rv_grid.html">Mode.rv_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.z_mode.html">Mode.z_mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.z_linear.html">Mode.z_linear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.z_nonlinear.html">Mode.z_nonlinear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.alpha.html">Mode.alpha</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.beta.html">Mode.beta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.n.html">Mode.n</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.beta1.html">Mode.beta1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.n_g.html">Mode.n_g</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.v_g.html">Mode.v_g</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.beta2.html">Mode.beta2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.D.html">Mode.D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.g2.html">Mode.g2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.g2_inv.html">Mode.g2_inv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.g2_pol.html">Mode.g2_pol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.g3.html">Mode.g3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.gamma.html">Mode.gamma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.media.Mode.r3.html">Mode.r3</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pynlo.device.html">pynlo.device</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="pynlo.model.html">pynlo.model</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.model.Model.html">Model</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.estimate_step_size.html">Model.estimate_step_size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.simulate.html">Model.simulate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.propagate.html">Model.propagate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.step.html">Model.step</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.linear_operator.html">Model.linear_operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.nonlinear_operator.html">Model.nonlinear_operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.update_linearity.html">Model.update_linearity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.update_nonlinearity.html">Model.update_nonlinearity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.Model.update_poling.html">Model.update_poling</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.model.NLSE.html">NLSE</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.NLSE.propagate.html">NLSE.propagate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.NLSE.nonlinear_operator.html">NLSE.nonlinear_operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.NLSE.update_linearity.html">NLSE.update_linearity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.NLSE.update_nonlinearity.html">NLSE.update_nonlinearity</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.model.UPE.html">UPE</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.UPE.propagate.html">UPE.propagate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.UPE.nonlinear_operator.html">UPE.nonlinear_operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.UPE.nonlinear_operator_separable.html">UPE.nonlinear_operator_separable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.UPE.update_nonlinearity.html">UPE.update_nonlinearity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.model.UPE.update_poling.html">UPE.update_poling</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="pynlo.utility.html">pynlo.utility</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">pynlo.utility.chi1</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi1.n_to_beta.html">n_to_beta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi1.beta_to_n.html">beta_to_n</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi1.D_to_beta2.html">D_to_beta2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi1.beta2_to_D.html">beta2_to_D</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.chi2.html">pynlo.utility.chi2</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi2.g2_split.html">g2_split</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi2.g2_shg.html">g2_shg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi2.domain_inversions.html">domain_inversions</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.chi3.html">pynlo.utility.chi3</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi3.gamma_to_g3.html">gamma_to_g3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi3.g3_to_gamma.html">g3_to_gamma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi3.g3_split.html">g3_split</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi3.g3_spm.html">g3_spm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.chi3.raman.html">raman</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.fft.html">pynlo.utility.fft</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.fft.html">fft</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.ifft.html">ifft</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.rfft.html">rfft</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.irfft.html">irfft</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.fftshift.html">fftshift</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.fft.ifftshift.html">ifftshift</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.misc.html">pynlo.utility.misc</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.misc.replace.html">replace</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pynlo.utility.vacuum.html">vacuum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pynlo.utility.taylor_series.html">taylor_series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pynlo.utility.shift.html">shift</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pynlo.utility.resample_v.html">resample_v</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pynlo.utility.resample_t.html">resample_t</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="pynlo.utility.TFGrid.html">TFGrid</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.FromFreqRange.html">TFGrid.FromFreqRange</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rtf_grids.html">TFGrid.rtf_grids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.copy.html">TFGrid.copy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.n.html">TFGrid.n</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rn.html">TFGrid.rn</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rn_range.html">TFGrid.rn_range</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rn_slice.html">TFGrid.rn_slice</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.v_grid.html">TFGrid.v_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.v_ref.html">TFGrid.v_ref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.dv.html">TFGrid.dv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.v_window.html">TFGrid.v_window</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.t_grid.html">TFGrid.t_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.t_ref.html">TFGrid.t_ref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.dt.html">TFGrid.dt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.t_window.html">TFGrid.t_window</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rv_grid.html">TFGrid.rv_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rv_ref.html">TFGrid.rv_ref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rdv.html">TFGrid.rdv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rv_window.html">TFGrid.rv_window</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rt_grid.html">TFGrid.rt_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rt_ref.html">TFGrid.rt_ref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rdt.html">TFGrid.rdt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pynlo.utility.TFGrid.rt_window.html">TFGrid.rt_window</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
 
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../api.html" class="nav-link">PyNLO Reference</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="pynlo.utility.html" class="nav-link">pynlo.utility</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">pynlo.utility.chi1</li>
+  </ul>
 </nav>
-              </div>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
               
-              <div class="toc-item">
+              
+              
                 
-              </div>
-              
-            
-          </div>
-          
-
-          
-          
-            
-          
-          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
-              
-              <div>
-                
-  <div class="section" id="module-pynlo.utility.chi1">
-<span id="pynlo-utility-chi1"></span><h1>pynlo.utility.chi1<a class="headerlink" href="#module-pynlo.utility.chi1" title="Permalink to this headline">¶</a></h1>
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="module-pynlo.utility.chi1">
+<span id="pynlo-utility-chi1"></span><h1>pynlo.utility.chi1<a class="headerlink" href="#module-pynlo.utility.chi1" title="Permalink to this heading">#</a></h1>
 <p>Conversion functions and other calculators relevant to the linear
 susceptibility.</p>
-<div class="section" id="functions">
-<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
-<table class="longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h2>
+<table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="pynlo.utility.chi1.n_to_beta.html#pynlo.utility.chi1.n_to_beta" title="pynlo.utility.chi1.n_to_beta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_to_beta</span></code></a>(v_grid, n)</p></td>
-<td><p>Refractive index to angular wavenumber.</p></td>
+<td><p>Refractive index to phase coefficient.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pynlo.utility.chi1.beta_to_n.html#pynlo.utility.chi1.beta_to_n" title="pynlo.utility.chi1.beta_to_n"><code class="xref py py-obj docutils literal notranslate"><span class="pre">beta_to_n</span></code></a>(v_grid, beta)</p></td>
-<td><p>Angular wavenumber to refractive index</p></td>
+<td><p>Phase coefficient to refractive index</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pynlo.utility.chi1.D_to_beta2.html#pynlo.utility.chi1.D_to_beta2" title="pynlo.utility.chi1.D_to_beta2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">D_to_beta2</span></code></a>(v_grid, D)</p></td>
-<td><p>Dispersion parameter D to group velocity dispersion (GVD) parameter beta2.</p></td>
+<td><p>Dispersion parameter D to group velocity dispersion beta_2 (GVD).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pynlo.utility.chi1.beta2_to_D.html#pynlo.utility.chi1.beta2_to_D" title="pynlo.utility.chi1.beta2_to_D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">beta2_to_D</span></code></a>(v_grid, beta2)</p></td>
-<td><p>Group velocity dispersion (GVD) parameter beta2 to dispersion parameter D.</p></td>
+<td><p>Group velocity dispersion beta_2 (GVD) to dispersion parameter D.</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
+</section>
+</section>
 
 
-              </div>
+                </article>
               
               
-              <div class='prev-next-bottom'>
-                
-    <a class='left-prev' id="prev-link" href="pynlo.utility.html" title="previous page">pynlo.utility</a>
-    <a class='right-next' id="next-link" href="pynlo.utility.chi1.n_to_beta.html" title="next page">pynlo.utility.chi1.n_to_beta</a>
-
-              </div>
               
-          </main>
-          
-
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pynlo.utility.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">pynlo.utility</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="pynlo.utility.chi1.n_to_beta.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">n_to_beta</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2023, PyNLO authors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    <br/>
+  </p>
+</div>
+      
     </div>
   
-  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.3.
+</p></div>
+      
+    </div>
+  
+</div>
 
-  <footer class="footer mt-5 mt-md-0">
-  <div class="container">
-    
-    <div class="footer-item">
-      <p class="copyright">
-    &copy; Copyright 2021, PyNLO authors.<br/>
-</p>
-    </div>
-    
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.1.<br/>
-</p>
-    </div>
-    
-  </div>
-</footer>
+  </footer>
   </body>
 </html>

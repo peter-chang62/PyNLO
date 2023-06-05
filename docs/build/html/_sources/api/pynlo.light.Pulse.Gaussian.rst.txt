@@ -1,5 +1,5 @@
-pynlo.light.Pulse.Gaussian
-==========================
+Pulse.Gaussian
+==============
 
 .. currentmodule:: pynlo.light
 

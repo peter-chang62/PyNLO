@@ -1,5 +1,5 @@
-pynlo.media.Mode.z
-==================
+Mode.z
+======
 
 .. currentmodule:: pynlo.media
 

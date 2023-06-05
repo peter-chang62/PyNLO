@@ -1,5 +1,5 @@
-pynlo.light.Pulse.spectrogram
-=============================
+Pulse.spectrogram
+=================
 
 .. currentmodule:: pynlo.light
 
