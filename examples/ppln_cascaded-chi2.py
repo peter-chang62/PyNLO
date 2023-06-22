@@ -109,12 +109,13 @@ beta = n_eff * 2 * pi * pulse.v_grid / c
 d_eff = 27e-12  # 27 pm / V
 chi2_eff = 2 * d_eff
 g2 = ut.chi2.g2_shg(v0, pulse.v_grid, n_eff, a_eff, chi2_eff)
+g3 = ut.chi3.g3_spm(n_eff, a_eff, 5400e-28)
 
 # poling
 p0 = 30e-6  # 30 um poling period
 z_invs, domains, poled = ut.chi2.domain_inversions(length, 2 * pi / p0)
 
-mode = pynlo.media.Mode(pulse.v_grid, beta, g2=g2, g2_inv=z_invs)
+mode = pynlo.media.Mode(pulse.v_grid, beta, g2=g2, g2_inv=z_invs, g3=g3)
 
 
 # %% Model

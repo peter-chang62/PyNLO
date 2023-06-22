@@ -13,25 +13,28 @@ __all__ = ["n_to_beta", "beta_to_n", "D_to_beta2", "beta2_to_D"]
 from scipy.constants import pi, c
 
 
-#%% Converters
+# %% Converters
 
 # TODO: forward and backward transformations, test with equivalents from media.Mode
 
-#---- Wavenumber and Linear Susceptibility chi1
+
+# ---- Wavenumber and Linear Susceptibility chi1
 def chi1_to_k(v_grid, chi1):
-    k = 2*pi*v_grid/c * (1 + chi1)**0.5
-    alpha = 2*k.imag
+    k = 2 * pi * v_grid / c * (1 + chi1) ** 0.5
+    alpha = 2 * k.imag
     beta = k.real
     return beta, alpha
+
 
 def k_to_chi1(v_grid, beta, alpha=None):
     if alpha is None:
         k = beta
     else:
-        k = beta + 1j/2 * alpha
-    return (c/(2*pi*v_grid) * k)**2 - 1
+        k = beta + 1j / 2 * alpha
+    return (c / (2 * pi * v_grid) * k) ** 2 - 1
 
-#---- Phase Coefficient and Refractive Index
+
+# ---- Phase Coefficient and Refractive Index
 def n_to_beta(v_grid, n):
     """
     Refractive index to phase coefficient.
@@ -48,7 +51,8 @@ def n_to_beta(v_grid, n):
     beta
 
     """
-    return n * (2*pi*v_grid/c)
+    return n * (2 * pi * v_grid / c)
+
 
 def beta_to_n(v_grid, beta):
     """
@@ -66,9 +70,10 @@ def beta_to_n(v_grid, beta):
     n
 
     """
-    return beta / (2*pi*v_grid/c)
+    return beta / (2 * pi * v_grid / c)
 
-#---- GVD and Dispersion Parameter D
+
+# ---- GVD and Dispersion Parameter D
 def D_to_beta2(v_grid, D):
     """
     Dispersion parameter D to group velocity dispersion beta_2 (GVD).
@@ -85,7 +90,8 @@ def D_to_beta2(v_grid, D):
     The GVD, in units of ``s**2/m``.
 
     """
-    return D / (-2*pi * v_grid**2/c)
+    return D / (-2 * pi * v_grid**2 / c)
+
 
 def beta2_to_D(v_grid, beta2):
     """
@@ -103,10 +109,11 @@ def beta2_to_D(v_grid, beta2):
     The dispersion parameter, in units of ``s/m**2``.
 
     """
-    return beta2 * (-2*pi * v_grid**2/c)
+    return beta2 * (-2 * pi * v_grid**2 / c)
 
 
 # %% Calculator Functions
 
+
 def linear_length():
-    pass #TODO
+    pass  # TODO

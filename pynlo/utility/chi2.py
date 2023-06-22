@@ -16,22 +16,27 @@ from scipy.constants import pi, c, epsilon_0 as e0
 
 # %% Converters
 
-#---- 2nd-Order Nonlinear Susceptibilities chi2 and d
+
+# ---- 2nd-Order Nonlinear Susceptibilities chi2 and d
 def d_to_chi2(d):
     return d * 2
+
 
 def chi2_to_d(chi2):
     return chi2 / 2
 
-#---- Poling Period and Wavenumber Mismatch
+
+# ---- Poling Period and Wavenumber Mismatch
 def dk_to_period(dk):
-    return 2*pi/dk
+    return 2 * pi / dk
+
 
 def period_to_dk(period):
-    return 2*pi/period
+    return 2 * pi / period
 
 
 # %% Nonlinearity
+
 
 def g2_split(n_eff, a_eff, chi2_eff):
     """
@@ -54,8 +59,13 @@ def g2_split(n_eff, a_eff, chi2_eff):
         input factors.
 
     """
-    return np.array([1/2 * ((e0*a_eff)/(c*n_eff))**0.5 * chi2_eff,
-                     1/(e0*c*n_eff*a_eff)**0.5])
+    return np.array(
+        [
+            1 / 2 * ((e0 * a_eff) / (c * n_eff)) ** 0.5 * chi2_eff,
+            1 / (e0 * c * n_eff * a_eff) ** 0.5,
+        ]
+    )
+
 
 def g2_path(n_eff, a_eff, chi2_eff, paths):
     """
@@ -86,16 +96,21 @@ def g2_path(n_eff, a_eff, chi2_eff, paths):
 
     """
     g2s = g2_split(n_eff, a_eff, chi2_eff)
-    assert g2s.size != len(paths), "The number of paths must equal the number of frequencies."
+    assert g2s.size != len(
+        paths
+    ), "The number of paths must equal the number of frequencies."
 
     g2_p = []
     for idx, path in enumerate(paths):
         if None in path:
             g2_p.append(0.0)
         else:
-            g2 = np.mean([g2s[0, idx] * g2s[1, cpl[0]]*g2s[1, cpl[0]] for cpl in path])
+            g2 = np.mean(
+                [g2s[0, idx] * g2s[1, cpl[0]] * g2s[1, cpl[0]] for cpl in path]
+            )
             g2_p.append(g2)
     return np.arary(g2_p)
+
 
 def g2_shg(v0, v_grid, n_eff, a_eff, chi2_eff):
     """
@@ -123,11 +138,11 @@ def g2_shg(v0, v_grid, n_eff, a_eff, chi2_eff):
     g2_out, g2_in = g2_split(n_eff, a_eff, chi2_eff)
 
     v1_idx = np.argmin(np.abs(v_grid - v0))
-    v2_idx = np.argmin(np.abs(v_grid - 2*v0))
-    vc_idx = (v1_idx + v2_idx)//2 # crossover point
+    v2_idx = np.argmin(np.abs(v_grid - 2 * v0))
+    vc_idx = (v1_idx + v2_idx) // 2  # crossover point
 
-    g2_in_fh = np.interp(2*v_grid, v_grid, g2_in) # input to fundamental harmonic
-    g2_in_sh = np.interp(0.5*v_grid, v_grid, g2_in) # input to second harmonic
+    g2_in_fh = np.interp(2 * v_grid, v_grid, g2_in)  # input to fundamental harmonic
+    g2_in_sh = np.interp(0.5 * v_grid, v_grid, g2_in)  # input to second harmonic
 
     # Fundamental (DFG)
     g2_fh = g2_out * g2_in_fh * g2_in
@@ -140,6 +155,7 @@ def g2_shg(v0, v_grid, n_eff, a_eff, chi2_eff):
     g2[:vc_idx] = g2_fh[:vc_idx]
     g2[vc_idx:] = g2_sh[vc_idx:]
     return g2
+
 
 def g2_sfg(v0, v_grid, n_eff, a_eff, chi2_eff):
     """
@@ -166,11 +182,11 @@ def g2_sfg(v0, v_grid, n_eff, a_eff, chi2_eff):
     """
     g2_out, g2_in = g2_split(n_eff, a_eff, chi2_eff)
 
-    vc_idx = np.argmin(np.abs(v_grid - (v_grid.min() + v0))) # crossover point
+    vc_idx = np.argmin(np.abs(v_grid - (v_grid.min() + v0)))  # crossover point
 
     g2_in_v0 = np.interp(v0, v_grid, g2_in)
-    g2_in_sf = np.interp(v_grid - v0, v_grid, g2_in) # input to sum (out = in + v0)
-    g2_in_df = np.interp(v_grid + v0, v_grid, g2_in) # input to diff (out = in - v0)
+    g2_in_sf = np.interp(v_grid - v0, v_grid, g2_in)  # input to sum (out = in + v0)
+    g2_in_df = np.interp(v_grid + v0, v_grid, g2_in)  # input to diff (out = in - v0)
 
     # Fundamental (DFG)
     g2_sf = g2_out * g2_in_sf * g2_in_v0
@@ -186,6 +202,7 @@ def g2_sfg(v0, v_grid, n_eff, a_eff, chi2_eff):
 
 
 # %% Phase Matching
+
 
 def domain_inversions(z, dk, intp_order=1):
     """
@@ -221,32 +238,36 @@ def domain_inversions(z, dk, intp_order=1):
         = \\int_{z_0}^z \\frac{2 \\pi}{\\Lambda[z^\\prime]} dz^\\prime \\\\
         \\text{z}_{inv}[n] &= N^{-1}[n/2]
 
-    where :math:`\Delta k` is the wavenumber mismatch compensated by poling
-    period :math:`\Lambda`, :math:`N` is the accumulated number of phase
+    where :math:`\\Delta k` is the wavenumber mismatch compensated by poling
+    period :math:`\\Lambda`, :math:`N` is the accumulated number of phase
     cycles, and :math:`n` is an integer.
 
     """
     from scipy.interpolate import InterpolatedUnivariateSpline
 
-    #---- Process Input
+    # ---- Process Input
     z = np.asarray(z)
     dk = np.asarray(dk)
     if dk.size > 1:
-        assert dk.size == z.size, "If `dk` is given as an array it must have the same number of points as `z`."
-    if z.size==1:
-        z = np.linspace(0, z, intp_order+1)
+        assert (
+            dk.size == z.size
+        ), "If `dk` is given as an array it must have the same number of points as `z`."
+    if z.size == 1:
+        z = np.linspace(0, z, intp_order + 1)
     if dk.size == 1:
         dk = np.ones_like(z) * dk
 
-    #---- Inversion Points
-    n_cycles = InterpolatedUnivariateSpline(z, dk/(2*pi), k=intp_order).antiderivative()
-    z_n = InterpolatedUnivariateSpline(2*n_cycles(z), z, k=intp_order)
+    # ---- Inversion Points
+    n_cycles = InterpolatedUnivariateSpline(
+        z, dk / (2 * pi), k=intp_order
+    ).antiderivative()
+    z_n = InterpolatedUnivariateSpline(2 * n_cycles(z), z, k=intp_order)
 
-    n_invs = int(2*n_cycles(z[-1])) # round down
+    n_invs = int(2 * n_cycles(z[-1]))  # round down
     n_grid = np.arange(n_invs + 1)
-    z_invs = z_n(n_grid) # all inversion points
+    z_invs = z_n(n_grid)  # all inversion points
 
-    #---- Domains
+    # ---- Domains
     poled = n_grid % 2
     domains = np.diff(z_invs)
     if np.isclose(z_invs.max(), z.max(), rtol=0, atol=10e-9):
@@ -258,7 +279,10 @@ def domain_inversions(z, dk, intp_order=1):
         domains = np.append(domains, z.max() - z_invs.max())
     return z_invs[1:], domains, poled
 
-def dominant_paths(v_grid, beta, beta_qpm=None, full=False): #TODO: add extent (for imshow)
+
+def dominant_paths(
+    v_grid, beta, beta_qpm=None, full=False
+):  # TODO: add extent (for imshow)
     """
     For each output frequency, find the input frequencies that are coupled
     with the least phase mismatch.
@@ -303,20 +327,20 @@ def dominant_paths(v_grid, beta, beta_qpm=None, full=False): #TODO: add extent (
             invalid paths are given as NaN.
 
     """
-    #---- Setup
+    # ---- Setup
     v_grid = np.asarray(v_grid, dtype=float)
     n = v_grid.size
     v_idx = np.arange(n)
-    v_idx2 = np.dstack(np.indices((n,n)))
+    v_idx2 = np.dstack(np.indices((n, n)))
     beta = np.asarray(beta, dtype=float)
 
-    #---- Sum Frequency
+    # ---- Sum Frequency
     v_sfg = np.add.outer(v_grid, v_grid)
 
     # Indexing
     v_idx_sfg = np.interp(v_sfg, v_grid, v_idx, left=np.nan, right=np.nan).round()
-    sfg_idxs = np.arange(np.nanmin(v_idx_sfg), np.nanmax(v_idx_sfg)+1, dtype=int)
-    sfg_diag_offset = (n-1) - np.arange(sfg_idxs.size)
+    sfg_idxs = np.arange(np.nanmin(v_idx_sfg), np.nanmax(v_idx_sfg) + 1, dtype=int)
+    sfg_diag_offset = (n - 1) - np.arange(sfg_idxs.size)
 
     # Wavenumber Mismatch
     beta_sfg_12 = np.add.outer(beta, beta)
@@ -326,13 +350,13 @@ def dominant_paths(v_grid, beta, beta_qpm=None, full=False): #TODO: add extent (
     else:
         dk_sfg = np.abs(np.abs(beta_sfg_12 - beta_sfg_3) - beta_qpm)
 
-    #---- Difference Frequency
+    # ---- Difference Frequency
     v_dfg = np.subtract.outer(v_grid, v_grid)
 
     # Indexing
     v_idx_dfg = np.interp(v_dfg, v_grid, v_idx, left=np.nan, right=np.nan).round()
-    dfg_idxs = np.arange(np.nanmin(v_idx_dfg), np.nanmax(v_idx_dfg)+1, dtype=int)
-    dfg_diag_offset = -(n-1) + np.arange(dfg_idxs.size)[::-1]
+    dfg_idxs = np.arange(np.nanmin(v_idx_dfg), np.nanmax(v_idx_dfg) + 1, dtype=int)
+    dfg_diag_offset = -(n - 1) + np.arange(dfg_idxs.size)[::-1]
 
     # Wavenumber Mismatch
     beta_dfg_31 = np.subtract.outer(beta, beta)
@@ -342,27 +366,27 @@ def dominant_paths(v_grid, beta, beta_qpm=None, full=False): #TODO: add extent (
     else:
         dk_dfg = np.abs(np.abs(beta_dfg_31 - beta_dfg_2) - beta_qpm)
 
-    #---- Paths of Minimum Phase Mismatch
+    # ---- Paths of Minimum Phase Mismatch
     paths = []
     dk = []
     for idx in v_idx:
-        valid_sfg = (idx in sfg_idxs)
-        valid_dfg = (idx in dfg_idxs)
+        valid_sfg = idx in sfg_idxs
+        valid_dfg = idx in dfg_idxs
 
         # SFG
         if valid_sfg:
-            diag_offset = sfg_diag_offset[idx==sfg_idxs][0]
+            diag_offset = sfg_diag_offset[idx == sfg_idxs][0]
             sfg_diag = np.fliplr(dk_sfg).diagonal(diag_offset)
             min_dk_sfg = np.nanmin(sfg_diag)
-            min_dk_sfg_idx = np.nonzero(sfg_diag==min_dk_sfg)
+            min_dk_sfg_idx = np.nonzero(sfg_diag == min_dk_sfg)
             sfg_path = np.fliplr(v_idx2).diagonal(diag_offset).T[min_dk_sfg_idx]
 
         # DFG
         if valid_dfg:
-            diag_offset = dfg_diag_offset[idx==dfg_idxs][0]
+            diag_offset = dfg_diag_offset[idx == dfg_idxs][0]
             dfg_diag = dk_dfg.diagonal(diag_offset)
             min_dk_dfg = np.nanmin(dfg_diag)
-            min_dk_dfg_idx = np.nonzero(dfg_diag==min_dk_dfg)
+            min_dk_dfg_idx = np.nonzero(dfg_diag == min_dk_dfg)
             dfg_path = v_idx2.diagonal(diag_offset).T[min_dk_dfg_idx]
 
         if valid_sfg and valid_dfg:
@@ -397,5 +421,6 @@ def dominant_paths(v_grid, beta, beta_qpm=None, full=False): #TODO: add extent (
 
 # %% Calculator Functions
 
+
 def effective_chi3():
-    pass #TODO: effective 3rd-order from cascaded 2nd
+    pass  # TODO: effective 3rd-order from cascaded 2nd
