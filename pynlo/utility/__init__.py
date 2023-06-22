@@ -8,10 +8,18 @@ susceptibilities, as well as an efficient interface to fast Fourier transforms.
 
 """
 
-__all__ = ["chi1", "chi2", "chi3", "fft",
-           "vacuum", "taylor_series",
-           "shift", "resample_v", "resample_t",
-           "TFGrid"]
+__all__ = [
+    "chi1",
+    "chi2",
+    "chi3",
+    "fft",
+    "vacuum",
+    "taylor_series",
+    "shift",
+    "resample_v",
+    "resample_t",
+    "TFGrid",
+]
 
 
 # %% Imports
@@ -31,12 +39,14 @@ _ResampledV = collections.namedtuple("ResampledV", ["v_grid", "f_v", "dv", "dt"]
 
 _ResampledT = collections.namedtuple("ResampledT", ["t_grid", "f_t", "dt"])
 
-_RTFGrid = collections.namedtuple("RTFGrid", ["n",
-                                             "v_grid", "v_ref", "dv", "v_window",
-                                             "t_grid", "t_ref", "dt", "t_window"])
+_RTFGrid = collections.namedtuple(
+    "RTFGrid",
+    ["n", "v_grid", "v_ref", "dv", "v_window", "t_grid", "t_ref", "dt", "t_window"],
+)
 
 
 # %% Routines
+
 
 def taylor_series(x0, fn):
     """
@@ -60,9 +70,10 @@ def taylor_series(x0, fn):
     """
     window = np.array([-1, 1])
     domain = window + x0
-    poly_coefs = [coef/np.math.factorial(n) for (n, coef) in enumerate(fn)]
+    poly_coefs = [coef / np.math.factorial(n) for (n, coef) in enumerate(fn)]
     pwr_series = np.polynomial.Polynomial(poly_coefs, domain=domain, window=window)
     return pwr_series
+
 
 def vacuum(v_grid, rng=None):
     """
@@ -134,8 +145,11 @@ def vacuum(v_grid, rng=None):
     dv = np.mean(np.diff(v_grid))
     n = v_grid.size
 
-    a_v = ((h*v_grid)/(2*dv))**0.5 * (rng.standard_normal(n) + 1j*rng.standard_normal(n))
+    a_v = ((h * v_grid) / (2 * dv)) ** 0.5 * (
+        rng.standard_normal(n) + 1j * rng.standard_normal(n)
+    )
     return a_v
+
 
 def shift(f_t, dt, t_shift):
     """
@@ -162,16 +176,17 @@ def shift(f_t, dt, t_shift):
 
     # Grid
     n = f_t.shape[-1]
-    dv = 1/(n*dt)
-    v_grid = dv*(np.arange(n) - n//2)
+    dv = 1 / (n * dt)
+    v_grid = dv * (np.arange(n) - n // 2)
     # Shift
     f_v = fft.fftshift(fft.fft(fft.ifftshift(f_t), fsc=dt))
-    shift_v = np.exp(-1j*2*pi * v_grid * t_shift)
+    shift_v = np.exp(-1j * 2 * pi * v_grid * t_shift)
     shift_f_t = fft.fftshift(fft.ifft(fft.ifftshift(f_v * shift_v), fsc=dt))
     #
     if np.isreal(f_t).all():
         shift_f_t = shift_f_t.real
     return shift_f_t
+
 
 def resample_v(v_grid, f_v, n):
     """
@@ -219,54 +234,59 @@ def resample_v(v_grid, f_v, n):
     real-valued representations the grid is defined starting at the origin.
 
     """
-    assert isinstance(n, (int, np.integer)), "The requested number of points must be an integer"
-    assert (n > 0), "The requested number of points must be greater than 0."
-    assert (len(v_grid) == len(f_v)), (
-        "The frequency grid and frequency-domain data must be the same length.")
-    #---- Inverse Transform
+    assert isinstance(
+        n, (int, np.integer)
+    ), "The requested number of points must be an integer"
+    assert n > 0, "The requested number of points must be greater than 0."
+    assert len(v_grid) == len(
+        f_v
+    ), "The frequency grid and frequency-domain data must be the same length."
+    # ---- Inverse Transform
     dv_0 = np.diff(v_grid).mean()
     if v_grid[0] == 0:
-        assert np.isreal(f_v[0]), (
-            "When the input is in the real-valued representation, the amplitude at the origin must be real.")
+        assert np.isreal(
+            f_v[0]
+        ), "When the input is in the real-valued representation, the amplitude at the origin must be real."
 
         # Real-Valued Representation
         if np.isreal(f_v[-1]):
-            n_0 = 2*(len(v_grid)-1)
+            n_0 = 2 * (len(v_grid) - 1)
         else:
-            n_0 = 2*(len(v_grid)-1) + 1
-        dt_0 = 1/(n_0*dv_0)
+            n_0 = 2 * (len(v_grid) - 1) + 1
+        dt_0 = 1 / (n_0 * dv_0)
         f_t = fft.fftshift(fft.irfft(f_v, fsc=dt_0, n=n_0))
     else:
         # Analytic Representation
         n_0 = len(v_grid)
-        dt_0 = 1/(n_0*dv_0)
-        v_ref_0 = v_grid[n_0//2]
+        dt_0 = 1 / (n_0 * dv_0)
+        v_ref_0 = v_grid[n_0 // 2]
         f_t = fft.fftshift(fft.ifft(fft.ifftshift(f_v), fsc=dt_0, overwrite_x=True))
 
-    #---- Resample
-    dn_n = n//2 - n_0//2 # leading time bins
-    dn_p = (n-1)//2 - (n_0-1)//2 # trailing time bins
+    # ---- Resample
+    dn_n = n // 2 - n_0 // 2  # leading time bins
+    dn_p = (n - 1) // 2 - (n_0 - 1) // 2  # trailing time bins
     if n > n_0:
         f_t = np.pad(f_t, (dn_n, dn_p), mode="constant", constant_values=0)
     elif n < n_0:
-        f_t = f_t[-dn_n:n_0+dn_p]
+        f_t = f_t[-dn_n : n_0 + dn_p]
 
-    #---- Transform
-    dt = 1/(n_0*dv_0)
-    dv = 1/(n*dt)
+    # ---- Transform
+    dt = 1 / (n_0 * dv_0)
+    dv = 1 / (n * dt)
     if v_grid[0] == 0:
         # Real-Valued Representation
         f_v = fft.rfft(fft.ifftshift(f_t), fsc=dt)
-        v_grid = dv*np.arange(len(f_v))
+        v_grid = dv * np.arange(len(f_v))
     else:
         # Analytic Representation
         f_v = fft.fftshift(fft.fft(fft.ifftshift(f_t), fsc=dt, overwrite_x=True))
-        v_grid = dv*(np.arange(n) - (n//2))
+        v_grid = dv * (np.arange(n) - (n // 2))
         v_grid += v_ref_0
 
-    #---- Construct ResampledV
-    resampled = _ResampledV(v_grid=v_grid, f_v=f_v, dv=dv, dt=1/(n*dv))
+    # ---- Construct ResampledV
+    resampled = _ResampledV(v_grid=v_grid, f_v=f_v, dv=dv, dt=1 / (n * dv))
     return resampled
+
 
 def resample_t(t_grid, f_t, n):
     """
@@ -308,43 +328,47 @@ def resample_t(t_grid, f_t, n):
     reference, such as in the `TFGrid` class.
 
     """
-    assert isinstance(n, (int, np.integer)), "The requested number of points must be an integer"
-    assert (n > 0), "The requested number of points must be greater than 0."
-    assert (len(t_grid) == len(f_t)), (
-        "The time grid and time-domain data must be the same length.")
-    #---- Define Time Grid
+    assert isinstance(
+        n, (int, np.integer)
+    ), "The requested number of points must be an integer"
+    assert n > 0, "The requested number of points must be greater than 0."
+    assert len(t_grid) == len(
+        f_t
+    ), "The time grid and time-domain data must be the same length."
+    # ---- Define Time Grid
     n_0 = len(t_grid)
     dt_0 = np.diff(t_grid).mean()
-    t_ref_0 = t_grid[n_0//2]
-    dv = 1/(n_0*dt_0)
-    dt = 1/(n*dv)
-    t_grid = dt*(np.arange(n) - (n//2))
+    t_ref_0 = t_grid[n_0 // 2]
+    dv = 1 / (n_0 * dt_0)
+    dt = 1 / (n * dv)
+    t_grid = dt * (np.arange(n) - (n // 2))
     t_grid += t_ref_0
 
-    #---- Resample
+    # ---- Resample
     if np.isrealobj(f_t):
         # Real-Valued Representation
         f_v = fft.rfft(fft.ifftshift(f_t), fsc=dt_0)
         if (n > n_0) and not (n % 2):
-            f_v[-1] /= 2 # renormalize aliased Nyquist component
+            f_v[-1] /= 2  # renormalize aliased Nyquist component
         f_t = fft.fftshift(fft.irfft(f_v, fsc=dt, n=n))
     else:
         # Analytic Representation
         f_v = fft.fftshift(fft.fft(fft.ifftshift(f_t), fsc=dt_0, overwrite_x=True))
         if n > n_0:
-            f_v = np.pad(f_v, (0, n-n_0), mode="constant", constant_values=0)
+            f_v = np.pad(f_v, (0, n - n_0), mode="constant", constant_values=0)
         elif n < n_0:
             f_v = f_v[:n]
         f_t = fft.fftshift(fft.ifft(fft.ifftshift(f_v), fsc=dt, overwrite_x=True))
 
-    #---- Construct ResampledT
+    # ---- Construct ResampledT
     resampled = _ResampledT(t_grid=t_grid, f_t=f_t, dt=dt)
     return resampled
 
 
 # %% Time and Frequency Grids
 
-class TFGrid():
+
+class TFGrid:
     """
     Complementary time- and frequency-domain grids for the representation of
     analytic functions with complex-valued envelopes.
@@ -398,42 +422,45 @@ class TFGrid():
     the DFT.
 
     """
+
     def __init__(self, n, v_ref, dv, alias=1):
-        assert isinstance(n, (int, np.integer)), "The number of points must be an integer."
-        assert (n > 1),  "The number of points must be greater than 1."
-        assert (dv > 0), "The frequency grid step size must be greater than 0."
-        assert (v_ref > 0), "The target central frequency must be greater than 0."
+        assert isinstance(
+            n, (int, np.integer)
+        ), "The number of points must be an integer."
+        assert n > 1, "The number of points must be greater than 1."
+        assert dv > 0, "The frequency grid step size must be greater than 0."
+        assert v_ref > 0, "The target central frequency must be greater than 0."
 
         self._n = n
         self._dv = dv
 
-        #---- Align Frequency Grid
-        ref_idx = round(v_ref/self.dv)
-        if ref_idx < self.n//2 + 1:
-            ref_idx = self.n//2 + 1
+        # ---- Align Frequency Grid
+        ref_idx = round(v_ref / self.dv)
+        if ref_idx < self.n // 2 + 1:
+            ref_idx = self.n // 2 + 1
         self._v_ref = ref_idx * dv
 
-        min_idx = ref_idx - self.n//2
-        max_idx = ref_idx + ((self.n-1) - self.n//2)
+        min_idx = ref_idx - self.n // 2
+        max_idx = ref_idx + ((self.n - 1) - self.n // 2)
         self._rn_range = np.array([min_idx, max_idx])
         self._rn_slice = slice(self.rn_range.min(), self.rn_range.max() + 1)
 
-        #---- Define Frequency Grid
-        self.__v_grid = self.dv*(np.arange(self.n) - self.n//2) + self.v_ref
-        self._v_ref = self.v_grid[self.n//2]
-        self._v_window = self.n*self.dv
+        # ---- Define Frequency Grid
+        self.__v_grid = self.dv * (np.arange(self.n) - self.n // 2) + self.v_ref
+        self._v_ref = self.v_grid[self.n // 2]
+        self._v_window = self.n * self.dv
 
-        #---- Define Complex Time Grid
-        self._dt = 1/(self.n*self.dv)
-        self.__t_grid = self.dt*(np.arange(self.n) - self.n//2)
-        self._t_ref = self.t_grid[self.n//2]
-        self._t_window = self.n*self.dt
+        # ---- Define Complex Time Grid
+        self._dt = 1 / (self.n * self.dv)
+        self.__t_grid = self.dt * (np.arange(self.n) - self.n // 2)
+        self._t_ref = self.t_grid[self.n // 2]
+        self._t_window = self.n * self.dt
 
-        #---- Define Real-Valued Time and Frequency Domain Grids
-        assert (alias >= 1), "There must be atleast 1 alias-free Nyquist zone."
+        # ---- Define Real-Valued Time and Frequency Domain Grids
+        assert alias >= 1, "There must be atleast 1 alias-free Nyquist zone."
         self.rtf_grids(alias=alias, update=True)
 
-    #---- Class Methods
+    # ---- Class Methods
     @classmethod
     def FromFreqRange(cls, n, v_min, v_max, **kwargs):
         """
@@ -450,14 +477,15 @@ class TFGrid():
             The target maximum frequency.
 
         """
-        assert (v_max > v_min), (
-            "The target maximum frequency must be greater than the target minimum frequency.")
-        dv = (v_max - v_min)/(n-1)
-        v_ref = 0.5*(v_min + v_max)
+        assert (
+            v_max > v_min
+        ), "The target maximum frequency must be greater than the target minimum frequency."
+        dv = (v_max - v_min) / (n - 1)
+        v_ref = 0.5 * (v_min + v_max)
         self = cls(n, v_ref, dv, **kwargs)
         return self
 
-    #---- General Properties
+    # ---- General Properties
     @property
     def n(self):
         """
@@ -520,7 +548,7 @@ class TFGrid():
         """
         return self._rn_slice
 
-    #---- Frequency Grid Properties
+    # ---- Frequency Grid Properties
     @property
     def v_grid(self):
         """
@@ -596,7 +624,7 @@ class TFGrid():
         """
         return self._v_window
 
-    #---- Time Grid Properties
+    # ---- Time Grid Properties
     @property
     def t_grid(self):
         """
@@ -677,7 +705,7 @@ class TFGrid():
         """
         return self._t_window
 
-    #---- Real Time/Frequency Grid Properties
+    # ---- Real Time/Frequency Grid Properties
     @property
     def rv_grid(self):
         """
@@ -880,36 +908,43 @@ class TFGrid():
             np.sum(ra_t**2 * rtf.dt) == np.sum(np.abs(a_v)**2 * tf.dv)
 
         """
-        #---- Number of Points
-        if alias==0:
+        # ---- Number of Points
+        if alias == 0:
             n = self.n
         else:
-            assert (alias >= 1), "The harmonic support must be atleast 1."
-            target_n_v = round(self.rn_range.max()*alias)
+            assert alias >= 1, "The harmonic support must be atleast 1."
+            target_n_v = round(self.rn_range.max() * alias)
             if alias == 1:
-                n = 2*target_n_v - 1 # odd
+                n = 2 * target_n_v - 1  # odd
             else:
-                n = 2*(target_n_v - 1) # even
+                n = 2 * (target_n_v - 1)  # even
             if fast_n:
                 n = fft.next_fast_len(n)
-        n_v = n//2 + 1 # points in the frequency grid
+        n_v = n // 2 + 1  # points in the frequency grid
 
-        #---- Define Frequency Grid
-        v_grid = self.dv*np.arange(n_v)
+        # ---- Define Frequency Grid
+        v_grid = self.dv * np.arange(n_v)
         v_ref = v_grid[0]
 
-        #---- Define Time Grid
-        dt = 1/(n*self.dv)
-        t_grid = dt*(np.arange(n) - n//2)
-        t_ref = t_grid[n//2] # 0 by definition
+        # ---- Define Time Grid
+        dt = 1 / (n * self.dv)
+        t_grid = dt * (np.arange(n) - n // 2)
+        t_ref = t_grid[n // 2]  # 0 by definition
 
-        #---- Construct RTFGrid
+        # ---- Construct RTFGrid
         rtf_grids = _RTFGrid(
             n=n,
-            v_grid=v_grid, v_ref=v_ref, dv=self.dv, v_window=n_v*self.dv,
-            t_grid=t_grid, t_ref=t_ref, dt=dt, t_window=n*dt)
+            v_grid=v_grid,
+            v_ref=v_ref,
+            dv=self.dv,
+            v_window=n_v * self.dv,
+            t_grid=t_grid,
+            t_ref=t_ref,
+            dt=dt,
+            t_window=n * dt,
+        )
 
-        if update and alias!=0:
+        if update and alias != 0:
             self._rn = rtf_grids.n
 
             # Frequency Grid
@@ -924,7 +959,7 @@ class TFGrid():
             self._rt_window = rtf_grids.t_window
         return rtf_grids
 
-    #---- Misc
+    # ---- Misc
     def copy(self):
         """A copy of the time and frequency grids."""
         return copy.deepcopy(self)

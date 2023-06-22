@@ -36,15 +36,16 @@ parameter has been increased to support two alias-free Nyquist zones.
 
 """
 n_points = 2**13
-v_min = c/3500e-9   # c / 3500 nm
-v_max = c/450e-9    # c / 450 nm
+v_min = c / 3500e-9  # c / 3500 nm
+v_max = c / 450e-9  # c / 450 nm
 
-v0 = c/1580e-9      # c / 1580 nm
-e_p = 1e-9          # 1 nJ
-t_fwhm = 50e-15     # 50 fs
+v0 = c / 1580e-9  # c / 1580 nm
+e_p = 1e-9  # 1 nJ
+t_fwhm = 50e-15  # 50 fs
 
-pulse = pynlo.light.Pulse.Gaussian(n_points, v_min, v_max, v0, e_p, t_fwhm,
-                                   alias=2) # anti-aliasing
+pulse = pynlo.light.Pulse.Gaussian(
+    n_points, v_min, v_max, v0, e_p, t_fwhm, alias=2
+)  # anti-aliasing
 
 
 # %% Mode Properties
@@ -61,10 +62,11 @@ only uses a constant poling period, but the function also supports the
 generation of arbitrarily chirped poling periods.
 
 """
-length = 7e-3 # 7 mm
-a_eff = 15e-6 * 15e-6 # 15 um * 15 um
+length = 7e-3  # 7 mm
+a_eff = 15e-6 * 15e-6  # 15 um * 15 um
 
-#---- Phase Coefficient
+
+# ---- Phase Coefficient
 def n_cLN(v, T=24.5):
     """
     Refractive index of congruent lithium niobate.
@@ -79,7 +81,7 @@ def n_cLN(v, T=24.5):
     a1 = 5.35583
     a2 = 0.100473
     a3 = 0.20692
-    a4 = 100.
+    a4 = 100.0
     a5 = 11.34927
     a6 = 1.5334e-2
     b1 = 4.629e-7
@@ -87,23 +89,30 @@ def n_cLN(v, T=24.5):
     b3 = -0.89e-8
     b4 = 2.657e-5
 
-    wvl = c/v * 1e6 # um
-    f = (T-24.5)*(T+570.82)
-    n2 = (a1 + b1*f + (a2 + b2*f)/(wvl**2 - (a3 + b3*f)**2)
-          + (a4 + b4*f)/(wvl**2 - a5**2) - a6*wvl**2)
+    wvl = c / v * 1e6  # um
+    f = (T - 24.5) * (T + 570.82)
+    n2 = (
+        a1
+        + b1 * f
+        + (a2 + b2 * f) / (wvl**2 - (a3 + b3 * f) ** 2)
+        + (a4 + b4 * f) / (wvl**2 - a5**2)
+        - a6 * wvl**2
+    )
     return n2**0.5
+
+
 n_eff = n_cLN(pulse.v_grid)
 
-beta = n_eff * 2*pi*pulse.v_grid/c
+beta = n_eff * 2 * pi * pulse.v_grid / c
 
-#---- 2nd-order nonlinearity
-d_eff = 27e-12 # 27 pm / V
+# ---- 2nd-order nonlinearity
+d_eff = 27e-12  # 27 pm / V
 chi2_eff = 2 * d_eff
 g2 = ut.chi2.g2_shg(v0, pulse.v_grid, n_eff, a_eff, chi2_eff)
 
 # poling
-p0 = 30e-6 # 30 um poling period
-z_invs, domains, poled = ut.chi2.domain_inversions(length, 2*pi/p0)
+p0 = 30e-6  # 30 um poling period
+z_invs, domains, poled = ut.chi2.domain_inversions(length, 2 * pi / p0)
 
 mode = pynlo.media.Mode(pulse.v_grid, beta, g2=g2, g2_inv=z_invs)
 
@@ -117,7 +126,7 @@ step size.
 """
 model = pynlo.model.UPE(pulse, mode)
 
-#---- Estimate step size
+# ---- Estimate step size
 local_error = 1e-6
 dz = model.estimate_step_size(local_error=local_error)
 
@@ -133,7 +142,8 @@ reaches a record point), set the `plot` keyword to "frq", "wvl", or "time".
 
 """
 pulse_out2, z, a_t, a_v = model.simulate(
-    length, dz=dz, local_error=local_error, n_records=100, plot=None)
+    length, dz=dz, local_error=local_error, n_records=100, plot=None
+)
 
 
 # %% Plot Results
@@ -155,30 +165,30 @@ R. DeSalvo, D. J. Hagan, M. Sheik-Bahae, G. Stegeman, E. W. Van Stryland, and
 
 """
 fig = plt.figure("Simulation Results", clear=True)
-ax0 = plt.subplot2grid((3,2), (0, 0), rowspan=1)
-ax1 = plt.subplot2grid((3,2), (0, 1), rowspan=1)
-ax2 = plt.subplot2grid((3,2), (1, 0), rowspan=2, sharex=ax0)
-ax3 = plt.subplot2grid((3,2), (1, 1), rowspan=2, sharex=ax1)
+ax0 = plt.subplot2grid((3, 2), (0, 0), rowspan=1)
+ax1 = plt.subplot2grid((3, 2), (0, 1), rowspan=1)
+ax2 = plt.subplot2grid((3, 2), (1, 0), rowspan=2, sharex=ax0)
+ax3 = plt.subplot2grid((3, 2), (1, 1), rowspan=2, sharex=ax1)
 
-p_v_dB = 10*np.log10(np.abs(a_v)**2)
+p_v_dB = 10 * np.log10(np.abs(a_v) ** 2)
 p_v_dB -= p_v_dB.max()
-ax0.plot(1e-12*pulse.v_grid, p_v_dB[0], color="b")
-ax0.plot(1e-12*pulse.v_grid, p_v_dB[-1], color="g")
-ax2.pcolormesh(1e-12*pulse.v_grid, 1e3*z, p_v_dB,
-               vmin=-40.0, vmax=0, shading="auto")
+ax0.plot(1e-12 * pulse.v_grid, p_v_dB[0], color="b")
+ax0.plot(1e-12 * pulse.v_grid, p_v_dB[-1], color="g")
+ax2.pcolormesh(
+    1e-12 * pulse.v_grid, 1e3 * z, p_v_dB, vmin=-40.0, vmax=0, shading="auto"
+)
 ax0.set_ylim(bottom=-50, top=10)
-ax2.set_xlabel('Frequency (THz)')
+ax2.set_xlabel("Frequency (THz)")
 
-p_t_dB = 10*np.log10(np.abs(a_t)**2)
+p_t_dB = 10 * np.log10(np.abs(a_t) ** 2)
 p_t_dB -= p_t_dB.max()
-ax1.plot(1e12*pulse.t_grid, p_t_dB[0], color="b")
-ax1.plot(1e12*pulse.t_grid, p_t_dB[-1], color="g")
-ax3.pcolormesh(1e12*pulse.t_grid, 1e3*z, p_t_dB,
-               vmin=-40.0, vmax=0, shading="auto")
+ax1.plot(1e12 * pulse.t_grid, p_t_dB[0], color="b")
+ax1.plot(1e12 * pulse.t_grid, p_t_dB[-1], color="g")
+ax3.pcolormesh(1e12 * pulse.t_grid, 1e3 * z, p_t_dB, vmin=-40.0, vmax=0, shading="auto")
 ax1.set_ylim(bottom=-50, top=10)
-ax3.set_xlabel('Time (ps)')
+ax3.set_xlabel("Time (ps)")
 
-ax0.set_ylabel('Power (dB)')
-ax2.set_ylabel('Propagation Distance (mm)')
+ax0.set_ylabel("Power (dB)")
+ax2.set_ylabel("Propagation Distance (mm)")
 fig.tight_layout()
 fig.show()

@@ -23,71 +23,82 @@ from pynlo.utility import fft
 
 # %% Collections
 
-SimulationResult = collections.namedtuple("SimulationResult", ["pulse", "z", "a_t", "a_v"])
+SimulationResult = collections.namedtuple(
+    "SimulationResult", ["pulse", "z", "a_t", "a_v"]
+)
 
 
 # %% Routines
 
+
 @njit(parallel=True)
 def linear_operator(k, dz):
     """JIT-compiled exponential function."""
-    return np.exp(-1j*dz * k)
+    return np.exp(-1j * dz * k)
+
 
 @njit(parallel=True)
 def l2_error(a_RK4, a_RK3):
     """JIT-compiled l2 norm error."""
-    l2_norm = np.sum(np.real(a_RK4)**2 + np.imag(a_RK4)**2)**0.5
-    rel_error = (a_RK4 - a_RK3)/l2_norm
-    return np.sum(np.real(rel_error)**2 + np.imag(rel_error)**2)**0.5
+    l2_norm = np.sum(np.real(a_RK4) ** 2 + np.imag(a_RK4) ** 2) ** 0.5
+    rel_error = (a_RK4 - a_RK3) / l2_norm
+    return np.sum(np.real(rel_error) ** 2 + np.imag(rel_error) ** 2) ** 0.5
+
 
 @njit
 def fdd(f, dx, idx):
     """JIT-compiled 2nd-order finite difference derivative."""
-    #---- Right Bound
-    if idx==f.size-1:
+    # ---- Right Bound
+    if idx == f.size - 1:
         # Derivative on the right-most edge
-        return (3*f[idx] - 4*f[idx-1] + f[idx-2])/(2*dx)
+        return (3 * f[idx] - 4 * f[idx - 1] + f[idx - 2]) / (2 * dx)
 
-    #---- Left Bound
-    if idx==0:
+    # ---- Left Bound
+    if idx == 0:
         # Derivative on the left-most edge
-        return (-3*f[idx] + 4*f[idx+1] - f[idx+2])/(2*dx)
+        return (-3 * f[idx] + 4 * f[idx + 1] - f[idx + 2]) / (2 * dx)
 
-    #---- Central
-    return (f[idx+1] - f[idx-1])/(2*dx)
+    # ---- Central
+    return (f[idx + 1] - f[idx - 1]) / (2 * dx)
+
 
 @njit
 def prod(a, b):
     """JIT-compiled product. Useful for speeding up complex multiplications."""
     return a * b
 
+
 @njit
 def abs2(a):
     """JIT-compiled squared absolute value."""
     return a.real**2 + a.imag**2
 
+
 @njit
 def rk1(a, k, dz):
     """JIT-compiled 1st-order Runge-Kutta."""
-    return a + dz*k
+    return a + dz * k
+
 
 @njit
 def rk3(b, k4, k5, dz):
     """JIT-compiled 3rd-order Runge-Kutta."""
-    return b + dz/30.0 * (2.0*k4 + 3.0*k5)
+    return b + dz / 30.0 * (2.0 * k4 + 3.0 * k5)
+
 
 @njit
 def rk4(ai, ki1, ki2, ki3, k4, ip, dz):
     """JIT-compiled 4th-order Runge-Kutta."""
-    bi = ai + dz/6.0 * (ki1 + 2.0*(ki2 + ki3))
-    b = ip * bi # out of interaction picture
-    rk4 = b + dz/6.0 * k4
+    bi = ai + dz / 6.0 * (ki1 + 2.0 * (ki2 + ki3))
+    b = ip * bi  # out of interaction picture
+    rk4 = b + dz / 6.0 * k4
     return rk4, b
 
 
 # %% Single-Mode Models
 
-class Model():
+
+class Model:
     """
     A model for simulating single-mode pulse propagation.
 
@@ -106,33 +117,35 @@ class Model():
     UPE : A model that implements both 2nd- and 3rd-order nonlinearities.
 
     """
+
     def __init__(self, pulse, mode):
-        #---- Pulse Parameters
+        # ---- Pulse Parameters
         assert isinstance(pulse, Pulse)
         self.pulse = pulse.copy()
 
-        #---- Mode Parameters
+        # ---- Mode Parameters
         assert isinstance(mode, Mode)
         self.mode = mode.copy()
 
-        #---- Grids
-        assert (pulse.v_grid == mode.v_grid).all(), (
-            "The pulse and mode must be defined over the same frequency grid.")
+        # ---- Grids
+        assert (
+            pulse.v_grid == mode.v_grid
+        ).all(), "The pulse and mode must be defined over the same frequency grid."
         # Frequency Grids
         self.n_points = self.pulse.n
         self.v_grid = self.pulse.v_grid
-        self.w_grid = 2*pi*self.v_grid
-        self.dw = 2*pi*self.pulse.dv
+        self.w_grid = 2 * pi * self.v_grid
+        self.dw = 2 * pi * self.pulse.dv
 
         # Time Grid
         self.t_grid = self.pulse.t_grid
         self.dt = self.pulse.dt
 
         # Wavelength Grid
-        self.l_grid = c/self.v_grid
-        self.dv_dl = self.v_grid**2/c # power density conversion factor
+        self.l_grid = c / self.v_grid
+        self.dv_dl = self.v_grid**2 / c  # power density conversion factor
 
-        #---- Implementation Details
+        # ---- Implementation Details
         # Define Operators
         self._linear_operator = self.linear_operator
         self._nonlinear_operator = self.nonlinear_operator
@@ -142,7 +155,9 @@ class Model():
         self.update_nonlinearity(force_update=True)
         self.update_poling(force_update=True)
 
-    def estimate_step_size(self, local_error=1e-6, dz=10e-6, n=10, a_v=None, z=0, db=False):
+    def estimate_step_size(
+        self, local_error=1e-6, dz=10e-6, n=10, a_v=None, z=0, db=False
+    ):
         """
         Estimate the step size that yields the target local error.
 
@@ -177,16 +192,17 @@ class Model():
             a_v = self.pulse.a_v
 
         for _ in range(n):
-            #---- Integrate by dz
+            # ---- Integrate by dz
             a_RK4_v, a_RK3_v, _ = self.step(a_v, z, dz)
 
-            #---- Estimate the Relative Local Error
+            # ---- Estimate the Relative Local Error
             est_error = l2_error(a_RK4_v, a_RK3_v)
-            error_ratio = (est_error/local_error)**0.25
-            if db: print("dz={:.3g},\t error={:.3g}".format(dz, est_error))
+            error_ratio = (est_error / local_error) ** 0.25
+            if db:
+                print("dz={:.3g},\t error={:.3g}".format(dz, est_error))
 
-            #---- Update Step Size
-            dz = dz/min(2, max(error_ratio, 0.5))
+            # ---- Update Step Size
+            dz = dz / min(2, max(error_ratio, 0.5))
         return dz
 
     def simulate(self, z_grid, dz=None, local_error=1e-6, n_records=None, plot=None):
@@ -233,9 +249,9 @@ class Model():
         a_v : ndarray of complex
             The root-power spectrum of the pulse at each z position.
         """
-        #---- Z Grid
+        # ---- Z Grid
         z_grid = np.asarray(z_grid, dtype=float)
-        if z_grid.size==1:
+        if z_grid.size == 1:
             # Since only the end point was given, the start point is the origin
             z_grid = np.append(0.0, z_grid)
 
@@ -243,26 +259,26 @@ class Model():
             n_records = z_grid.size
             z_record = z_grid
         else:
-            assert (n_records >= 2), "The output must include atleast 2 points."
+            assert n_records >= 2, "The output must include atleast 2 points."
             z_record = np.linspace(z_grid.min(), z_grid.max(), n_records)
             z_grid = np.unique(np.append(z_grid, z_record))
-        z_record = {z:idx for idx, z in enumerate(z_record)}
+        z_record = {z: idx for idx, z in enumerate(z_record)}
 
-        if self.mode.z_nonlinear.pol: # support subclasses with poling
+        if self.mode.z_nonlinear.pol:  # support subclasses with poling
             # always simulate up to the edge of a poled domain
             z_grid = np.unique(np.append(z_grid, list(self.mode.g2_inv)))
 
-        #---- Setup
+        # ---- Setup
         z = z_grid[0]
         pulse_out = self.pulse.copy()
 
         # Frequency Domain
-        a_v_record = np.empty((n_records,pulse_out.n), dtype=complex)
-        a_v_record[0,:] = pulse_out.a_v
+        a_v_record = np.empty((n_records, pulse_out.n), dtype=complex)
+        a_v_record[0, :] = pulse_out.a_v
 
         # Time Domain
-        a_t_record = np.empty((n_records,pulse_out.n), dtype=complex)
-        a_t_record[0,:] = pulse_out.a_t
+        a_t_record = np.empty((n_records, pulse_out.n), dtype=complex)
+        a_t_record[0, :] = pulse_out.a_t
 
         # Step Size
         if dz is None:
@@ -271,42 +287,43 @@ class Model():
 
         # Plotting
         if plot is not None:
-            assert (plot in ["frq", "time", "wvl"]), (
-                "Plot choice '{:}' is unrecognized").format(plot)
+            assert plot in ["frq", "time", "wvl"], (
+                "Plot choice '{:}' is unrecognized"
+            ).format(plot)
             # Setup Plots
             self._setup_plots(plot, pulse_out, z)
 
-        #---- Propagate
+        # ---- Propagate
         k5_v = None
         cont = False
         for z_stop in z_grid[1:]:
             # Step
             (pulse_out.a_v, z, dz, k5_v, cont) = self.propagate(
-                pulse_out.a_v,
-                z, z_stop, dz,
-                local_error,
-                k5_v=k5_v,
-                cont=cont)
+                pulse_out.a_v, z, z_stop, dz, local_error, k5_v=k5_v, cont=cont
+            )
 
             # Record
             if z in z_record:
                 idx = z_record[z]
-                a_t_record[idx,:] = pulse_out.a_t
-                a_v_record[idx,:] = pulse_out.a_v
+                a_t_record[idx, :] = pulse_out.a_t
+                a_v_record[idx, :] = pulse_out.a_v
 
                 # Plot
                 if plot is not None:
                     # Update Plots
                     self._update_plots(plot, pulse_out, z)
 
-                    if z==z_grid[-1]:
+                    if z == z_grid[-1]:
                         # End animation with the last step
                         for artist in self._artists:
                             artist.set_animated(False)
 
             sim_res = SimulationResult(
-                pulse=pulse_out, z=np.fromiter(z_record.keys(), dtype=float),
-                a_t=a_t_record, a_v=a_v_record)
+                pulse=pulse_out,
+                z=np.fromiter(z_record.keys(), dtype=float),
+                a_t=a_t_record,
+                a_v=a_v_record,
+            )
         return sim_res
 
     def propagate(self, a_v, z, z_stop, dz, local_error, k5_v=None, cont=False):
@@ -363,22 +380,24 @@ class Model():
             if z_next >= z_stop:
                 final_step = True
                 z_next = z_stop
-                dz_adaptive = dz # save value of last step size
-                dz = z_next - z # force smaller step size to hit z_stop
+                dz_adaptive = dz  # save value of last step size
+                dz = z_next - z  # force smaller step size to hit z_stop
             else:
                 final_step = False
 
-            #---- Integrate by dz
-            a_RK4_v, a_RK3_v, k5_v_next = self.step(a_v, z, z_next, k5_v=k5_v, cont=cont)
+            # ---- Integrate by dz
+            a_RK4_v, a_RK3_v, k5_v_next = self.step(
+                a_v, z, z_next, k5_v=k5_v, cont=cont
+            )
 
-            #---- Estimate Relative Local Error
+            # ---- Estimate Relative Local Error
             est_error = l2_error(a_RK4_v, a_RK3_v)
-            error_ratio = (est_error/local_error)**0.25
+            error_ratio = (est_error / local_error) ** 0.25
 
-            #---- Propagate Solution
+            # ---- Propagate Solution
             if error_ratio > 2:
                 # Reject this step and calculate with a smaller dz
-                dz = dz/2
+                dz = dz / 2
                 cont = False
             else:
                 # Update parameters for the next loop
@@ -388,7 +407,7 @@ class Model():
                 if (not final_step) or (error_ratio > 1):
                     dz = dz / max(error_ratio, 0.5)
                 else:
-                    dz = dz_adaptive # if final step, use adaptive step size
+                    dz = dz_adaptive  # if final step, use adaptive step size
                 cont = True
 
         return a_v, z, dz, k5_v, cont
@@ -439,53 +458,57 @@ class Model():
         """
         dz = z_next - z
 
-        #---- k1
+        # ---- k1
         if self.mode.z_mode and not cont:
             self.mode.z = z
-            if self.mode.z_linear.any: self.update_linearity()
-        ip_v = self._linear_operator(0.5*dz)
+            if self.mode.z_linear.any:
+                self.update_linearity()
+        ip_v = self._linear_operator(0.5 * dz)
 
         if k5_v is None:
-            if self.mode.z_nonlinear.any and not cont: self.update_nonlinearity()
+            if self.mode.z_nonlinear.any and not cont:
+                self.update_nonlinearity()
             k5_v = self._nonlinear_operator(a_v)
 
-        ai_v = ip_v * a_v # into interaction picture
-        ki1_v = ip_v * k5_v # into interaction picture
+        ai_v = ip_v * a_v  # into interaction picture
+        ki1_v = ip_v * k5_v  # into interaction picture
 
-        #---- k2 and k3
+        # ---- k2 and k3
         if self.mode.z_mode:
-            self.mode.z = 0.5*(z + z_next)
-            if self.mode.z_nonlinear.any: self.update_nonlinearity()
+            self.mode.z = 0.5 * (z + z_next)
+            if self.mode.z_nonlinear.any:
+                self.update_nonlinearity()
 
-        ai2_v = rk1(ai_v, ki1_v, 0.5*dz)
+        ai2_v = rk1(ai_v, ki1_v, 0.5 * dz)
         ki2_v = self._nonlinear_operator(ai2_v)
 
-        ai3_v = rk1(ai_v, ki2_v, 0.5*dz)
+        ai3_v = rk1(ai_v, ki2_v, 0.5 * dz)
         ki3_v = self._nonlinear_operator(ai3_v)
 
-        #---- k4
+        # ---- k4
         if self.mode.z_mode:
             self.mode.z = z_next
             if self.mode.z_linear.any:
                 self.update_linearity()
-                ip_v = self._linear_operator(0.5*dz)
-            if self.mode.z_nonlinear.any: self.update_nonlinearity()
+                ip_v = self._linear_operator(0.5 * dz)
+            if self.mode.z_nonlinear.any:
+                self.update_nonlinearity()
 
         ai4_v = rk1(ai_v, ki3_v, dz)
-        a4_v = ip_v * ai4_v # out of interaction picture
+        a4_v = ip_v * ai4_v  # out of interaction picture
         k4_v = self._nonlinear_operator(a4_v)
 
-        #---- RK4
+        # ---- RK4
         a_RK4_v, b_v = rk4(ai_v, ki1_v, ki2_v, ki3_v, k4_v, ip_v, dz)
 
-        #---- k5
+        # ---- k5
         k5_v = self._nonlinear_operator(a_RK4_v)
 
-        #---- RK3
+        # ---- RK3
         a_RK3_v = rk3(b_v, k4_v, k5_v, dz)
         return a_RK4_v, a_RK3_v, k5_v
 
-    #---- Operators
+    # ---- Operators
     def linear_operator(self, dz):
         """
         The action of the linear operator integrated over the given step size.
@@ -528,7 +551,7 @@ class Model():
         """
         return 0.0j
 
-    #---- Z-Dependency
+    # ---- Z-Dependency
     def update_linearity(self, force_update=False):
         """
         Update all z-dependent linear parameters.
@@ -540,20 +563,22 @@ class Model():
             update those that are z dependent.
 
         """
-        #---- Gain self.mode.z_linear
+        # ---- Gain self.mode.z_linear
         if self.mode.z_linear.alpha or force_update:
             self.alpha = self.mode.alpha
 
-        #---- Phase
+        # ---- Phase
         if self.mode.z_linear.beta or force_update:
             self.beta = self.mode.beta
             beta1_v0 = fdd(self.beta, self.dw, self.pulse.v0_idx)
             # Beta in comoving frame
-            self.beta_cm = self.beta - beta1_v0*self.w_grid
+            self.beta_cm = self.beta - beta1_v0 * self.w_grid
 
-        #---- Propagation Constant
+        # ---- Propagation Constant
         if self.alpha is not None:
-            self.kappa_cm = (self.beta_cm - self.alpha**2/(8*self.beta)) + 0.5j*self.alpha
+            self.kappa_cm = (
+                self.beta_cm - self.alpha**2 / (8 * self.beta)
+            ) + 0.5j * self.alpha
         else:
             self.kappa_cm = self.beta_cm
 
@@ -569,9 +594,13 @@ class Model():
 
         """
         if self.mode.g2 is not None:
-            warnings.warn("2nd-order nonlinearity is not implemented in this model", stacklevel=2)
+            warnings.warn(
+                "2nd-order nonlinearity is not implemented in this model", stacklevel=2
+            )
         if self.mode.g3 is not None:
-            warnings.warn("3rd-order nonlinearity is not implemented in this model", stacklevel=2)
+            warnings.warn(
+                "3rd-order nonlinearity is not implemented in this model", stacklevel=2
+            )
 
     def update_poling(self, force_update=False):
         """
@@ -587,7 +616,7 @@ class Model():
         if self.mode.z_nonlinear.pol:
             warnings.warn("Poling is not implemented in this model", stacklevel=2)
 
-    #---- Plotting
+    # ---- Plotting
     def _setup_plots(self, plot, pulse_out, z):
         """
         Initialize a figure for real-time visualization of a simulation.
@@ -608,29 +637,30 @@ class Model():
             self._plt
         except AttributeError:
             import matplotlib.pyplot as plt
+
             self._plt = plt
 
-        #---- Figure and Axes
+        # ---- Figure and Axes
         self._rt_fig = self._plt.figure("Real-Time Simulation", clear=True)
-        self._ax_0 = self._plt.subplot2grid((2,1), (0,0), fig=self._rt_fig)
-        self._ax_1 = self._plt.subplot2grid((2,1), (1,0), sharex=self._ax_0, fig=self._rt_fig)
+        self._ax_0 = self._plt.subplot2grid((2, 1), (0, 0), fig=self._rt_fig)
+        self._ax_1 = self._plt.subplot2grid(
+            (2, 1), (1, 0), sharex=self._ax_0, fig=self._rt_fig
+        )
         self._rt_fig.show()
 
-        #---- Time Domain
-        if plot=="time":
+        # ---- Time Domain
+        if plot == "time":
             # Lines
-            self._ln_pwr, = self._ax_0.semilogy(
-                1e12*self.t_grid,
-                pulse_out.p_t,
-                '.',
+            (self._ln_pwr,) = self._ax_0.semilogy(
+                1e12 * self.t_grid, pulse_out.p_t, ".", markersize=1, animated=True
+            )
+            (self._ln_phs,) = self._ax_1.plot(
+                1e12 * self.t_grid,
+                1e-12 * pulse_out.vg_t,
+                ".",
                 markersize=1,
-                animated=True)
-            self._ln_phs, = self._ax_1.plot(
-                1e12*self.t_grid,
-                1e-12*pulse_out.vg_t,
-                '.',
-                markersize=1,
-                animated=True)
+                animated=True,
+            )
 
             # Labels
             self._ax_0.set_title("Instantaneous Power")
@@ -641,28 +671,28 @@ class Model():
 
             # Y Boundaries
             self._ax_0.set_ylim(
-                top=max(self._ln_pwr.get_ydata())*1e1,
-                bottom=max(self._ln_pwr.get_ydata())*1e-9)
-            excess = 0.05*(self.v_grid.max()-self.v_grid.min())
+                top=max(self._ln_pwr.get_ydata()) * 1e1,
+                bottom=max(self._ln_pwr.get_ydata()) * 1e-9,
+            )
+            excess = 0.05 * (self.v_grid.max() - self.v_grid.min())
             self._ax_1.set_ylim(
-                top=1e-12*(self.v_grid.max() + excess),
-                bottom=1e-12*(self.v_grid.min() - excess))
+                top=1e-12 * (self.v_grid.max() + excess),
+                bottom=1e-12 * (self.v_grid.min() - excess),
+            )
 
-        #---- Frequency Domain
-        if plot=="frq":
+        # ---- Frequency Domain
+        if plot == "frq":
             # Lines
-            self._ln_pwr, = self._ax_0.semilogy(
-                1e-12*self.v_grid,
-                pulse_out.p_v,
-                '.',
+            (self._ln_pwr,) = self._ax_0.semilogy(
+                1e-12 * self.v_grid, pulse_out.p_v, ".", markersize=1, animated=True
+            )
+            (self._ln_phs,) = self._ax_1.plot(
+                1e-12 * self.v_grid,
+                1e12 * pulse_out.tg_v,
+                ".",
                 markersize=1,
-                animated=True)
-            self._ln_phs, = self._ax_1.plot(
-                1e-12*self.v_grid,
-                1e12*pulse_out.tg_v,
-                '.',
-                markersize=1,
-                animated=True)
+                animated=True,
+            )
 
             # Labels
             self._ax_0.set_title("Power Spectrum")
@@ -673,28 +703,32 @@ class Model():
 
             # Y Boundaries
             self._ax_0.set_ylim(
-                top=max(self._ln_pwr.get_ydata())*1e1,
-                bottom=max(self._ln_pwr.get_ydata())*1e-9)
-            excess = 0.05*(self.t_grid.max()-self.t_grid.min())
+                top=max(self._ln_pwr.get_ydata()) * 1e1,
+                bottom=max(self._ln_pwr.get_ydata()) * 1e-9,
+            )
+            excess = 0.05 * (self.t_grid.max() - self.t_grid.min())
             self._ax_1.set_ylim(
-                top=1e12*(self.t_grid.max() + excess),
-                bottom=1e12*(self.t_grid.min() - excess))
+                top=1e12 * (self.t_grid.max() + excess),
+                bottom=1e12 * (self.t_grid.min() - excess),
+            )
 
-        #---- Wavelength Domain
-        if plot=="wvl":
+        # ---- Wavelength Domain
+        if plot == "wvl":
             # Lines
-            self._ln_pwr, = self._ax_0.semilogy(
-                1e9*self.l_grid,
+            (self._ln_pwr,) = self._ax_0.semilogy(
+                1e9 * self.l_grid,
                 self.dv_dl * pulse_out.p_v,
-                '.',
+                ".",
                 markersize=1,
-                animated=True)
-            self._ln_phs, = self._ax_1.plot(
-                1e9*self.l_grid,
-                1e12*pulse_out.tg_v,
-                '.',
+                animated=True,
+            )
+            (self._ln_phs,) = self._ax_1.plot(
+                1e9 * self.l_grid,
+                1e12 * pulse_out.tg_v,
+                ".",
                 markersize=1,
-                animated=True)
+                animated=True,
+            )
 
             # Labels
             self._ax_0.set_title("Power Spectrum")
@@ -705,29 +739,33 @@ class Model():
 
             # Y Boundaries
             self._ax_0.set_ylim(
-                top=max(self._ln_pwr.get_ydata())*1e1,
-                bottom=max(self._ln_pwr.get_ydata())*1e-9)
-            excess = 0.05*(self.t_grid.max()-self.t_grid.min())
+                top=max(self._ln_pwr.get_ydata()) * 1e1,
+                bottom=max(self._ln_pwr.get_ydata()) * 1e-9,
+            )
+            excess = 0.05 * (self.t_grid.max() - self.t_grid.min())
             self._ax_1.set_ylim(
-                top=1e12*(self.t_grid.max() + excess),
-                bottom=1e12*(self.t_grid.min() - excess))
+                top=1e12 * (self.t_grid.max() + excess),
+                bottom=1e12 * (self.t_grid.min() - excess),
+            )
 
-        #---- Z Label
-        #TODO: change to plt.barh, progress bar
+        # ---- Z Label
+        # TODO: change to plt.barh, progress bar
         self._z_label = self._ax_1.legend(
-            [],[],
-            title='z = {:.6g} m'.format(z),
+            [],
+            [],
+            title="z = {:.6g} m".format(z),
             loc=9,
             labelspacing=0,
             framealpha=1,
-            shadow=False)
+            shadow=False,
+        )
         self._z_label.set_animated(True)
 
-        #---- Layout
+        # ---- Layout
         self._rt_fig.tight_layout()
         self._rt_fig.canvas.draw()
 
-        #---- Blit
+        # ---- Blit
         self._artists = (self._ln_pwr, self._ln_phs, self._z_label)
 
         self._rt_fig_bkg_0 = self._rt_fig.canvas.copy_from_bbox(self._ax_0.bbox)
@@ -748,39 +786,27 @@ class Model():
             The z position in the mode.
 
         """
-        #---- Restore Background
+        # ---- Restore Background
         self._rt_fig.canvas.restore_region(self._rt_fig_bkg_0)
         self._rt_fig.canvas.restore_region(self._rt_fig_bkg_1)
 
-        #---- Update Data
-        if plot=="time":
-            self._ln_pwr.set_data(
-                1e12*self.t_grid,
-                pulse_out.p_t)
-            self._ln_phs.set_data(
-                1e12*self.t_grid,
-                1e-12*pulse_out.vg_t)
+        # ---- Update Data
+        if plot == "time":
+            self._ln_pwr.set_data(1e12 * self.t_grid, pulse_out.p_t)
+            self._ln_phs.set_data(1e12 * self.t_grid, 1e-12 * pulse_out.vg_t)
 
-        if plot=="frq":
-            self._ln_pwr.set_data(
-                1e-12*self.v_grid,
-                pulse_out.p_v)
-            self._ln_phs.set_data(
-                1e-12*self.v_grid,
-                1e12*pulse_out.tg_v)
+        if plot == "frq":
+            self._ln_pwr.set_data(1e-12 * self.v_grid, pulse_out.p_v)
+            self._ln_phs.set_data(1e-12 * self.v_grid, 1e12 * pulse_out.tg_v)
 
-        if plot=="wvl":
-            self._ln_pwr.set_data(
-                1e9*self.l_grid,
-                self.dv_dl * pulse_out.p_v)
-            self._ln_phs.set_data(
-                1e9*self.l_grid,
-                1e12*pulse_out.tg_v)
+        if plot == "wvl":
+            self._ln_pwr.set_data(1e9 * self.l_grid, self.dv_dl * pulse_out.p_v)
+            self._ln_phs.set_data(1e9 * self.l_grid, 1e12 * pulse_out.tg_v)
 
-        #---- Update Z Label
-        self._z_label.set_title('z = {:.6g} m'.format(z))
+        # ---- Update Z Label
+        self._z_label.set_title("z = {:.6g} m".format(z))
 
-        #---- Blit
+        # ---- Blit
         for artist in self._artists:
             artist.axes.draw_artist(artist)
 
@@ -812,30 +838,33 @@ class NLSE(Model):
         inherited methods.
 
     """
+
     def __init__(self, pulse, mode):
         super().__init__(pulse, mode)
 
         if mode.rv_grid is not None:
-            assert (mode.rv_grid.size == pulse.rtf_grids(alias=0).v_grid.size), (
-                "The pulse and mode must be defined over the same frequency grid")
+            assert (
+                mode.rv_grid.size == pulse.rtf_grids(alias=0).v_grid.size
+            ), "The pulse and mode must be defined over the same frequency grid"
 
-        #---- Implementation Details
+        # ---- Implementation Details
         self._linear_operator = self._linear_operator_fft_order
         self._nonlinear_operator = self._nonlinear_operator_fft_order
 
     def propagate(self, a_v, z, z_stop, dz, local_error, k5_v=None, cont=False):
-        #---- Standard FFT Order
+        # ---- Standard FFT Order
         a_v = fft.ifftshift(a_v)
 
-        #---- Propagate
+        # ---- Propagate
         a_v, z, dz, k5_v, cont = super().propagate(
-            a_v, z, z_stop, dz, local_error, k5_v=k5_v, cont=cont)
+            a_v, z, z_stop, dz, local_error, k5_v=k5_v, cont=cont
+        )
 
-        #---- Monotonic Order
+        # ---- Monotonic Order
         a_v = fft.fftshift(a_v)
         return a_v, z, dz, k5_v, cont
 
-    #---- Operators
+    # ---- Operators
     def _linear_operator_fft_order(self, dz):
         """
         The action of the linear operator integrated over the given step size,
@@ -870,20 +899,20 @@ class NLSE(Model):
         ndarray of complex
 
         """
-        #---- Setup
+        # ---- Setup
         a_t = fft.ifft(a_v, fsc=self.dt)
         a2_t = abs2(a_t)
 
-        #---- Raman
+        # ---- Raman
         if self.r3 is not None:
             a2_rv = fft.rfft(a2_t, fsc=self.dt)
             a2r_rv = prod(self.r3, a2_rv)
             a2_t = fft.irfft(a2r_rv, fsc=self.dt, n=self.n_points)
 
-        #---- Kerr
+        # ---- Kerr
         a3_t = prod(a_t, a2_t)
         a3_v = fft.fft(a3_t, fsc=self.dt)
-        return prod(self._1j_gamma, a3_v) # minus sign included in _1j_gamma
+        return prod(self._1j_gamma, a3_v)  # minus sign included in _1j_gamma
 
     def nonlinear_operator(self, a_v):
         """
@@ -903,30 +932,32 @@ class NLSE(Model):
         ndarray of complex
 
         """
-        #---- Standard FFT Order
+        # ---- Standard FFT Order
         _a_v = fft.ifftshift(a_v)
 
-        #---- Nonlinear Operator
+        # ---- Nonlinear Operator
         _nl_a_v = self._nonlinear_operator_fft_order(_a_v)
 
-        #---- Monotonic Order
+        # ---- Monotonic Order
         return fft.fftshift(_nl_a_v)
 
-    #---- Z-Dependency
+    # ---- Z-Dependency
     def update_linearity(self, force_update=False):
         super().update_linearity(force_update=force_update)
         self._kappa_cm = fft.ifftshift(self.kappa_cm)
 
     def update_nonlinearity(self, force_update=False):
         if self.mode.g2 is not None:
-            warnings.warn("2nd-order nonlinearity is not implemented in this model", stacklevel=2)
+            warnings.warn(
+                "2nd-order nonlinearity is not implemented in this model", stacklevel=2
+            )
 
-        #---- Gamma
+        # ---- Gamma
         if self.mode.z_nonlinear.g3 or force_update:
             self.gamma = self.mode.gamma
             self._1j_gamma = fft.ifftshift(-1j * self.gamma)
 
-        #---- Raman
+        # ---- Raman
         if self.mode.z_nonlinear.r3 or force_update:
             self.r3 = self.mode.r3
 
@@ -970,14 +1001,16 @@ class UPE(Model):
     verify that behavior on a case-by-case basis.
 
     """
+
     def __init__(self, pulse, mode):
         super().__init__(pulse, mode)
 
         if mode.rv_grid is not None:
-            assert (pulse.rv_grid.size == mode.rv_grid.size), (
-                "The pulse and mode must be defined over the same frequency grid")
+            assert (
+                pulse.rv_grid.size == mode.rv_grid.size
+            ), "The pulse and mode must be defined over the same frequency grid"
 
-        #---- Implementation Details
+        # ---- Implementation Details
         # Frequency Grid
         self._1j_w_grid = 1j * self.w_grid
 
@@ -997,17 +1030,18 @@ class UPE(Model):
         self._a3_rt = np.zeros_like(self.pulse.rt_grid, dtype=float)
 
     def propagate(self, a_v, z, z_stop, dz, local_error, k5_v=None, cont=False):
-        #---- Update Poling
+        # ---- Update Poling
         if self.mode.z_nonlinear.pol:
-            if not cont: self.mode.z = z
+            if not cont:
+                self.mode.z = z
             if self.mode.z in self.mode.g2_inv:
                 self.update_poling()
-                k5_v = None # reset k5_v, 2nd-order nonlinearity changed sign
+                k5_v = None  # reset k5_v, 2nd-order nonlinearity changed sign
 
-        #---- Propagate
+        # ---- Propagate
         return super().propagate(a_v, z, z_stop, dz, local_error, k5_v=k5_v, cont=cont)
 
-    #---- Operators
+    # ---- Operators
     def nonlinear_operator(self, a_v):
         """
         The action of the nonlinear operator on the given pulse spectrum.
@@ -1025,35 +1059,44 @@ class UPE(Model):
         ndarray of complex
 
         """
-        #---- Setup
-        self._nl_v[...] = self._0_v # zero
+        # ---- Setup
+        self._nl_v[...] = self._0_v  # zero
         self._a_rv[self.rn_slice] = a_v
-        a_rt = fft.irfft(self._a_rv, fsc=self.rdt * 2**0.5, n=self.rn_points) # 1/2**0.5 for analytic to real
+        a_rt = fft.irfft(
+            self._a_rv, fsc=self.rdt * 2**0.5, n=self.rn_points
+        )  # 1/2**0.5 for analytic to real
         a2_rt = a_rt * a_rt
 
-        #---- 2nd-Order Nonlinearity
+        # ---- 2nd-Order Nonlinearity
         if self.g2 is not None:
-            a2_rv = fft.rfft(a2_rt, fsc=self.rdt * 2**0.5) # 2**0.5 for real to analytic
-            if self.g2_pol: # poled
+            a2_rv = fft.rfft(
+                a2_rt, fsc=self.rdt * 2**0.5
+            )  # 2**0.5 for real to analytic
+            if self.g2_pol:  # poled
                 self._nl_v += prod(self.g2, a2_rv[self.rn_slice])
-            else: # not poled
+            else:  # not poled
                 self._nl_v -= prod(self.g2, a2_rv[self.rn_slice])
 
-        #---- 3rd-Order Nonlinearity
+        # ---- 3rd-Order Nonlinearity
         if self.g3 is not None:
             # Raman
             if self.r3 is not None:
-                a2_rv = (fft.rfft(a2_rt, fsc=self.rdt) if self.g2 is None
-                           else a2_rv * 2**-0.5) # 1/2**0.5 for analytic to real
+                a2_rv = (
+                    fft.rfft(a2_rt, fsc=self.rdt)
+                    if self.g2 is None
+                    else a2_rv * 2**-0.5
+                )  # 1/2**0.5 for analytic to real
                 a2r_rv = prod(self.r3, a2_rv)
                 a2_rt = fft.irfft(a2r_rv, fsc=self.rdt, n=self.rn_points)
             # Kerr
             a3_rt = a_rt * a2_rt
-            a3_rv = fft.rfft(a3_rt, fsc=self.rdt * 2**0.5) # 2**0.5 for real to analytic
+            a3_rv = fft.rfft(
+                a3_rt, fsc=self.rdt * 2**0.5
+            )  # 2**0.5 for real to analytic
             self._nl_v -= prod(self.g3, a3_rv[self.rn_slice])
 
-        #---- Nonlinear Response
-        return prod(self._1j_w_grid, self._nl_v) # minus sign included in _nl_v
+        # ---- Nonlinear Response
+        return prod(self._1j_w_grid, self._nl_v)  # minus sign included in _nl_v
 
     def nonlinear_operator_separable(self, a_v):
         """
@@ -1097,63 +1140,71 @@ class UPE(Model):
         :py:func:`~pynlo.utility.chi3.g3_split` functions.
 
         """
-        #---- Setup
-        self._nl_v[...] = self._0_v # zero
+        # ---- Setup
+        self._nl_v[...] = self._0_v  # zero
 
-        #---- 2nd-Order Nonlinearity
+        # ---- 2nd-Order Nonlinearity
         if self.g2 is not None:
-            self._a2_rt[...] = self._0_rt # zero
+            self._a2_rt[...] = self._0_rt  # zero
             for g2_internal in self.g2[1:]:
                 self._a_rv[self.rn_slice] = prod(a_v, g2_internal)
-                a_rt = fft.irfft(self._a_rv, fsc=self.rdt * 2**0.5, n=self.rn_points) # 1/2**0.5 for analytic to real
+                a_rt = fft.irfft(
+                    self._a_rv, fsc=self.rdt * 2**0.5, n=self.rn_points
+                )  # 1/2**0.5 for analytic to real
                 self._a2_rt += a_rt * a_rt
-            a2_rv = fft.rfft(self._a2_rt, fsc=self.rdt * 2**0.5) # 2**0.5 for real to analytic
-            if self.g2_pol: # poled
+            a2_rv = fft.rfft(
+                self._a2_rt, fsc=self.rdt * 2**0.5
+            )  # 2**0.5 for real to analytic
+            if self.g2_pol:  # poled
                 self._nl_v += prod(self.g2[0], a2_rv[self.rn_slice])
-            else: # not poled
+            else:  # not poled
                 self._nl_v -= prod(self.g2[0], a2_rv[self.rn_slice])
 
-        #---- 3rd-Order Nonlinearity
+        # ---- 3rd-Order Nonlinearity
         if self.g3 is not None:
-            self._a3_rt[...] = self._0_rt # zero
+            self._a3_rt[...] = self._0_rt  # zero
             for g3_internal in self.g3[1:]:
                 self._a_rv[self.rn_slice] = prod(a_v, g3_internal)
-                a_rt = fft.irfft(self._a_rv, fsc=self.rdt * 2**0.5, n=self.rn_points) # 1/2**0.5 for analytic to real
+                a_rt = fft.irfft(
+                    self._a_rv, fsc=self.rdt * 2**0.5, n=self.rn_points
+                )  # 1/2**0.5 for analytic to real
                 a2_rt = a_rt * a_rt
                 if self.r3 is not None:
                     a2_rv = fft.rfft(a2_rt, fsc=self.rdt)
                     a2r_rv = prod(self.r3, a2_rv)
                     a2_rt = fft.irfft(a2r_rv, fsc=self.rdt, n=self.rn_points)
                 self._a3_rt += a_rt * a2_rt
-            a3_rv = fft.rfft(self._a3_rt, fsc=self.rdt * 2**0.5) # 2**0.5 for real to analytic
+            a3_rv = fft.rfft(
+                self._a3_rt, fsc=self.rdt * 2**0.5
+            )  # 2**0.5 for real to analytic
             self._nl_v -= prod(self.g3[0], a3_rv[self.rn_slice])
 
-        #---- Nonlinear Response
-        return prod(self._1j_w_grid, self._nl_v) # minus sign included in _nl_v
+        # ---- Nonlinear Response
+        return prod(self._1j_w_grid, self._nl_v)  # minus sign included in _nl_v
 
-    #---- Z-Dependency
+    # ---- Z-Dependency
     def update_nonlinearity(self, force_update=False):
-        #---- 2nd Order
+        # ---- 2nd Order
         if self.mode.z_nonlinear.g2 or force_update:
             self.g2 = self.mode.g2
             self._g2_dim = len(self.g2.shape) if self.g2 is not None else 0
 
-        #---- 3rd Order
+        # ---- 3rd Order
         if self.mode.z_nonlinear.g3 or force_update:
             self.g3 = self.mode.g3
             self._g3_dim = len(self.g3.shape) if self.g3 is not None else 0
         if self.mode.z_nonlinear.r3 or force_update:
             self.r3 = self.mode.r3
 
-        #---- Select Nonlinear Operator
+        # ---- Select Nonlinear Operator
         if self.mode.z_nonlinear.g2 or self.mode.z_nonlinear.g3 or force_update:
             # Separable 2nd- and 3rd-order terms
-            if (self._g2_dim > 1):
+            if self._g2_dim > 1:
                 if self.g3 is not None and (self._g3_dim < 2):
                     self.g3 = [self.g3, complex(1.0)]
                     self._g3_dim = 2
                 self._nonlinear_operator = self.nonlinear_operator_separable
-            elif (self._g3_dim > 1):
+            elif self._g3_dim > 1:
                 if self.g2 is not None:
                     self.g2 = [self.g2, complex(1.0)]
                     self._g2_dim = 2
@@ -1167,7 +1218,8 @@ class UPE(Model):
             try:
                 self.g2_pol = self.mode.g2_inv[self.mode.z]
             except (KeyError, TypeError):
-                if force_update: self.g2_pol = self.mode.g2_pol
+                if force_update:
+                    self.g2_pol = self.mode.g2_pol
 
 
 # %% Multi-Mode Models

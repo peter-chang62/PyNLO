@@ -19,14 +19,17 @@ from scipy.constants import c, pi
 
 # %% Collections
 
-_LinearOperator = collections.namedtuple("LinearOperator", ["u", "gain", "phase", "phase_raw"])
+_LinearOperator = collections.namedtuple(
+    "LinearOperator", ["u", "gain", "phase", "phase_raw"]
+)
 _LinearZ = collections.namedtuple("LinearZ", ["any", "alpha", "beta"])
 _NonlinearZ = collections.namedtuple("NonlinearZ", ["any", "g2", "pol", "g3", "r3"])
 
 
 # %% Single Mode
 
-class Mode():
+
+class Mode:
     """
     An optical mode.
 
@@ -70,31 +73,41 @@ class Mode():
               \\beta = n \\frac{\\omega}{c}
 
     """
-    def __init__(self, v_grid, beta, alpha=None,
-                 g2=None, g2_inv=None, g3=None, rv_grid=None, r3=None,
-                 z=0.0):
-        #---- Position
+
+    def __init__(
+        self,
+        v_grid,
+        beta,
+        alpha=None,
+        g2=None,
+        g2_inv=None,
+        g3=None,
+        rv_grid=None,
+        r3=None,
+        z=0.0,
+    ):
+        # ---- Position
         self._z = z
 
-        #---- Frequency Grid
+        # ---- Frequency Grid
         self._v_grid = np.asarray(v_grid, dtype=float)
-        self._w_grid = 2*pi*self._v_grid
+        self._w_grid = 2 * pi * self._v_grid
 
-        #---- Refractive Index
+        # ---- Refractive Index
         if callable(beta):
-            assert (len(beta(z)) == len(v_grid)), "The length of beta must match v_grid."
+            assert len(beta(z)) == len(v_grid), "The length of beta must match v_grid."
             self._beta = beta
         else:
-            assert (len(beta) == len(v_grid)), "The length of beta must match v_grid."
+            assert len(beta) == len(v_grid), "The length of beta must match v_grid."
             self._beta = np.asarray(beta, dtype=float)
 
-        #---- Gain
+        # ---- Gain
         if (alpha is None) or callable(alpha):
             self._alpha = alpha
         else:
             self._alpha = np.asarray(alpha, dtype=float)
 
-        #---- 2nd-Order Nonlinearity
+        # ---- 2nd-Order Nonlinearity
         if (g2 is None) or callable(g2):
             self._g2 = g2
         else:
@@ -104,13 +117,15 @@ class Mode():
             self._g2_inv = None
             self._g2_inv_sorted = []
         else:
-            assert (g2 is not None) and (g2_inv is not None), (
-                "Poling can only be defined when g2 is defined")
+            assert (g2 is not None) and (
+                g2_inv is not None
+            ), "Poling can only be defined when g2 is defined"
             self._g2_inv_sorted = sorted(g2_inv)
-            self._g2_inv = {z:(idx + 1) % 2 for idx, z in enumerate(self._g2_inv_sorted)}
+            self._g2_inv = {
+                z: (idx + 1) % 2 for idx, z in enumerate(self._g2_inv_sorted)
+            }
 
-
-        #---- 3rd-Order Nonlinearity
+        # ---- 3rd-Order Nonlinearity
         if (g3 is None) or callable(g3):
             self._g3 = g3
         else:
@@ -118,32 +133,39 @@ class Mode():
 
         # Nonlinear Response Function
         if (rv_grid is not None) and (r3 is not None):
-            assert (g3 is not None) and (r3 is not None), (
-                "Raman nonlinearity can only be defined when g3 is defined")
+            assert (g3 is not None) and (
+                r3 is not None
+            ), "Raman nonlinearity can only be defined when g3 is defined"
             self._rv_grid = np.asarray(rv_grid, dtype=float)
 
             if callable(r3):
                 self._r3 = r3
             else:
-                assert (len(r3) == len(rv_grid)), "The length of r3 must match rv_grid."
+                assert len(r3) == len(rv_grid), "The length of r3 must match rv_grid."
                 self._r3 = np.asarray(r3, dtype=complex)
         else:
-            assert (rv_grid is None) and (r3 is None), (
-                "rv_grid and r3 must both be defined at the same time or not at all.")
+            assert (rv_grid is None) and (
+                r3 is None
+            ), "rv_grid and r3 must both be defined at the same time or not at all."
             self._rv_grid = None
             self._r3 = None
 
-        #---- Z Dependence
+        # ---- Z Dependence
         self._z_linear = _LinearZ(
             any=callable(alpha) or callable(beta),
-            alpha=callable(alpha), beta=callable(beta))
+            alpha=callable(alpha),
+            beta=callable(beta),
+        )
         self._z_nonlinear = _NonlinearZ(
             any=callable(g2) or callable(g3) or callable(r3),
-            g2=callable(g2), pol=g2_inv is not None,
-            g3=callable(g3), r3=callable(r3))
+            g2=callable(g2),
+            pol=g2_inv is not None,
+            g3=callable(g3),
+            r3=callable(r3),
+        )
         self._z_mode = self.z_linear.any or self.z_nonlinear.any or self.z_nonlinear.pol
 
-    #---- General Properties
+    # ---- General Properties
     @property
     def z(self):
         """
@@ -155,6 +177,7 @@ class Mode():
 
         """
         return self._z
+
     @z.setter
     def z(self, z):
         self._z = z
@@ -235,7 +258,7 @@ class Mode():
         """
         return self._z_nonlinear
 
-    #---- 1st-Order Properties
+    # ---- 1st-Order Properties
     @property
     def alpha(self):
         """
@@ -273,7 +296,7 @@ class Mode():
         ndarray of float
 
         """
-        return self.beta*c/self._w_grid
+        return self.beta * c / self._w_grid
 
     @property
     def beta1(self):
@@ -303,7 +326,7 @@ class Mode():
 
         """
         if v0 is None:
-            v0 = self.v_grid[self.v_grid.size//2]
+            v0 = self.v_grid[self.v_grid.size // 2]
         v0_idx = np.argmin(np.abs(v0 - self.v_grid))
         beta1 = self.beta1
         return beta1[v0_idx] - beta1
@@ -318,7 +341,7 @@ class Mode():
         ndarray of float
 
         """
-        return c*self.beta1
+        return c * self.beta1
 
     @property
     def v_g(self):
@@ -330,7 +353,7 @@ class Mode():
         ndarray of float
 
         """
-        return 1/self.beta1
+        return 1 / self.beta1
 
     @property
     def beta2(self):
@@ -354,7 +377,9 @@ class Mode():
         ndarray of float
 
         """
-        return -2*pi/c * self.v_grid**2 * self.beta2 #TODO: test against chi1 helper functions
+        return (
+            -2 * pi / c * self.v_grid**2 * self.beta2
+        )  # TODO: test against chi1 helper functions
 
     def linear_operator(self, dz, v0=None):
         """
@@ -383,32 +408,33 @@ class Mode():
             The raw accumulated phase.
 
         """
-        #---- Gain
+        # ---- Gain
         alpha = self.alpha
         if alpha is None:
             alpha = 0.0
-        gain = np.exp(alpha*dz)
+        gain = np.exp(alpha * dz)
 
-        #---- Phase
+        # ---- Phase
         beta_raw = self.beta
 
         # Comoving frame
         if v0 is None:
-            v0 = self.v_grid[self.v_grid.size//2]
+            v0 = self.v_grid[self.v_grid.size // 2]
         v0_idx = np.argmin(np.abs(v0 - self.v_grid))
-        beta_cm = beta_raw - self.beta1[v0_idx]*self._w_grid
+        beta_cm = beta_raw - self.beta1[v0_idx] * self._w_grid
 
-        #---- Propagation Constant
-        kappa = beta_cm + 0.5j*alpha
+        # ---- Propagation Constant
+        kappa = beta_cm + 0.5j * alpha
 
-        #---- Linear Operator
-        operator = np.exp(-1j*kappa*dz)
+        # ---- Linear Operator
+        operator = np.exp(-1j * kappa * dz)
 
         lin_operator = _LinearOperator(
-            u=operator, gain=gain, phase=dz*beta_cm, phase_raw=dz*beta_raw)
+            u=operator, gain=gain, phase=dz * beta_cm, phase_raw=dz * beta_raw
+        )
         return lin_operator
 
-    #---- 2nd-Order Properties
+    # ---- 2nd-Order Properties
     @property
     def g2(self):
         """
@@ -454,7 +480,7 @@ class Mode():
         poled = bisect.bisect_right(self._g2_inv_sorted, self.z) % 2
         return poled
 
-    #---- 3rd-Order Properties
+    # ---- 3rd-Order Properties
     @property
     def g3(self):
         """
@@ -478,9 +504,11 @@ class Mode():
         None or ndarray of complex
         """
         g3 = self.g3
-        if g3 is not None and len(g3.shape)>=2:
-            g3 = g3[0] * np.sum(g3[1:]**3, axis=0)
-        return 3/2*self._w_grid*g3 if g3 is not None else None #TODO: test against chi3 helper functions
+        if g3 is not None and len(g3.shape) >= 2:
+            g3 = g3[0] * np.sum(g3[1:] ** 3, axis=0)
+        return (
+            3 / 2 * self._w_grid * g3 if g3 is not None else None
+        )  # TODO: test against chi3 helper functions
 
     @property
     def r3(self):
@@ -494,7 +522,7 @@ class Mode():
         """
         return self._r3(self.z) if callable(self._r3) else self._r3
 
-    #---- Misc
+    # ---- Misc
     def copy(self):
         """A copy of the mode."""
         return copy.deepcopy(self)
