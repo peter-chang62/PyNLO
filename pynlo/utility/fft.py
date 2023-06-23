@@ -10,31 +10,39 @@ __all__ = ["fft", "ifft", "rfft", "irfft", "fftshift", "ifftshift", "next_fast_l
 # %% Imports
 
 from scipy.fft import next_fast_len, fftshift as _fftshift, ifftshift as _ifftshift
-import numpy as np
 
 try:
     import mkl_fft
 
     use_mkl = True
 except ImportError:
+    import scipy
+    import numpy
 
     class mkl_fft:
         """
-        reproducing the following functions from mkl:
-            fft, ifft, rfft_numpy and irfft_numpy
+        according to mkl_fft's github page, the fft and ifft routines should be
+        like scipy's. And the rfft_numpy and irfft_numpy routines should be
+        like numpy's
         """
 
-        def fft(x, axis=-1, forward_scale=1.0):
-            return np.fft.fft(x, axis=axis) * forward_scale
+        def fft(x, n, axis, overwrite_x, forward_scale):
+            return (
+                scipy.fft.fft(x, n=n, axis=axis, overwrite_x=overwrite_x)
+                * forward_scale
+            )
 
-        def ifft(x, axis=-1, forward_scale=1.0):
-            return np.fft.ifft(x, axis=axis) / forward_scale
+        def ifft(x, n, axis, overwrite_x, forward_scale):
+            return (
+                scipy.fft.ifft(x, n=n, axis=axis, overwrite_x=overwrite_x)
+                / forward_scale
+            )
 
-        def rfft_numpy(x, axis=-1, forward_scale=1.0):
-            return np.fft.rfft(x, axis=axis) * forward_scale
+        def rfft_numpy(x, n, axis, forward_scale):
+            return numpy.fft.rfft(x, n=n, axis=axis) * forward_scale
 
-        def irfft_numpy(x, axis=-1, forward_scale=1.0):
-            return np.fft.irfft(x, axis=axis) / forward_scale
+        def irfft_numpy(x, n, axis, forward_scale):
+            return numpy.fft.irfft(x, n=n, axis=axis) / forward_scale
 
 
 # %% Helper Functions
