@@ -154,29 +154,6 @@ class SettableArrayProperty(property):
         return array
 
 
-def z_grid_from_polling_period(polling_period, length):
-    """
-    Generate the z grid points from a fixed polling period. The grid points are
-    all the inversion points. I think this is important if including polling
-    in a crystal to make sure that it doesn't "miss" any of the
-    quasi-phasematching
-
-    Args:
-        polling_period (float):
-            The polling period
-        length (float):
-            The length of the crystal / waveguide
-
-    Returns:
-        1D array: the array of z grid points
-    """
-    cycle_period = polling_period / 2.0
-    n_cycles = np.ceil(length / cycle_period)
-    z_grid = np.arange(0, n_cycles * cycle_period, cycle_period)
-    z_grid = np.append(z_grid[z_grid < length], length)
-    return z_grid
-
-
 def plot_results(pulse_out, z, a_t, a_v, plot="frq"):
     """
     plot PyNLO simulation results
