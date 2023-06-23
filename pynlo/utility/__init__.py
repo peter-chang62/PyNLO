@@ -29,6 +29,7 @@ import copy
 
 import numpy as np
 from scipy.constants import pi, h
+import scipy.constants as sc
 
 from pynlo.utility import chi1, chi2, chi3, fft
 
@@ -99,7 +100,7 @@ def vacuum(v_grid, rng=None):
 
     ..  math::
         |\\alpha\\rangle = e^{-\\frac{|\\alpha|^2}{2}}
-            \sum_{n=0}^\\infty \\frac{\\alpha^n}{\sqrt{n!}} |n\\rangle
+            \\sum_{n=0}^\\infty \\frac{\\alpha^n}{\\sqrt{n!}} |n\\rangle
 
     The probability :math:`P[\\alpha]` of measuring displacement
     :math:`\\alpha` from a coherent state with average displacement
@@ -577,6 +578,17 @@ class TFGrid:
 
         """
         return fft.ifftshift(self.v_grid)
+
+    @property
+    def wl_grid(self):
+        """
+        wavelength axis
+
+        Returns:
+            1D array:
+                wavelength axis
+        """
+        return sc.c / self.v_grid
 
     @property
     def v_ref(self):

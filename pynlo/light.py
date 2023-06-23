@@ -20,9 +20,10 @@ import collections
 
 import numpy as np
 from scipy.constants import pi
-
+import scipy
 from pynlo.utility import TFGrid, fft, resample_v, resample_t
 from pynlo.utility.misc import SettableArrayProperty, replace
+from scipy import interpolate as spi
 
 
 # %% Collections
@@ -44,9 +45,13 @@ Spectrogram = collections.namedtuple(
 )
 
 
+def min_points(bandwidth_v, bandwidth_t):
+    n_min = int(np.ceil(bandwidth_t * bandwidth_v))
+    n_min = scipy.fftpack.next_fast_len(n_min)  # faster fft's
+    return n_min
+
+
 # %% Pulse
-
-
 class Pulse(TFGrid):
     """
     An optical pulse.
@@ -122,7 +127,16 @@ class Pulse(TFGrid):
     # ---- Class Methods
     @classmethod
     def FromPowerSpectrum(
-        cls, p_v, n, v_min, v_max, v0=None, e_p=None, phi_v=None, **kwargs
+        cls,
+        p_v,
+        n,
+        v_min,
+        v_max,
+        min_time_window,
+        v0=None,
+        e_p=None,
+        phi_v=None,
+        alias=2,
     ):
         """
         Initialize a pulse using existing spectral data.
@@ -147,10 +161,16 @@ class Pulse(TFGrid):
             The phase of the power spectrum. The default initializes a
             transform limited pulse.
         """
+        n_min = min_points(v_max - v_min, min_time_window)
+        if n_min > n:
+            msg = f"changing n from {n} to {n_min} to support both time and frequency bandwidths"
+            print(msg)
+            n = n_min
+
         assert callable(p_v), "The power spectrum must be a callable function."
 
         # ---- Initialize Grids
-        self = super().FromFreqRange(n, v_min, v_max, **kwargs)
+        self = super().FromFreqRange(n, v_min, v_max, alias=alias)
         self.__a_v = np.zeros_like(self.v_grid, dtype=complex)
         if v0 is None:
             self.v0 = self.v_grid[self.n // 2]  # same as v_ref
@@ -176,7 +196,7 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def Gaussian(cls, n, v_min, v_max, v0, e_p, t_fwhm, m=1, **kwargs):
+    def Gaussian(cls, n, v_min, v_max, v0, e_p, t_fwhm, min_time_window, m=1, alias=2):
         """
         Initialize a Gaussian or super-Gaussian pulse.
 
@@ -199,10 +219,16 @@ class Pulse(TFGrid):
             The super-Gaussian order. Default is 1.
 
         """
+        n_min = min_points(v_max - v_min, min_time_window)
+        if n_min > n:
+            msg = f"changing n from {n} to {n_min} to support both time and frequency bandwidths"
+            print(msg)
+            n = n_min
+
         assert t_fwhm > 0, "The pulse width must be greater than 0."
 
         # ---- Initialize Grids
-        self = super().FromFreqRange(n, v_min, v_max, **kwargs)
+        self = super().FromFreqRange(n, v_min, v_max, alias=alias)
         self.__a_v = np.zeros_like(self.v_grid, dtype=complex)
         self.v0 = v0
 
@@ -216,7 +242,7 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def Sech(cls, n, v_min, v_max, v0, e_p, t_fwhm, **kwargs):
+    def Sech(cls, n, v_min, v_max, v0, e_p, t_fwhm, min_time_window, alias=2):
         """
         Initialize a squared hyperbolic secant pulse.
 
@@ -237,10 +263,16 @@ class Pulse(TFGrid):
             The full width at half maximum of the pulse's power envelope.
 
         """
+        n_min = min_points(v_max - v_min, min_time_window)
+        if n_min > n:
+            msg = f"changing n from {n} to {n_min} to support both time and frequency bandwidths"
+            print(msg)
+            n = n_min
+
         assert t_fwhm > 0, "The pulse width must be greater than 0."
 
         # ---- Initialize Grids
-        self = super().FromFreqRange(n, v_min, v_max, **kwargs)
+        self = super().FromFreqRange(n, v_min, v_max, alias=alias)
         self.__a_v = np.zeros_like(self.v_grid, dtype=complex)
         self.v0 = v0
 
@@ -255,7 +287,7 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def Parabolic(cls, n, v_min, v_max, v0, e_p, t_fwhm, **kwargs):
+    def Parabolic(cls, n, v_min, v_max, v0, e_p, t_fwhm, min_time_window, alias=2):
         """
         Initialize a parabolic pulse.
 
@@ -276,10 +308,16 @@ class Pulse(TFGrid):
             The full width at half maximum of the pulse's power envelope.
 
         """
+        n_min = min_points(v_max - v_min, min_time_window)
+        if n_min > n:
+            msg = f"changing n from {n} to {n_min} to support both time and frequency bandwidths"
+            print(msg)
+            n = n_min
+
         assert t_fwhm > 0, "The pulse width must be greater than 0."
 
         # ---- Initialize Grids
-        self = super().FromFreqRange(n, v_min, v_max, **kwargs)
+        self = super().FromFreqRange(n, v_min, v_max, alias=alias)
         self.__a_v = np.zeros_like(self.v_grid, dtype=complex)
         self.v0 = v0
 
@@ -294,7 +332,7 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def Lorentzian(cls, n, v_min, v_max, v0, e_p, t_fwhm, **kwargs):
+    def Lorentzian(cls, n, v_min, v_max, v0, e_p, t_fwhm, min_time_window, alias=2):
         """
         Initialize a squared Lorentzian pulse.
 
@@ -315,10 +353,16 @@ class Pulse(TFGrid):
             The full width at half maximum of the pulse's power envelope.
 
         """
+        n_min = min_points(v_max - v_min, min_time_window)
+        if n_min > n:
+            msg = f"changing n from {n} to {n_min} to support both time and frequency bandwidths"
+            print(msg)
+            n = n_min
+
         assert t_fwhm > 0, "The pulse width must be greater than 0."
 
         # ---- Initialize Grids
-        self = super().FromFreqRange(n, v_min, v_max, **kwargs)
+        self = super().FromFreqRange(n, v_min, v_max, alias=alias)
         self.__a_v = np.zeros_like(self.v_grid, dtype=complex)
         self.v0 = v0
 
@@ -332,7 +376,7 @@ class Pulse(TFGrid):
         return self
 
     @classmethod
-    def CW(cls, n, v_min, v_max, v0, p_avg, **kwargs):
+    def CW(cls, n, v_min, v_max, v0, p_avg, min_time_window, alias=2):
         """
         Initialize a continuous wave.
 
@@ -354,8 +398,14 @@ class Pulse(TFGrid):
             The average power of the CW light.
 
         """
+        n_min = min_points(v_max - v_min, min_time_window)
+        if n_min > n:
+            msg = f"changing n from {n} to {n_min} to support both time and frequency bandwidths"
+            print(msg)
+            n = n_min
+
         # ---- Initialize Grids
-        self = super().FromFreqRange(n, v_min, v_max, **kwargs)
+        self = super().FromFreqRange(n, v_min, v_max, alias=alias)
         self.__a_v = np.zeros_like(self.v_grid, dtype=complex)
         self.v0 = v0
 
@@ -368,6 +418,68 @@ class Pulse(TFGrid):
         e_p = p_avg * self.t_window
         self.e_p = e_p
         return self
+
+    def import_p_v(self, v_grid, p_v, phi_v=None):
+        """
+        import experimental spectrum
+
+        Args:
+            v_grid (1D array of floats):
+                frequency grid
+            p_v (1D array of floats):
+                power spectrum
+            phi_v (1D array of floats, optional):
+                phase, default is transform limited, you would set this
+                if you have a frog retrieval, for example
+        """
+        p_v = np.where(p_v > 0, p_v, 1e-100)
+        amp_v = p_v**0.5
+        amp_v = spi.interp1d(
+            v_grid, amp_v, kind="cubic", bounds_error=False, fill_value=1e-100
+        )(self.v_grid)
+
+        if phi_v is not None:
+            assert isinstance(phi_v, np.ndarray) and phi_v.shape == p_v.shape
+            phi_v = spi.interp1d(
+                v_grid, phi_v, kind="cubic", bounds_error=False, fill_value=0.0
+            )(self.v_grid)
+        else:
+            phi_v = 0.0
+
+        a_v = amp_v * np.exp(1j * phi_v)
+
+        e_p = self.e_p
+        self.a_v = a_v
+        self.e_p = e_p
+
+    def chirp_pulse_W(self, *chirp, v0=None):
+        """
+        chirp a pulse
+
+        Args:
+            *chirp (float):
+                any number of floats representing gdd, tod, fod ... in seconds
+            v0 (None, optional):
+                center frequency for the taylor expansion, default is v0 of the
+                pulse
+        """
+        assert len(chirp) > 0
+        assert [isinstance(i, float) for i in chirp]
+
+        if v0 is None:
+            v0 = self.v0
+        else:
+            assert np.all([isinstance(v0, float), v0 > 0])
+
+        v_grid = self.v_grid - v0
+        w_grid = v_grid * 2 * np.pi
+
+        factorial = np.math.factorial
+        phase = 0
+        for n, c in enumerate(chirp):
+            n += 2  # start from 2
+            phase += (c / factorial(n)) * w_grid**n
+        self.a_v *= np.exp(1j * phase)
 
     # ---- Frequency Domain Properties
     @property
