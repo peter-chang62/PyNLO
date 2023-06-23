@@ -15,9 +15,12 @@ try:
     import mkl_fft
 
     use_mkl = True
+    print("USING MKL")
 except ImportError:
     import scipy
     import numpy
+
+    print("NOT USING MKL")
 
     class mkl_fft:
         """

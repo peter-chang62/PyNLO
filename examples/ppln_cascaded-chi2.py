@@ -98,7 +98,7 @@ point. To view real-time simulation results (updated whenever the simulation
 reaches a record point), set the `plot` keyword to "frq", "wvl", or "time".
 
 """
-res = model.simulate(length, dz=dz, local_error=local_error, n_records=100, plot=None)
+sim = model.simulate(length, dz=dz, local_error=local_error, n_records=100, plot=None)
 
 # %% Plot Results
 """
@@ -118,4 +118,4 @@ R. DeSalvo, D. J. Hagan, M. Sheik-Bahae, G. Stegeman, E. W. Van Stryland, and
  effects in KTP," Opt. Lett. 17, 28-30 (1992)
 
 """
-res.plot("frq")
+sim.plot("frq")
