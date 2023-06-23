@@ -392,6 +392,8 @@ def package_sim_output(simulate):
                 self.a_v = a_v
                 self.p_t = abs(a_t) ** 2
                 self.p_v = abs(a_v) ** 2
+                self.phi_v = np.angle(a_v)
+                self.phi_t = np.angle(a_t)
                 self.model = model
 
             def animate(self, plot, save=False, p_ref=None):

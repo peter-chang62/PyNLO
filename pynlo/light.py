@@ -24,7 +24,7 @@ import scipy
 from pynlo.utility import TFGrid, fft, resample_v, resample_t
 from pynlo.utility.misc import SettableArrayProperty, replace
 from scipy import interpolate as spi
-
+import copy
 
 # %% Collections
 
@@ -193,6 +193,8 @@ class Pulse(TFGrid):
         # ---- Set Pulse Energy
         if e_p is not None:
             self.e_p = e_p
+
+        self: Pulse
         return self
 
     @classmethod
@@ -239,6 +241,8 @@ class Pulse(TFGrid):
 
         # ---- Set Pulse Energy
         self.e_p = e_p
+
+        self: Pulse
         return self
 
     @classmethod
@@ -284,6 +288,8 @@ class Pulse(TFGrid):
 
         # ---- Set Pulse Energy
         self.e_p = e_p
+
+        self: Pulse
         return self
 
     @classmethod
@@ -329,6 +335,8 @@ class Pulse(TFGrid):
 
         # ---- Set Pulse Energy
         self.e_p = e_p
+
+        self: Pulse
         return self
 
     @classmethod
@@ -373,6 +381,8 @@ class Pulse(TFGrid):
 
         # ---- Set Pulse Energy
         self.e_p = e_p
+
+        self: Pulse
         return self
 
     @classmethod
@@ -417,6 +427,8 @@ class Pulse(TFGrid):
         # ---- Set Pulse Energy
         e_p = p_avg * self.t_window
         self.e_p = e_p
+
+        self: Pulse
         return self
 
     def import_p_v(self, v_grid, p_v, phi_v=None):
@@ -1168,4 +1180,5 @@ class Pulse(TFGrid):
     # ---- Misc
     def copy(self):
         """A copy of the pulse."""
-        return super().copy()
+        self: Pulse
+        return copy.deepcopy(self)

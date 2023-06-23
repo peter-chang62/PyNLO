@@ -240,6 +240,12 @@ def beta_n_to_beta(v0, beta_n):
 
 
 class MgLN:
+    """
+    This class is useful for MgLN waveguides or bulk crystals. For bulk
+    crystals, the is_gaussian_beam kwarg should be set to True when calling
+    generate_model
+    """
+
     def __init__(self, T=24.5, axis="e"):
         self._T = T
         self._axis = axis
@@ -397,13 +403,15 @@ class MgLN:
                 a PyNLO model instance
 
         Notes:
-            polling_period and polling_sign_callable cannot both be provided,
-            if "is_gaussian_beam" is set to True, then the chi2 parameter is
-            scaled by the ratio of effective areas^1/2 as a function of z
+            If "is_gaussian_beam" is set to True, then the chi2 parameter is
+            scaled by the ratio of effective areas^1/2 as a function of z, and
+            the chi3 parameter is scaled by the ratio of effective areas
+            (without the square root)
 
             If is_gaussian_beam is not True, then it is assumed that
-            propagation occurs inside a waveguide, in which case an assert
-            statement checks that the beta curve was provided
+            propagation occurs inside a waveguide, in which case a warning
+            statement checks that the beta curve was provided (to account for
+            waveguide dispersion).
         """
         # --------- assert statements ---------
         assert isinstance(pulse, pynlo.light.Pulse)
@@ -456,11 +464,18 @@ class MgLN:
             z=0.0,
         )
 
+        print("USING UPE")
         model = pynlo.model.UPE(pulse, mode)
         return model
 
 
 class cLN(MgLN):
+    """
+    This class is useful for cLN waveguides or bulk crystals. For bulk
+    crystals, the is_gaussian_beam kwarg should be set to True when calling
+    generate_model
+    """
+
     def __init__(self, T=24.5, axis="e"):
         super().__init__(T=T, axis=axis)
 
@@ -477,6 +492,32 @@ class cLN(MgLN):
 
 
 class SilicaFiber:
+    """
+    This class can really be used for any waveguide propagation that only uses
+    3rd order nonlinear processes.
+
+    It is called SilicaFiber only because the raman coefficients are by default
+    set to those of silica. This can be altered as needed.
+
+    Beta still needs to be set in all cases. This can be done by directly
+    setting the beta property to a callable, or by calling
+    set_beta_from_beta_n which generates a callable beta function using a
+    taylor expansion starting from beta coefficients, or by calling
+    set_beta_from_D_n which also generates a beta function but using a taylor
+    expansion starting from D coefficients.
+
+    Gamma is also a property that needs to be set to a float or an array
+    (see connor's documentation in chi3.py in utility/)
+
+    Both beta and gamma can be set by calling load_fiber_from_dict which
+    imports the beta and gamma coefficients from a dictionary containing
+    default parameters provided by OFS (see below)
+
+    The flexibility of this class described above is illustrated in a few of
+    the examples (optical-solitons.py, silica-pcf_supercontinuum.py, and
+    intra-pulse_DFG.py)
+    """
+
     def __init__(self):
         # Q. Lin and G. P. Agrawal, Raman Response Function for Silica Fibers,
         # Opt. Lett. 31, 3086 (2006).
