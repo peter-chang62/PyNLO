@@ -1233,6 +1233,13 @@ class UPE(Model):
 
     @property
     def dispersive_wave_dk(self):
+        """
+        Calculates the phase mismatch for four-wave mixing, this helps to
+        predict where dispersive waves will be generated.
+
+        You still need to run the simulation to see the effects of bandwidth,
+        chirp and peak power
+        """
         mode = self.mode
         pulse = self.pulse
         w_p = pulse.v0 * 2 * np.pi
