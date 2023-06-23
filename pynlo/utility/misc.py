@@ -13,16 +13,20 @@ import numpy as np
 
 # %% Helper Functions
 
+
 def replace(array, values, key):
     """Copy `array` with elements given by `key` replaced by `values`."""
     array = array.copy()
     array[key] = values
     return array
 
+
 # %% Array Properties for Classes
+
 
 class ArrayWrapper(np.lib.mixins.NDArrayOperatorsMixin):
     """Emulates an array using custom item getters and setters."""
+
     def __init__(self, getter=None, setter=None):
         self._getter = getter
         self._setter = setter
@@ -59,11 +63,12 @@ class ArrayWrapper(np.lib.mixins.NDArrayOperatorsMixin):
         Modified from NumPy docs, "__array_ufunc__ for ufuncs"
 
         """
-        #---- Convert Input to Arrays
-        inputs = tuple(x.__array__() if isinstance(x, ArrayWrapper) else x
-                       for x in inputs)
+        # ---- Convert Input to Arrays
+        inputs = tuple(
+            x.__array__() if isinstance(x, ArrayWrapper) else x for x in inputs
+        )
 
-        #---- Apply Ufunc
+        # ---- Apply Ufunc
         if out:
             # Convert Output to Arrays
             outputs = []
@@ -74,20 +79,20 @@ class ArrayWrapper(np.lib.mixins.NDArrayOperatorsMixin):
                     out_args.append(output.__array__())
                 else:
                     out_args.append(output)
-            kwargs['out'] = tuple(out_args)
+            kwargs["out"] = tuple(out_args)
 
             # Apply Ufunc
             result = getattr(ufunc, method)(*inputs, **kwargs)
 
             # Convert Output to ArrayWrappers
             for idx, output in outputs:
-                output[...] = out_args[idx] # "in place" equivalent
+                output[...] = out_args[idx]  # "in place" equivalent
         else:
             result = getattr(ufunc, method)(*inputs, **kwargs)
 
-        #---- Return Result
-        if method == 'at':
-            return None # no return value
+        # ---- Return Result
+        if method == "at":
+            return None  # no return value
         else:
             return result
 
@@ -126,6 +131,7 @@ class SettableArrayProperty(property):
     See the documentation of `property` for other implementation details.
 
     """
+
     def __get__(self, obj, objtype):
         # Return self if not instantiated
         if obj is None:
@@ -137,7 +143,7 @@ class SettableArrayProperty(property):
 
         def item_setter(key, value):
             if self.fset is None:
-                self.__set__(obj, value) # raise AttributeError if fset is None
+                self.__set__(obj, value)  # raise AttributeError if fset is None
             self.fset(obj, value, key)
 
         # Return array with custom item getters and setters
