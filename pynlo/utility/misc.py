@@ -154,7 +154,7 @@ class SettableArrayProperty(property):
         return array
 
 
-def plot_results(pulse_out, z, a_t, a_v, plot="frq"):
+def plot_results(pulse_out, z, a_t, a_v, plot="frq", num="Simulation Results"):
     """
     plot PyNLO simulation results
 
@@ -172,7 +172,7 @@ def plot_results(pulse_out, z, a_t, a_v, plot="frq"):
     pulse_out: pynlo.light.Pulse
     assert np.any([plot == "frq", plot == "wvl"]), "plot must be 'frq' or 'wvl'"
 
-    fig = plt.figure("Simulation Results", clear=False)
+    fig = plt.figure(num=num, clear=True)
     ax0 = plt.subplot2grid((3, 2), (0, 0), rowspan=1)
     ax1 = plt.subplot2grid((3, 2), (0, 1), rowspan=1)
     ax2 = plt.subplot2grid((3, 2), (1, 0), rowspan=2, sharex=ax0)
@@ -269,7 +269,7 @@ def animate(pulse_out, model, z, a_t, a_v, plot="frq", save=False, p_ref=None):
     model: pynlo.model.UPE
     p_ref: pynlo.light.Pulse
 
-    fig, ax = plt.subplots(2, 1, num="Replay of Simulation", clear=False)
+    fig, ax = plt.subplots(2, 1, num="Replay of Simulation", clear=True)
     ax0, ax1 = ax
 
     wl_grid = sc.c / pulse_out.v_grid
@@ -406,13 +406,14 @@ def package_sim_output(simulate):
                     p_ref=p_ref,
                 )
 
-            def plot(self, plot):
+            def plot(self, plot, num="Simulation Results"):
                 return plot_results(
                     self.pulse_out,
                     self.z,
                     self.a_t,
                     self.a_v,
                     plot=plot,
+                    num=num,
                 )
 
             def save(self, path, filename):

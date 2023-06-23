@@ -13,9 +13,7 @@ regime.
 import numpy as np
 from scipy.constants import pi
 from matplotlib import pyplot as plt
-
 import pynlo
-from pynlo import utility as ut
 
 
 # %% Pulse Properties
@@ -34,7 +32,6 @@ must be wide enough such that spectral components do not significantly alias as
 the soliton breathes, and the time window must be long enough such that
 dispersed spectral components do not wrap around and significantly interfere
 with the main pulse.
-
 """
 # ---- Soliton Parameters
 N = 3  # soliton number
@@ -51,8 +48,9 @@ v0 = 300e12  # 300 THz
 
 e_p = N**2 / (gamma / np.abs(beta2) * T0 / 2)
 t_fwhm = np.arccosh(2**0.5) * 2 * T0
+time_window = 10e-12
 
-pulse = pynlo.light.Pulse.Sech(n_points, v_min, v_max, v0, e_p, t_fwhm)
+pulse = pynlo.light.Pulse.Sech(n_points, v_min, v_max, v0, e_p, t_fwhm, time_window)
 
 # ---- Length Scales
 L_D = T0**2 / np.abs(beta2)
@@ -65,7 +63,6 @@ print("Dispersion Length \t= {:.3g} m".format(L_D))
 print("Nonlinear Length \t= {:.3g} m".format(L_NL))
 print("Soliton Period \t\t= {:.3g} m".format(L_S))
 print("Compression Length \t= {:.3g} m".format(L_C))
-
 
 # %% Unperturbed Soliton Dynamics
 """
@@ -100,65 +97,22 @@ Agrawal GP. Nonlinear Fiber Optics. Sixth ed. London; San Diego,
 # ---- Mode Properties
 length = L_S * 2
 
-# Phase Coefficient
-beta_n = 3 * [0]
-beta_n[2] = beta2
-
-beta = ut.taylor_series(2 * pi * v0, beta_n)(2 * pi * pulse.v_grid)
-
-# 3rd-Order Nonlinearity
-g3 = ut.chi3.gamma_to_g3(pulse.v_grid, gamma)
-
-mode = pynlo.media.Mode(pulse.v_grid, beta, g3=g3)
+fiber = pynlo.materials.SilicaFiber()
+fiber.set_beta_from_beta_n(pulse.v0, [beta2])
+fiber.gamma = gamma
 
 # ---- Model
-model = pynlo.model.NLSE(pulse, mode)
+model = fiber.generate_model(pulse, t_shock=None, raman_on=False, method="nlse")
 
 # Estimate step size
 local_error = 1e-6
 dz = model.estimate_step_size(local_error=local_error)
 
+# ----- Simulate
+sim = model.simulate(length, dz=dz, local_error=local_error, n_records=100, plot=None)
 
-# ---- Simulate
-pulse_out, z, a_t, a_v = model.simulate(
-    length, dz=dz, local_error=local_error, n_records=100, plot=None
-)
-
-# ---- Plot Results
-fig = plt.figure("Soliton Dynamics", clear=True)
-ax0 = plt.subplot2grid((3, 2), (0, 0), rowspan=1)
-ax1 = plt.subplot2grid((3, 2), (0, 1), rowspan=1)
-ax2 = plt.subplot2grid((3, 2), (1, 0), rowspan=2, sharex=ax0)
-ax3 = plt.subplot2grid((3, 2), (1, 1), rowspan=2, sharex=ax1)
-
-p_v_dB = 10 * np.log10(np.abs(a_v) ** 2)
-p_v_dB -= p_v_dB.max()
-ax0.plot(1e-12 * pulse.v_grid, p_v_dB[0], color="b", label=r"$z_{start}$")
-ax0.plot(1e-12 * pulse.v_grid, p_v_dB[-1], color="g", label=r"$z_{stop}$")
-ax2.pcolormesh(
-    1e-12 * pulse.v_grid, z / L_S, p_v_dB, vmin=-40.0, vmax=0, shading="auto"
-)
-ax0.set_ylim(bottom=-45, top=5)
-ax2.set_xlabel("Frequency (THz)")
-
-L_F_idx = np.argmin(np.abs(z - L_C))
-ax0.plot(1e-12 * pulse.v_grid, p_v_dB[L_F_idx], color="k", label=r"$z_{comp}$")
-ax2.axhline(z[L_F_idx] / L_S, color="k", linestyle=":")
-ax0.legend(loc=2, fontsize="small")
-
-p_t_dB = 10 * np.log10(np.abs(a_t) ** 2)
-p_t_dB -= p_t_dB.max()
-ax1.plot(1e12 * pulse.t_grid, p_t_dB[0], color="b")
-ax1.plot(1e12 * pulse.t_grid, p_t_dB[-1], color="g")
-ax3.pcolormesh(1e12 * pulse.t_grid, z / L_S, p_t_dB, vmin=-40.0, vmax=0, shading="auto")
-ax1.set_ylim(bottom=-45, top=5)
-ax3.set_xlabel("Time (ps)")
-
-ax0.set_ylabel("Power (dB)")
-ax2.set_ylabel("Propagation Distance ($L_S$)")
-fig.tight_layout()
-fig.show()
-
+# ----- Plot Results
+sim.plot("frq", num="Soliton Dynamics")
 
 # %% Dispersive Wave Generation
 """
@@ -198,68 +152,24 @@ Agrawal GP. Nonlinear Fiber Optics. Sixth ed. London; San Diego,
 """
 # ---- Mode Properties
 length = L_S * 2
+beta_n = 2 * [0]
+beta_n[0] = beta2
+beta_n[1] = 0.1 * 1e-12**3 / 1e3  # 0.1 ps**3/km
 
-# Phase Coefficient
-beta_n = 4 * [0]
-beta_n[2] = beta2
-beta_n[3] = 0.1 * 1e-12**3 / 1e3  # 0.1 ps**3/km
+fiber.set_beta_from_beta_n(pulse.v0, beta_n)
 
-beta = ut.taylor_series(2 * pi * v0, beta_n)(2 * pi * pulse.v_grid)
-
-# 3rd-Order Nonlinearity
-g3 = ut.chi3.gamma_to_g3(pulse.v_grid, gamma)
-
-mode = pynlo.media.Mode(pulse.v_grid, beta, g3=g3)
-
-
-# ---- Model
-model = pynlo.model.NLSE(pulse, mode)
+# ------ Model
+model = fiber.generate_model(pulse, t_shock=None, raman_on=False, method="nlse")
 
 # Estimate step size
 local_error = 1e-6
 dz = model.estimate_step_size(local_error=local_error)
 
+# ----- Simulate
+sim = model.simulate(length, dz=dz, local_error=local_error, n_records=100, plot=None)
 
-# ---- Simulate
-pulse_out, z, a_t, a_v = model.simulate(
-    length, dz=dz, local_error=local_error, n_records=100, plot=None
-)
-
-# ---- Plot Results
-fig = plt.figure("Dispersive Wave Generation", clear=True)
-ax0 = plt.subplot2grid((3, 2), (0, 0), rowspan=1)
-ax1 = plt.subplot2grid((3, 2), (0, 1), rowspan=1)
-ax2 = plt.subplot2grid((3, 2), (1, 0), rowspan=2, sharex=ax0)
-ax3 = plt.subplot2grid((3, 2), (1, 1), rowspan=2, sharex=ax1)
-
-p_v_dB = 10 * np.log10(np.abs(a_v) ** 2)
-p_v_dB -= p_v_dB.max()
-ax0.plot(1e-12 * pulse.v_grid, p_v_dB[0], color="b", label=r"$z_{start}$")
-ax0.plot(1e-12 * pulse.v_grid, p_v_dB[-1], color="g", label=r"$z_{stop}$")
-ax2.pcolormesh(
-    1e-12 * pulse.v_grid, z / L_S, p_v_dB, vmin=-40.0, vmax=0, shading="auto"
-)
-ax0.set_ylim(bottom=-45, top=5)
-ax2.set_xlabel("Frequency (THz)")
-
-L_F_idx = np.argmin(np.abs(z - L_C))
-ax0.plot(1e-12 * pulse.v_grid, p_v_dB[L_F_idx], color="k", label=r"$z_{comp}$")
-ax2.axhline(z[L_F_idx] / L_S, color="k", linestyle=":")
-ax0.legend(loc=2, fontsize="small")
-
-p_t_dB = 10 * np.log10(np.abs(a_t) ** 2)
-p_t_dB -= p_t_dB.max()
-ax1.plot(1e12 * pulse.t_grid, p_t_dB[0], color="b")
-ax1.plot(1e12 * pulse.t_grid, p_t_dB[-1], color="g")
-ax3.pcolormesh(1e12 * pulse.t_grid, z / L_S, p_t_dB, vmin=-40.0, vmax=0, shading="auto")
-ax1.set_ylim(bottom=-45, top=5)
-ax3.set_xlabel("Time (ps)")
-
-ax0.set_ylabel("Power (dB)")
-ax2.set_ylabel("Propagation Distance ($L_S$)")
-fig.tight_layout()
-fig.show()
-
+# ----- Plot Results
+sim.plot("frq", num="Dispersive Wave Generation")
 
 # %% Raman-Induced Frequency Shift
 """
@@ -293,65 +203,25 @@ Agrawal GP. Nonlinear Fiber Optics. Sixth ed. London; San Diego,
 length = L_S * 2
 
 # Phase Coefficient
-beta_n = 3 * [0]
-beta_n[2] = beta2
+beta_n = [beta2]
 
-beta = ut.taylor_series(2 * pi * v0, beta_n)(2 * pi * pulse.v_grid)
-
-# 3rd-Order Nonlinearity
-g3 = ut.chi3.gamma_to_g3(pulse.v_grid, gamma)
+fiber.set_beta_from_beta_n(pulse.v0, beta_n)
 
 # Raman effect
 r_weights = [0.245 * (1 - 0.21), 12.2e-15, 32e-15]  # resonant contribution
 b_weights = [0.245 * 0.21, 96e-15]  # boson contribution
-rv_grid, raman = ut.chi3.raman(pulse.n, pulse.dt, r_weights, b_weights)
+fiber.r_weights = r_weights
+fiber.b_weights = b_weights
 
-mode = pynlo.media.Mode(pulse.v_grid, beta, g3=g3, rv_grid=rv_grid, r3=raman)
+# ----- Model
+model = fiber.generate_model(pulse, t_shock=None, raman_on=True, method="nlse")
 
-# ---- Model
-model = pynlo.model.NLSE(pulse, mode)
-
-# Estimate step size
+# ----- Estimate step size
 local_error = 1e-6
 dz = model.estimate_step_size(local_error=local_error)
 
+# ----- Simulate
+sim = model.simulate(length, dz=dz, local_error=local_error, n_records=100, plot=None)
 
-# ---- Simulate
-pulse_out, z, a_t, a_v = model.simulate(
-    length, dz=dz, local_error=local_error, n_records=100, plot=None
-)
-
-# ---- Plot Results
-fig = plt.figure("Raman-Induced Frequency Shift", clear=True)
-ax0 = plt.subplot2grid((3, 2), (0, 0), rowspan=1)
-ax1 = plt.subplot2grid((3, 2), (0, 1), rowspan=1)
-ax2 = plt.subplot2grid((3, 2), (1, 0), rowspan=2, sharex=ax0)
-ax3 = plt.subplot2grid((3, 2), (1, 1), rowspan=2, sharex=ax1)
-
-p_v_dB = 10 * np.log10(np.abs(a_v) ** 2)
-p_v_dB -= p_v_dB.max()
-ax0.plot(1e-12 * pulse.v_grid, p_v_dB[0], color="b", label=r"$z_{start}$")
-ax0.plot(1e-12 * pulse.v_grid, p_v_dB[-1], color="g", label=r"$z_{stop}$")
-ax2.pcolormesh(
-    1e-12 * pulse.v_grid, z / L_S, p_v_dB, vmin=-40.0, vmax=0, shading="auto"
-)
-ax0.set_ylim(bottom=-45, top=5)
-ax2.set_xlabel("Frequency (THz)")
-
-L_F_idx = np.argmin(np.abs(z - L_C))
-ax0.plot(1e-12 * pulse.v_grid, p_v_dB[L_F_idx], color="k", label=r"$z_{comp}$")
-ax2.axhline(z[L_F_idx] / L_S, color="k", linestyle=":")
-ax0.legend(loc=1, fontsize="small")
-
-p_t_dB = 10 * np.log10(np.abs(a_t) ** 2)
-p_t_dB -= p_t_dB.max()
-ax1.plot(1e12 * pulse.t_grid, p_t_dB[0], color="b")
-ax1.plot(1e12 * pulse.t_grid, p_t_dB[-1], color="g")
-ax3.pcolormesh(1e12 * pulse.t_grid, z / L_S, p_t_dB, vmin=-40.0, vmax=0, shading="auto")
-ax1.set_ylim(bottom=-45, top=5)
-ax3.set_xlabel("Time (ps)")
-
-ax0.set_ylabel("Power (dB)")
-ax2.set_ylabel("Propagation Distance ($L_S$)")
-fig.tight_layout()
-fig.show()
+# ----- Plot Results
+sim.plot("frq", num="Raman-Induced Frequency Shift")

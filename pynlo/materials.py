@@ -699,7 +699,7 @@ class SilicaFiber:
             analytic=analytic,
         )
 
-    def generate_model(self, pulse, t_shock=None, method="nlse"):
+    def generate_model(self, pulse, t_shock="auto", raman_on=True, method="nlse"):
         """
         generate pynlo.model.UPE or NLSE instance
 
@@ -708,6 +708,10 @@ class SilicaFiber:
                 instance of pynlo.light.Pulse
             t_shock (float, optional):
                 time for optical shock formation, defaults to 1 / (2 pi pulse.v0)
+            raman_on (bool, optional):
+                whether to include raman effects, default is True
+            method (string, optional):
+                nlse or upe
 
         Returns:
             model
@@ -715,10 +719,11 @@ class SilicaFiber:
         assert isinstance(pulse, pynlo.light.Pulse)
         pulse: pynlo.light.Pulse
 
-        if t_shock is not None:
-            assert isinstance(t_shock, float)
-        else:
+        if isinstance(t_shock, str):
+            assert t_shock.lower() == "auto"
             t_shock = 1 / (2 * np.pi * pulse.v0)
+        else:
+            assert isinstance(t_shock, float) or t_shock is None
 
         method = method.lower()
         assert method == "nlse" or method == "upe"
@@ -729,7 +734,10 @@ class SilicaFiber:
         v_grid = pulse.v_grid
         beta = self.beta(v_grid)
         g3 = self.g3(v_grid, t_shock=t_shock)
-        rv_grid, raman = self.raman(n, dt, analytic=analytic)
+        if raman_on:
+            rv_grid, raman = self.raman(n, dt, analytic=analytic)
+        else:
+            rv_grid = raman = None
 
         mode = pynlo.media.Mode(
             v_grid,
