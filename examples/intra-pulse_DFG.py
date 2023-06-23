@@ -21,7 +21,7 @@ from scipy.constants import c
 v_min = c / 6000e-9
 v_max = c / 450e-9
 time_window = 10e-12
-npts = 2**13
+npts = 2**12
 v0 = c / 1550e-9
 t_fwhm = 200e-15
 e_p = 4.0e-9
