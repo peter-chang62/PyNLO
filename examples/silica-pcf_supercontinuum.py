@@ -78,7 +78,7 @@ beta_n[7] = 3.0524e-18 * 1e-12**9 / 1e3  # 3.0524e-18 ps**9 / km
 beta_n[8] = -1.7140e-21 * 1e-12**10 / 1e3  # -1.7140e-21 ps**10 / km
 
 fiber = pynlo.materials.SilicaFiber()
-fiber.get_beta_from_beta_n(pulse.v0, beta_n)
+fiber.set_beta_from_beta_n(pulse.v0, beta_n)
 
 # ---- 3rd-Order Nonlinearity
 gamma = 0.11  # 0.11 / W * m

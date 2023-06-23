@@ -540,9 +540,9 @@ class SilicaFiber:
         assert len(self._b_weights) == 2
         self._b_weights = b_weights
 
-    def get_beta_from_beta_n(self, v0, beta_n):
+    def set_beta_from_beta_n(self, v0, beta_n):
         """
-        Get a callable beta(v_grid) from a taylor expansion of beta
+        Set the callable beta(v_grid) from a taylor expansion of beta
         coefficients
 
         Args:
@@ -553,10 +553,24 @@ class SilicaFiber:
         """
         self.beta = beta_n_to_beta(v0, beta_n)
 
-    def get_beta_from_D_n(self, wl_0, D, dD_dwl):
+    def set_beta_from_D_n(self, wl_0, D, dD_dwl):
+        """
+        Set the calllabe beta(v_grid) from a taylor expansion of beta
+        coefficients. The beta coefficients are generated from D and D'.
+        Currently higher order D''... are not supported. If you need those
+        then use set_beta_from_beta_n
+
+        Args:
+            wl_0 (float):
+                center wavelength
+            D (float):
+                D parameter (s/m^2)
+            dD_dwl (float):
+                D' parameter (s/m^3)
+        """
         beta_2, beta_3 = Ds_to_beta_n(D, dD_dwl, wl_0)
         v0 = sc.c / wl_0
-        self.get_beta_from_beta_n(v0, [beta_2, beta_3])
+        self.set_beta_from_beta_n(v0, [beta_2, beta_3])
 
     def load_fiber_from_dict(self, dict_fiber, axis="slow"):
         """
@@ -587,7 +601,7 @@ class SilicaFiber:
             dD_dwl = dict_fiber["D slope fast axis"]
 
         wl_0 = dict_fiber["center wavelength"]
-        self.get_beta_from_D_n(wl_0, D, dD_dwl)
+        self.set_beta_from_D_n(wl_0, D, dD_dwl)
         self.gamma = dict_fiber["nonlinear coefficient"]
 
     def g3(self, v_grid, t_shock=None):
