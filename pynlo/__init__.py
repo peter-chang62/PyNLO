@@ -11,9 +11,9 @@ i.e. frequency in ``Hz``, time in ``s``, and energy in ``J``.
 
 """
 __version__ = '1.dev'
-__all__ = ["light", "media", "device", "model", "utility"]
+__all__ = ["light", "media", "device", "model", "utility", "materials"]
 
 
 # %% Imports
 
-from pynlo import light, media, device, model, utility
+from pynlo import light, media, device, model, utility, materials

@@ -20,12 +20,21 @@ from pynlo.light import Pulse
 from pynlo.media import Mode
 from pynlo.utility import fft
 
+from scipy import interpolate as spi
+import pynlo
+from pynlo.utility.misc import package_sim_output
 
 # %% Collections
 
 SimulationResult = collections.namedtuple(
     "SimulationResult", ["pulse", "z", "a_t", "a_v"]
 )
+
+
+# fourwave mixing phase mismatch
+# useful for predicting dispersive wave generation
+def dispersive_wave_dk(w, w_p, b_w, b_w_p, b_1_w_p, gamma=0, P=0):
+    return b_w - b_w_p - b_1_w_p * (w - w_p) - gamma * P / 2
 
 
 # %% Routines
@@ -205,6 +214,7 @@ class Model:
             dz = dz / min(2, max(error_ratio, 0.5))
         return dz
 
+    @package_sim_output
     def simulate(self, z_grid, dz=None, local_error=1e-6, n_records=None, plot=None):
         """
         Simulate propagation of the input pulse through the optical mode.
@@ -1220,6 +1230,26 @@ class UPE(Model):
             except (KeyError, TypeError):
                 if force_update:
                     self.g2_pol = self.mode.g2_pol
+
+    @property
+    def dispersive_wave_dk(self):
+        mode = self.mode
+        pulse = self.pulse
+        w_p = pulse.v0 * 2 * np.pi
+        w = self.w_grid
+
+        b_w = mode.beta
+        b_w_p = spi.interp1d(w, b_w, bounds_error=True)(w_p)
+
+        b_1_w = spi.UnivariateSpline(w, b_w, k=1).derivative(1)(w)
+        b_1_w_p = spi.interp1d(w, b_1_w, bounds_error=True)(w_p)
+
+        gamma = pynlo.utility.chi3.g3_to_gamma(pulse.v_grid, self.g3)
+        assert not np.any(gamma.imag)
+        gamma = gamma.real
+        P = pulse.p_t.max()
+
+        return dispersive_wave_dk(w, w_p, b_w, b_w_p, b_1_w_p, gamma=gamma, P=P)
 
 
 # %% Multi-Mode Models
