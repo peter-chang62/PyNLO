@@ -4,19 +4,43 @@ Aliases to fast FFT implementations and associated helper functions.
 
 """
 
-__all__ = ["fft", "ifft", "rfft", "irfft",
-           "fftshift", "ifftshift", "next_fast_len"]
+__all__ = ["fft", "ifft", "rfft", "irfft", "fftshift", "ifftshift", "next_fast_len"]
 
 
 # %% Imports
 
 from scipy.fft import next_fast_len, fftshift as _fftshift, ifftshift as _ifftshift
-import mkl_fft
+import numpy as np
+
+try:
+    import mkl_fft
+
+    use_mkl = True
+except ImportError:
+
+    class mkl_fft:
+        """
+        reproducing the following functions from mkl:
+            fft, ifft, rfft_numpy and irfft_numpy
+        """
+
+        def fft(x, axis=-1, forward_scale=1.0):
+            return np.fft.fft(x, axis=axis) * forward_scale
+
+        def ifft(x, axis=-1, forward_scale=1.0):
+            return np.fft.ifft(x, axis=axis) / forward_scale
+
+        def rfft_numpy(x, axis=-1, forward_scale=1.0):
+            return np.fft.rfft(x, axis=axis) * forward_scale
+
+        def irfft_numpy(x, axis=-1, forward_scale=1.0):
+            return np.fft.irfft(x, axis=axis) / forward_scale
 
 
 # %% Helper Functions
 
-#---- FFT Shifts
+
+# ---- FFT Shifts
 def fftshift(x, axis=-1):
     """
     Shift the origin from the beginning to the center of the array.
@@ -38,6 +62,7 @@ def fftshift(x, axis=-1):
 
     """
     return _fftshift(x, axes=axis)
+
 
 def ifftshift(x, axis=-1):
     """
@@ -65,7 +90,8 @@ def ifftshift(x, axis=-1):
 
 # %% Transforms
 
-#---- FFTs
+
+# ---- FFTs
 def fft(x, fsc=1.0, n=None, axis=-1, overwrite_x=False):
     """
     Use MKL to perform a 1D FFT of the input array along the given axis.
@@ -93,6 +119,7 @@ def fft(x, fsc=1.0, n=None, axis=-1, overwrite_x=False):
 
     """
     return mkl_fft.fft(x, n=n, axis=axis, overwrite_x=overwrite_x, forward_scale=fsc)
+
 
 def ifft(x, fsc=1.0, n=None, axis=-1, overwrite_x=False):
     """
@@ -124,7 +151,8 @@ def ifft(x, fsc=1.0, n=None, axis=-1, overwrite_x=False):
     """
     return mkl_fft.ifft(x, n=n, axis=axis, overwrite_x=overwrite_x, forward_scale=fsc)
 
-#---- Real FFTs
+
+# ---- Real FFTs
 def rfft(x, fsc=1.0, n=None, axis=-1):
     """
     Use MKL to perform a 1D FFT of the real input array along the given axis.
@@ -152,6 +180,7 @@ def rfft(x, fsc=1.0, n=None, axis=-1):
 
     """
     return mkl_fft.rfft_numpy(x, n=n, axis=axis, forward_scale=fsc)
+
 
 def irfft(x, fsc=1.0, n=None, axis=-1):
     """
