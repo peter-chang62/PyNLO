@@ -242,7 +242,7 @@ def animate(pulse_out, model, z, a_t, a_v, plot="frq", save=False, p_ref=None):
         pulse_out (object):
             reference pulse instance for time and frequency grid
         model (object):
-            pynlo.model.UPE instance used in the simulation
+            pynlo.model.UPE or NLSE instance used in the simulation
         z (1D array):
             z grid returned from the call to model.simulate()
         a_t (2D array):
@@ -263,7 +263,7 @@ def animate(pulse_out, model, z, a_t, a_v, plot="frq", save=False, p_ref=None):
         [plot == "frq", plot == "wvl", plot == "time"]
     ), "plot must be 'frq' or 'wvl'"
     assert isinstance(pulse_out, pynlo.light.Pulse)
-    assert isinstance(model, pynlo.model.UPE)
+    assert isinstance(model, (pynlo.model.UPE, pynlo.model.NLSE))
     assert isinstance(p_ref, pynlo.light.Pulse) or p_ref is None
     pulse_out: pynlo.light.Pulse
     model: pynlo.model.UPE

@@ -15,12 +15,12 @@ try:
     import mkl_fft
 
     use_mkl = True
-    print("USING MKL FOR FFT'S")
+    print("USING MKL FOR FFT'S IN PYNLO")
 except ImportError:
     import scipy
     import numpy
 
-    print("NOT USING MKL FOR FFT'S")
+    print("NOT USING MKL FOR FFT'S IN PYNLO")
 
     class mkl_fft:
         """
