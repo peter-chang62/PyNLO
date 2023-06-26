@@ -2,3 +2,7 @@
 *.pyc
 docs/build/doctrees/
 .pylint.d/
+
+pynlo/.DS_Store
+
+.DS_Store
