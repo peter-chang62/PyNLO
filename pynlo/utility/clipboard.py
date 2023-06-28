@@ -12,13 +12,13 @@ def add_clipboard_to_figures():
         fig = oldfig(*args, **kwargs)
 
         def clipboard_handler(event):
-            if event.key == "ctrl+c":
+            if event.key == "cmd+c":
                 # store the image in a buffer using savefig(), this has the
                 # advantage of applying all the default savefig parameters
                 # such as background color; those would be ignored if you simply
                 # grab the canvas using Qt
                 buf = io.BytesIO()
-                fig.savefig(buf)
+                fig.savefig(buf, transparent=True, dpi=300)
                 QGuiApplication.clipboard().setImage(QImage.fromData(buf.getvalue()))
                 buf.close()
 
