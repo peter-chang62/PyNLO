@@ -12,7 +12,7 @@ def add_clipboard_to_figures():
         fig = oldfig(*args, **kwargs)
 
         def clipboard_handler(event):
-            if event.key == "cmd+c":
+            if event.key == "ctrl+c":
                 # store the image in a buffer using savefig(), this has the
                 # advantage of applying all the default savefig parameters
                 # such as background color; those would be ignored if you simply
