@@ -22,7 +22,7 @@ import numpy as np
 from scipy.constants import pi
 import scipy
 from pynlo.utility import TFGrid, fft, resample_v, resample_t
-from pynlo.utility.misc import SettableArrayProperty, replace
+from pynlo.utility.misc import SettableArrayProperty, replace, ArrayWrapper
 from scipy import interpolate as spi
 import copy
 
@@ -451,7 +451,7 @@ class Pulse(TFGrid):
         )(self.v_grid)
 
         if phi_v is not None:
-            assert isinstance(phi_v, np.ndarray) and phi_v.shape == p_v.shape
+            assert (isinstance(phi_v, np.ndarray) or isinstance(phi_v, ArrayWrapper)) and phi_v.shape == p_v.shape
             phi_v = spi.interp1d(
                 v_grid, phi_v, kind="cubic", bounds_error=False, fill_value=0.0
             )(self.v_grid)
