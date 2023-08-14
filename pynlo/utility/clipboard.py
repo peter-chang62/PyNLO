@@ -1,6 +1,8 @@
 import io
 import matplotlib.pyplot as plt
 from PyQt5.QtGui import QGuiApplication, QImage
+from matplotlib.colors import LinearSegmentedColormap
+from matplotlib import colormaps
 
 
 def add_clipboard_to_figures():
@@ -29,3 +31,17 @@ def add_clipboard_to_figures():
 
 
 add_clipboard_to_figures()
+
+# %% add a transparent background color map that is the CMRmap_r with white -> transparent
+ncolors = 256
+color_array = plt.get_cmap("CMRmap_r")(range(ncolors))
+
+# change alpha values
+# color_array[:, -1] = np.linspace(1, 0, ncolors)
+color_array[0][-1] = 0  # just send the white values to transparent!
+
+# create a colormap object
+map_object = LinearSegmentedColormap.from_list(name="CMRmap_r_t", colors=color_array)
+
+# register this new colormap with matplotlib
+colormaps.register(cmap=map_object)
