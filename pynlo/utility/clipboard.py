@@ -32,12 +32,26 @@ def add_clipboard_to_figures():
 
 add_clipboard_to_figures()
 
-# %% add a transparent background color map that is the CMRmap_r with white -> transparent
+# -----------------------------------------------------------------------------
+# add a transparent background color map that is the CMRmap with white -> transparent
+ncolors = 256
+color_array = plt.get_cmap("CMRmap")(range(ncolors))
+
+# change alpha values
+color_array[-1][-1] = 0  # just send the white values to transparent!
+
+# create a colormap object
+map_object = LinearSegmentedColormap.from_list(name="CMRmap_t", colors=color_array)
+
+# register this new colormap with matplotlib
+colormaps.register(cmap=map_object)
+
+# -----------------------------------------------------------------------------
+# add a transparent background color map that is the CMRmap_r with white -> transparent
 ncolors = 256
 color_array = plt.get_cmap("CMRmap_r")(range(ncolors))
 
 # change alpha values
-# color_array[:, -1] = np.linspace(1, 0, ncolors)
 color_array[0][-1] = 0  # just send the white values to transparent!
 
 # create a colormap object
