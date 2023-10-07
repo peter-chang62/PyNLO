@@ -328,12 +328,12 @@ class Model:
                         for artist in self._artists:
                             artist.set_animated(False)
 
-            sim_res = SimulationResult(
-                pulse=pulse_out,
-                z=np.fromiter(z_record.keys(), dtype=float),
-                a_t=a_t_record,
-                a_v=a_v_record,
-            )
+        sim_res = SimulationResult(
+            pulse=pulse_out,
+            z=np.fromiter(z_record.keys(), dtype=float),
+            a_t=a_t_record,
+            a_v=a_v_record,
+        )
         return sim_res
 
     def propagate(self, a_v, z, z_stop, dz, local_error, k5_v=None, cont=False):
@@ -586,9 +586,16 @@ class Model:
 
         # ---- Propagation Constant
         if self.alpha is not None:
-            self.kappa_cm = (
-                self.beta_cm - self.alpha**2 / (8 * self.beta)
-            ) + 0.5j * self.alpha
+            # connor's kappa_cm (kappa in co-moving frame)
+            # -----------------------------------------------------------------
+            # self.kappa_cm = (
+            #     self.beta_cm - self.alpha**2 / (8 * self.beta)
+            # ) + 0.5j * self.alpha
+            # -----------------------------------------------------------------
+
+            # my version, I don't understnad where the alpha^2 comes from so
+            # I'm getting rid of it
+            self.kappa_cm = self.beta_cm + 0.5j * self.alpha
         else:
             self.kappa_cm = self.beta_cm
 

@@ -451,7 +451,8 @@ class MgLN:
             # calculate beta from material dispersion
             beta = self.beta(pulse.v_grid)
         else:
-            # beta is already provided
+            # beta is already provided, must be an array
+            # you can add option to make it a callable(z), but haven't needed it.
             assert isinstance(beta, np.ndarray) and beta.shape == pulse.v_grid.shape
 
         mode = pynlo.media.Mode(
@@ -740,7 +741,14 @@ class SilicaFiber:
             analytic=analytic,
         )
 
-    def generate_model(self, pulse, t_shock="auto", raman_on=True, method="nlse"):
+    def generate_model(
+        self,
+        pulse,
+        t_shock="auto",
+        raman_on=True,
+        alpha=None,
+        method="nlse",
+    ):
         """
         generate pynlo.model.UPE or NLSE instance
 
@@ -751,6 +759,9 @@ class SilicaFiber:
                 time for optical shock formation, defaults to 1 / (2 pi pulse.v0)
             raman_on (bool, optional):
                 whether to include raman effects, default is True
+            alpha (array or callable, optional):
+                default is 0, otherwise is a callable alpha(z) that returns a
+                float or array, or fixed alpha.
             method (string, optional):
                 nlse or upe
 
@@ -765,6 +776,22 @@ class SilicaFiber:
             t_shock = 1 / (2 * np.pi * pulse.v0)
         else:
             assert isinstance(t_shock, float) or t_shock is None
+
+        if alpha is not None:
+            if isinstance(alpha, (np.ndarray, pynlo.utility.misc.ArrayWrapper)):
+                assert (
+                    alpha.size == pulse.n
+                ), "if alpha is an array its size must match the simulation grid"
+            elif isinstance(alpha, (float, int)):
+                pass
+            else:
+                assert callable(
+                    alpha
+                ), "if given, alpha must be a callable: alpha(v_grid)"
+                if isinstance(alpha(0), (np.ndarray, pynlo.utility.misc.ArrayWrapper)):
+                    assert (
+                        alpha(0).size == pulse.n
+                    ), "if alpha is an array its size must match the simulation grid"
 
         method = method.lower()
         assert method == "nlse" or method == "upe"
@@ -783,7 +810,7 @@ class SilicaFiber:
         mode = pynlo.media.Mode(
             v_grid,
             beta,
-            alpha=None,  # negligible
+            alpha=alpha,  # None (alpha=0), or a callable
             g2=None,  # not applicable
             g2_inv=None,  # not applicable
             g3=g3,
