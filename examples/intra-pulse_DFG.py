@@ -18,7 +18,7 @@ import numpy as np
 from scipy.constants import c
 
 # %% ----- Pulse Properties
-v_min = c / 6000e-9
+v_min = c / 6500e-9
 v_max = c / 450e-9
 time_window = 10e-12
 npts = 2**12
