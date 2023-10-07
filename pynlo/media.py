@@ -89,9 +89,6 @@ class Mode:
         # ---- Position
         self._z = z
 
-        # ---- pulse energy, might not be applicable
-        self._e_p = None
-
         # ---- Frequency Grid
         self._v_grid = np.asarray(v_grid, dtype=float)
         self._w_grid = 2 * pi * self._v_grid
@@ -186,21 +183,6 @@ class Mode:
         self._z = z
 
     @property
-    def e_p(self):
-        """
-        The current pulse energy with units of ``J``.
-
-        Returns
-        -------
-        float, or None if not initialized
-        """
-        return self._e_p
-
-    @e_p.setter
-    def e_p(self, e_p):
-        self._e_p = e_p
-
-    @property
     def v_grid(self):
         """
         The frequency grid, with units of ``Hz``.
@@ -289,7 +271,7 @@ class Mode:
         None or ndarray of float
 
         """
-        return self._alpha(self.z, self.e_p) if callable(self._alpha) else self._alpha
+        return self._alpha(self.z) if callable(self._alpha) else self._alpha
 
     @property
     def beta(self):
