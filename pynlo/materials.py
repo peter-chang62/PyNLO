@@ -760,7 +760,7 @@ class SilicaFiber:
             raman_on (bool, optional):
                 whether to include raman effects, default is True
             alpha (array or callable, optional):
-                default is 0, otherwise is a callable alpha(z) that returns a
+                default is 0, otherwise is a callable alpha(z, e_p) that returns a
                 float or array, or fixed alpha.
             method (string, optional):
                 nlse or upe
@@ -788,10 +788,6 @@ class SilicaFiber:
                 assert callable(
                     alpha
                 ), "if given, alpha must be a callable: alpha(v_grid)"
-                if isinstance(alpha(0), (np.ndarray, pynlo.utility.misc.ArrayWrapper)):
-                    assert (
-                        alpha(0).size == pulse.n
-                    ), "if alpha is an array its size must match the simulation grid"
 
         method = method.lower()
         assert method == "nlse" or method == "upe"
