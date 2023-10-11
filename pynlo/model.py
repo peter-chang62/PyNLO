@@ -136,6 +136,10 @@ class Model:
         assert isinstance(mode, Mode)
         self.mode = mode.copy()
 
+        # initialize mode's pulse energy attribute
+        if self.mode.e_p is None:
+            self.mode.e_p = self.pulse.e_p
+
         # ---- Grids
         assert (
             pulse.v_grid == mode.v_grid
@@ -385,6 +389,10 @@ class Model:
             https://doi.org/10.1016/j.cpc.2012.12.020
 
         """
+        p_v = abs(a_v) ** 2
+        dv = self.pulse.dv
+        self.mode.e_p = np.sum(p_v * dv)
+
         while z < z_stop:
             z_next = z + dz
             if z_next >= z_stop:
@@ -419,6 +427,10 @@ class Model:
                 else:
                     dz = dz_adaptive  # if final step, use adaptive step size
                 cont = True
+
+                # update pulse energy for gain calculation
+                p_v = abs(a_v) ** 2
+                self.mode.e_p = np.sum(p_v * dv)
 
         return a_v, z, dz, k5_v, cont
 
