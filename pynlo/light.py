@@ -451,7 +451,9 @@ class Pulse(TFGrid):
         )(self.v_grid)
 
         if phi_v is not None:
-            assert (isinstance(phi_v, np.ndarray) or isinstance(phi_v, ArrayWrapper)) and phi_v.shape == p_v.shape
+            assert (
+                isinstance(phi_v, np.ndarray) or isinstance(phi_v, ArrayWrapper)
+            ) and phi_v.shape == p_v.shape
             phi_v = spi.interp1d(
                 v_grid, phi_v, kind="cubic", bounds_error=False, fill_value=0.0
             )(self.v_grid)
@@ -645,7 +647,9 @@ class Pulse(TFGrid):
             assert m > 0, "The point multiplier must be greater than 0."
             n = round(m * self.n)
             resampled = resample_v(self.v_grid, p_v, n)
-            p_v = resampled.f_v
+            # resample_v will return a complex array, but the imaginary
+            # components just fluctuate about 0 if resampling a real array
+            p_v = resampled.f_v.real
             v_grid = resampled.v_grid
             dv = resampled.dv
 
