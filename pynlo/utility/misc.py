@@ -190,7 +190,7 @@ def plot_results(pulse_out, z, a_t, a_v, plot="frq", num="Simulation Results"):
             vmin=-40.0,
             vmax=0,
             shading="auto",
-            cmap="CMRmap_r",
+            cmap="CMRmap_r_t",
         )
         ax0.set_ylim(bottom=-50, top=10)
         ax2.set_xlabel("Frequency (THz)")
@@ -205,7 +205,7 @@ def plot_results(pulse_out, z, a_t, a_v, plot="frq", num="Simulation Results"):
             vmin=-40.0,
             vmax=0,
             shading="auto",
-            cmap="CMRmap_r",
+            cmap="CMRmap_r_t",
         )
         ax0.set_ylim(bottom=-50, top=10)
         ax2.set_xlabel("wavelength ($\\mathrm{\\mu m}$)")
@@ -221,7 +221,7 @@ def plot_results(pulse_out, z, a_t, a_v, plot="frq", num="Simulation Results"):
         vmin=-40.0,
         vmax=0,
         shading="auto",
-        cmap="CMRmap_r",
+        cmap="CMRmap_r_t",
     )
     ax1.set_ylim(bottom=-50, top=10)
     ax3.set_xlabel("Time (ps)")
