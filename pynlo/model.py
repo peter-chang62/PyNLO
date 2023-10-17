@@ -137,9 +137,8 @@ class Model:
         self.mode = mode.copy()
 
         # initialize mode's pulse energy attribute
-        if self.mode.a_v is None:
-            # copy the first time
-            self.mode.a_v = self.pulse.a_v.copy()
+        if self.mode.e_p is None:
+            self.mode.e_p = self.pulse.e_p
 
         # ---- Grids
         assert (
@@ -390,7 +389,9 @@ class Model:
             https://doi.org/10.1016/j.cpc.2012.12.020
 
         """
-        self.mode.a_v[:] = a_v[:]
+        p_v = abs(a_v) ** 2
+        dv = self.pulse.dv
+        self.mode.e_p = np.sum(p_v * dv)
 
         while z < z_stop:
             z_next = z + dz
@@ -428,7 +429,8 @@ class Model:
                 cont = True
 
                 # update pulse energy for gain calculation
-                self.mode.a_v[:] = a_v[:]
+                p_v = abs(a_v) ** 2
+                self.mode.e_p = np.sum(p_v * dv)
 
         return a_v, z, dz, k5_v, cont
 
