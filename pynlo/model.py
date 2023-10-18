@@ -391,6 +391,8 @@ class Model:
 
         """
         p_v = abs(a_v) ** 2
+        if self._use_fftshift:
+            p_v = np.fft.fftshift(p_v)
         self.mode.p_v[:] = p_v[:]
 
         while z < z_stop:
@@ -430,6 +432,8 @@ class Model:
 
                 # update pulse energy for gain calculation
                 p_v[:] = abs(a_v) ** 2
+                if self._use_fftshift:
+                    p_v = np.fft.fftshift(p_v)
                 self.mode.p_v[:] = p_v[:]
 
         return a_v, z, dz, k5_v, cont
@@ -883,6 +887,7 @@ class NLSE(Model):
     def propagate(self, a_v, z, z_stop, dz, local_error, k5_v=None, cont=False):
         # ---- Standard FFT Order
         a_v = fft.ifftshift(a_v)
+        self._use_fftshift = True
 
         # ---- Propagate
         a_v, z, dz, k5_v, cont = super().propagate(
@@ -1068,6 +1073,7 @@ class UPE(Model):
                 k5_v = None  # reset k5_v, 2nd-order nonlinearity changed sign
 
         # ---- Propagate
+        self._use_fftshift = False
         return super().propagate(a_v, z, z_stop, dz, local_error, k5_v=k5_v, cont=cont)
 
     # ---- Operators
