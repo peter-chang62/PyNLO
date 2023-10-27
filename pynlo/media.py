@@ -15,6 +15,7 @@ import copy
 
 import numpy as np
 from scipy.constants import c, pi
+from pynlo.utility.misc import SettableArrayProperty
 
 
 # %% Collections
@@ -185,20 +186,24 @@ class Mode:
     def z(self, z):
         self._z = z
 
-    @property
-    def p_v(self):
+    @SettableArrayProperty
+    def p_v(self, key=...):
         """
-        The current pulse energy with units of ``J``.
+        The current pulse power spectrum with units of ``J/Hz``.
 
         Returns
         -------
-        float, or None if not initialized
+        array, or None if not initialized
         """
-        return self._p_v
+        return self._p_v[key]
 
     @p_v.setter
-    def p_v(self, p_v):
-        self._p_v = p_v
+    def p_v(self, p_v, key=...):
+        if self._p_v is None:
+            # p_v is not initialized yet
+            self._p_v = p_v
+        else:
+            self._p_v[key] = p_v
 
     @property
     def v_grid(self):
