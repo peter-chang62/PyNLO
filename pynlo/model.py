@@ -297,7 +297,9 @@ class Model:
 
         # Step Size
         if dz is None:
-            dz = self.estimate_step_size(pulse_out.a_v, z, local_error)
+            dz = self.estimate_step_size(
+                a_v=pulse_out.a_v, z=z, local_error=local_error
+            )
             print("Initial Step Size:\t{:.3g}m".format(dz))
 
         # Plotting
