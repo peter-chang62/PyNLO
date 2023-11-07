@@ -465,7 +465,7 @@ class MgLN:
             z=0.0,
         )
 
-        print("USING UPE")
+        # print("USING UPE")
         model = pynlo.model.UPE(pulse, mode)
         return model
 
@@ -816,10 +816,10 @@ class SilicaFiber:
         )
 
         if method == "nlse":
-            print("USING NLSE")
+            # print("USING NLSE")
             model = pynlo.model.NLSE(pulse, mode)
         else:
-            print("USING UPE")
+            # print("USING UPE")
             model = pynlo.model.UPE(pulse, mode)
         return model
 

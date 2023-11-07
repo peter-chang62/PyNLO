@@ -16,6 +16,8 @@ import pynlo
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.constants import c
+import clipboard as cr
+
 
 # %% ----- Pulse Properties
 v_min = c / 6500e-9
