@@ -13,6 +13,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pynlo
 import scipy.constants as sc
+from pynlo.utility import blit
+import time
 
 # %% Helper Functions
 
@@ -269,7 +271,8 @@ def animate(pulse_out, model, z, a_t, a_v, plot="frq", save=False, p_ref=None):
     model: pynlo.model.UPE
     p_ref: pynlo.light.Pulse
 
-    fig, ax = plt.subplots(2, 1, num="Replay of Simulation", clear=True)
+    # fig, ax = plt.subplots(2, 1, num="Replay of Simulation", clear=True)
+    fig, ax = plt.subplots(2, 1)
     ax0, ax1 = ax
 
     wl_grid = sc.c / pulse_out.v_grid
@@ -286,97 +289,201 @@ def animate(pulse_out, model, z, a_t, a_v, plot="frq", save=False, p_ref=None):
         np.unwrap(phi_v) / (2 * np.pi), pulse_out.v_grid, edge_order=2, axis=1
     )
 
+    initialized = False
     for n in range(len(a_t)):
-        [i.clear() for i in [ax0, ax1]]
+        # [i.clear() for i in [ax0, ax1]]
 
         if plot == "time":
-            ax0.semilogy(pulse_out.t_grid * 1e12, p_t[n], ".", markersize=1)
-            ax1.plot(
-                pulse_out.t_grid * 1e12,
-                vg_t[n] * 1e-12,
-                ".",
-                markersize=1,
-                label=f"z = {np.round(z[n] * 1e3, 3)} mm",
-            )
-
-            ax0.set_title("Instantaneous Power")
-            ax0.set_ylabel("J / s")
-            ax0.set_xlabel("Delay (ps)")
-            ax1.set_ylabel("Frequency (THz)")
-            ax1.set_xlabel("Delay (ps)")
-
-            excess = 0.05 * (pulse_out.v_grid.max() - pulse_out.v_grid.min())
-            ax0.set_ylim(top=max(p_t[n] * 1e1), bottom=max(p_t[n] * 1e-9))
-            ax1.set_ylim(
-                top=1e-12 * (pulse_out.v_grid.max() + excess),
-                bottom=1e-12 * (pulse_out.v_grid.min() - excess),
-            )
-
-        if plot == "frq":
-            ax0.semilogy(pulse_out.v_grid * 1e-12, p_v[n], ".", markersize=1)
-            ax1.plot(
-                pulse_out.v_grid * 1e-12,
-                tg_v[n] * 1e12,
-                ".",
-                markersize=1,
-                label=f"z = {np.round(z[n] * 1e3, 3)} mm",
-            )
-
-            if p_ref is not None:
-                ax0.semilogy(p_ref.v_grid * 1e-12, p_ref.p_v, ".", markersize=1)
-
-            ax0.set_title("Power Spectrum")
-            ax0.set_ylabel("J / Hz")
-            ax0.set_xlabel("Frequency (THz)")
-            ax1.set_ylabel("Delay (ps)")
-            ax1.set_xlabel("Frequency (THz)")
-
-            excess = 0.05 * (pulse_out.t_grid.max() - pulse_out.t_grid.min())
-            ax0.set_ylim(top=max(p_v[n] * 1e1), bottom=max(p_v[n] * 1e-9))
-            ax1.set_ylim(
-                top=1e12 * (pulse_out.t_grid.max() + excess),
-                bottom=1e12 * (pulse_out.t_grid.min() - excess),
-            )
-
-        if plot == "wvl":
-            ax0.semilogy(wl_grid * 1e6, p_v[n] * model.dv_dl, ".", markersize=1)
-            ax1.plot(
-                wl_grid * 1e6,
-                tg_v[n] * 1e12,
-                ".",
-                markersize=1,
-                label=f"z = {np.round(z[n] * 1e3, 3)} mm",
-            )
-
-            if p_ref is not None:
-                ax0.semilogy(
-                    p_ref.wl_grid * 1e6, p_ref.p_v * model.dv_dl, ".", markersize=1
+            if not initialized:
+                (l0,) = ax0.semilogy(pulse_out.t_grid * 1e12, p_t[n], ".", markersize=1)
+                (l1,) = ax1.plot(
+                    pulse_out.t_grid * 1e12,
+                    vg_t[n] * 1e-12,
+                    ".",
+                    markersize=1,
+                    # label=f"z = {np.round(z[n] * 1e3, 3)} mm",
                 )
 
-            ax0.set_title("Power Spectrum")
-            ax0.set_ylabel("J / m")
-            ax0.set_xlabel("Wavelength ($\\mathrm{\\mu m}$)")
-            ax1.set_ylabel("Delay (ps)")
-            ax1.set_xlabel("Wavelength ($\\mathrm{\\mu m}$)")
+                ax0.set_title("Instantaneous Power")
+                ax0.set_ylabel("J / s")
+                ax0.set_xlabel("Delay (ps)")
+                ax1.set_ylabel("Frequency (THz)")
+                ax1.set_xlabel("Delay (ps)")
 
-            excess = 0.05 * (pulse_out.t_grid.max() - pulse_out.t_grid.min())
-            ax0.set_ylim(
-                top=max(p_v[n] * model.dv_dl * 1e1),
-                bottom=max(p_v[n] * model.dv_dl * 1e-9),
-            )
-            ax1.set_ylim(
-                top=1e12 * (pulse_out.t_grid.max() + excess),
-                bottom=1e12 * (pulse_out.t_grid.min() - excess),
-            )
+                excess = 0.05 * (pulse_out.v_grid.max() - pulse_out.v_grid.min())
+                ax0.set_ylim(top=max(p_t[n] * 1e1), bottom=max(p_t[n] * 1e-9))
+                ax1.set_ylim(
+                    top=1e-12 * (pulse_out.v_grid.max() + excess),
+                    bottom=1e-12 * (pulse_out.v_grid.min() - excess),
+                )
 
-        ax1.legend(loc="upper center")
-        if n == 0:
-            fig.tight_layout()
+                fr_number = ax1.annotate(
+                    "0",
+                    (0, 1),
+                    xycoords="axes fraction",
+                    xytext=(10, -10),
+                    textcoords="offset points",
+                    ha="left",
+                    va="top",
+                    animated=True,
+                )
+                fr_number.set_text(f"z = {np.round(z[n] * 1e3, 3)} mm")
+
+                fig.tight_layout()
+
+                bm = blit.BlitManager(fig.canvas, [l0, l1, fr_number])
+                bm.update()
+                initialized = True
+
+            else:
+                l0.set_ydata(p_t[n])
+                l1.set_ydata(vg_t[n] * 1e-12)
+                excess = 0.05 * (pulse_out.v_grid.max() - pulse_out.v_grid.min())
+                ax0.set_ylim(top=max(p_t[n] * 1e1), bottom=max(p_t[n] * 1e-9))
+                ax1.set_ylim(
+                    top=1e-12 * (pulse_out.v_grid.max() + excess),
+                    bottom=1e-12 * (pulse_out.v_grid.min() - excess),
+                )
+                fr_number.set_text(f"z = {np.round(z[n] * 1e3, 3)} mm")
+
+                bm.update()
+
+        if plot == "frq":
+            if not initialized:
+                (l0,) = ax0.semilogy(
+                    pulse_out.v_grid * 1e-12, p_v[n], ".", markersize=1
+                )
+                (l1,) = ax1.plot(
+                    pulse_out.v_grid * 1e-12,
+                    tg_v[n] * 1e12,
+                    ".",
+                    markersize=1,
+                    # label=f"z = {np.round(z[n] * 1e3, 3)} mm",
+                )
+
+                if p_ref is not None:
+                    ax0.semilogy(p_ref.v_grid * 1e-12, p_ref.p_v, ".", markersize=1)
+
+                ax0.set_title("Power Spectrum")
+                ax0.set_ylabel("J / Hz")
+                ax0.set_xlabel("Frequency (THz)")
+                ax1.set_ylabel("Delay (ps)")
+                ax1.set_xlabel("Frequency (THz)")
+
+                excess = 0.05 * (pulse_out.t_grid.max() - pulse_out.t_grid.min())
+                ax0.set_ylim(top=max(p_v[n] * 1e1), bottom=max(p_v[n] * 1e-9))
+                ax1.set_ylim(
+                    top=1e12 * (pulse_out.t_grid.max() + excess),
+                    bottom=1e12 * (pulse_out.t_grid.min() - excess),
+                )
+
+                fr_number = ax1.annotate(
+                    "0",
+                    (0, 1),
+                    xycoords="axes fraction",
+                    xytext=(10, -10),
+                    textcoords="offset points",
+                    ha="left",
+                    va="top",
+                    animated=True,
+                )
+                fr_number.set_text(f"z = {np.round(z[n] * 1e3, 3)} mm")
+
+                fig.tight_layout()
+
+                bm = blit.BlitManager(fig.canvas, [l0, l1, fr_number])
+                bm.update()
+                initialized = True
+
+            else:
+                l0.set_ydata(p_v[n])
+                l1.set_ydata(tg_v[n] * 1e12)
+                excess = 0.05 * (pulse_out.t_grid.max() - pulse_out.t_grid.min())
+                ax0.set_ylim(top=max(p_v[n] * 1e1), bottom=max(p_v[n] * 1e-9))
+                ax1.set_ylim(
+                    top=1e12 * (pulse_out.t_grid.max() + excess),
+                    bottom=1e12 * (pulse_out.t_grid.min() - excess),
+                )
+                fr_number.set_text(f"z = {np.round(z[n] * 1e3, 3)} mm")
+
+                bm.update()
+
+        if plot == "wvl":
+            if not initialized:
+                (l0,) = ax0.semilogy(
+                    wl_grid * 1e6, p_v[n] * model.dv_dl, ".", markersize=1
+                )
+                (l1,) = ax1.plot(
+                    wl_grid * 1e6,
+                    tg_v[n] * 1e12,
+                    ".",
+                    markersize=1,
+                    # label=f"z = {np.round(z[n] * 1e3, 3)} mm",
+                )
+
+                if p_ref is not None:
+                    ax0.semilogy(
+                        p_ref.wl_grid * 1e6, p_ref.p_v * model.dv_dl, ".", markersize=1
+                    )
+
+                ax0.set_title("Power Spectrum")
+                ax0.set_ylabel("J / m")
+                ax0.set_xlabel("Wavelength ($\\mathrm{\\mu m}$)")
+                ax1.set_ylabel("Delay (ps)")
+                ax1.set_xlabel("Wavelength ($\\mathrm{\\mu m}$)")
+
+                excess = 0.05 * (pulse_out.t_grid.max() - pulse_out.t_grid.min())
+                ax0.set_ylim(
+                    top=max(p_v[n] * model.dv_dl * 1e1),
+                    bottom=max(p_v[n] * model.dv_dl * 1e-9),
+                )
+                ax1.set_ylim(
+                    top=1e12 * (pulse_out.t_grid.max() + excess),
+                    bottom=1e12 * (pulse_out.t_grid.min() - excess),
+                )
+
+                fr_number = ax1.annotate(
+                    "0",
+                    (0, 1),
+                    xycoords="axes fraction",
+                    xytext=(10, -10),
+                    textcoords="offset points",
+                    ha="left",
+                    va="top",
+                    animated=True,
+                )
+                fr_number.set_text(f"z = {np.round(z[n] * 1e3, 3)} mm")
+
+                fig.tight_layout()
+
+                bm = blit.BlitManager(fig.canvas, [l0, l1, fr_number])
+                bm.update()
+                initialized = True
+
+            else:
+                l0.set_ydata(p_v[n] * model.dv_dl)
+                l1.set_ydata(tg_v[n] * 1e12)
+                excess = 0.05 * (pulse_out.t_grid.max() - pulse_out.t_grid.min())
+                ax0.set_ylim(
+                    top=max(p_v[n] * model.dv_dl * 1e1),
+                    bottom=max(p_v[n] * model.dv_dl * 1e-9),
+                )
+                ax1.set_ylim(
+                    top=1e12 * (pulse_out.t_grid.max() + excess),
+                    bottom=1e12 * (pulse_out.t_grid.min() - excess),
+                )
+                fr_number.set_text(f"z = {np.round(z[n] * 1e3, 3)} mm")
+
+                bm.update()
+
+        # ax1.legend(loc="upper center")
+        # if n == 0:
+        #     fig.tight_layout()
 
         if save:
             plt.savefig(f"fig/{n}.png", transparent=True, dpi=300)
         else:
-            plt.pause(0.05)
+            time.sleep(0.01)
 
 
 def package_sim_output(simulate):

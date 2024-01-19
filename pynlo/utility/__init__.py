@@ -9,10 +9,13 @@ susceptibilities, as well as an efficient interface to fast Fourier transforms.
 """
 
 __all__ = [
+    "blit",
     "chi1",
     "chi2",
     "chi3",
+    "clipboard",
     "fft",
+    "misc",
     "vacuum",
     "taylor_series",
     "shift",

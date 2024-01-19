@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from PyQt5.QtGui import QGuiApplication, QImage
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib import colormaps
+import matplotlib
 
 
 def add_clipboard_to_figures():
@@ -59,3 +60,6 @@ map_object = LinearSegmentedColormap.from_list(name="CMRmap_r_t", colors=color_a
 
 # register this new colormap with matplotlib
 colormaps.register(cmap=map_object)
+
+# -----------------------------------------------------------------------------
+matplotlib.rc("image", cmap="RdBu_r")
