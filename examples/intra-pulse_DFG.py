@@ -16,7 +16,7 @@ import pynlo
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.constants import c
-import clipboard as cr
+from pynlo.utility import clipboard
 
 
 # %% ----- Pulse Properties

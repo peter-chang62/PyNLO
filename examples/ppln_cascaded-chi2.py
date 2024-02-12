@@ -21,6 +21,7 @@ from scipy.constants import pi, c
 from matplotlib import pyplot as plt
 import pynlo
 from pynlo import utility as ut
+from pynlo.utility import clipboard
 
 
 # %% Pulse Properties

@@ -13,8 +13,8 @@ regime.
 import numpy as np
 from scipy.constants import pi
 from matplotlib import pyplot as plt
-import clipboard
 import pynlo
+from pynlo.utility import clipboard
 
 
 # %% Pulse Properties
