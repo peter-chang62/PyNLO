@@ -997,6 +997,33 @@ class NLSE(Model):
         if self.mode.z_nonlinear.r3 or force_update:
             self.r3 = self.mode.r3
 
+    @property
+    def dispersive_wave_dk(self):
+        """
+        Calculates the phase mismatch for four-wave mixing, this helps to
+        predict where dispersive waves will be generated.
+
+        You still need to run the simulation to see the effects of bandwidth,
+        chirp and peak power
+        """
+        mode = self.mode
+        pulse = self.pulse
+        w_p = pulse.v0 * 2 * np.pi
+        w = self.w_grid
+
+        b_w = mode.beta
+        b_w_p = spi.interp1d(w, b_w, bounds_error=True)(w_p)
+
+        b_1_w = spi.UnivariateSpline(w, b_w, k=1).derivative(1)(w)
+        b_1_w_p = spi.interp1d(w, b_1_w, bounds_error=True)(w_p)
+
+        gamma = self.gamma
+        assert not np.any(gamma.imag)
+        gamma = gamma.real
+        P = pulse.p_t.max()
+
+        return dispersive_wave_dk(w, w_p, b_w, b_w_p, b_1_w_p, gamma=gamma, P=P)
+
 
 class UPE(Model):
     """
