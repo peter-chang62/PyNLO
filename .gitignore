@@ -6,3 +6,5 @@ docs/build/doctrees/
 pynlo/.DS_Store
 
 .DS_Store
+pynlo/fig/
+examples/fig/

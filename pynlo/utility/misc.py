@@ -2,6 +2,8 @@
 """
 Miscellaneous helper classes and functions.
 
+for converting a list of png files to a .gif, considering using imagemagick:
+    convert -dispose previous Background -delay 10 *.png ~/Downloads/mygif.gif
 """
 
 __all__ = ["replace"]
@@ -236,7 +238,9 @@ def plot_results(pulse_out, z, a_t, a_v, plot="frq", num="Simulation Results"):
     return fig, np.array([[ax0, ax1], [ax2, ax3]])
 
 
-def animate(pulse_out, model, z, a_t, a_v, plot="frq", save=False, p_ref=None):
+def animate(
+    pulse_out, model, z, a_t, a_v, plot="frq", save=False, p_ref=None, figsize=None
+):
     """
     replay the real time simulation
 
@@ -260,6 +264,7 @@ def animate(pulse_out, model, z, a_t, a_v, plot="frq", save=False, p_ref=None):
         p_ref (pulse instance, optional):
             a reference pulse to overlay all the plots, useful if you have a
             measured spectrum to compare against to
+        figsize: (matplotlib figure size, optional)
     """
     assert np.any(
         [plot == "frq", plot == "wvl", plot == "time"]
@@ -272,7 +277,7 @@ def animate(pulse_out, model, z, a_t, a_v, plot="frq", save=False, p_ref=None):
     p_ref: pynlo.light.Pulse
 
     # fig, ax = plt.subplots(2, 1, num="Replay of Simulation", clear=True)
-    fig, ax = plt.subplots(2, 1)
+    fig, ax = plt.subplots(2, 1, figsize=figsize)
     ax0, ax1 = ax
 
     wl_grid = sc.c / pulse_out.v_grid
@@ -481,7 +486,11 @@ def animate(pulse_out, model, z, a_t, a_v, plot="frq", save=False, p_ref=None):
         #     fig.tight_layout()
 
         if save:
-            plt.savefig(f"fig/{n}.png", transparent=True, dpi=300)
+            s_max = str(len(a_t) - 1)
+            s = str(n)
+            s = "0" * (len(s_max) - len(s)) + s
+            s = "fig/" + s + ".png"
+            plt.savefig(s, transparent=True, dpi=300)
         else:
             time.sleep(0.01)
 
@@ -503,7 +512,7 @@ def package_sim_output(simulate):
                 self.phi_t = np.angle(a_t)
                 self.model = model
 
-            def animate(self, plot, save=False, p_ref=None):
+            def animate(self, plot, save=False, p_ref=None, figsize=None):
                 animate(
                     self.pulse_out,
                     self.model,
@@ -513,6 +522,7 @@ def package_sim_output(simulate):
                     plot=plot,
                     save=save,
                     p_ref=p_ref,
+                    figsize=figsize,
                 )
 
             def plot(self, plot, num="Simulation Results"):

@@ -38,7 +38,7 @@ pm1550.load_fiber_from_dict(pynlo.materials.pm1550)
 model = pm1550.generate_model(pulse, t_shock="auto", raman_on=True, method="nlse")
 
 dz = model.estimate_step_size()
-sim_pm1550 = model.simulate(length, dz=dz, n_records=100)
+sim_pm1550 = model.simulate(length, dz=dz, n_records=100, plot="wvl")
 
 # %% ----- Propagation through anomalous dispersion HNLF from OFS
 length = 2e-2
@@ -50,7 +50,7 @@ model = hnlf.generate_model(
 )
 
 dz = model.estimate_step_size()
-sim_hnlf = model.simulate(length, dz=dz, n_records=100)
+sim_hnlf = model.simulate(length, dz=dz, n_records=100, plot="wvl")
 
 # %% ----- find the minimum pulse duration inside the HNLF
 pulse_out = pulse.copy()
@@ -67,21 +67,41 @@ z_cut = sim_hnlf.z[idx]
 # %% ----- Propagation through PPLN
 length = 1e-3
 a_eff = np.pi * 15e-6**2
-p0 = 27.5e-6
-dk = 2 * np.pi / p0
-g2_inv, *_ = pynlo.utility.chi2.domain_inversions(length, dk)
+
 ppln = pynlo.materials.MgLN(T=24.5, axis="e")
 
+paths, (dk, v_sfg, dk_sfg, v_dfg, dk_dfg) = pynlo.utility.chi2.dominant_paths(
+    pulse.v_grid, ppln.beta(pulse.v_grid), beta_qpm=None, full=True
+)
+
+# wl_target = 3.0e-6
+# bandpass = 100e-9
+# idx = np.logical_and(
+#     c / (wl_target + bandpass / 2) < v_dfg, v_dfg < c / (wl_target - bandpass / 2)
+# ).nonzero()
+# dk = dk_dfg[idx].mean()
+# z_invs, domains, poled = pynlo.utility.chi2.domain_inversions(length, dk)
+
+p0 = 30e-6
+dk = 2 * np.pi / p0
+z_invs, domains, poled = pynlo.utility.chi2.domain_inversions(length, dk)
+
 model = ppln.generate_model(
-    pulse_out, a_eff, length, g2_inv=g2_inv, beta=None, is_gaussian_beam=True
+    pulse_out,
+    a_eff,
+    length,
+    g2_inv=z_invs,
+    # g2_inv=None,
+    beta=None,
+    is_gaussian_beam=True,
 )
 
 dz = model.estimate_step_size()
-sim_ppln = model.simulate(length, dz=dz, n_records=100)
+sim_ppln = model.simulate(length, dz=dz, n_records=100, plot="wvl")
 
 # %% ----- Plotting
 sim_pm1550.plot("wvl", num="PM-1550")
 fig, ax = sim_hnlf.plot("wvl", num="HNLF")
 ax[1, 0].axhline(z_cut * 1e3, color="k", linestyle="--")
 ax[1, 1].axhline(z_cut * 1e3, color="k", linestyle="--")
-sim_ppln.plot("wvl", num=f"PPLN poled at {p0 * 1e6} um")
+sim_ppln.plot("wvl", num=f"PPLN")

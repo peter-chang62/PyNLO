@@ -1022,6 +1022,9 @@ class NLSE(Model):
         gamma = gamma.real
         P = pulse.p_t.max()
 
+        P = 0
+        # print("I removed effect")
+
         return dispersive_wave_dk(w, w_p, b_w, b_w_p, b_1_w_p, gamma=gamma, P=P)
 
 
@@ -1309,6 +1312,9 @@ class UPE(Model):
         assert not np.any(gamma.imag)
         gamma = gamma.real
         P = pulse.p_t.max()
+
+        P = 0
+        # print("I removed effect")
 
         return dispersive_wave_dk(w, w_p, b_w, b_w_p, b_1_w_p, gamma=gamma, P=P)
 

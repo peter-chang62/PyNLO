@@ -418,8 +418,17 @@ class MgLN:
         pulse: pynlo.light.Pulse
 
         # ------ g2 and g3---------
-        g2_array = self.g2_shg(pulse.v_grid, pulse.v0, a_eff)
-        g3_array = self.g3(pulse.v_grid, a_eff)
+        if beta is None:
+            # use bulk refractive index
+            g2_array = self.g2_shg(pulse.v_grid, pulse.v0, a_eff)
+            g3_array = self.g3(pulse.v_grid, a_eff)
+        else:
+            # use effective refractive index
+            n_eff = beta / (2 * np.pi * pulse.v_grid / sc.c)
+            g2_array = pynlo.utility.chi2.g2_shg(
+                pulse.v0, pulse.v_grid, n_eff, a_eff, self.chi2_eff
+            )
+            g3_array = pynlo.utility.chi3.g3_spm(n_eff, a_eff, self.chi3_eff)
 
         # make g2 and g3 callable if the mode is a gaussian beam
         if is_gaussian_beam:
