@@ -1014,8 +1014,8 @@ class NLSE(Model):
         b_w = mode.beta
         b_w_p = spi.interp1d(w, b_w, bounds_error=True)(w_p)
 
-        b_1_w = spi.UnivariateSpline(w, b_w, k=1).derivative(1)(w)
-        b_1_w_p = spi.interp1d(w, b_1_w, bounds_error=True)(w_p)
+        b_1_w = spi.InterpolatedUnivariateSpline(w, b_w).derivative(1)(w)
+        b_1_w_p = spi.InterpolatedUnivariateSpline(w, b_1_w)(w_p)
 
         gamma = self.gamma
         assert not np.any(gamma.imag)
@@ -1305,8 +1305,8 @@ class UPE(Model):
         b_w = mode.beta
         b_w_p = spi.interp1d(w, b_w, bounds_error=True)(w_p)
 
-        b_1_w = spi.UnivariateSpline(w, b_w, k=1).derivative(1)(w)
-        b_1_w_p = spi.interp1d(w, b_1_w, bounds_error=True)(w_p)
+        b_1_w = spi.InterpolatedUnivariateSpline(w, b_w).derivative(1)(w)
+        b_1_w_p = spi.InterpolatedUnivariateSpline(w, b_1_w)(w_p)
 
         gamma = pynlo.utility.chi3.g3_to_gamma(pulse.v_grid, self.g3)
         assert not np.any(gamma.imag)
