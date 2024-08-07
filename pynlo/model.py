@@ -1017,11 +1017,12 @@ class NLSE(Model):
         b_1_w = spi.InterpolatedUnivariateSpline(w, b_w).derivative(1)(w)
         b_1_w_p = spi.InterpolatedUnivariateSpline(w, b_1_w)(w_p)
 
-        gamma = self.gamma
-        assert not np.any(gamma.imag)
-        gamma = gamma.real
-        P = pulse.p_t.max()
+        # gamma = self.gamma
+        # assert not np.any(gamma.imag)
+        # gamma = gamma.real
+        # P = pulse.p_t.max()
 
+        gamma = 0
         P = 0
         # print("I removed effect")
 
@@ -1308,11 +1309,12 @@ class UPE(Model):
         b_1_w = spi.InterpolatedUnivariateSpline(w, b_w).derivative(1)(w)
         b_1_w_p = spi.InterpolatedUnivariateSpline(w, b_1_w)(w_p)
 
-        gamma = pynlo.utility.chi3.g3_to_gamma(pulse.v_grid, self.g3)
-        assert not np.any(gamma.imag)
-        gamma = gamma.real
-        P = pulse.p_t.max()
+        # gamma = pynlo.utility.chi3.g3_to_gamma(pulse.v_grid, self.g3)
+        # assert not np.any(gamma.imag)
+        # gamma = gamma.real
+        # P = pulse.p_t.max()
 
+        gamma = 0
         P = 0
         # print("I removed effect")
 
