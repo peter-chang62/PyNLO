@@ -611,8 +611,12 @@ class Model:
             # ) + 0.5j * self.alpha
             # -----------------------------------------------------------------
 
-            # my version, I don't understnad where the alpha^2 comes from so
-            # I'm getting rid of it
+            # the alpha^2 term doesn't work when only the relative index is
+            # used, i.e. you need to include beta_0. The reason to include it,
+            # is that beta technically gets perturbed by gain/loss. However,
+            # in practice this perturbation is negligibly small. For more
+            # info, see:
+            # https://cdfredrick.github.io/PyNLO/build/html/notes/nonlinear_optics.html#Gain-and-Loss
             self.kappa_cm = self.beta_cm + 0.5j * self.alpha
         else:
             self.kappa_cm = self.beta_cm

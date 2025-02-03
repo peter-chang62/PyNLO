@@ -21,6 +21,9 @@ def LN_alpha(v_grid):
     """
     w_grid = v_grid * 2 * np.pi
     w_grid /= 1e12
+
+    # 300/(2*np.pi) THz is the cutoff frequency
+    # the 10 sqrt(2) just softens the cutoff
     return 1e6 * (1 + erf(-(w_grid - 300.0) / (10 * np.sqrt(2))))
 
 
@@ -312,6 +315,7 @@ class MgLN:
             float: d_eff
         """
         return 27e-12  # 27 pm / V
+        # return 0  # turn off chi 2
 
     @property
     def chi2_eff(self):
@@ -332,6 +336,7 @@ class MgLN:
             float
         """
         return 5200e-24  # 5200 pm ** 2 / V ** 2
+        # return 0.0  # turn off chi 3
 
     def g2_shg(self, v_grid, v0, a_eff):
         """
