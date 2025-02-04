@@ -8,3 +8,5 @@ pynlo/.DS_Store
 .DS_Store
 pynlo/fig/
 examples/fig/
+
+examples/edfa_examples/ipython_notebooks/.ipynb_checkpoints
