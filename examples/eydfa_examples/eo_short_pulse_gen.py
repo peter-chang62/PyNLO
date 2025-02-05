@@ -1,3 +1,18 @@
+"""
+This script simulates the short pulse generation of an electro-optic modulator
+comb at 20 GHz repetition rate.
+
+It starts with the phase and amplitude modulation of a CW laser at 1550 nm,
+followed by pulse compression and two stages of amplification in a core-pumped
+and cladding pumped amplifier.
+
+Lastly, the amplified pulse is spectrally broadened and temporally compressed
+in a cascade of normal and anomalous dispersion passive fibers. The cascasde
+starts with anomalous dispersion PM-1550 and normal dispersion 4/125 um fiber
+from LIEKKI. This cascade is followed by normal and anomalous highly nonlinear
+fiber (HNLF) to extend the spectral broadening to ~ 1 octave.
+"""
+
 # %% -----
 import numpy as np
 import pynlo
