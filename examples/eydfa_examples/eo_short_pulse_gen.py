@@ -7,7 +7,6 @@ from scipy.constants import c
 import collections
 from edf.utility import crossSection, ER80_4_125_betas
 from eydf.re_nlse_joint_7level import EYDF
-# import scratch_7 as edfa
 from eydf import eydfa
 from edf.re_nlse_joint_5level import EDF
 from edf import edfa as edfa_core
