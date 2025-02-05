@@ -144,7 +144,7 @@ gamma_n = 6.5 / (W * m)
 # %% -------------- load dispersion coefficients ------------------------------
 polyfit_n = ER80_4_125_betas().polyfit
 
-# %% ------------ active fiber ------------------------------------------------
+# %% ------------ eydf doped fiber ------------------------------------------------
 r_eff = 3.06 * um / 2
 a_eff = np.pi * r_eff**2
 n_ion = 80 / 10 * np.log(10) / spl_sigma_a(c / 1530e-9)
