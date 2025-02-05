@@ -15,7 +15,7 @@ Features:
 	- A flexible object-oriented system for treating laser pulses and optical modes.
 
 Additional Features:
-	- Together with the PyNLO package, the edf (Er doped fiber) and eydf (Er/Yb co-doped fiber) packages simulate the nonlinear propagation of light in active fibers. The model takes into account the frequency dependent gain and absorption spectrum of Er doped gain media.
+	- Together with the PyNLO package, the edf (Er doped fiber) and eydf (Er/Yb co-doped fiber) packages simulate the nonlinear propagation of light in active fibers. The model takes into account the frequency dependent gain and absorption spectra of Er doped gain media.
 
 
 Installation
