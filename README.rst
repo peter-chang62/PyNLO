@@ -23,7 +23,7 @@ PyNLO requires Python 3. If you do not already have Python, the Anaconda distrib
 
 The easiest way to install this fork is to download or clone the repository into a directory of your choice, and then insert that directory into your `sys.path <https://docs.python.org/3/library/sys.html#sys.path>`_ variable before importing the package. Test out the installation with the scripts in the examples folder.
 
-An easy way to add the directory into your 'sys.path' is to symlink or copy the pynlo/ folder into your site-packages/ folder. For some of the example files, the plotting convenience functions are needed from clipboard.py and blit.py located in pynlo/utility/. To run those files, add the clipboard.py and blit.py files to sys.path or your site-packages/ folder as well.
+An easy way to add the directory into your 'sys.path' is to symlink or copy the pynlo/ folder into your site-packages/ folder. For some of the example files, the plotting convenience functions are needed from clipboard.py and blit.py located in pynlo/utility/. To run those example scripts, add the clipboard.py and blit.py files to sys.path or your site-packages/ folder as well.
 
 
 Contributing
