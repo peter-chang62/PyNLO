@@ -1,5 +1,7 @@
 """
-using the amplify function from scratch_7, setting gamma to 0
+This script simulates the amplification of a 100 mW, 100 fs pulse at 1 GHz
+repetition rate. It is first stretched in 4 meters of dispersion compensating
+fiber (DCF), before being amplified in a double-clad EYDF amplifier.
 """
 # %% ----- imports
 import sys
@@ -13,6 +15,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from eydf import eydfa
 from edf.utility import crossSection
+import collections
 
 
 ns = 1e-9
@@ -24,11 +27,33 @@ um = 1e-6
 km = 1e3
 W = 1.0
 
+output = collections.namedtuple("output", ["model", "sim"])
+
+
+def propagate(fiber, pulse, length, n_records=None):
+    """
+    propagates a given pulse through fiber of given length
+
+    Args:
+        fiber (instance of SilicaFiber): Fiber
+        pulse (instance of Pulse): Pulse
+        length (float): fiber elngth
+
+    Returns:
+        output: model, sim
+    """
+    fiber: pynlo.materials.SilicaFiber
+    model = fiber.generate_model(pulse)
+    dz = model.estimate_step_size()
+    sim = model.simulate(length, dz=dz, n_records=n_records)
+    return output(model=model, sim=sim)
+
+
 # %% -------------- load absorption coefficients from NLight ------------------
 spl_sigma_a = crossSection().sigma_a
 spl_sigma_e = crossSection().sigma_e
 
-gamma_a = 0 / (W * km)
+gamma_a = 1 / (W * km)
 
 # %% ------------- pulse ------------------------------------------------------
 f_r = 1e9
@@ -39,7 +64,7 @@ v_min = c / 1700e-9
 v_max = c / 1400e-9
 v0 = c / 1550e-9
 t_fwhm = 100e-15
-min_time_window = 10e-12
+min_time_window = 75e-12
 pulse = pynlo.light.Pulse.Sech(
     n,
     v_min,
@@ -51,6 +76,17 @@ pulse = pynlo.light.Pulse.Sech(
     alias=2,
 )
 dv_dl = pulse.v_grid**2 / c  # J / Hz -> J / m
+
+# %% ------------ chirp fiber ------------------------------------------------
+dcf = pynlo.materials.SilicaFiber()
+D_g_2 = -100
+polyfit = np.array([-(1550e-9**2) / (2 * np.pi * c) * (D_g_2 * ps / nm / km)])
+dcf.set_beta_from_beta_n(v0, polyfit)
+dcf.gamma = 0
+
+length_dcf = 4.0
+model_dcf, sim_dcf = propagate(dcf, pulse, length_dcf)
+pulse_dcf = sim_dcf.pulse_out
 
 # %% ------------ active fiber ------------------------------------------------
 n_ion = 55 / 10 * np.log(10) / spl_sigma_a(c / 1530e-9)  # dB/m absorption at 1530 nm
@@ -86,7 +122,7 @@ eydf.gamma = gamma_a
 
 # %% ----------- eydfa ---------------------------------------------------------
 model_fwd, sim_fwd, model_bck, sim_bck = eydfa.amplify(
-    p_fwd=pulse,
+    p_fwd=pulse_dcf,
     p_bck=None,
     eydf=eydf,
     length=length,
@@ -134,10 +170,3 @@ ax2.set_ylabel("population inversion")
 fig.tight_layout()
 
 sim.plot("wvl")
-
-fig, ax = plt.subplots(1, 2)
-p_wl = sim.p_v * dv_dl
-ax[0].plot(pulse.wl_grid * 1e9, p_wl[0] / p_wl[0].max())
-ax[0].plot(pulse.wl_grid * 1e9, p_wl[-1] / p_wl[-1].max())
-ax[1].plot(pulse.t_grid * 1e12, sim.p_t[0] / sim.p_t[0].max())
-ax[1].plot(pulse.t_grid * 1e12, sim.p_t[-1] / sim.p_t[-1].max())
