@@ -1,6 +1,7 @@
 """
-this scratch file is to re-create just the rate equations (not PyNLO) but this
-time including pump excited state absorption (ESA).
+This file calculates the broadband amplification of a 100 femtosecond
+pulse. It does not use pynlo, but only the rate equations, and can be used to
+sanity check the NLSE sims in the limit that gamma -> 0.
 """
 
 # %% ----- imports
@@ -60,7 +61,7 @@ n = 256
 v_min = c / 1700e-9
 v_max = c / 1400e-9
 v0 = c / 1550e-9
-t_fwhm = 250e-15
+t_fwhm = 100e-15
 min_time_window = 10e-12
 pulse = pynlo.light.Pulse.Sech(
     n,

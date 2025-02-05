@@ -1,4 +1,8 @@
-
+"""
+This file calculates the broadband amplification of a 100 femtosecond
+pulse. It does not use pynlo, but only the rate equations, and can be used to
+sanity check the NLSE sims in the limit that gamma -> 0.
+"""
 
 # %% ----- imports
 import sys
