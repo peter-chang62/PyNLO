@@ -169,12 +169,3 @@ sim.plot(
     "wvl",
     num=f"spectral evolution for {length} normal edf and {length_pm1550} pm1550 pre-chirp",
 )
-
-fig, ax = plt.subplots(
-    1, 2, num=f"output for {length} normal edf and {length_pm1550} pm1550 pre-chirp"
-)
-p_wl = sim.p_v * dv_dl
-ax[0].plot(pulse.wl_grid * 1e9, p_wl[0] / p_wl[0].max())
-ax[0].plot(pulse.wl_grid * 1e9, p_wl[-1] / p_wl[-1].max())
-ax[1].plot(pulse.t_grid * 1e12, sim.p_t[0] / sim.p_t[0].max())
-ax[1].plot(pulse.t_grid * 1e12, sim.p_t[-1] / sim.p_t[-1].max())
