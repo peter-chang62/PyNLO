@@ -1,7 +1,8 @@
 """
-let's just solve the forward pumped case first. the backward pumped case is an
-iteration from using the forward pumped case anyways, as far as i understand
-it anyways.
+This file mainly contains child classes of model.py in pynlo. It imports the
+rate equations from five_level_ss_eqns.py to solve for the gain coefficient
+for the signal and pump. This is used to update the pump power and signal gain
+coefficient at each z step.
 """
 
 # %% ----- imports

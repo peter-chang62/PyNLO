@@ -1,7 +1,9 @@
 """
-let's just solve the forward pumped case first. the backward pumped case is an
-iteration from using the forward pumped case anyways, as far as i understand
-it anyways.
+This is similar to re_nlse_joint_5level.py, except that two gain fibers can be
+provided, with a splicing loss at the splice point. This would likely be used
+very infrequently in a fiber amplifier, but can be quite important in a
+mode-locked fiber laser where sufficient gain and dispersion balancing must be
+simultaneously accounted for.
 """
 
 # %% ----- imports

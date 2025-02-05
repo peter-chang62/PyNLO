@@ -1,3 +1,15 @@
+"""
+This script similates the mode-locking of a figure 9 laser based on the
+reflective NALM from Hansel et al. (Menlo):
+
+W. Hänsel et al., Appl. Phys. B 123, 41 (2017).
+
+This one is very similar to the kuse_figure9, the reason for including is to
+test the implementation of Jones matrices. No splicing loss is taken into
+account, so in this case the rep-rate is 200 MHz with only normal dispersion
+gain fiber.
+"""
+
 # %% ----- imports
 import sys
 

@@ -1,3 +1,12 @@
+"""
+This is similar to edfa.py, except that two gain fibers can be provided, with a
+splicing loss at the splice point. This would likely be used very infrequently
+in a fiber amplifier, but can be quite important in a mode-locked fiber laser
+where sufficient gain and dispersion balancing must be simultaneously
+accounted for.
+"""
+
+
 # %% ----- imports
 from edf.re_nlse_joint_5level_wsplice import EDF
 import numpy as np

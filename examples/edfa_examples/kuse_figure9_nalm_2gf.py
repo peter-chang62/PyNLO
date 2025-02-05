@@ -1,3 +1,15 @@
+"""
+Similar to kuse_figure9_nalm.py, this script also simulates the mode-locking of
+a figure 9 laser based on the transmissive NALM cavity from:
+
+    N. Kuse et al., Opt. Express 24, 3095 (2016).
+
+The difference is that the repetition rate is increased to 200 MHz. In
+addition, two gain fibers with different doping concentrations, one normal
+dispersion and one anomalous dispersion, are used to dispersion balance the
+cavity. To do this, we must import the edfa function from edfa_wsplice.py
+"""
+
 # %% ----- imports
 import sys
 

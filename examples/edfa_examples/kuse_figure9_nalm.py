@@ -1,3 +1,10 @@
+"""
+This script simulates the mode-locking of a 100 MHz figure 9 laser based on the
+transmissive NALM cavity from:
+
+    N. Kuse et al., Opt. Express 24, 3095 (2016).
+"""
+
 # %% ----- imports
 import sys
 
