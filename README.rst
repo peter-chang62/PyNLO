@@ -15,7 +15,7 @@ Features:
 	- A flexible object-oriented system for treating laser pulses and optical modes.
 
 Additional Features:
-	- Together with the PyNLO package, the edf (Er doped fiber) and eydf (Er/Yb co-doped fiber) packages simulate the nonlinear propagation of light in active fibers. The model takes into account the frequency dependent gain and absorption spectra of Er doped gain media.
+	- Together with the PyNLO package, the edf (Er doped fiber) and eydf (Er/Yb co-doped fiber) packages simulate the nonlinear propagation of light in active fibers. The model takes into account the frequency dependent gain and absorption spectra of Er doped gain media. The packages' main utility is for simulating core-pumped EDFA's and cladding pumped EYDFA's. They can be used to simulate both forward and backward pumped / seeded fiber amplifiers. The example files include a variety of use cases, including the simulation of a mode-locked fiber laser, simple EDFA and EYDFA, and an example where they are used together with PyNLO to simulate the short pulse generation of a 20 GHz electro-optic modulator frequency comb.
 
 
 Installation
