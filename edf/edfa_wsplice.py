@@ -60,7 +60,7 @@ def amplify(
     raman_on=False,
     n_records=None,
 ):
-    edf: copy.deepcopy(edf)
+    edf: EDF
     edf_1 = EDF(
         f_r=edf.f_r,
         overlap_p=edf.overlap_p,

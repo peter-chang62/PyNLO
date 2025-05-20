@@ -6,4 +6,5 @@
     "reportArgumentType": false,
     "reportOptionalCall": false,
     "reportAttributeAccessIssue": false,
+    "reportPossiblyUnboundVariable": false,
 }
