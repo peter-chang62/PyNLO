@@ -7,4 +7,5 @@
     "reportOptionalCall": false,
     "reportAttributeAccessIssue": false,
     "reportPossiblyUnboundVariable": false,
+    "reportOptionalSubscript": false,
 }
