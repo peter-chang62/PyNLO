@@ -158,7 +158,7 @@ class SettableArrayProperty(property):
         return array
 
 
-def plot_results(pulse_out, z, a_t, a_v, plot="frq", num="Simulation Results"):
+def plot_results(pulse_out, model, z, a_t, a_v, plot="frq", num="Simulation Results"):
     """
     plot PyNLO simulation results
 
@@ -184,6 +184,11 @@ def plot_results(pulse_out, z, a_t, a_v, plot="frq", num="Simulation Results"):
 
     p_v_dB = 10 * np.log10(np.abs(a_v) ** 2)
     p_v_dB -= p_v_dB.max()
+
+    p_wl = np.abs(a_v) ** 2 * model.dv_dl
+    p_wl_dB = 10 * np.log10(p_wl)
+    p_wl_dB -= p_wl_dB.max()
+
     if plot == "frq":
         ax0.plot(1e-12 * pulse_out.v_grid, p_v_dB[0], color="b")
         ax0.plot(1e-12 * pulse_out.v_grid, p_v_dB[-1], color="g")
@@ -200,12 +205,12 @@ def plot_results(pulse_out, z, a_t, a_v, plot="frq", num="Simulation Results"):
         ax2.set_xlabel("Frequency (THz)")
     elif plot == "wvl":
         wl_grid = sc.c / pulse_out.v_grid
-        ax0.plot(1e6 * wl_grid, p_v_dB[0], color="b")
-        ax0.plot(1e6 * wl_grid, p_v_dB[-1], color="g")
+        ax0.plot(1e6 * wl_grid, p_wl_dB[0], color="b")
+        ax0.plot(1e6 * wl_grid, p_wl_dB[-1], color="g")
         ax2.pcolormesh(
             1e6 * wl_grid,
             1e3 * z,
-            p_v_dB,
+            p_wl_dB,
             vmin=-40.0,
             vmax=0,
             shading="auto",
@@ -528,6 +533,7 @@ def package_sim_output(simulate):
             def plot(self, plot, num="Simulation Results"):
                 return plot_results(
                     self.pulse_out,
+                    self.model,
                     self.z,
                     self.a_t,
                     self.a_v,

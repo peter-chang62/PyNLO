@@ -118,6 +118,7 @@ def package_sim_output(simulate):
             def plot(self, plot, num="Simulation Results"):
                 return pynlo.utility.misc.plot_results(
                     self.pulse_out,
+                    self.model,
                     self.z,
                     self.a_t,
                     self.a_v,
