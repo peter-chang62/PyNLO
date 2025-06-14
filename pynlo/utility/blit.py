@@ -68,4 +68,5 @@ class BlitManager:
             # update the GUI state
             cv.blit(fig.bbox)
         # let the GUI event loop process anything it has to do
-        cv.flush_events()
+        # cv.flush_events()
+        cv.start_event_loop(1e-3)
