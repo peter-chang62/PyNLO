@@ -4,7 +4,7 @@ import pathlib
 import pandas as pd
 from scipy.constants import c
 import numpy as np
-from scipy.interpolate import InterpolatedUnivariateSpline
+from scipy.interpolate import InterpolatedUnivariateSpline, interp1d
 
 path = pathlib.Path(utility.__file__).parent
 
@@ -19,12 +19,20 @@ class crossSection:
         a = sigma[:, :2]
         e = sigma[:, [0, 2]]
 
-        self.sigma_a = InterpolatedUnivariateSpline(
-            c / a[:, 0][::-1], a[:, 1][::-1], ext="zeros"
+        # self.sigma_a = InterpolatedUnivariateSpline(
+        #     c / a[:, 0][::-1], a[:, 1][::-1], ext="zeros"
+        # )
+
+        # self.sigma_e = InterpolatedUnivariateSpline(
+        #     c / e[:, 0][::-1], e[:, 1][::-1], ext="zeros"
+        # )
+
+        self.sigma_a = interp1d(
+            c / a[:, 0][::-1], a[:, 1][::-1], bounds_error=False, fill_value=0.0
         )
 
-        self.sigma_e = InterpolatedUnivariateSpline(
-            c / e[:, 0][::-1], e[:, 1][::-1], ext="zeros"
+        self.sigma_e = interp1d(
+            c / e[:, 0][::-1], e[:, 1][::-1], bounds_error=False, fill_value=0.0
         )
 
 
