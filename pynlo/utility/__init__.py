@@ -36,6 +36,13 @@ import scipy.constants as sc
 
 from pynlo.utility import chi1, chi2, chi3, fft
 
+try:
+    from numpy import math
+except ImportError:
+    import math
+
+    np.math = math
+
 
 # %% Collections
 
