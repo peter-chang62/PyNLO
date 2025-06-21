@@ -76,4 +76,18 @@ map_object = LinearSegmentedColormap.from_list(name="binary_t", colors=color_arr
 colormaps.register(cmap=map_object)
 
 # -----------------------------------------------------------------------------
+# add a transparent background color map that is the binary with white -> transparent
+ncolors = 256
+color_array = plt.get_cmap("gnuplot2_r")(range(ncolors))
+
+# change alpha values
+color_array[0][-1] = 0  # just send the white values to transparent!
+
+# create a colormap object
+map_object = LinearSegmentedColormap.from_list(name="gnuplot2_r_t", colors=color_array)
+
+# register this new colormap with matplotlib
+colormaps.register(cmap=map_object)
+
+# -----------------------------------------------------------------------------
 matplotlib.rc("image", cmap="RdBu_r")
