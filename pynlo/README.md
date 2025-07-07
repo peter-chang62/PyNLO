@@ -23,7 +23,7 @@ import pynlo
 # 1. Create pulse
 pulse = pynlo.light.Pulse.Sech(
     n=2**13, v_min=150e12, v_max=250e12, 
-    v0=193e12, e_p=1e-12, t_fwhm=50e-15, min_time_window=10e-12
+    v0=193e12, e_p=100e-12, t_fwhm=50e-15, min_time_window=10e-12
 )
 
 # 2. Define mode properties directly
@@ -423,7 +423,7 @@ import pynlo.utility.chi2 as chi2
 # Fundamental pulse at 1550 nm
 pulse = pynlo.light.Pulse.Sech(
     n=2**13, v_min=150e12, v_max=250e12,
-    v0=193e12, e_p=1e-12, t_fwhm=100e-15, min_time_window=5e-12
+    v0=193e12, e_p=100e-12, t_fwhm=100e-15, min_time_window=5e-12
 )
 
 # PPLN crystal parameters
@@ -477,8 +477,8 @@ import pynlo
 
 # High-power short pulse
 pulse = pynlo.light.Pulse.Sech(
-    n=2**14, v_min=50e12, v_max=750e12,
-    v0=193e12, e_p=10e-12, t_fwhm=30e-15, min_time_window=10e-12
+    n=2**14, v_min=0, v_max=750e12,
+    v0=193e12, e_p=1e-9, t_fwhm=30e-15, min_time_window=10e-12
 )
 
 # Photonic crystal fiber (high nonlinearity, low dispersion)
@@ -511,7 +511,7 @@ mode = pynlo.media.Mode(v_grid=v_grid, beta=beta, g3=g3, rv_grid=rv_grid, r3=r3)
 
 # Simulate supercontinuum generation
 model = pynlo.model.NLSE(pulse, mode)
-sim = model.simulate(z_grid=1e-2, dz=1e-6, local_error=1e-6, n_records=200)
+sim = model.simulate(z_grid=2e-2, dz=1e-6, local_error=1e-6, n_records=200)
 ```
 
 ## API Reference
