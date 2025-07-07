@@ -625,33 +625,7 @@ AssertionError: The pulse and mode must be defined over the same frequency grid
 ```
 **Cause**: Incorrect Raman grid parameters for model type  
 **Solution**: 
-- **NLSE**: Use `pulse.rtf_grids(alias=0).n` and `pulse.rtf_grids(alias=0).dt`
+- **NLSE**: Use `pulse.n` and `pulse.dt`
 - **UPE**: Use `pulse.rn` and `pulse.rdt`
-
-#### Chi2 Function Array Requirements
-```
-ValueError: object of too small depth for desired array
-```
-**Cause**: Chi2 functions expect arrays, not scalars  
-**Solution**: Convert scalars to arrays:
-```python
-n_eff_array = np.ones_like(v_grid) * n_eff
-a_eff_array = np.ones_like(v_grid) * a_eff
-chi2_eff_array = np.ones_like(v_grid) * chi2_eff
-```
-
-#### Parameter Name Errors
-```
-TypeError: got an unexpected keyword argument
-```
-**Cause**: Incorrect parameter names  
-**Common fixes**:
-- `n_points` → `n`
-- `time_window` → `min_time_window`  
-- `length` → `z_grid`
-
-### Performance Tips
-
-- Use Intel MKL FFT (`pip install mkl_fft`) for better performance
 
 For more examples, see `examples/pynlo_examples/` in the repository.
