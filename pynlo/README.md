@@ -41,7 +41,7 @@ sim = model.simulate(z_grid=1e-3, dz=1e-6, local_error=1e-6, n_records=100)
 
 # View results
 sim.plot("frq")  # Frequency domain evolution
-sim.plot("time") # Time domain evolution
+sim.plot("wvl")
 
 # Access final pulse properties
 print(f"Final pulse energy: {sim.pulse_out.e_p:.2e} J")
@@ -357,11 +357,6 @@ sim = model.simulate(
 )
 ```
 
-**Performance Tips:**
-- Larger `local_error` = faster simulation, less accuracy
-- Smaller `dz` initial step = more conservative stepping
-- More `n_records` = better temporal resolution of results
-
 ### Real-time Monitoring
 
 Monitor simulation progress with live plotting:
@@ -375,11 +370,6 @@ sim = model.simulate(
 ```
 
 ### Memory and Performance
-
-**For large simulations:**
-- Use `n_records` to control memory usage
-- Consider single-precision if memory is limited
-- Enable MKL FFT for better performance (install `mkl_fft`)
 
 **FFT Backend Detection:**
 PyNLO automatically uses Intel MKL if available:
@@ -663,8 +653,5 @@ TypeError: got an unexpected keyword argument
 ### Performance Tips
 
 - Use Intel MKL FFT (`pip install mkl_fft`) for better performance
-- Larger `local_error` values = faster simulation, less accuracy
-- Use appropriate `n_records` to balance memory usage and temporal resolution
-- For large simulations, consider using smaller precision if memory is limited
 
 For more examples, see `examples/pynlo_examples/` in the repository.
