@@ -304,7 +304,7 @@ class MgLN:
                 of frequency
         """
         # n * omega * c
-        return lambda v: n_MgLN_G(v, T=self.T, axis=self.axis) * 2 * np.pi * v / sc.c
+        return lambda v: self.n(v) * 2 * np.pi * v / sc.c
 
     @property
     def d_eff(self):
