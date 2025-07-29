@@ -11,4 +11,5 @@
     "reportIncompatibleMethodOverride": false,
     "reportOptionalMemberAccess": false,
     "reportOptionalOperand": false,
+    "reportCallIssue": false,
 }
