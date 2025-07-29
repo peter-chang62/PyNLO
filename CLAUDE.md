@@ -2,80 +2,73 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Development Commands
+## Project Overview
 
-### Testing
-- Run tests: `python -m pytest tests/`
-- Run specific test file: `python -m pytest tests/test_light.py`
-- Run example scripts to verify functionality: `python examples/pynlo_examples/optical-solitons.py`
+PyNLO is a Python package for modeling the nonlinear interaction of light with matter. This is a fork of the original PyNLO with significant rewrites to add 2nd-order nonlinearities to pulse propagation models. The codebase includes:
 
-### Documentation
-- Build documentation: `cd docs && make html`
-- Documentation is built using Sphinx and stored in `docs/build/`
+- **Core PyNLO**: Nonlinear optics simulation (pynlo/ directory)
+- **EDF Package**: Erbium-doped fiber amplifier simulation (edf/ directory) 
+- **EYDF Package**: Erbium/Ytterbium co-doped fiber amplifier simulation (eydf/ directory)
 
-### Python Environment
-- This project uses Python 3 with dependencies: numpy, scipy, numba, mkl_fft (optional)
-- Type checking configuration is in `pyrightconfig.json` with relaxed settings for scientific computing
-- Virtual environment named "idp" is configured in pyrightconfig.json
+## Architecture
 
-## Code Architecture
+### Core Components
 
-### Core Package Structure
-- **pynlo/**: Main package with core nonlinear optics functionality
-  - `light.py`: Pulse class for representing optical pulses in time/frequency domains
-  - `model.py`: Propagation models (Model, NLSE, UPE) for simulating light through materials
-  - `media.py`: Mode class for optical modes in waveguides and materials
-  - `device.py`: Device-level abstractions
-  - `materials.py`: Material property definitions
-  - `utility/`: Helper functions and utilities
+- **pynlo/light.py**: Defines the `Pulse` class for representing laser pulses in time and frequency domains
+- **pynlo/media.py**: Defines the `Mode` class for optical modes in waveguides
+- **pynlo/model.py**: Contains simulation models (`Model`, `NLSE`, `UPE`) for light propagation
+- **pynlo/device.py**: Device-level abstractions
+- **pynlo/materials.py**: Material property definitions
+- **pynlo/utility/**: Utility functions including FFT operations, chi1/chi2/chi3 nonlinear optics, and helper functions
 
-### Key Classes and Concepts
-- **Pulse**: Central class for optical pulses with time/frequency domain representations
-- **Mode**: Represents optical modes with linear/nonlinear properties (beta, alpha, gamma coefficients)
-- **Model/NLSE/UPE**: Propagation models using split-step methods with adaptive step sizing
-- **TFGrid**: Time-frequency grid system for analytic signal representation
+### Active Fiber Packages
 
-### Additional Packages
-- **edf/**: Erbium-doped fiber amplifier (EDFA) simulation with 5-level rate equations
-- **eydf/**: Erbium-Ytterbium co-doped fiber amplifier (EYDFA) with 7-level rate equations
-- Both support forward/backward pumping and can be combined with PyNLO for complete laser simulations
+- **edf/**: Erbium-doped fiber amplifier simulation with 5-level rate equations
+- **eydf/**: Erbium/Ytterbium co-doped fiber amplifier with 7-level rate equations
 
-### Mathematical Framework
-- All quantities in base SI units (Hz, s, J)
-- Uses analytic signal representation with positive frequencies only
-- Efficient FFT-based algorithms with numba JIT compilation
-- Adaptive step-size ERK4(3)-IP method for propagation
+Both packages can simulate forward/backward pumped amplifiers and work with PyNLO for complete laser system modeling.
 
-### FFT Implementation
-- PyNLO automatically detects and uses Intel MKL FFT if available for better performance
-- Falls back to numpy/scipy FFT implementations if MKL is not installed
-- Import message displays which FFT backend is being used: "USING MKL FOR FFT'S IN PYNLO" or "NOT USING MKL FOR FFT'S IN PYNLO"
-- FFT interface in `pynlo/utility/fft.py` provides consistent API regardless of backend
+## Installation and Setup
 
-### Utility Functions
-- **fft.py**: FFT interface with automatic MKL/numpy backend selection
-- **chi1/chi2/chi3.py**: Linear and nonlinear susceptibility calculations
-- **clipboard.py**, **blit.py**: Plotting convenience functions for examples
-- **TFGrid**: Complementary time-frequency grid system
+The package uses setuptools with pyproject.toml configuration. Dependencies are:
+- numpy
+- scipy  
+- mkl_fft
+- numba
 
-## Working with the Code
+Install by adding the repository directory to sys.path or symlinking pynlo/ to site-packages.
 
-### Running Examples
-Examples are in `examples/` directory with subdirectories for different applications:
-- `pynlo_examples/`: Basic PyNLO demonstrations
-- `edfa_examples/`: EDFA simulations
-- `eydfa_examples/`: EYDFA simulations
+## Testing
 
-### Development Guidelines
-- Follow existing code style and patterns
-- Use numpy/scipy for numerical operations
-- Leverage numba JIT compilation for performance-critical code
-- Maintain SI unit consistency throughout
-- Complex envelope representation assumes analytic signals (positive frequencies)
+Tests are located in tests/ directory:
+- Run tests using standard pytest: `python -m pytest tests/`
+- test_light.py: Tests for pulse generation and properties
+- test_utility.py: Tests for utility functions
 
-### Key Dependencies
-- numpy: Array operations and mathematical functions
-- scipy: Scientific computing utilities
-- numba: JIT compilation for performance
-- mkl_fft: Intel MKL FFT implementation (optional, improves performance)
-- matplotlib: Required for plotting in examples
+## Documentation
+
+Documentation is built using Sphinx:
+- Source files in docs/source/
+- Build with: `cd docs && make html`
+- API documentation is auto-generated from docstrings
+
+## Development Notes
+
+- All quantities should be in base SI units (Hz for frequency, s for time, J for energy)
+- The codebase uses both public methods and private methods (prefixed with `_`)
+- Private methods often use FFT-ordered arrays (with ifftshift)
+- Public methods maintain monotonically ordered coordinate arrays
+- Code uses numba JIT compilation for performance-critical functions
+
+## Example Usage
+
+Extensive examples are provided in examples/ directory:
+- examples/pynlo_examples/: Core PyNLO functionality demos
+- examples/edfa_examples/: EDFA simulation examples  
+- examples/eydfa_examples/: EYDFA simulation examples
+
+Key example files demonstrate:
+- Optical soliton propagation
+- Supercontinuum generation
+- Second-order nonlinear effects (χ² processes)
+- Fiber amplifier designs
