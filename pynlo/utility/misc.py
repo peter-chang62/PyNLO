@@ -32,20 +32,25 @@ def replace(array, values, key):
 
 
 class ArrayWrapper(np.lib.mixins.NDArrayOperatorsMixin):
-    """Emulates an array using custom item getters and setters."""
-
+    """Emulates an NDArray using custom item getters and item setters."""
     def __init__(self, getter=None, setter=None):
         self._getter = getter
         self._setter = setter
 
     def __getitem__(self, key):
-        return self._getter(key)
+        # Return a view of the array descriptor
+        def item_getter(new_key):
+            return self._getter(key)[new_key]
+        def item_setter(new_key, value):
+            self._setter(key, replace(self._getter(key), value, new_key))
+        return ArrayWrapper(getter=item_getter, setter=item_setter)
 
     def __setitem__(self, key, value):
         self._setter(key, value)
 
     def __array__(self, dtype=None):
-        array = self.__getitem__(...)
+        # Return the NumPy array
+        array = self._getter(...)
         if dtype is None:
             return array
         else:
@@ -65,19 +70,19 @@ class ArrayWrapper(np.lib.mixins.NDArrayOperatorsMixin):
 
     def __array_ufunc__(self, ufunc, method, *inputs, out=None, **kwargs):
         """
-        Implemented to support use of the `out` ufunc keyword.
+        Implemented to support use of the `out` ufunc keyword and seamless
+        conversion to NumPy arrays.
 
         Modified from NumPy docs, "__array_ufunc__ for ufuncs"
 
         """
-        # ---- Convert Input to Arrays
-        inputs = tuple(
-            x.__array__() if isinstance(x, ArrayWrapper) else x for x in inputs
-        )
+        #---- Convert Input to NumPy Arrays
+        inputs = tuple(x.__array__() if isinstance(x, ArrayWrapper) else x
+                       for x in inputs)
 
-        # ---- Apply Ufunc
+        #---- Apply Ufunc
         if out:
-            # Convert Output to Arrays
+            # Convert Output to NumPy Arrays
             outputs = []
             out_args = []
             for idx, output in enumerate(out):
@@ -86,42 +91,41 @@ class ArrayWrapper(np.lib.mixins.NDArrayOperatorsMixin):
                     out_args.append(output.__array__())
                 else:
                     out_args.append(output)
-            kwargs["out"] = tuple(out_args)
+            kwargs['out'] = tuple(out_args)
 
             # Apply Ufunc
             result = getattr(ufunc, method)(*inputs, **kwargs)
 
-            # Convert Output to ArrayWrappers
+            # Write In-Place Output to ArrayWrapper
             for idx, output in outputs:
-                output[...] = out_args[idx]  # "in place" equivalent
+                output[...] = out_args[idx] # "in place" equivalent
         else:
             result = getattr(ufunc, method)(*inputs, **kwargs)
 
-        # ---- Return Result
-        if method == "at":
-            return None  # no return value
+        #---- Return Result
+        if method == 'at':
+            return None # no return value
         else:
             return result
 
     def __getattr__(self, attr):
-        """Catch-all for other numpy functions"""
+        """Catch-all for other NumPy functions"""
         return getattr(self.__array__(), attr)
 
 
 class SettableArrayProperty(property):
     """
     A subclass of `property` that allows extending the getter and setter
-    formalism to Numpy array elements.
+    formalism to NumPy array elements.
 
     Notes
     -----
     To allow usage of both `__get__`/`__getitem__` and `__set__`/`__setitem__`,
-    the methods fed into `SettableArrayProperty` must contain a keyword
-    argument and logic for processing the keys used by `__getitem__` and
-    `__setitem__`. In the `setter` method, the `value` parameter must precede
-    the `key` parameter. In the following example, the default key is an open
-    slice (ellipsis), the entire array is retrieved when individual elements
-    are not requested.::
+    the methods fed into `SettableArrayProperty` must contain a keyword argument and logic
+    for processing the keys used by `__getitem__` and `__setitem__`. In the
+    `setter` method, the `value` parameter must precede the `key` parameter. In
+    the following example, the default key is an open slice (ellipsis), the
+    entire array is retrieved when individual elements are not requested.::
 
         class C(object):
             def __init__(self):
@@ -138,7 +142,6 @@ class SettableArrayProperty(property):
     See the documentation of `property` for other implementation details.
 
     """
-
     def __get__(self, obj, objtype):
         # Return self if not instantiated
         if obj is None:
@@ -150,10 +153,10 @@ class SettableArrayProperty(property):
 
         def item_setter(key, value):
             if self.fset is None:
-                self.__set__(obj, value)  # raise AttributeError if fset is None
+                self.__set__(obj, value) # raise AttributeError if fset is None
             self.fset(obj, value, key)
 
-        # Return array with custom item getters and setters
+        # Return ndarray with custom item getters and item setters
         array = ArrayWrapper(getter=item_getter, setter=item_setter)
         return array
 
@@ -200,7 +203,7 @@ def plot_results(pulse_out, model, z, a_t, a_v, plot="frq", num="Simulation Resu
             vmax=0,
             cmap="CMRmap_r_t",
         )
-        plt.colorbar(img, ax=ax2)
+        # plt.colorbar(img, ax=ax2)
         ax0.set_ylim(bottom=-50, top=10)
         ax2.set_xlabel("Frequency (THz)")
     elif plot == "wvl":
@@ -216,7 +219,7 @@ def plot_results(pulse_out, model, z, a_t, a_v, plot="frq", num="Simulation Resu
             cmap="CMRmap_r_t",
         )
         ax2.invert_xaxis()
-        plt.colorbar(img, ax=ax2)
+        # plt.colorbar(img, ax=ax2)
         ax0.set_ylim(bottom=-50, top=10)
         ax2.set_xlabel("wavelength ($\\mathrm{\\mu m}$)")
 
@@ -232,7 +235,7 @@ def plot_results(pulse_out, model, z, a_t, a_v, plot="frq", num="Simulation Resu
         vmax=0,
         cmap="CMRmap_r_t",
     )
-    plt.colorbar(img, ax=ax3)
+    # plt.colorbar(img, ax=ax3)
     ax1.set_ylim(bottom=-50, top=10)
     ax3.set_xlabel("Time (ps)")
 
