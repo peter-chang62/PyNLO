@@ -202,9 +202,7 @@ def g2_sfg(v0, v_grid, n_eff, a_eff, chi2_eff):
 
 
 # %% Phase Matching
-
-
-def domain_inversions(z, dk, intp_order=1):
+def domain_inversions(z, dk, n=1):
     """
     Find the location of the domain inversion boundaries that quasi-phase match
     (QPM) the given wavenumber mismatch.
@@ -215,7 +213,7 @@ def domain_inversions(z, dk, intp_order=1):
         The propagation distance.
     dk : float or array_like of float
         The wavenumber mismatch, or ``2*pi/polling period``.
-    intp_order : int, optional
+    n : int, optional
         The interpolation order used to calculate the inversion points.
 
     Returns
@@ -238,31 +236,44 @@ def domain_inversions(z, dk, intp_order=1):
         = \\int_{z_0}^z \\frac{2 \\pi}{\\Lambda[z^\\prime]} dz^\\prime \\\\
         \\text{z}_{inv}[n] &= N^{-1}[n/2]
 
-    where :math:`\\Delta k` is the wavenumber mismatch compensated by poling
-    period :math:`\\Lambda`, :math:`N` is the accumulated number of phase
+    where :math:`\Delta k` is the wavenumber mismatch compensated by poling
+    period :math:`\Lambda`, :math:`N` is the accumulated number of phase
     cycles, and :math:`n` is an integer.
 
     """
     from scipy.interpolate import InterpolatedUnivariateSpline
 
     # ---- Process Input
+    assert 1 <= n <= 5, "The interpolation order must be between 1 and 5."
     z = np.asarray(z)
-    dk = np.asarray(dk)
-    if dk.size > 1:
+    dk = np.abs(np.asarray(dk))
+
+    aperiodic = dk.size > 1
+    if aperiodic:
+        # Aperiodic Poling
+        assert np.all(
+            np.diff(z) > 0
+        ), "The points in `z` must be ordered monotonically."
+        assert z.size == dk.size, "`dk` must have the same number of points as `z`."
         assert (
-            dk.size == z.size
-        ), "If `dk` is given as an array it must have the same number of points as `z`."
-    if z.size == 1:
-        z = np.linspace(0, z, intp_order + 1)
-    if dk.size == 1:
+            z.size > n
+        ), "The number of points must be greater than the interpolation order."
+    else:
+        # Periodic Poling
+        n = 1  # linear interpolation is exact
+        if z.size == 1:
+            assert z > 0, "The poled length must be greater than 0."
+            z = np.linspace(0, z, n + 1)
         dk = np.ones_like(z) * dk
 
     # ---- Inversion Points
-    n_cycles = InterpolatedUnivariateSpline(
-        z, dk / (2 * pi), k=intp_order
-    ).antiderivative()
-    z_n = InterpolatedUnivariateSpline(2 * n_cycles(z), z, k=intp_order)
-
+    n_cycles = InterpolatedUnivariateSpline(z, dk / (2 * pi), k=n).antiderivative()
+    if aperiodic and n == 1:
+        # Linearly interpolate dk, quadratically interpolate z_n
+        n = 2
+        if not z.size > n:
+            z = np.linspace(z.min(), z.max(), n + 1)
+    z_n = InterpolatedUnivariateSpline(2 * n_cycles(z), z, k=n)
     n_invs = int(2 * n_cycles(z[-1]))  # round down
     n_grid = np.arange(n_invs + 1)
     z_invs = z_n(n_grid)  # all inversion points
@@ -424,3 +435,44 @@ def dominant_paths(
 
 def effective_chi3():
     pass  # TODO: effective 3rd-order from cascaded 2nd
+
+
+def shg_conversion_efficiency(v0, p0, n_v, n_2v, a_eff, d_eff, z, qpm_order=None):
+    """
+    Conversion efficiency of second-harmonic generation in the undepleted-pump
+    approximation.
+
+    Parameters
+    ----------
+    v0 : float
+        The fundamental frequency.
+    p0 : float
+        The average power.
+    n_v : float
+        The refractive index at the fundamental frequency.
+    n_2v : float
+        The refractive index at the second-harmonic frequency.
+    a_eff : float
+        The effective area.
+    d_eff : float
+        The effective second order nonlinearity.
+    z : float
+        The propagation distance.
+    qpm_order : int
+        The order of the quasi-phase-matching. Only odd orders can be
+        quasi-phase matched.
+
+    References
+    ----------
+    Robert W. Boyd, Nonlinear Optics (Fourth Edition), Academic Press, 2020
+     https://doi.org/10.1016/C2015-0-05510-1
+
+    """
+    w0 = 2 * pi * v0
+    if qpm_order is not None:
+        d_eff = d_eff * np.abs(np.sinc(qpm_order / 2))
+    return (
+        (2 * d_eff**2 * w0**2 * p0)
+        / (n_v**2 * n_2v * a_eff * e0 * c**3)
+        * z**2
+    )
