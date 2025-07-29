@@ -62,6 +62,7 @@ def amplify(
 ):
     edf: EDF
     edf_1 = EDF(
+        alpha_passive=edf.alpha_passive,
         f_r=edf.f_r,
         overlap_p=edf.overlap_p,
         overlap_s=edf.overlap_s,
@@ -80,6 +81,7 @@ def amplify(
 
     # swap 2 <-> 1, and z_spl -> length - z_spl
     edf_2 = EDF(
+        alpha_passive=edf.alpha_passive,
         f_r=edf.f_r,
         overlap_p=edf.overlap_p,
         overlap_s=edf.overlap_s,

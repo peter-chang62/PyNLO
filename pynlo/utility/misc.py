@@ -192,30 +192,31 @@ def plot_results(pulse_out, model, z, a_t, a_v, plot="frq", num="Simulation Resu
     if plot == "frq":
         ax0.plot(1e-12 * pulse_out.v_grid, p_v_dB[0], color="b")
         ax0.plot(1e-12 * pulse_out.v_grid, p_v_dB[-1], color="g")
-        ax2.pcolormesh(
+        img = ax2.pcolorfast(
             1e-12 * pulse_out.v_grid,
             1e3 * z,
-            p_v_dB,
+            p_v_dB[:-1, :-1],
             vmin=-40.0,
             vmax=0,
-            shading="auto",
             cmap="CMRmap_r_t",
         )
+        plt.colorbar(img, ax=ax2)
         ax0.set_ylim(bottom=-50, top=10)
         ax2.set_xlabel("Frequency (THz)")
     elif plot == "wvl":
         wl_grid = sc.c / pulse_out.v_grid
         ax0.plot(1e6 * wl_grid, p_wl_dB[0], color="b")
         ax0.plot(1e6 * wl_grid, p_wl_dB[-1], color="g")
-        ax2.pcolormesh(
+        img = ax2.pcolorfast(
             1e6 * wl_grid,
             1e3 * z,
-            p_wl_dB,
+            p_wl_dB[:-1, :-1],
             vmin=-40.0,
             vmax=0,
-            shading="auto",
             cmap="CMRmap_r_t",
         )
+        ax2.invert_xaxis()
+        plt.colorbar(img, ax=ax2)
         ax0.set_ylim(bottom=-50, top=10)
         ax2.set_xlabel("wavelength ($\\mathrm{\\mu m}$)")
 
@@ -223,15 +224,15 @@ def plot_results(pulse_out, model, z, a_t, a_v, plot="frq", num="Simulation Resu
     p_t_dB -= p_t_dB.max()
     ax1.plot(1e12 * pulse_out.t_grid, p_t_dB[0], color="b")
     ax1.plot(1e12 * pulse_out.t_grid, p_t_dB[-1], color="g")
-    ax3.pcolormesh(
+    img = ax3.pcolorfast(
         1e12 * pulse_out.t_grid,
         1e3 * z,
-        p_t_dB,
+        p_t_dB[:-1, :-1],
         vmin=-40.0,
         vmax=0,
-        shading="auto",
         cmap="CMRmap_r_t",
     )
+    plt.colorbar(img, ax=ax3)
     ax1.set_ylim(bottom=-50, top=10)
     ax3.set_xlabel("Time (ps)")
 

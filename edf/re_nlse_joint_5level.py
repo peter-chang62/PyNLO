@@ -123,6 +123,7 @@ class Mode(pynlo.media.Mode):
         self,
         v_grid,
         beta,
+        alpha_passive=0,
         g2=None,
         g2_inv=None,
         g3=None,
@@ -163,6 +164,10 @@ class Mode(pynlo.media.Mode):
             sigma_e.size == v_grid.size
         ), "emission cross section grid must match frequency grid"
 
+        if callable(alpha_passive):
+            self._alpha_passive = alpha_passive
+        else:
+            self._alpha_passive = np.asarray(alpha_passive, dtype=float)
         self.f_r = f_r
         self.overlap_p = overlap_p
         self.overlap_s = overlap_s
@@ -395,24 +400,31 @@ class Mode(pynlo.media.Mode):
         )
         return n5
 
-    def gain(self, z, p_v):
+    @property
+    def alpha_passive(self):
         return (
+            self._alpha_passive(self.z)
+            if callable(self._alpha_passive)
+            else self._alpha_passive
+        )
+
+    def gain(self, z, p_v):
+        active = (
             -self.sigma_a * self.n1
             + self.sigma_e * self.n2
             - self.sigma_a * self.eps_s * self.n2
         ) * self.overlap_s
+        passive = self.alpha_passive
+        return active + passive
 
     def _dPp_dz(self, z, Pp):
-        deriv = (
-            (
-                -self.sigma_p * self.n1
-                + self.sigma_p * self.xi_p * self.n3
-                - self.sigma_p * self.eps_p * self.n3
-            )
-            * self.overlap_p
-            * Pp
-        )
-        return deriv
+        active = (
+            -self.sigma_p * self.n1
+            + self.sigma_p * self.xi_p * self.n3
+            - self.sigma_p * self.eps_p * self.n3
+        ) * self.overlap_p
+        passive = self.alpha_passive
+        return (active + passive) * Pp
 
     def setup_rk45_Pp(self, dz):
         self._rk45_Pp = RK45(
@@ -781,6 +793,7 @@ class NLSE(pynlo.model.NLSE):
 class EDF(pynlo.materials.SilicaFiber):
     def __init__(
         self,
+        alpha_passive=0,
         f_r=100e6,
         overlap_p=1.0,
         overlap_s=1.0,
@@ -799,6 +812,7 @@ class EDF(pynlo.materials.SilicaFiber):
     ):
         super().__init__()
 
+        self.alpha_passive = alpha_passive
         self.f_r = f_r
         self.overlap_p = overlap_p
         self.overlap_s = overlap_s
@@ -921,6 +935,7 @@ class EDF(pynlo.materials.SilicaFiber):
         mode = Mode(
             v_grid,
             beta,
+            alpha_passive=self.alpha_passive,
             g2=None,
             g2_inv=None,
             g3=g3,

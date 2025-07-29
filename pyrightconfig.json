@@ -9,4 +9,6 @@
     "reportPossiblyUnboundVariable": false,
     "reportOptionalSubscript": false,
     "reportIncompatibleMethodOverride": false,
+    "reportOptionalMemberAccess": false,
+    "reportOptionalOperand": false,
 }
