@@ -31,7 +31,7 @@ nm = 1e-9
 um = 1e-6
 m = 1
 km = 1e3
-W = 1e3
+W = 1.0
 
 output = collections.namedtuple("output", ["model", "sim"])
 
@@ -120,7 +120,7 @@ print(f"approximate chirp is {Dm} / (ps nm)")
 # %% ----- pulse recompression ------------------------------------------------
 dcf = pynlo.materials.SilicaFiber()
 dcf.set_beta_from_D_n(1550e-9, 100 * ps / nm / km, 0)
-dcf.gamma = 0 / (W * m)
+dcf.gamma = 0 / (W * km)
 sim_dcf = propagate(dcf, pulse, Dm * 10, n_records=100).sim
 
 # p = pulse.copy()
@@ -138,8 +138,8 @@ spl_sigma_a = crossSection().sigma_a
 spl_sigma_e = crossSection().sigma_e
 
 # %% -------------- gamma values ----------------------------------------------
-gamma_a = 1 / (W * m)
-gamma_n = 6.5 / (W * m)
+gamma_a = 1 / (W * km)
+gamma_n = 6.5 / (W * km)
 
 # %% -------------- load dispersion coefficients ------------------------------
 polyfit_n = ER80_4_125_betas().polyfit
@@ -195,7 +195,7 @@ D_hnlf = -1
 polyfit_hnlf = np.array([-(1550e-9**2) / (2 * np.pi * c) * (D_hnlf * ps / nm / km)])
 hnlf_n = pynlo.materials.SilicaFiber()
 hnlf_n.set_beta_from_beta_n(v0, polyfit_hnlf)
-hnlf_n.gamma = 10 / (W * m)
+hnlf_n.gamma = 10 / (W * km)
 
 # %% ------------ passive fiber -----------------------------------------------
 sim_pm1550 = propagate(pm1550, sim_edfa.pulse_out, 2).sim
