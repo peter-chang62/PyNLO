@@ -758,36 +758,44 @@ class SilicaFiber:
         Returns:
             model
         """
-        assert isinstance(pulse, pynlo.light.Pulse)
-        pulse: pynlo.light.Pulse
 
+        # time for optical shock formation
         if isinstance(t_shock, str):
             assert t_shock.lower() == "auto"
             t_shock = 1 / (2 * np.pi * pulse.v0)
         else:
             assert isinstance(t_shock, float) or t_shock is None
 
+        # absorption
         if alpha is not None:
+            # absorption curve provided
             if isinstance(alpha, (np.ndarray, pynlo.utility.misc.ArrayWrapper)):
                 assert (
                     alpha.size == pulse.n
                 ), "if alpha is an array its size must match the simulation grid"
+            # absorption constant provided
             elif isinstance(alpha, (float, int)):
                 pass
+            # absorption is a callable
             else:
                 assert callable(
                     alpha
-                ), "if given, alpha must be a callable: alpha(v_grid)"
+                ), "alpha must be None, array, float, or a callable: alpha(z, p_v)"
 
+        # dispersion and g3 are calculated on pulse.v_grid for both UPE and
+        # NLSE models
+        v_grid = pulse.v_grid
+        beta = self.beta(v_grid)
+        g3 = self.g3(v_grid, t_shock=t_shock)
+
+        # raman is calculated on pulse.rv_grid for UPE and pulse.v_grid for
+        # NLSE
         method = method.lower()
         assert method == "nlse" or method == "upe"
         analytic = True if method == "nlse" else False
         n = pulse.n if method == "nlse" else pulse.rn
         dt = pulse.dt if method == "nlse" else pulse.rdt
 
-        v_grid = pulse.v_grid
-        beta = self.beta(v_grid)
-        g3 = self.g3(v_grid, t_shock=t_shock)
         if raman_on:
             rv_grid, raman = self.raman(n, dt, analytic=analytic)
         else:
@@ -796,7 +804,7 @@ class SilicaFiber:
         mode = pynlo.media.Mode(
             v_grid,
             beta,
-            alpha=alpha,  # None (alpha=0), or a callable
+            alpha=alpha,
             g2=None,  # not applicable
             g2_inv=None,  # not applicable
             g3=g3,
