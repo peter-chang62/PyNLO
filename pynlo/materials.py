@@ -27,7 +27,7 @@ def LN_alpha(v_grid):
     return 1e6 * (1 + erf(-(w_grid - 300.0) / (10 * np.sqrt(2))))
 
 
-def gbeam_area_scaling(z_to_focus, v0, a_eff):
+def gbeam_area(z_to_focus, v0, a_eff):
     """
     A gaussian beam can be accounted for by scaling the chi2 and chi3 parameter
 
@@ -51,7 +51,7 @@ def gbeam_area_scaling(z_to_focus, v0, a_eff):
     wl = sc.c / v0
     z_R = np.pi * w_0**2 / wl  # rayleigh length
     w = w_0 * np.sqrt(1 + (z_to_focus / z_R) ** 2)
-    return 1 / (np.pi * w**2 / a_eff)
+    return np.pi * w**2
 
 
 def guoy_phase_shift(z_to_focus, v0, a_eff):
@@ -59,53 +59,6 @@ def guoy_phase_shift(z_to_focus, v0, a_eff):
     wl = sc.c / v0
     z_R = np.pi * w_0**2 / wl  # rayleigh length
     return -np.arctan(z_to_focus / z_R)
-
-
-def chi2_gbeam_scaling(z_to_focus, v0, a_eff):
-    """
-    scaling for the chi2 parameter for gaussian beam
-
-    Args:
-        z_to_focus (float):
-            the distance from the focus
-        v0 (float):
-            center frequency
-        a_eff (float):
-            effective area (pi * w_0^2)
-
-    Returns:
-        float:
-            the ratio of areas^1/2:
-                1 / sqrt[ (pi * w^2) / (pi * w_0^2) ]
-
-    Notes:
-        The chi2 parameter scales as 1 / sqrt[a_eff]
-    """
-    return gbeam_area_scaling(z_to_focus, v0, a_eff) ** 0.5
-
-
-def chi3_gbeam_scaling(z_to_focus, v0, a_eff):
-    """
-    scaling for the chi3 parameter for gaussian beam
-
-    Args:
-        z_to_focus (float):
-            the distance from the focus
-        v0 (float):
-            center frequency
-        a_eff (float):
-            effective area (pi * w_0^2)
-
-    Returns:
-        float:
-            the ratio of areas^1/2:
-                1 / sqrt[ (pi * w^2) / (pi * w_0^2) ]
-
-    Notes:
-        The chi3 parameter scales as 1 / a_eff. This is the same as chi2 but
-        without the square root
-    """
-    return gbeam_area_scaling(z_to_focus, v0, a_eff)
 
 
 def n_MgLN_G(v, T=24.5, axis="e"):
@@ -425,74 +378,73 @@ class MgLN:
             statement checks that the beta curve was provided (to account for
             waveguide dispersion).
         """
-        # --------- assert statements ---------
-        assert isinstance(pulse, pynlo.light.Pulse)
-        pulse: pynlo.light.Pulse
 
-        # ------ g2 and g3---------
-        if beta is None:
-            # use bulk refractive index
-            g2_array = self.g2_shg(pulse.v_grid, pulse.v0, a_eff)
-            g3_array = self.g3(pulse.v_grid, a_eff)
-        else:
-            # use effective refractive index
-            n_eff = beta / (2 * np.pi * pulse.v_grid / sc.c)
-            g2_array = pynlo.utility.chi2.g2_shg(
-                pulse.v0, pulse.v_grid, n_eff, a_eff, self.chi2_eff
-            )
-            g3_array = pynlo.utility.chi3.g3_spm(n_eff, a_eff, self.chi3_eff)
+        # ------ g2 and g3 ----------------------------------------------------
+        a_eff_gaussian_beam = lambda z: gbeam_area(
+            z_to_focus=z - length / 2,
+            v0=pulse.v_grid,
+            a_eff=a_eff,
+        )
 
-        # make g2 and g3 callable if the mode is a gaussian beam
-        if is_gaussian_beam:
-
-            def g2_func(z):
-                z_to_focus = z - length / 2
-                return g2_array * chi2_gbeam_scaling(z_to_focus, pulse.v0, a_eff)
-
-            def g3_func(z):
-                z_to_focus = z - length / 2
-                return g3_array * chi3_gbeam_scaling(z_to_focus, pulse.v0, a_eff)
-
-            g2 = g2_func
-            g3 = g3_func
-
-        else:
-            g2 = g2_array
-            g3 = g3_array
-
-            if beta is None:
-                msg = (
-                    "WARNING: IF NOT GAUSSIAN BEAM, WAVEGUIDE DISPERSION SHOULD BE"
-                    + " ACCOUNTED FOR BY PROVIDING THE BETA CURVE, BUT NONE WAS PROVIDED"
-                )
-                print(msg)
-
-        # ----- mode and model ---------
-        if beta is None:
-            # calculate beta from material dispersion
-            beta_raw = self.beta(pulse.v_grid)
+        if beta is None:  # calculate bulk refractive index
             if is_gaussian_beam:
-
-                def beta_gaussian_beam(z):
-                    z_to_focus = z - length / 2
-                    phi = guoy_phase_shift(z_to_focus, pulse.v_grid, a_eff)
-                    # final phase pickup should be βz + φ
-                    if z == 0:
-                        return beta_raw
-                    else:
-                        return beta_raw + phi / z
-
-                beta = beta_gaussian_beam
-                # beta = beta_raw
+                g2 = lambda z: self.g2_shg(
+                    pulse.v_grid, pulse.v0, a_eff_gaussian_beam(z)
+                )
+                g3 = lambda z: self.g3(pulse.v_grid, a_eff_gaussian_beam(z))
 
             else:
-                beta = beta_raw
+                g2 = self.g2_shg(pulse.v_grid, pulse.v0, a_eff)
+                g3 = self.g3(pulse.v_grid, a_eff)
+
+        else:  # beta curve is provided
+            assert (
+                isinstance(beta, np.ndarray) and beta.shape == pulse.v_grid.shape
+            ), "beta must be None or an array, make your own PyNLO mode for callable beta"
+            n_eff = beta / (2 * np.pi * pulse.v_grid / sc.c)
+
+            if is_gaussian_beam:
+                g2 = lambda z: pynlo.utility.chi2.g2_shg(
+                    pulse.v0, pulse.v_grid, n_eff, a_eff_gaussian_beam(z), self.chi2_eff
+                )
+                g3 = lambda z: pynlo.utility.chi3.g3_spm(
+                    n_eff, a_eff_gaussian_beam(z), self.chi3_eff
+                )
+
+            else:
+                g2 = pynlo.utility.chi2.g2_shg(
+                    pulse.v0, pulse.v_grid, n_eff, a_eff, self.chi2_eff
+                )
+                g3 = pynlo.utility.chi3.g3_spm(n_eff, a_eff, self.chi3_eff)
+
+        # ----- beta ----------------------------------------------------------
+        if beta is None:  # calculate bulk dispersion
+            beta_raw = self.beta(pulse.v_grid)
+
+        else:  # beta curve is provided
+            assert (
+                isinstance(beta, np.ndarray) and beta.shape == pulse.v_grid.shape
+            ), "beta must be None or an array, make your own PyNLO mode for callable beta"
+            beta_raw = beta.copy()
+
+        if is_gaussian_beam:
+
+            def beta_gaussian_beam(z):
+                z_to_focus = z - length / 2
+                phi = guoy_phase_shift(z_to_focus, pulse.v_grid, a_eff)
+                # final phase pickup should be βz + φ
+                if z == 0:
+                    return beta_raw
+                else:
+                    return beta_raw + phi / z
+
+            beta = beta_gaussian_beam
+            # beta = beta_raw
 
         else:
-            # beta is already provided, must be an array
-            # you can add option to make it a callable(z), but haven't needed it.
-            assert isinstance(beta, np.ndarray) and beta.shape == pulse.v_grid.shape
+            beta = beta_raw
 
+        # ----- mode and model ------------------------------------------------
         mode = pynlo.media.Mode(
             pulse.v_grid,
             beta,
