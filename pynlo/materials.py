@@ -27,7 +27,7 @@ def LN_alpha(v_grid):
     return 1e6 * (1 + erf(-(w_grid - 300.0) / (10 * np.sqrt(2))))
 
 
-def gbeam_area(z_to_focus, v0, a_eff):
+def gaussian_beam_area(z_to_focus, v0, a_eff):
     """
     A gaussian beam can be accounted for by scaling the chi2 and chi3 parameter
 
@@ -380,7 +380,7 @@ class MgLN:
         """
 
         # ------ g2 and g3 ----------------------------------------------------
-        a_eff_gaussian_beam = lambda z: gbeam_area(
+        a_eff_gaussian_beam = lambda z: gaussian_beam_area(
             z_to_focus=z - length / 2,
             v0=pulse.v_grid,
             a_eff=a_eff,
