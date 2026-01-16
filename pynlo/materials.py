@@ -54,6 +54,13 @@ def gbeam_area_scaling(z_to_focus, v0, a_eff):
     return 1 / (np.pi * w**2 / a_eff)
 
 
+def guoy_phase_shift(z_to_focus, v0, a_eff):
+    w_0 = np.sqrt(a_eff / np.pi)  # beam radius
+    wl = sc.c / v0
+    z_R = np.pi * w_0**2 / wl  # rayleigh length
+    return -np.arctan(z_to_focus / z_R)
+
+
 def chi2_gbeam_scaling(z_to_focus, v0, a_eff):
     """
     scaling for the chi2 parameter for gaussian beam
@@ -463,7 +470,24 @@ class MgLN:
         # ----- mode and model ---------
         if beta is None:
             # calculate beta from material dispersion
-            beta = self.beta(pulse.v_grid)
+            beta_raw = self.beta(pulse.v_grid)
+            if is_gaussian_beam:
+
+                def beta_gaussian_beam(z):
+                    z_to_focus = z - length / 2
+                    phi = guoy_phase_shift(z_to_focus, pulse.v_grid, a_eff)
+                    # final phase pickup should be βz + φ
+                    if z == 0:
+                        return beta_raw
+                    else:
+                        return beta_raw + phi / z
+
+                beta = beta_gaussian_beam
+                # beta = beta_raw
+
+            else:
+                beta = beta_raw
+
         else:
             # beta is already provided, must be an array
             # you can add option to make it a callable(z), but haven't needed it.
