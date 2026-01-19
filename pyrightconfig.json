@@ -1,6 +1,6 @@
 {
     // Install LSP-json to get validation and autocompletion in this file.
-    "venv": "idp",
+    "venv": "env",
     "useLibraryCodeForTypes": false,
     "reportRedeclaration": false,
     "reportArgumentType": false,
@@ -12,4 +12,5 @@
     "reportOptionalMemberAccess": false,
     "reportOptionalOperand": false,
     "reportCallIssue": false,
+    "reportOperatorIssue": false,
 }

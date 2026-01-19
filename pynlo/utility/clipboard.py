@@ -1,6 +1,10 @@
 import io
 import matplotlib.pyplot as plt
-from PyQt5.QtGui import QGuiApplication, QImage
+
+try:
+    from PyQt5.QtGui import QGuiApplication, QImage
+except:
+    from PyQt6.QtGui import QGuiApplication, QImage
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib import colormaps
 import matplotlib
