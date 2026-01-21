@@ -1,0 +1,5 @@
+the data is from this paper:
+
+Brian Topper, Jared Tolliver, Stefan Kuhn, Denny Hässner, Sigrun Hein, Christian Hupel, Johannes Nold, Nicoletta Haarlammert, Arash Mafi, Alexander Neumann, and Thomas Schreiber, "Revisiting ytterbium doped silica spectroscopy," Opt. Mater. Express 14, 2956-2971 (2024)
+
+doi: https://opg.optica.org/ome/fulltext.cfm?uri=ome-14-12-2956
