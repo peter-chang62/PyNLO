@@ -6,6 +6,13 @@ from scipy.constants import c
 import numpy as np
 from scipy.interpolate import InterpolatedUnivariateSpline, interp1d
 
+try:
+    from numpy import math
+except ImportError:
+    import math
+
+    np.math = math
+
 path = pathlib.Path(utility.__file__).parent
 
 
@@ -49,6 +56,7 @@ class ER110_4_125_betas:
         omega0 = 2 * np.pi * c / 1560e-9
         polyfit = np.polyfit(omega - omega0, gvd[:, 1], deg=3)
         self.polyfit = polyfit[::-1]  # lowest order first
+        self.polyfit *= np.asarray([np.math.factorial(n) for n in range(polyfit.size)])
 
 
 class ER80_4_125_betas:
@@ -64,6 +72,7 @@ class ER80_4_125_betas:
         omega0 = 2 * np.pi * c / 1560e-9
         polyfit = np.polyfit(omega - omega0, gvd[:, 1], deg=3)
         self.polyfit = polyfit[::-1]  # lowest order first
+        self.polyfit *= np.asarray([np.math.factorial(n) for n in range(polyfit.size)])
 
 
 class ER80_8_125_betas:
@@ -78,3 +87,4 @@ class ER80_8_125_betas:
         omega0 = 2 * np.pi * c / 1560e-9
         polyfit = np.polyfit(omega - omega0, gvd[:, 1], deg=3)
         self.polyfit = polyfit[::-1]  # lowest order first
+        self.polyfit *= np.asarray([np.math.factorial(n) for n in range(polyfit.size)])
