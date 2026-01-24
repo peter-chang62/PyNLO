@@ -79,6 +79,9 @@ def taylor_series(x0, fn):
         A NumPy `Polynomial` object representing the Taylor series expansion.
 
     """
+
+    # domain gets maped to window by shifting and scaling
+    # map domain x -> window (x - x0)
     window = np.array([-1, 1])
     domain = window + x0
     poly_coefs = [coef / np.math.factorial(n) for (n, coef) in enumerate(fn)]
