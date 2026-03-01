@@ -33,6 +33,7 @@ def replace(array, values, key):
 
 class ArrayWrapper(np.lib.mixins.NDArrayOperatorsMixin):
     """Emulates an NDArray using custom item getters and item setters."""
+
     def __init__(self, getter=None, setter=None):
         self._getter = getter
         self._setter = setter
@@ -41,8 +42,10 @@ class ArrayWrapper(np.lib.mixins.NDArrayOperatorsMixin):
         # Return a view of the array descriptor
         def item_getter(new_key):
             return self._getter(key)[new_key]
+
         def item_setter(new_key, value):
             self._setter(key, replace(self._getter(key), value, new_key))
+
         return ArrayWrapper(getter=item_getter, setter=item_setter)
 
     def __setitem__(self, key, value):
@@ -76,11 +79,12 @@ class ArrayWrapper(np.lib.mixins.NDArrayOperatorsMixin):
         Modified from NumPy docs, "__array_ufunc__ for ufuncs"
 
         """
-        #---- Convert Input to NumPy Arrays
-        inputs = tuple(x.__array__() if isinstance(x, ArrayWrapper) else x
-                       for x in inputs)
+        # ---- Convert Input to NumPy Arrays
+        inputs = tuple(
+            x.__array__() if isinstance(x, ArrayWrapper) else x for x in inputs
+        )
 
-        #---- Apply Ufunc
+        # ---- Apply Ufunc
         if out:
             # Convert Output to NumPy Arrays
             outputs = []
@@ -91,20 +95,20 @@ class ArrayWrapper(np.lib.mixins.NDArrayOperatorsMixin):
                     out_args.append(output.__array__())
                 else:
                     out_args.append(output)
-            kwargs['out'] = tuple(out_args)
+            kwargs["out"] = tuple(out_args)
 
             # Apply Ufunc
             result = getattr(ufunc, method)(*inputs, **kwargs)
 
             # Write In-Place Output to ArrayWrapper
             for idx, output in outputs:
-                output[...] = out_args[idx] # "in place" equivalent
+                output[...] = out_args[idx]  # "in place" equivalent
         else:
             result = getattr(ufunc, method)(*inputs, **kwargs)
 
-        #---- Return Result
-        if method == 'at':
-            return None # no return value
+        # ---- Return Result
+        if method == "at":
+            return None  # no return value
         else:
             return result
 
@@ -142,6 +146,7 @@ class SettableArrayProperty(property):
     See the documentation of `property` for other implementation details.
 
     """
+
     def __get__(self, obj, objtype):
         # Return self if not instantiated
         if obj is None:
@@ -153,7 +158,7 @@ class SettableArrayProperty(property):
 
         def item_setter(key, value):
             if self.fset is None:
-                self.__set__(obj, value) # raise AttributeError if fset is None
+                self.__set__(obj, value)  # raise AttributeError if fset is None
             self.fset(obj, value, key)
 
         # Return ndarray with custom item getters and item setters
