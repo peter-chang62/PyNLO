@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import pynlo
 import clipboard
 from scipy.constants import c
-from scipy.integrate import odeint
+from scipy.integrate import odeint, solve_ivp
 from scipy.constants import h
 from eydf.seven_level_ss_eqns import (
     sigma_a_p_Y,
@@ -217,7 +217,7 @@ def dn_dt(X, t, P_p, P_s):
     )
 
 
-def func(X, z, output="deriv"):
+def func(z, X, output="deriv"):
     P_p = X[0]
     P_v = X[1:]
 
@@ -243,15 +243,18 @@ def func(X, z, output="deriv"):
         eps_p,
     )
 
-    dP_v = gain(
-        overlap_s,
-        n1,
-        n2,
-        n_ion,
-        sigma_a,
-        sigma_e,
-        eps_s,
-    ) * P_v
+    dP_v = (
+        gain(
+            overlap_s,
+            n1,
+            n2,
+            n_ion,
+            sigma_a,
+            sigma_e,
+            eps_s,
+        )
+        * P_v
+    )
 
     print(z)
 
@@ -267,7 +270,7 @@ length = 6
 
 X_0 = np.hstack((Pp_0, Pv_0))
 z = np.linspace(0, length, 1000)
-sol = odeint(func, X_0, z)
+sol = solve_ivp(func, [0, length], X_0, method="RK45", t_eval=z).y.T
 
 sol_Pp = sol[:, 0]
 sol_Pv = sol[:, 1:]
@@ -281,7 +284,7 @@ n5 = np.zeros(z[::10].size)
 na = np.zeros(z[::10].size)
 nb = np.zeros(z[::10].size)
 for n, (pp, pv) in enumerate(zip(sol_Pp[::10], sol_Pv[::10])):
-    inversion = func(np.hstack((pp, pv)), z[::10][n], output="n")
+    inversion = func(z[::10][n], np.hstack((pp, pv)), output="n")
     n1[n] = inversion[0]
     n2[n] = inversion[1]
     n3[n] = inversion[2]
@@ -292,7 +295,7 @@ for n, (pp, pv) in enumerate(zip(sol_Pp[::10], sol_Pv[::10])):
 
 # %% ----------------------------- plot results! ------------------------------
 fig = plt.figure(
-    num="5-level rate equation for 250 fs pulse", figsize=np.array([11.16, 5.21])
+    num="7-level rate equation for 250 fs pulse", figsize=np.array([11.16, 5.21])
 )
 ax1 = fig.add_subplot(1, 2, 1)
 ax2 = fig.add_subplot(1, 2, 2)
