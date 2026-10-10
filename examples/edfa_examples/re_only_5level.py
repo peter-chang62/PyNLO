@@ -55,7 +55,8 @@ spl_sigma_e = crossSection().sigma_e
 loss_ins = 10 ** (-0.7 / 10)
 loss_spl = 10 ** (-0.2 / 10)
 f_r = 1e9
-e_p = 25e-3 / f_r * loss_ins * loss_spl
+# e_p = 25e-3 / f_r * loss_ins * loss_spl
+e_p = 60e-3 / f_r  # 100 mW
 
 n = 256
 v_min = c / 1700e-9
@@ -137,9 +138,11 @@ def func(
 
 
 # %% --------------------------------------------------------------------------
-Pp_0 = 2 * loss_ins * loss_spl
+# Pp_0 = 2 * loss_ins * loss_spl
+# length = 2
+Pp_0 = .2
+length = .15
 Pv_0 = pulse.p_v.copy() * pulse.dv * f_r
-length = 2
 
 X_0 = np.hstack([Pp_0, Pv_0])
 z = np.linspace(0, length, 1000)
@@ -155,7 +158,7 @@ args = (
 sol = odeint(func, X_0, z, args=args)
 
 sol_Pp = sol[:, 0]
-sol_Pv = sol[:, 1:] * loss_ins * loss_spl
+sol_Pv = sol[:, 1:]
 sol_Ps = np.sum(sol_Pv, axis=1)
 
 n1 = np.zeros(z.size)

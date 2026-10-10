@@ -56,7 +56,8 @@ spl_sigma_e = crossSection().sigma_e
 
 # %% ------------- pulse ------------------------------------------------------
 f_r = 1e9
-e_p = 100e-3 / f_r
+# e_p = 100e-3 / f_r
+e_p = 60e-3 / f_r  # 100 mW
 
 n = 256
 v_min = c / 1700e-9
@@ -264,9 +265,11 @@ def func(z, X, output="deriv"):
         return sol[-1]
 
 
-Pp_0 = 18
+# Pp_0 = 18
+# length = 6
+Pp_0 = 0.2
+length = 0.15
 Pv_0 = pulse.p_v.copy() * pulse.dv * f_r
-length = 6
 
 X_0 = np.hstack((Pp_0, Pv_0))
 z = np.linspace(0, length, 1000)
