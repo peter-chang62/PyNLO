@@ -46,7 +46,8 @@ Spectrogram = collections.namedtuple(
 
 
 def min_points(bandwidth_v, bandwidth_t):
-    n_min = int(np.ceil(bandwidth_t * bandwidth_v))
+    # n points span bandwidth_v with n - 1 intervals, so t_window = (n - 1)/bandwidth_v
+    n_min = int(np.ceil(bandwidth_t * bandwidth_v)) + 1
     n_min = scipy.fftpack.next_fast_len(n_min)  # faster fft's
     return n_min
 

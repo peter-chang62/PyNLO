@@ -97,6 +97,19 @@ def test_pulse_properties():
     ac = test.autocorrelation()
     assert np.isclose(ac.rms, 2**0.5 * t_w.rms, atol=0)
 
+def test_min_time_window():
+    v_min, v_max, v_0, e_p, t_fwhm = 100e12, 500e12, 300e12, 1, 100e-15
+    # n too small: grid is enlarged so the time window is at least min_time_window
+    for min_time_window in (0.5e-12, 1e-12):
+        p = light.Pulse.Gaussian(2, v_min, v_max, v_0, e_p, t_fwhm,
+                                 min_time_window=min_time_window)
+        assert p.t_window >= min_time_window
+        # endpoints are targets (TFGrid snaps v_ref to a multiple of dv); the span is exact
+        assert np.isclose(p.v_grid[-1] - p.v_grid[0], v_max - v_min)
+    # n already sufficient: user's n is kept
+    p = light.Pulse.Gaussian(256, v_min, v_max, v_0, e_p, t_fwhm, min_time_window=0.5e-12)
+    assert p.n == 256
+
 #--- Exploratory
 if __name__ == "__main__":
     test_pulse_shapes()
