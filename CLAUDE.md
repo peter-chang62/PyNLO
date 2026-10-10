@@ -57,7 +57,6 @@ See `edf/README.md` and `eydf/README.md` for the physics and full API.
 - Public methods/properties use monotonically ordered grids; private `_`-prefixed ones often use FFT-ordered (ifftshifted) arrays.
 - Performance-critical kernels use numba JIT.
 - Branching: work on `main`. README.rst's "branch off `develop`" rule came from the upstream repo and doesn't apply to this fork (open issue, see `dev_docs/OPEN_ISSUES.md`).
-- `.github/workflows/claude.yml` runs Claude Code on `@claude` mentions in issues/PRs.
 
 ## Documentation layout
 
