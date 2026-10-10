@@ -118,6 +118,16 @@ def test_min_time_window():
     p = light.Pulse.Gaussian(256, v_min, v_max, v_0, e_p, t_fwhm, min_time_window=0.5e-12)
     assert p.n == 256
 
+def test_width_rms_is_full_width():
+    """
+    t_width().rms is the full (2σ) rms width, not σ (convention since 84452fd).
+    """
+    v_min, v_max, v_0, e_p, t_fwhm = 100e12, 500e12, 300e12, 1, 100e-15
+    test = light.Pulse.Gaussian(2**8, v_min, v_max, v_0, e_p, t_fwhm,
+                                min_time_window=0.5e-12)
+    sigma_t = t_fwhm / (2*(2*np.log(2))**0.5)
+    assert np.isclose(test.t_width().rms, 2*sigma_t, rtol=1e-3)
+
 #--- Exploratory
 if __name__ == "__main__":
     test_pulse_shapes()

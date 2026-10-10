@@ -282,7 +282,16 @@ def test_TFGrid():
     #--- rtf_grids
     #TODO: test this method
 
-#TODO: test utility.TFGrid.FromFreqRange(n_points, v_min, v_max)
+def test_TFGrid_FromFreqRange():
+    v_min = 100e12
+    v_max = 500e12
+    for n in [2**8, 2**8 + 1, 1000]:
+        test = utility.TFGrid.FromFreqRange(n, v_min, v_max)
+        assert test.n == n
+        # the span is exact; endpoints shift by < dv since v_ref snaps to a multiple of dv
+        assert np.isclose(test.v_grid[-1] - test.v_grid[0], v_max - v_min)
+        assert abs(test.v_grid[0] - v_min) < test.dv
+        assert abs(test.v_grid[-1] - v_max) < test.dv
 
 #--- Exploratory
 if __name__ == "__main__":
