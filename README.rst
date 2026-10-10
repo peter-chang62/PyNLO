@@ -29,7 +29,7 @@ An easy way to add the directory into your 'sys.path' is to symlink or copy the 
 
 Contributing
 ------------
-Open a new issue or discussion on the GitHub repository to add suggestions for improvement, ask questions, or make other comments. Contributions to the documentation, tests, and examples are highly appreciated. New additions should be based off the `develop` branch.
+Open a new issue or discussion on the GitHub repository to add suggestions for improvement, ask questions, or make other comments. Contributions to the documentation, tests, and examples are highly appreciated. New additions should be based off the `main` branch.
 
 
 License

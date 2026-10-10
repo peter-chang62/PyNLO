@@ -20,7 +20,7 @@ Not pip-installed in normal use: put the repo root on `sys.path` (examples do `s
 - Sphinx docs: `cd docs && make html` (output in `docs/build/html`, `docs/index.html` redirects there)
 - Type checking: `pyrightconfig.json` (venv `env`, most strict reports disabled)
 
-Test coverage is thin (`tests/test_light.py`, `tests/test_utility.py`); the scripts in `examples/` are the de-facto integration checks. The two `test_light.py` failures are a known open issue (see `dev_docs/OPEN_ISSUES.md`).
+Test coverage is thin (`tests/test_light.py`, `tests/test_utility.py`); the scripts in `examples/` are the de-facto integration checks.
 
 ## Architecture
 
@@ -56,7 +56,7 @@ See `edf/README.md` and `eydf/README.md` for the physics and full API.
 - All quantities in base SI units (Hz, s, J, m, W).
 - Public methods/properties use monotonically ordered grids; private `_`-prefixed ones often use FFT-ordered (ifftshifted) arrays.
 - Performance-critical kernels use numba JIT.
-- Branching: work on `main`. README.rst's "branch off `develop`" rule came from the upstream repo and doesn't apply to this fork (open issue, see `dev_docs/OPEN_ISSUES.md`).
+- Branching: trunk-based on `main`. Short-lived feature branches are fine, but delete them once merged. There is no `develop` branch.
 
 ## Documentation layout
 
