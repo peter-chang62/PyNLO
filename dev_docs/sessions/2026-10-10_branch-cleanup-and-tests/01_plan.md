@@ -65,6 +65,14 @@ AssertionError: lhs 5.0e-14 vs fwhm 1.02e-13
 - Verified in scratch: with the fix, lhs = 1.000e-13 and fwhm = 1.021e-13. That is within `atol = dt = 2.49e-15`, so it passes.
 - The `ac.rms == sqrt(2) * t_w.rms` check (line 98) holds under either definition, because both sides scale by 2. Verified: ratio 0.9999998 at n=256, which is within default rtol.
 
+#### Library bug found during review: `min_points` off-by-one (fix approved by user)
+- **Intent, per the user.** V = `v_max - v_min` and T = `min_time_window` are the quantities to preserve. If the requested `n` can't cover both (Nyquist), the constructor raises `n` to the minimum. If the requested `n` is already larger, it is kept, on the assumption that the user wants the extra resolution.
+- **The bug.** `FromFreqRange` puts `n` points across V *inclusive*, so `dv = V/(n-1)` and `t_window = 1/dv = (n-1)/V`. But `min_points` (`pynlo/light.py:48`) returns `next_fast_len(ceil(V*T))`. That is one interval short, so after resizing `t_window` falls just under T whenever `ceil(V*T)` is already a fast length.
+- **Verified:** `Pulse.Gaussian(2, 100e12, 500e12, 300e12, 1, 100e-15, min_time_window=T)` gives `n=200, t_window=0.4975 ps` for T=0.5 ps, and `n=400, t_window=0.9975 ps` for T=1 ps.
+- **Callers:** `min_points` is called only from the six `Pulse` classmethods (`light.py:164, 224, 270, 317, 364, 411`). Nothing in `edf/` or `eydf/` calls it directly.
+- **Decision:** add `+ 1` (Step 0b). The user preferred the approximate route only if a fix hurt readability. This one is a one-line change plus a comment, so it was approved.
+- **Side effect:** grids that get resized grow by a little more than one point because of `next_fast_len` (201 → 216, 401 → 405). Grids where the requested `n` is already large enough don't change.
+
 #### Stale-but-passing issues
 - `tests/test_light.py:37, 44, 51, 58`: `np.isclose(t_w.fwhm, t_fwhm, atol=test.dv, rtol=0)` compares a time against a tolerance in Hz (`dv` is about 1.6e12). The check always passes, so it tests nothing. It should be `atol=test.dt`. Verified that all four shapes pass with `atol=test.dt`: error is 2.10e-15 and dt is 2.49e-15.
 - `tests/test_utility.py:25` `TestResampleT.test_all` and `:122` `TestResampleV.test_all` only run code under `if __name__ == "__main__":`. Under pytest they are empty tests that always pass. pytest already runs `test_r1/r2/c1/c2` individually.
@@ -75,8 +83,8 @@ AssertionError: lhs 5.0e-14 vs fwhm 1.02e-13
 ## Decisions
 - **`develop`:** it doesn't exist in this clone or on `origin`, so the user's question about whether it is out of sync with `main` doesn't apply. The only remaining work is removing the README.rst rule. The upstream repo's `develop` is not a remote of this fork and is out of scope.
 - **Branching policy:** trunk-based on `main`, which CLAUDE.md already does in practice. Short-lived feature branches are allowed but get deleted after merging.
-- **Test fix rather than library fix** for both failures. The git history shows both library changes were intentional API/semantics changes with matching docstring and consumer updates.
-- **`min_time_window` value:** use `0.5e-12`, passed as a keyword. With `v_max - v_min = 400 THz` this needs 200 points, which is ≤ 256, so `n` stays 256. That keeps the original test grid, avoids the "changing n" print, and leaves `t_window` at about 0.64 ps (6× the 100 fs pulse). A value of `1e-12` also passes, but it silently resizes to n=400.
+- **Test fix rather than library fix** for both test failures. The separate `min_points` off-by-one is a library fix (Step 0b). The git history shows both library changes were intentional API/semantics changes with matching docstring and consumer updates.
+- **`min_time_window` value:** use `0.5e-12`, passed as a keyword. With `v_max - v_min = 400 THz` this needs 216 points after the Step 0b fix (`next_fast_len(201)`), which is ≤ 256, so `n` stays 256. That keeps the original test grid, avoids the "changing n" print, and leaves `t_window` at about 0.64 ps (6× the 100 fs pulse). A value of `1e-12` also passes, but it silently resizes the grid (to 405 after Step 0b).
 - **No backup tags needed:** no branch has unique commits. An optional tag is offered for `peter` in case the user wants the name kept as a historical marker.
 
 ## Implementation steps
@@ -90,6 +98,38 @@ git fetch origin --prune
 git branch -a -vv
 ```
 Verify that the branch table above still holds: `git rev-list --left-right --count main...origin/peter` gives `N 0`, and the same for both `origin/add-claude-github-actions-*` branches. If any branch now shows a non-zero right-hand (ahead) count, **stop** and report it to the user.
+
+### Step 0b: Fix the `min_points` off-by-one (library)
+In `pynlo/light.py:48-51`:
+```python
+def min_points(bandwidth_v, bandwidth_t):
+    # n points span bandwidth_v with n - 1 intervals, so t_window = (n - 1)/bandwidth_v
+    n_min = int(np.ceil(bandwidth_t * bandwidth_v)) + 1
+    n_min = scipy.fftpack.next_fast_len(n_min)  # faster fft's
+    return n_min
+```
+Add this regression test to `tests/test_light.py`. It is **required** because it pins the fix.
+```python
+def test_min_time_window():
+    v_min, v_max, v_0, e_p, t_fwhm = 100e12, 500e12, 300e12, 1, 100e-15
+    # n too small: grid is enlarged so the time window is at least min_time_window
+    for min_time_window in (0.5e-12, 1e-12):
+        p = light.Pulse.Gaussian(2, v_min, v_max, v_0, e_p, t_fwhm,
+                                 min_time_window=min_time_window)
+        assert p.t_window >= min_time_window
+        # endpoints are targets (TFGrid snaps v_ref to a multiple of dv); the span is exact
+        assert np.isclose(p.v_grid[-1] - p.v_grid[0], v_max - v_min)
+    # n already sufficient: user's n is kept
+    p = light.Pulse.Gaussian(256, v_min, v_max, v_0, e_p, t_fwhm, min_time_window=0.5e-12)
+    assert p.n == 256
+```
+This test covers `Gaussian`. The other classmethods share `min_points` and the identical resizing block, so testing one exercises the fix. Use `n=2`, not 1, so that `dv = V/(n-1)` stays finite in the first call. Don't assert `v_grid[0] == v_min`: `TFGrid.__init__` aligns `v_ref` to an integer multiple of `dv` (`pynlo/utility/__init__.py:451-454`), so the endpoints shift by up to about one `dv` (for example, n=216 gives 98.6–498.6 THz). Checked in memory with a patched `min_points`: n=216 → t_window 0.5375 ps, n=405 → 1.010 ps, and n=256 is kept. All assertions pass after the fix, and the `t_window` assertions fail before it.
+
+Verify:
+```bash
+python -m pytest tests/test_light.py::test_min_time_window -v
+```
+Expected: it fails before the fix (0.4975 ps < 0.5 ps) and passes after. Also run one example that relies on resizing (any `examples/` script whose `Pulse.*` call passes a small `n`) and check that it still runs.
 
 ### Step 1: Fix `tests/test_light.py`
 Add a shared variable and pass it by keyword in every constructor call:
@@ -120,7 +160,7 @@ Verify: `python -m pytest tests/test_utility.py -v` gives 9 passed (11 minus the
 
 ### Step 3 (optional, high-value regression tests)
 Add these to `tests/test_light.py` only if the user wants them:
-1. `test_min_time_window_resizes_grid`: `Pulse.Gaussian(256, 100e12, 500e12, 300e12, 1, 100e-15, min_time_window=1e-12)` should give `p.n == 400` and `p.t_window >= 1e-12`. With `min_time_window=0.5e-12`, `p.n == 256`. This pins the `f2ef918` behavior.
+1. *(Superseded: this is now the required `test_min_time_window` in Step 0b. The original version asserted `n == 400`, which the off-by-one makes wrong.)*
 2. `test_width_rms_is_full_width`: for a Gaussian, `t_w.rms ≈ 2*sigma_t`, where `sigma_t = t_fwhm / (2*sqrt(2*ln 2))`. Use `rtol=1e-3`. This pins the `84452fd` convention so any future change is deliberate.
 3. Add to `tests/test_utility.py`: `test_TFGrid_FromFreqRange`, which checks that `v_grid[0] ≈ v_min`, `v_grid[-1] ≈ v_max`, and `n` is preserved. This resolves the TODO at line 302.
 
@@ -177,16 +217,17 @@ Expected: only `main`/`origin/main`/`origin/HEAD` (+ GitHub's `refs/pull/1/head`
 
 ### Step 9: Session docs
 Write `01_implementation.md` and `01_review.md` in the session folder.
-- Remove the "Stale tests in `tests/test_light.py`" and "Branching policy" entries from `OPEN_ISSUES.md`.
+- Remove the "Stale tests in `tests/test_light.py`", "Branching policy" and "`min_points` off-by-one" entries from `OPEN_ISSUES.md`.
 - Update the session README and the index row to `done`.
 - Update CLAUDE.md's "Test coverage" paragraph, which mentions "two `test_light.py` failures", so it no longer claims failing tests.
 
 ## Suggested commits
-1. `Fix outdated test_light.py for min_time_window and full-width rms` (Step 1)
-2. `Remove no-op test_all methods and debug print from test_utility.py` (Step 2)
-3. `Add regression tests for grid resizing, rms width, FromFreqRange` (Step 3, optional)
-4. `Drop inherited develop-branch rule; document trunk-based main` (Step 4: README.rst, CLAUDE.md)
-5. `dev_docs: branch-cleanup-and-tests implementation and review` (Step 9)
+1. `Fix min_points off-by-one so resized grids span min_time_window` (Step 0b: `pynlo/light.py` + `test_min_time_window`)
+2. `Fix outdated test_light.py for min_time_window and full-width rms` (Step 1)
+3. `Remove no-op test_all methods and debug print from test_utility.py` (Step 2)
+4. `Add regression tests for rms width, FromFreqRange` (Step 3, optional)
+5. `Drop inherited develop-branch rule; document trunk-based main` (Step 4: README.rst, CLAUDE.md)
+6. `dev_docs: branch-cleanup-and-tests implementation and review` (Step 9)
 
 Branch deletions are not commits.
 
@@ -206,6 +247,6 @@ Branch deletions are not commits.
 ## Acceptance criteria
 - `git branch -a` shows only `main`, `origin/main`, `origin/HEAD`. `git ls-remote origin` shows only `main` (+ `refs/pull/1/head`).
 - `main` is in sync with `origin/main`.
-- `python -m pytest tests/` passes with 0 failures.
+- `python -m pytest tests/` passes with 0 failures, including `test_min_time_window`.
 - `README.rst` and `CLAUDE.md` don't mention `develop` as a working branch.
 - `OPEN_ISSUES.md` has no "Stale tests" or "Branching policy" entries. Session docs and the index are updated.

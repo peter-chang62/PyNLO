@@ -21,6 +21,11 @@ This is a living list of known problems and deferred decisions. Check it at the 
 - **Decision needed (user):** choose a branching model, then update `README.rst` and CLAUDE.md and clean up the stale branches.
 - **Plan:** [2026-10-10_branch-cleanup-and-tests/01_plan.md](sessions/2026-10-10_branch-cleanup-and-tests/01_plan.md) (Steps 4, 6-8). Trunk-based on `main`. All non-main branches are fully merged (zero unique commits) and are slated for deletion, with user confirmation for each remote deletion. Remove this entry once that is implemented.
 
+## `min_points` off-by-one: resized grids fall just short of `min_time_window`
+- **Found:** [2026-10-10_branch-cleanup-and-tests](sessions/2026-10-10_branch-cleanup-and-tests/01_plan.md)
+- **Problem:** `t_window = (n-1)/(v_max - v_min)`, but `min_points` (`pynlo/light.py:48`) uses `ceil(V*T)`. As a result, `Pulse.Gaussian(2, 100e12, 500e12, ..., min_time_window=1e-12)` gives `t_window = 0.9975 ps`.
+- **Plan:** [01_plan.md Step 0b](sessions/2026-10-10_branch-cleanup-and-tests/01_plan.md). Add `+ 1` and the `test_min_time_window` regression test; the user approved this fix. Remove this entry once that is implemented.
+
 ## Pulse classmethod docstrings omit `min_time_window` and `alias`
 - **Found:** [2026-10-10_branch-cleanup-and-tests](sessions/2026-10-10_branch-cleanup-and-tests/01_plan.md)
 - **Problem:** `Pulse.Gaussian/Sech/Parabolic/Lorentzian/CW/FromPowerSpectrum` in `pynlo/light.py` take a required `min_time_window` (s) and `alias=2`, but none of their docstrings document either. The classmethod default `alias=2` also differs from `Pulse.__init__`/`TFGrid` (`alias=1`). The `FromPowerSpectrum` docstring calls `n`, `v_min` and `v_max` "optional" although they are required.
