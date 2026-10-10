@@ -19,3 +19,4 @@ Full rules live in the root `CLAUDE.md` under "Code session documentation".
 | Date | Session | Status | Summary | Key files |
 |------|---------|--------|---------|-----------|
 | 2026-10-10 | [claude-md-refresh](sessions/2026-10-10_claude-md-refresh/README.md) | done | Refreshed CLAUDE.md for current repo layout; set up `dev_docs/` session logging and the Opus→Sonnet delegation rule. | `CLAUDE.md`, `dev_docs/` |
+| 2026-10-10 | [branch-cleanup-and-tests](sessions/2026-10-10_branch-cleanup-and-tests/README.md) | planned | Plan to delete merged stale branches, drop the "develop" rule from README.rst, and fix the two outdated test_light.py tests. Implementation pending. | (planned) `README.rst`, `tests/test_light.py`, `tests/test_utility.py`, `CLAUDE.md`, `dev_docs/OPEN_ISSUES.md` |
