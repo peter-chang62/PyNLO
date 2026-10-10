@@ -22,14 +22,6 @@ pi = constants.pi
 # %% Resampling
 
 class TestResampleT():
-    def test_all(self):
-        if __name__ == "__main__":
-            self.test_r1()
-            self.test_r2()
-
-            self.test_c1()
-            self.test_c2()
-
     #--- Real-Valued Input, Even Number of Points
     def test_r1(self):
         n = 2**6
@@ -119,14 +111,6 @@ class TestResampleT():
         assert np.allclose(a_t_ident, a_t)
 
 class TestResampleV():
-    def test_all(self):
-        if __name__ == "__main__":
-            self.test_r1()
-            self.test_r2()
-
-            self.test_c1()
-            self.test_c2()
-
     #--- Real-Valued Input, Even Number of Points
     def test_r1(self):
         n = 2**6
@@ -158,7 +142,6 @@ class TestResampleV():
 
         v_grid = dv*np.arange(n)
         a_v = np.exp(-0.5*(v_grid/(5*dv))**2) + 0j
-        print(a_v[-1])
         a_v[-1] += 1j # force number of points in the time domain to be odd
 
         #--- Even
