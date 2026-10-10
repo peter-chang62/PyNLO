@@ -28,38 +28,43 @@ def test_pulse_shapes():
     v_0 = 300e12
     e_p = 1
     t_fwhm = 100e-15
+    min_time_window = 0.5e-12
 
     #--- Gaussian Pulse
-    test = light.Pulse.Gaussian(n, v_min, v_max, v_0, e_p, t_fwhm)
+    test = light.Pulse.Gaussian(n, v_min, v_max, v_0, e_p, t_fwhm,
+                            min_time_window=min_time_window)
     t_w = test.t_width()
     assert np.isclose(e_p, test.e_p)
     assert np.isclose(test.v_grid[test.p_v.argmax()], v_0, atol=test.dv, rtol=0)
-    assert np.isclose(t_w.fwhm, t_fwhm, atol=test.dv, rtol=0)
+    assert np.isclose(t_w.fwhm, t_fwhm, atol=test.dt, rtol=0)
 
     #--- Sech**2 Pulse
-    test = light.Pulse.Sech(n, v_min, v_max, v_0, e_p, t_fwhm)
+    test = light.Pulse.Sech(n, v_min, v_max, v_0, e_p, t_fwhm,
+                            min_time_window=min_time_window)
     t_w = test.t_width()
     assert np.isclose(e_p, test.e_p)
     assert np.isclose(test.v_grid[test.p_v.argmax()], v_0, atol=test.dv, rtol=0)
-    assert np.isclose(t_w.fwhm, t_fwhm, atol=test.dv, rtol=0)
+    assert np.isclose(t_w.fwhm, t_fwhm, atol=test.dt, rtol=0)
 
     #--- Parabolic Pulse
-    test = light.Pulse.Parabolic(n, v_min, v_max, v_0, e_p, t_fwhm)
+    test = light.Pulse.Parabolic(n, v_min, v_max, v_0, e_p, t_fwhm,
+                            min_time_window=min_time_window)
     t_w = test.t_width()
     assert np.isclose(e_p, test.e_p)
     assert np.isclose(test.v_grid[test.p_v.argmax()], v_0, atol=test.dv, rtol=0)
-    assert np.isclose(t_w.fwhm, t_fwhm, atol=test.dv, rtol=0)
+    assert np.isclose(t_w.fwhm, t_fwhm, atol=test.dt, rtol=0)
 
     #--- Lorentzian**2 Pulse
-    test = light.Pulse.Lorentzian(n, v_min, v_max, v_0, e_p, t_fwhm)
+    test = light.Pulse.Lorentzian(n, v_min, v_max, v_0, e_p, t_fwhm,
+                            min_time_window=min_time_window)
     t_w = test.t_width()
     assert np.isclose(e_p, test.e_p)
     assert np.isclose(test.v_grid[test.p_v.argmax()], v_0, atol=test.dv, rtol=0)
-    assert np.isclose(t_w.fwhm, t_fwhm, atol=test.dv, rtol=0)
+    assert np.isclose(t_w.fwhm, t_fwhm, atol=test.dt, rtol=0)
 
     #--- CW Light
     p_p = 1
-    test = light.Pulse.CW(n, v_min, v_max, v_0, p_p)
+    test = light.Pulse.CW(n, v_min, v_max, v_0, p_p, min_time_window=min_time_window)
     assert np.isclose(p_p, test.e_p/test.t_window)
     assert np.isclose(test.v_grid[test.p_v.argmax()], v_0, atol=test.dv, rtol=0)
 
@@ -73,7 +78,9 @@ def test_pulse_properties():
     v_0 = 300e12
     e_p = 1
     t_fwhm = 100e-15
-    test = light.Pulse.Gaussian(n, v_min, v_max, v_0, e_p, t_fwhm)
+    min_time_window = 0.5e-12
+    test = light.Pulse.Gaussian(n, v_min, v_max, v_0, e_p, t_fwhm,
+                                min_time_window=min_time_window)
 
     #--- Frequency Domain Properties
     assert all(test.a_v == fft.fftshift(test._a_v))
@@ -93,7 +100,8 @@ def test_pulse_properties():
     #--- Methods
     v_w = test.v_width()
     t_w = test.t_width()
-    assert np.isclose(np.log(4)**0.5 / (2*pi*v_w.rms), t_w.fwhm, atol=test.dt)
+    v_sigma = 0.5 * v_w.rms  # v_width().rms is the full (2σ) rms width
+    assert np.isclose(np.log(4)**0.5 / (2*pi*v_sigma), t_w.fwhm, atol=test.dt)
     ac = test.autocorrelation()
     assert np.isclose(ac.rms, 2**0.5 * t_w.rms, atol=0)
 
@@ -121,7 +129,9 @@ if __name__ == "__main__":
     v_0 = 300e12
     e_p = 1
     t_fwhm = 40e-15
-    test = light.Pulse.Gaussian(n, v_min, v_max, v_0, e_p, t_fwhm)
+    min_time_window = 0.5e-12
+    test = light.Pulse.Gaussian(n, v_min, v_max, v_0, e_p, t_fwhm,
+                                min_time_window=min_time_window)
 
     # test.phi_v += 2*pi*(.1*1e-12)*test.v_grid
 
